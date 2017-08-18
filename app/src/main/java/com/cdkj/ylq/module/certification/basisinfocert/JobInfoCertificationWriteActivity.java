@@ -38,7 +38,6 @@ import retrofit2.Call;
  * Created by 李先俊 on 2017/8/9.
  */
 public class JobInfoCertificationWriteActivity extends AbsBaseActivity {
-
     private ActivityJobInfoWriteBinding mBinding;
     CerttificationInfoModel.InfoOccupationBean mJobdata;
 
