@@ -1,0 +1,4 @@
+<resources>
+    <!--dialog-->
+    <dimen name="coupons_left_width">92dp</dimen>
+</resources>

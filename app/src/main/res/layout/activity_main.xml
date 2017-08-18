@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.cdkj.baselibrary.views.mViewpager
+            android:id="@+id/pager_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+        </com.cdkj.baselibrary.views.mViewpager>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/splitLine_Color" />
+
+        <include
+            android:id="@+id/layout_main_buttom"
+            layout="@layout/activity_bottom_main" />
+    </LinearLayout>
+</layout>

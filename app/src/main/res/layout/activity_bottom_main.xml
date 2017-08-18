@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <RadioGroup
+            android:id="@+id/radiogroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:weightSum="3">
+
+            <RadioButton
+                android:id="@+id/radio_main_tab_money"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:checked="true"
+                android:clickable="false"
+                android:drawablePadding="7dp"
+                android:drawableTop="@drawable/main_buttom_tab_borrowmoney"
+                android:gravity="center"
+                android:text="@string/main_tab_borrow_money"
+                android:textColor="@drawable/tab_txtcolor"
+                android:textSize="12sp" />
+
+            <RadioButton
+                android:id="@+id/radio_main_tab_certification"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:checked="false"
+                android:clickable="false"
+                android:drawablePadding="5dp"
+                android:drawableTop="@drawable/main_buttom_tab_certification"
+                android:gravity="center"
+                android:text="@string/main_tab_cert"
+                android:textColor="@drawable/tab_txtcolor"
+                android:textSize="12sp" />
+
+            <RadioButton
+                android:id="@+id/radio_main_tab_my"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:checked="false"
+                android:clickable="false"
+                android:drawablePadding="5dp"
+                android:drawableTop="@drawable/main_buttom_tab_my"
+                android:gravity="center"
+                android:text="@string/tab_my"
+                android:textColor="@drawable/tab_txtcolor"
+                android:textSize="12sp" />
+
+        </RadioGroup>
+    </LinearLayout>
+</layout>

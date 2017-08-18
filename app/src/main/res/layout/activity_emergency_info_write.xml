@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layout_family_relation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:paddingRight="25dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:text="亲属关系"
+                    android:textColor="@color/black_2"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_family_relation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp"
+                    android:textColor="@color/black_2"
+                    android:textSize="16sp"
+                    android:textColorHint="@color/text_hint_color"
+                    android:hint="请选择"  />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/more_right" />
+
+            </LinearLayout>
+
+            <View style="@style/style_split_line" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:paddingRight="25dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:text="联系方式"
+                    android:textColor="@color/black_2"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/edit_family_relation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp"
+                    android:textColor="@color/black_2"
+                    android:textSize="16sp"
+                    android:textColorHint="@color/text_hint_color"
+                    android:hint="输入联系方式"  />
+
+            </LinearLayout>
+
+            <View style="@style/style_split_line" />
+
+            <LinearLayout
+                android:id="@+id/layout_society_relation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:paddingRight="25dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:text="社会关系"
+                    android:textColor="@color/black_2"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_society_relation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp"
+                    android:textColor="@color/black_2"
+                    android:textSize="16sp"
+                    android:textColorHint="@color/text_hint_color"
+                    android:hint="请选择" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/more_right" />
+
+            </LinearLayout>
+
+            <View style="@style/style_split_line" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:paddingRight="25dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:text="联系方式"
+                    android:textColor="@color/black_2"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/edit_society_relation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp"
+                    android:textColor="@color/black_2"
+                    android:textSize="16sp"
+                    android:textColorHint="@color/text_hint_color"
+                    android:hint="输入联系方式"  />
+
+            </LinearLayout>
+
+            <View style="@style/style_split_line" />
+
+
+            <Button
+                android:layout_marginBottom="50dp"
+                android:id="@+id/btn_submit"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginLeft="48dp"
+                android:layout_marginRight="48dp"
+                android:layout_marginTop="45dp"
+                android:background="@drawable/selector_login_btn"
+                android:text="提交"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</layout>
