@@ -373,12 +373,12 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
             mBinding.imgMoxieState.setImageResource(R.drawable.cert_ok);
             mBinding.imgMoxieStateBig.setImageResource(R.drawable.yuying);
 
-        } else if(TextUtils.equals("2",mCertData.getInfoCarrierFlag())){
+        } else if (TextUtils.equals("2", mCertData.getInfoCarrierFlag())) {
             mBinding.tvMoxieState.setText("已过期");
             mBinding.tvMoxieState.setTextColor(ContextCompat.getColor(mActivity, R.color.guoqi));
             mBinding.imgMoxieState.setImageResource(R.drawable.guoqi);
             mBinding.imgMoxieStateBig.setImageResource(R.drawable.yunying_un);
-        }else{
+        } else {
             mBinding.tvMoxieState.setText("前往提交");
             mBinding.tvMoxieState.setTextColor(ContextCompat.getColor(mActivity, R.color.cert_state_edit));
             mBinding.imgMoxieState.setImageResource(R.drawable.can_submit);
@@ -401,12 +401,12 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
 
     @Override
     public void startGetInfo() {
-        showLoadingDialog();
+//        showLoadingDialog();
     }
 
     @Override
     public void endGetInfo() {
-        disMissLoading();
+//        disMissLoading();
     }
 
     @Nullable

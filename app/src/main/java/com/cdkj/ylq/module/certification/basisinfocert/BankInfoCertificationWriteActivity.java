@@ -200,7 +200,7 @@ public class BankInfoCertificationWriteActivity extends AbsBaseActivity {
                 .districtCyclic(false)
                 .visibleItemsCount(7)
                 .itemPadding(10)
-                .onlyShowProvinceAndCity(true)
+                .onlyShowProvinceAndCity(false)
                 .build();
 
 
@@ -208,7 +208,7 @@ public class BankInfoCertificationWriteActivity extends AbsBaseActivity {
         mCityPicker.setOnCityItemClickListener(new CityPicker.OnCityItemClickListener() {
             @Override
             public void onSelected(String... citySelected) {
-                mBinding.tvCity.setText(citySelected[0] + citySelected[1]);
+                mBinding.tvCity.setText(citySelected[0] + citySelected[1] + citySelected[3]);
             }
 
             @Override

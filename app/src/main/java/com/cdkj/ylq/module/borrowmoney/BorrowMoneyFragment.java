@@ -12,6 +12,7 @@ import com.cdkj.baselibrary.model.EventBusModel;
 import com.cdkj.baselibrary.model.IsSuccessModes;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
+import com.cdkj.baselibrary.utils.LogUtil;
 import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.baselibrary.utils.ToastUtil;
@@ -69,7 +70,6 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
         setTopTitle(getString(R.string.app_name));
         setTopTitleViewBg(R.color.white);
         setTopTitleViewColor(R.color.activity_title_bg);
-        mBinding.refreshLayout.setEnableLoadmoreWhenContentNotFull(true);
         setSubRightImgAndClick(R.drawable.msg, v -> {
             if (!SPUtilHelpr.isLogin(mActivity, false)) {
                 return;
@@ -82,6 +82,7 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (!SPUtilHelpr.isLogin(mActivity, false)) {
+                    LogUtil.E("点击阻拦 没有登录");
                     return;
                 }
                 PorductListModel.ListBean data = (PorductListModel.ListBean) adapter.getItem(position);
@@ -97,14 +98,16 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
      */
     private void productItemClick(PorductListModel.ListBean data) {
         if (data == null) {
+            LogUtil.E("点击阻拦 数据空");
             return;
         }
 
         if (TextUtils.equals("1", data.getIsLocked())) {//锁中状态
+            LogUtil.E("点击阻拦 所中状态");
             return;
         }
 
-        if (TextUtils.equals("0", data.getStatus())) {
+        if (TextUtils.equals("0", data.getUserProductStatus())) {
 
             ProductDetailsActivity.open(mActivity, data.getCode());
 
@@ -132,6 +135,8 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
 
         } else if (TextUtils.equals("7", data.getUserProductStatus())) { //逾期
             UsedMoneyDetailsActivity.open(mActivity, null, data.getBorrowCode());
+        }else{
+            LogUtil.E("点击 状态错误");
         }
 
     }

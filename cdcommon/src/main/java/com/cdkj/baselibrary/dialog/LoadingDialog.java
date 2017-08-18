@@ -16,7 +16,7 @@ public final class LoadingDialog extends Dialog {
 
     //    private ImageView mInnerImg;
     private ImageView mOuterImg;
-        private Animation mAnimation;
+    private Animation mAnimation;
     private int mWidth;
     private int mHeight;
 
@@ -68,14 +68,23 @@ public final class LoadingDialog extends Dialog {
     }
 
     public void showDialog() {
-        if (!isShowing()) {
-            show();
+        try {
+            if (!isShowing()) {
+                show();
+            }
+        } catch (Exception e) {
+
         }
     }
 
     public void closeDialog() {
-        if(isShowing()){
-            dismiss();
+
+        try {
+            if (isShowing()) {
+                dismiss();
+            }
+        } catch (Exception e) {
+
         }
     }
 
@@ -83,16 +92,25 @@ public final class LoadingDialog extends Dialog {
     public void show() {
         super.show();
 //        mediaController.show();
-        if (mAnimation != null) {
-            mOuterImg.startAnimation(mAnimation);
+        try {
+            if (mAnimation != null) {
+                mOuterImg.startAnimation(mAnimation);
+            }
+
+        } catch (Exception e) {
+
         }
     }
 
     @Override
     public void dismiss() {
 
-        if (mAnimation != null) {
-            mOuterImg.clearAnimation();
+        try {
+            if (mAnimation != null) {
+                mOuterImg.clearAnimation();
+            }
+        } catch (Exception e) {
+
         }
         super.dismiss();
 //        mediaController.hide();

@@ -59,7 +59,6 @@ public class MsgListActivity extends BaseRefreshActivity<MsgListModel.ListBean> 
     protected void onInit(Bundle savedInstanceState, int pageIndex, int limit) {
         setSubLeftImgState(true);
         setTopTitle("消息");
-        mBinding.refreshLayout.setEnableLoadmoreWhenContentNotFull(true);
         getListData(pageIndex, limit, true);
     }
 

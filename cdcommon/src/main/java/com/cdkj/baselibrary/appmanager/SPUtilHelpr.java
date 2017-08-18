@@ -63,6 +63,22 @@ public class SPUtilHelpr {
 	return 	SPUtils.getString(BaseApplication.getContext(),"user_phone","");
 	}
 
+	/**
+	 * 设置用户手机号码
+	 *
+	 * @param s
+	 */
+	public static void saveUserName(String s) {
+		SPUtils.put(BaseApplication.getContext(), "user_name", s);
+	}
+
+	/**
+	 * 获取用户手机号
+	 */
+	public static String getUserName() {
+		return SPUtils.getString(BaseApplication.getContext(), "user_name", "");
+	}
+
 
 	/**
 	 * 设置用户token
@@ -120,6 +136,8 @@ public class SPUtilHelpr {
 	public static void logOutClear(){
 		saveUserToken("");
 		saveUserId("");
+		saveUserPhoneNum("");
+		saveUserName("");
 	}
 
 }

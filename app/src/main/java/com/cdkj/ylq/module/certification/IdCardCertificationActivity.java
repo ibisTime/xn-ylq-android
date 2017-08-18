@@ -17,6 +17,7 @@ import com.cdkj.baselibrary.model.IsSuccessModes;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.ImgUtils;
+import com.cdkj.baselibrary.utils.LogUtil;
 import com.cdkj.baselibrary.utils.QiNiuUtil;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.ylq.R;
@@ -154,16 +155,17 @@ public class IdCardCertificationActivity extends AbsBaseActivity implements getU
         }
         if (requestCode == PHOTOFLAG) {
             String path = data.getStringExtra(ImageSelectActivity.staticPath);
-            showLoadingDialog();
+            LogUtil.E("图片"+path);
             new QiNiuUtil(IdCardCertificationActivity.this).getQiniuURL(new QiNiuUtil.QiNiuCallBack() {
                 @Override
                 public void onSuccess(String key, ResponseInfo info, JSONObject res) {
+                    LogUtil.E("图片success");
                     upLoadIdCard(key);
                 }
 
                 @Override
                 public void onFal(String info) {
-                    disMissLoading();
+                    showToast(info);
                 }
             }, path);
 
@@ -183,6 +185,8 @@ public class IdCardCertificationActivity extends AbsBaseActivity implements getU
         Call call = RetrofitUtils.getBaseAPiService().successRequest("623044", StringUtils.getJsonToString(map));
 
         addCall(call);
+
+        showLoadingDialog();
 
         call.enqueue(new BaseResponseModelCallBack<IsSuccessModes>(this) {
             @Override

@@ -168,7 +168,6 @@ public class PersonalActivity extends AbsBaseActivity {
         }
         if (requestCode == PHOTOFLAG) {
             String path = data.getStringExtra(ImageSelectActivity.staticPath);
-            showLoadingDialog();
             new QiNiuUtil(PersonalActivity.this).getQiniuURL(new QiNiuUtil.QiNiuCallBack() {
                 @Override
                 public void onSuccess(String key, ResponseInfo info, JSONObject res) {
@@ -177,7 +176,6 @@ public class PersonalActivity extends AbsBaseActivity {
 
                 @Override
                 public void onFal(String info) {
-                    disMissLoading();
                 }
             }, path);
 
@@ -196,6 +194,7 @@ public class PersonalActivity extends AbsBaseActivity {
 
         Call call = RetrofitUtils.getBaseAPiService().successRequest("805080", StringUtils.getJsonToString(map));
         addCall(call);
+        showLoadingDialog();
         call.enqueue(new BaseResponseModelCallBack<IsSuccessModes>(PersonalActivity.this) {
             @Override
             protected void onSuccess(IsSuccessModes data, String SucMessage) {

@@ -98,10 +98,14 @@ public class PayActivity extends AbsBaseActivity {
         });
 
         mBinding.btnSure.setOnClickListener(v -> {
+
+
             if (mPayType == 2) {
-                wxPayRequest();
+                showToast("微信支付未开放");
+                //    wxPayRequest();
             } else if (mPayType == 3) {
-                AliPayRequest();
+                showToast("支付宝支付微开放");
+                //  AliPayRequest();
             }
 
         });

@@ -62,7 +62,6 @@ public class UseMoneyRecordFragment extends BaseRefreshFragment<UseMoneyRecordMo
 
     @Override
     protected void afterCreate(int pageIndex, int limit) {
-        mBinding.refreshLayout.setEnableLoadmoreWhenContentNotFull(true);
         if (getUserVisibleHint()) {
             isFirstCreate = false;
             getListData(pageIndex, limit, true);

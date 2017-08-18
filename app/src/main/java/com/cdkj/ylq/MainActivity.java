@@ -161,6 +161,13 @@ public class MainActivity extends AbsBaseActivity {
         }
     }
 
+    @Subscribe
+    public void MainEventBusFinish(String evbusTag) {
+        if (TextUtils.equals(evbusTag, MAINFINISH)) { //结束主页
+            finish();
+        }
+    }
+
     @Override
     protected boolean canEvenFinish() {
         return false;

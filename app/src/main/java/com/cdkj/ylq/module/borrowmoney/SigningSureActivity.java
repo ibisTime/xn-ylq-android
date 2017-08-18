@@ -137,7 +137,7 @@ public class SigningSureActivity extends AbsBaseActivity {
     public void setShowData() {
         if (mProductData == null) return;
 
-        mBinding.tvUserName.setText(SPUtilHelpr.getUserPhoneNum());
+        mBinding.tvUserName.setText(SPUtilHelpr.getUserName());
         mBinding.tvMoney.setText(MoneyUtils.showPrice(mProductData.getAmount()) + "元");
         mBinding.tvDay.setText(mProductData.getDuration() + "天");
         mBinding.tvAllRate.setText(getAllRateMoney(mProductData) + "元");
@@ -146,6 +146,7 @@ public class SigningSureActivity extends AbsBaseActivity {
 
         mBinding.tvDueDate.setText(DateUtil.getShowDayToData(mProductData.getDuration()));
 
+        mBinding.tvRead.setText("《"+SPUtilHelpr.getUserName()+"-借款协议》");
 
         mBinding.tvUsed.setText("7天内逾期，每天" + MoneyUtils.showPrice(mProductData.getYqRate1()) + "元\n"
                 + "7天外逾期，每天" + MoneyUtils.showPrice(mProductData.getYqRate2()) + "元");

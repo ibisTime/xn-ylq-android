@@ -50,7 +50,7 @@
 
 
                 <com.cdkj.ylq.views.DashedLine
-                    android:layout_width="1dp"
+                    android:layout_width="2dp"
                     android:layout_height="65dp"
                     android:layout_marginLeft="12.5dp"
                     app:drawVertical="true"
@@ -81,7 +81,7 @@
                 </LinearLayout>
 
                 <com.cdkj.ylq.views.DashedLine
-                    android:layout_width="1dp"
+                    android:layout_width="2dp"
                     android:layout_height="65dp"
                     android:layout_marginLeft="12.5dp"
                     app:drawVertical="true"

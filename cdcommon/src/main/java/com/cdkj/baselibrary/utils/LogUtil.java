@@ -4,28 +4,27 @@ import android.util.Log;
 
 
 /**
- *log工具类
+ * log工具类
  */
 public class LogUtil {
-    public static Boolean isLog=true;
+    public static Boolean isLog = true;
 
-    private static final String TAG="LOG_YITU";
+    private static final String TAG = "LOG_YITU";
 
-    public static void I(String msg){
-        if(isLog)
-        {
+    public static void I(String msg) {
+        if (isLog) {
             Log.i(TAG, msg);
         }
     }
 
-        public static void E(String msg){
-        if(isLog)
-        {
+    public static void E(String msg) {
+        if (isLog) {
             Log.e(TAG, msg);
         }
     }
-    public static  void BIGLOG(String responseInfo){
-        if(!isLog){
+
+    public static void BIGLOG(String responseInfo) {
+        if (!isLog) {
             return;
         }
         if (responseInfo.length() > 4000) {
@@ -33,9 +32,9 @@ public class LogUtil {
             for (int i = 0; i <= chunkCount; i++) {
                 int max = 4000 * (i + 1);
                 if (max >= responseInfo.length()) {
-                    Log.e(TAG,responseInfo.substring(4000 * i));
+                    Log.e(TAG, responseInfo.substring(4000 * i));
                 } else {
-                    Log.e(TAG,responseInfo.substring(4000 * i, max));
+                    Log.e(TAG, responseInfo.substring(4000 * i, max));
                 }
             }
         } else {

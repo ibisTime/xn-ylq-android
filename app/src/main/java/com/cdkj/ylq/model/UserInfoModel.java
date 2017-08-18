@@ -28,6 +28,17 @@ public class UserInfoModel implements Parcelable {
 
     private String userId;
     private String loginName;
+
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    private String realName;
     private String mobile;
     private String nickname;
     private String loginPwdStrength;

@@ -18,8 +18,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:paddingBottom="15dp"
-                android:paddingTop="15dp">
+                android:gravity="center_vertical"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
 
                 <ImageView
                     android:layout_width="18dp"
@@ -30,7 +31,7 @@
                 <EditText
                     android:id="@+id/edit_username"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="58dp"
                     android:background="@null"
@@ -48,9 +49,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0.5dp"
                 android:background="@color/white"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingBottom="15dp"
-                android:paddingTop="15dp">
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
 
                 <ImageView
                     android:layout_width="18dp"
@@ -61,7 +63,7 @@
                 <EditText
                     android:id="@+id/edit_phone_code"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
@@ -76,7 +78,7 @@
                     android:id="@+id/btn_send_code"
                     android:layout_width="76dp"
                     android:layout_height="28dp"
-                    android:layout_marginRight="58dp"
+                    android:layout_marginRight="25dp"
                     android:background="@drawable/selector_code_btn"
                     android:text="发送验证码"
                     android:textColor="@color/white"
@@ -90,8 +92,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0.5dp"
                 android:background="@color/white"
-                android:paddingBottom="15dp"
-                android:paddingTop="15dp">
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
 
                 <ImageView
                     android:layout_width="20dp"
@@ -102,7 +104,7 @@
                 <EditText
                     android:id="@+id/edit_password"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="58dp"
                     android:background="@null"
@@ -119,6 +121,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0.5dp"
                 android:background="@color/white"
+                android:gravity="center_vertical"
                 android:paddingBottom="15dp"
                 android:paddingTop="15dp">
 

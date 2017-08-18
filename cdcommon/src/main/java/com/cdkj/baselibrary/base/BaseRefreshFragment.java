@@ -100,6 +100,9 @@ public abstract class BaseRefreshFragment<T> extends BaseLazyFragment {
      * 初始化刷新加载
      */
     private void initRefreshLayout() {
+
+        mBinding.refreshLayout.setEnableLoadmoreWhenContentNotFull(true);
+
         mBinding.refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {

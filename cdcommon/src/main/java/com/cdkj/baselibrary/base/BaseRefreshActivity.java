@@ -74,6 +74,9 @@ public abstract class BaseRefreshActivity<T> extends AbsBaseActivity{
      * 初始化刷新加载
      */
     private void initRefreshLayout() {
+
+        mBinding.refreshLayout.setEnableLoadmoreWhenContentNotFull(true);
+
         mBinding.refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {

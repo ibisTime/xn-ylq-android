@@ -87,6 +87,7 @@ public class MyFragment extends BaseLazyFragment {
         if (data == null) return;
 
         SPUtilHelpr.saveUserPhoneNum(data.getMobile());
+        SPUtilHelpr.saveUserName(data.getRealName());
 
         ImgUtils.loadActLogo(mActivity, MyConfig.IMGURL + data.getPhoto(), mBinding.imtUserLogo);
 
@@ -159,21 +160,29 @@ public class MyFragment extends BaseLazyFragment {
         call.enqueue(new BaseResponseModelCallBack<CoupoonsModel>(mActivity) {
             @Override
             protected void onSuccess(CoupoonsModel data, String SucMessage) {
-                mBinding.tvCouponnsNum.setText(data.getTotalCount()+"");
+                mBinding.tvCouponnsNum.setText(data.getTotalCount() + "");
             }
 
             @Override
             protected void onFinish() {
             }
         });
-
-
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getUserVisibleHint() && mBinding != null) {
+            getCouponNums();
+            getCanUseMoneyData();
+            getUserInfoRequest();
+        }
+    }
 
     @Override
     protected void lazyLoad() {
         if (mBinding != null) {
+            getCouponNums();
             getCanUseMoneyData();
             getUserInfoRequest();
         }

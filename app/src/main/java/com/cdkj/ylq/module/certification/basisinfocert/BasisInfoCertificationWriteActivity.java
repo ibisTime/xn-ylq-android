@@ -159,7 +159,7 @@ public class BasisInfoCertificationWriteActivity extends AbsBaseActivity {
             showToast("请填写QQ");
             return;
         }
-        if (TextUtils.isEmpty(mBinding.editEmail.getText().toString())) {
+        if (TextUtils.isEmpty(mBinding.editEmail.getText().toString()) || !StringUtils.isEmail(mBinding.editEmail.getText().toString())) {
             showToast("请填写email");
             return;
         }
@@ -258,7 +258,7 @@ public class BasisInfoCertificationWriteActivity extends AbsBaseActivity {
         mCityPicker.setOnCityItemClickListener(new CityPicker.OnCityItemClickListener() {
             @Override
             public void onSelected(String... citySelected) {
-                mBinding.tvCity.setText(citySelected[0] +" "+ citySelected[1] +" "+ citySelected[3]);
+                mBinding.tvCity.setText(citySelected[0] +" "+ citySelected[1] +" "+ citySelected[2]);
             }
 
             @Override

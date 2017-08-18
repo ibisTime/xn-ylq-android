@@ -147,6 +147,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
+                    android:textSize="16sp"
                     android:text="选择优惠券" />
 
 

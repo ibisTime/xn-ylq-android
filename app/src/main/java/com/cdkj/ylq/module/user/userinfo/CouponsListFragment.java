@@ -85,8 +85,6 @@ public class CouponsListFragment extends BaseRefreshFragment<CoupoonsModel.ListB
 
     @Override
     protected void afterCreate(int pageIndex, int limit) {
-        mBinding.refreshLayout.setEnableLoadmoreWhenContentNotFull(true);
-
         getListData(pageIndex, limit, true);
     }
 

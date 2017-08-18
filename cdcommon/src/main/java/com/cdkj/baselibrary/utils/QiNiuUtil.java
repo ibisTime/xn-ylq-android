@@ -114,7 +114,14 @@ public class QiNiuUtil {
                     return;
                 }
                 token=mo.getUploadToken();
-                Compressor(callBack,data,token);
+
+                try {
+                    Compressor(callBack,data,token);
+                }catch (Exception e){
+                    if(callBack!=null){
+                        callBack.onFal("图片上传失败,请选择正确的图片");
+                    }
+                }
             }
 
             @Override

@@ -7,14 +7,11 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.cdkj.baselibrary.activitys.ImageSelectActivity;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivityApplyFailureBinding;
-import com.cdkj.ylq.databinding.ActivityIdCertBinding;
 import com.cdkj.ylq.model.PorductListModel;
-import com.cdkj.ylq.module.certification.ZMCertificationActivity;
 import com.cdkj.ylq.module.product.ProductDetailsActivity;
 
 /**

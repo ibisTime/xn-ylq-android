@@ -161,21 +161,26 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements g
         //反欺诈认证 all提交
         mBinding.btnSure.setOnClickListener(v -> {
 
+            if (mCertData == null) return;
+
             if (!TextUtils.equals("1", mCertData.getInfoBasicFlag())) {
                 showToast("请提交基本信息");
+                return;
             }
 
             if (!TextUtils.equals("1", mCertData.getInfoOccupationFlag())) {
                 showToast("请提交职业信息");
+                return;
             }
 
             if (!TextUtils.equals("1", mCertData.getInfoContactFlag())) {
                 showToast("请提交紧急联系人信息");
+                return;
             }
             if (!TextUtils.equals("1", mCertData.getInfoBankcardFlag())) {
                 showToast("请认证银行卡信息信息");
+                return;
             }
-
 
             allSubmitRequest();
 
@@ -191,7 +196,7 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements g
         map.put("companyCode", MyConfig.COMPANYCODE);
         map.put("systemCode", MyConfig.SYSTEMCODE);
 
-        if (mCanGetIemi){
+        if (mCanGetIemi) {
             map.put("iemi", SystemUtils.getIMEI(this));
         }
 
