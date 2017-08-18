@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.cdkj.baselibrary.adapters.ViewPagerAdapter;
+import com.cdkj.baselibrary.appmanager.EventTags;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.model.EventBusModel;
@@ -20,6 +21,7 @@ import com.cdkj.ylq.module.borrowmoney.BorrowMoneyFragment;
 import com.cdkj.ylq.module.certification.CertificationFragment;
 import com.cdkj.ylq.module.user.userinfo.MyFragment;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
@@ -163,6 +165,7 @@ public class MainActivity extends AbsBaseActivity {
 
     @Subscribe
     public void MainEventBusFinish(String evbusTag) {
+
         if (TextUtils.equals(evbusTag, MAINFINISH)) { //结束主页
             finish();
         }
@@ -171,5 +174,13 @@ public class MainActivity extends AbsBaseActivity {
     @Override
     protected boolean canEvenFinish() {
         return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        showDoubleWarnListen("确认退出？",view -> {
+            EventBus.getDefault().post(EventTags.AllFINISH);
+            finish();
+        });
     }
 }

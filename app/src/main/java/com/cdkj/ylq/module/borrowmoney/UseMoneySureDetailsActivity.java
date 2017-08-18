@@ -90,8 +90,6 @@ public class UseMoneySureDetailsActivity extends AbsBaseActivity {
 
         setShowData(mProductData);
 
-        getCanUseCoupoons();
-
     }
 
 
@@ -104,15 +102,8 @@ public class UseMoneySureDetailsActivity extends AbsBaseActivity {
         });
 
         mBinding.tvSelectCoupoons.setOnClickListener(v -> {
-            if (mCoupoonsPicker == null || mCoupoonsModels == null) return;
 
-            if (mCoupoonsModels.size() == 0) {
-                showToast("暂无可用优惠券");
-                return;
-            }
-
-            mCoupoonsPicker.setPicker(mCoupoonsModels);
-            mCoupoonsPicker.show();
+            getCanUseCoupoons();
 
         });
 
@@ -151,6 +142,15 @@ public class UseMoneySureDetailsActivity extends AbsBaseActivity {
             @Override
             protected void onSuccess(List<CanUseCouponsModel> data, String SucMessage) {
                 mCoupoonsModels = data;
+                if (mCoupoonsPicker == null || mCoupoonsModels == null) return;
+
+                if (mCoupoonsModels.size() == 0) {
+                    showToast("暂无可用优惠券");
+                    return;
+                }
+
+                mCoupoonsPicker.setPicker(mCoupoonsModels);
+                mCoupoonsPicker.show();
             }
 
             @Override

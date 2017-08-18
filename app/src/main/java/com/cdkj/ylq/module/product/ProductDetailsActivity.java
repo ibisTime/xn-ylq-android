@@ -96,8 +96,6 @@ public class ProductDetailsActivity extends AbsBaseActivity {
 
         setShowData(mProductData);
 
-        getCanUseCoupoons();
-
         getProductDetail();
 
     }
@@ -112,16 +110,7 @@ public class ProductDetailsActivity extends AbsBaseActivity {
         });
 
         mBinding.tvSelectCoupoons.setOnClickListener(v -> {
-            if (mCoupoonsPicker == null || mCoupoonsModels == null) return;
-
-            if (mCoupoonsModels.size() == 0) {
-                showToast("暂无可用优惠券");
-                return;
-            }
-
-            mCoupoonsPicker.setPicker(mCoupoonsModels);
-            mCoupoonsPicker.show();
-
+            getCanUseCoupoons();
         });
 
         mCoupoonsPicker = new OptionsPickerView.Builder(this, (options1, options2, options3, v) -> {
@@ -149,16 +138,28 @@ public class ProductDetailsActivity extends AbsBaseActivity {
 
         addCall(call);
 
+        showLoadingDialog();
 
         call.enqueue(new BaseResponseListCallBack<CanUseCouponsModel>(this) {
 
             @Override
             protected void onSuccess(List<CanUseCouponsModel> data, String SucMessage) {
                 mCoupoonsModels = data;
+                if (mCoupoonsPicker == null || mCoupoonsModels == null) return;
+
+                if (mCoupoonsModels.size() == 0) {
+                    showToast("暂无可用优惠券");
+                    return;
+                }
+
+                mCoupoonsPicker.setPicker(mCoupoonsModels);
+                mCoupoonsPicker.show();
+
             }
 
             @Override
             protected void onFinish() {
+                disMissLoading();
             }
         });
 
@@ -272,6 +273,4 @@ public class ProductDetailsActivity extends AbsBaseActivity {
         });
 
     }
-
-
 }
