@@ -37,7 +37,6 @@ import retrofit2.Call;
  * 职业信息认证(内容填写)
  * Created by 李先俊 on 2017/8/9.
  */
-
 public class JobInfoCertificationWriteActivity extends AbsBaseActivity {
 
     private ActivityJobInfoWriteBinding mBinding;
