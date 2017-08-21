@@ -3,7 +3,7 @@ package com.cdkj.baselibrary.interfaces;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.cdkj.baselibrary.MyConfig;
+import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.model.IsSuccessModes;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;

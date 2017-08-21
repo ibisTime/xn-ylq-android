@@ -50,4 +50,9 @@
     <color name="tablayout_select">#0cb8ae</color>
     <color name="lineColor">#ebeaea</color>
 
+
+    <color name="updateProgress_bg">#E7E7E7</color>
+
+    <color name="updateProgress">#3DA3FF</color>
+
 </resources>

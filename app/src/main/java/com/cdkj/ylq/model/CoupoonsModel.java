@@ -1,9 +1,7 @@
 package com.cdkj.ylq.model;
 
 import com.bigkoo.pickerview.model.IPickerViewData;
-import com.cdkj.baselibrary.MyConfig;
 import com.cdkj.baselibrary.utils.MoneyUtils;
-import com.cdkj.ylq.R;
 
 import java.math.BigDecimal;
 import java.util.List;

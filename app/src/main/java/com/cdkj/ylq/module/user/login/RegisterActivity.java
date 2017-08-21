@@ -8,12 +8,11 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.amap.api.location.AMapLocation;
-import com.cdkj.baselibrary.MyConfig;
-import com.cdkj.baselibrary.activitys.BaseLocationActivity;
+import com.cdkj.baselibrary.appmanager.MyConfig;
+import com.cdkj.baselibrary.base.BaseLocationActivity;
 import com.cdkj.baselibrary.activitys.WebViewActivity;
 import com.cdkj.baselibrary.appmanager.EventTags;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
-import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.interfaces.SendCodeInterface;
 import com.cdkj.baselibrary.interfaces.SendPhoneCoodePresenter;
 import com.cdkj.baselibrary.model.UserLoginModel;

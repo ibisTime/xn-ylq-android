@@ -18,8 +18,14 @@ android {
     }
     buildTypes {
         release {
+            // 显示Log 是否DEBUG模式
+            buildConfigField "boolean", "LOG_DEBUG", "false"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            // 显示Log 是否DEBUG模式
+            buildConfigField "boolean", "LOG_DEBUG", "true"
         }
     }
     compileOptions {

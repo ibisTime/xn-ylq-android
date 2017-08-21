@@ -2,9 +2,13 @@ package com.cdkj.baselibrary.base;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.IdRes;
+import android.support.annotation.IntegerRes;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.TextView;
 
 import com.cdkj.baselibrary.R;
 import com.cdkj.baselibrary.databinding.EmptyViewBinding;
@@ -16,11 +20,12 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/**实现下拉刷新 上拉加载 分页逻辑
+/**
+ * 实现下拉刷新 上拉加载 分页逻辑
  * Created by 李先俊 on 2017/7/19.
  */
 
-public abstract class BaseRefreshActivity<T> extends AbsBaseActivity{
+public abstract class BaseRefreshActivity<T> extends AbsBaseActivity {
 
     protected LayoutCommonRecyclerRefreshBinding mBinding;
 
@@ -36,37 +41,44 @@ public abstract class BaseRefreshActivity<T> extends AbsBaseActivity{
 
     @Override
     public View addMainView() {
-        mBinding= DataBindingUtil.inflate(getLayoutInflater(), R.layout.layout_common_recycler_refresh, null, false);
+        mBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.layout_common_recycler_refresh, null, false);
         return mBinding.getRoot();
     }
 
     @Override
     public void afterCreate(Bundle savedInstanceState) {
 
-         mPageIndex=1;//分页下标
+        mPageIndex = 1;//分页下标
 
-         mLimit=10;//分页数量
+        mLimit = 10;//分页数量
 
-        mDataList=new ArrayList<T>();
+        mDataList = new ArrayList<T>();
 
-        mAdapter=onCreateAdapter(mDataList);
+        mAdapter = onCreateAdapter(mDataList);
 
-        if(canLoadEmptyView()){
+        if (canLoadEmptyView()) {
             mEmptyBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.empty_view, null, false);
         }
 
-        mBinding.rv.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        mBinding.rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        if(mAdapter!=null){
+        if (mAdapter != null) {
+            TextView tv = new TextView(this); //先设置 不显示任何东西的 emptyView
+            mAdapter.setEmptyView(tv);
             mBinding.rv.setAdapter(mAdapter);
         }
 
         initRefreshLayout();
 
-        onInit(savedInstanceState,mPageIndex,mLimit);
+        onInit(savedInstanceState, mPageIndex, mLimit);
     }
 
-    protected  boolean canLoadEmptyView(){
+    /**
+     * 能否加载默认 空提示View
+     *
+     * @return
+     */
+    protected boolean canLoadEmptyView() {
         return true;
     }
 
@@ -80,52 +92,53 @@ public abstract class BaseRefreshActivity<T> extends AbsBaseActivity{
         mBinding.refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                mPageIndex=1;
-                onMRefresh(mPageIndex,mLimit);
+                mPageIndex = 1;
+                onMRefresh(mPageIndex, mLimit);
             }
 
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
-                if(mDataList.size() >0){
+                if (mDataList.size() > 0) {
                     mPageIndex++;
                 }
-                onMLoadMore(mPageIndex,mLimit);
+                onMLoadMore(mPageIndex, mLimit);
             }
         });
     }
 
 
     //第一次加载
-    protected   abstract void onInit(Bundle savedInstanceState, int pageIndex, int limit);
+    protected abstract void onInit(Bundle savedInstanceState, int pageIndex, int limit);
 
     //第一次加载
-    protected   abstract void getListData(int pageIndex, int limit,boolean canShowDialog);
+    protected abstract void getListData(int pageIndex, int limit, boolean canShowDialog);
 
     //刷新
-    protected  void onMRefresh(int pageIndex,int limit){
-        getListData(pageIndex,limit,false);
+    protected void onMRefresh(int pageIndex, int limit) {
+        getListData(pageIndex, limit, false);
     }
+
     //加载
-    protected  void onMLoadMore(int pageIndex,int limit){
-        getListData(pageIndex,limit,false);
+    protected void onMLoadMore(int pageIndex, int limit) {
+        getListData(pageIndex, limit, false);
     }
 
-    protected  abstract BaseQuickAdapter onCreateAdapter(List<T> mDataList);
+    //获取数据适配器
+    protected abstract BaseQuickAdapter onCreateAdapter(List<T> mDataList);
 
+    //获取空提醒信息
     public abstract String getEmptyInfo();
 
+    //加载错误布局
+    public void loadError(String str) {
 
-
-    public void loadError(String str){
-
-        if(mPageIndex == 1 && mBinding.refreshLayout.isRefreshing()){
+        if (mPageIndex == 1 && mBinding.refreshLayout.isRefreshing()) {
             mBinding.refreshLayout.finishRefresh();
-        }else if(mPageIndex >1 && mBinding.refreshLayout.isLoading()){
+        } else if (mPageIndex > 1 && mBinding.refreshLayout.isLoading()) {
             mBinding.refreshLayout.finishLoadmore();
         }
 
-
-        if (mDataList.size() == 0 && canLoadEmptyView() && mEmptyBinding!=null) {
+        if (mDataList.size() == 0 && canLoadEmptyView() && mEmptyBinding != null) {
             if (TextUtils.isEmpty(str)) {
                 mEmptyBinding.tv.setText("加载错误");
             } else {
@@ -135,8 +148,8 @@ public abstract class BaseRefreshActivity<T> extends AbsBaseActivity{
             if (mAdapter != null) mAdapter.setEmptyView(mEmptyBinding.getRoot());
             if (mBinding.refreshLayout.isLoading()) mBinding.refreshLayout.finishLoadmore();
 
-        }else if(mDataList.size() == 0 ){
-            if(getEmptyView()!=null){
+        } else if (mDataList.size() == 0) {
+            if (getEmptyView() != null) {
                 if (mAdapter != null) mAdapter.setEmptyView(getEmptyView());
             }
             if (mBinding.refreshLayout.isLoading()) mBinding.refreshLayout.finishLoadmore();
@@ -145,52 +158,60 @@ public abstract class BaseRefreshActivity<T> extends AbsBaseActivity{
 
     /**
      * 设置加载数据
+     *
      * @param datas
      */
-    protected void setData(List<T> datas){
+    protected void setData(List<T> datas) {
 
-        if(mPageIndex == 1){
-            if(mBinding.refreshLayout.isRefreshing()) mBinding.refreshLayout.finishRefresh();
-            if(datas != null){
+        if (mPageIndex == 1) {
+            if (mBinding.refreshLayout.isRefreshing()) mBinding.refreshLayout.finishRefresh();
+            if (datas != null) {
                 mDataList.clear();
                 mDataList.addAll(datas);
-                if(mAdapter!=null){
+                if (mAdapter != null) {
                     mAdapter.notifyDataSetChanged();
                 }
             }
 
-        }else if(mPageIndex>1){
-            if(mBinding.refreshLayout.isLoading()) mBinding.refreshLayout.finishLoadmore();
-            if(datas == null || datas.size()<=0){
+        } else if (mPageIndex > 1) {
+            if (mBinding.refreshLayout.isLoading()) mBinding.refreshLayout.finishLoadmore();
+            if (datas == null || datas.size() <= 0) {
                 mPageIndex--;
-            }else{
+            } else {
                 mDataList.addAll(datas);
 
-                if(mAdapter!=null){
+                if (mAdapter != null) {
                     mAdapter.notifyDataSetChanged();
                 }
             }
         }
 
-        if (canLoadEmptyView() && mEmptyBinding!=null) {
+        if (canLoadEmptyView() && mEmptyBinding != null) {
             mEmptyBinding.tv.setText(getEmptyInfo());
-            mEmptyBinding.img.setImageResource(getEmptyImg());
+            if (getEmptyImg() <= 0) {
+                mEmptyBinding.img.setVisibility(View.GONE);
+            } else {
+                mEmptyBinding.img.setImageResource(getEmptyImg());
+                mEmptyBinding.img.setVisibility(View.VISIBLE);
+            }
             mEmptyBinding.img.setVisibility(View.VISIBLE);
             if (mAdapter != null) mAdapter.setEmptyView(mEmptyBinding.getRoot());
             if (mBinding.refreshLayout.isLoading()) mBinding.refreshLayout.finishLoadmore();
 
-        }else{
-            if(getEmptyView()!=null){
+        } else {
+            if (getEmptyView() != null) {
                 if (mAdapter != null) mAdapter.setEmptyView(getEmptyView());
             }
             if (mBinding.refreshLayout.isLoading()) mBinding.refreshLayout.finishLoadmore();
         }
     }
 
+    //获取kngView
     public View getEmptyView() {
-
         return null;
     }
 
-    public abstract int getEmptyImg() ;
+    public abstract
+    @DrawableRes
+    int getEmptyImg();
 }

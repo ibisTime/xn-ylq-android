@@ -2,31 +2,21 @@ package com.cdkj.ylq.module.user.userinfo;
 
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.text.TextUtils;
-import android.view.View;
 
-import com.cdkj.baselibrary.MyConfig;
-import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
-import com.cdkj.baselibrary.base.AbsBaseActivity;
+import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.base.BaseRefreshActivity;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.DateUtil;
-import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.ylq.R;
-import com.cdkj.ylq.databinding.ActivityApplyFailureBinding;
-import com.cdkj.ylq.model.CoupoonsModel;
 import com.cdkj.ylq.model.MsgListModel;
-import com.cdkj.ylq.model.PorductListModel;
 import com.cdkj.ylq.module.api.MyApiServer;
-import com.cdkj.ylq.module.product.ProductDetailsActivity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,7 +75,53 @@ public class MsgListActivity extends BaseRefreshActivity<MsgListModel.ListBean> 
         call.enqueue(new BaseResponseModelCallBack<MsgListModel>(this) {
             @Override
             protected void onSuccess(MsgListModel data, String SucMessage) {
-                setData(data.getList());
+
+                List<MsgListModel.ListBean> m=new ArrayList<MsgListModel.ListBean>();
+
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                m.addAll(data.getList());
+                setData(m);
             }
 
             @Override
@@ -139,7 +175,7 @@ public class MsgListActivity extends BaseRefreshActivity<MsgListModel.ListBean> 
 
     @Override
     public int getEmptyImg() {
-        return R.drawable.no_coupnos;
+        return 0;
     }
 
 

@@ -104,8 +104,7 @@ public class PayActivity extends AbsBaseActivity {
                 showToast("微信支付未开放");
                 //    wxPayRequest();
             } else if (mPayType == 3) {
-                showToast("支付宝支付微开放");
-                //  AliPayRequest();
+                AliPayRequest();
             }
 
         });
@@ -175,7 +174,8 @@ public class PayActivity extends AbsBaseActivity {
         }
 
         if (mo.getCallType() == PayUtil.ALIPAY && mo.isPaySucceed()) { //支付宝支付成功
-
+            showToast("还款成功");
+            finish();
         } else if (mo.getCallType() == PayUtil.WEIXINPAY && mo.isPaySucceed()) {//微信支付成功
 
         }

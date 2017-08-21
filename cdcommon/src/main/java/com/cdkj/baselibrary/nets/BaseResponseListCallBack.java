@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.cdkj.baselibrary.BaseApplication;
 import com.cdkj.baselibrary.api.BaseResponseListModel;
-import com.cdkj.baselibrary.api.BaseResponseModel;
 import com.cdkj.baselibrary.utils.LogUtil;
 import com.cdkj.baselibrary.utils.ToastUtil;
 
@@ -70,7 +69,7 @@ public abstract class BaseResponseListCallBack<T> implements Callback<BaseRespon
                 BaseResponseListModel t = response.body();
                 checkState(t);      //根据返回错误的状态码实现相应的操作
             } catch (Exception e) {
-                if (LogUtil.isLog) {
+                if (LogUtil.isDeBug) {
                     onReqFailure(NETERRORCODE4, "未知错误" + e.toString());
                 }else{
                     onReqFailure(NETERRORCODE4, "未知错误");
@@ -114,7 +113,7 @@ public abstract class BaseResponseListCallBack<T> implements Callback<BaseRespon
             errorCode = NETERRORCODE4;
         }
 
-        if (LogUtil.isLog) {
+        if (LogUtil.isDeBug) {
             errorString += t.toString();
         }
 

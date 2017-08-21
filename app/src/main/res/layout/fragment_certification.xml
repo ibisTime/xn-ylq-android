@@ -103,19 +103,19 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:text="@string/go_submit"
                                 android:id="@+id/tv_idcard_state"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
+                                android:text="@string/go_submit"
                                 android:textColor="@color/cert_state_edit"
                                 android:textSize="12sp" />
 
                             <ImageView
-                                android:layout_gravity="center_vertical"
                                 android:id="@+id/img_idcard_state"
                                 android:layout_width="12dp"
                                 android:layout_height="12dp"
+                                android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="6dp"
                                 android:src="@drawable/can_submit" />
 
@@ -167,10 +167,10 @@
                                 android:textSize="12sp" />
 
                             <ImageView
-                                android:layout_gravity="center_vertical"
                                 android:id="@+id/img_basis_state"
                                 android:layout_width="12dp"
                                 android:layout_height="12dp"
+                                android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="6dp"
                                 android:src="@drawable/can_submit" />
 
@@ -259,8 +259,7 @@
                             android:id="@+id/img_moxie_state_big"
                             android:layout_width="62dp"
                             android:layout_height="62dp"
-                            android:src="@drawable/yunying_un"
-                      />
+                            android:src="@drawable/yunying_un" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -282,15 +281,15 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:textSize="12sp"
                                 android:text="@string/go_submit"
-                                android:textColor="@color/cert_state_edit" />
+                                android:textColor="@color/cert_state_edit"
+                                android:textSize="12sp" />
 
                             <ImageView
-                                android:layout_gravity="center_vertical"
                                 android:id="@+id/img_moxie_state"
                                 android:layout_width="12dp"
                                 android:layout_height="12dp"
+                                android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="6dp"
                                 android:src="@drawable/can_submit" />
 
@@ -375,14 +374,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:textSize="12sp"
                                 android:text="@string/go_submit"
-                                android:textColor="@color/cert_state_edit" />
+                                android:textColor="@color/cert_state_edit"
+                                android:textSize="12sp" />
 
                             <ImageView
-                                android:layout_gravity="center_vertical"
                                 android:layout_width="12dp"
                                 android:layout_height="12dp"
+                                android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="6dp"
                                 android:src="@drawable/can_submit" />
 
@@ -430,9 +429,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:textSize="12sp"
                                 android:text="@string/go_submit"
-                                android:textColor="@color/cert_state_edit" />
+                                android:textColor="@color/cert_state_edit"
+                                android:textSize="12sp" />
 
                             <ImageView
                                 android:layout_width="12dp"

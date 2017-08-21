@@ -19,7 +19,7 @@ import retrofit2.Call;
 
 
 /**
- * 碎片基类
+ * Fragment 基类
  */
 public abstract class BaseFragment extends Fragment {
 

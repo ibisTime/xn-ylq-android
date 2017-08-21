@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.cdkj.baselibrary.MyConfig;
+import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.R;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.databinding.ActivityModifyPasswordBinding;

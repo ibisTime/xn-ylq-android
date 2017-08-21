@@ -1,4 +1,4 @@
-package com.cdkj.baselibrary.activitys;
+package com.cdkj.baselibrary.base;
 
 import android.Manifest;
 import android.content.Intent;

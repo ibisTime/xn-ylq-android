@@ -3,6 +3,7 @@ package com.cdkj.baselibrary.activitys;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -17,6 +18,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -27,6 +29,9 @@ import com.cdkj.baselibrary.R;
 import com.cdkj.baselibrary.dialog.CommonDialog;
 import com.cdkj.baselibrary.utils.AppUtils;
 import com.cdkj.baselibrary.utils.CapturePhotoHelper;
+import com.cdkj.baselibrary.utils.FileProviderHelper;
+import com.cdkj.baselibrary.utils.LogUtil;
+import com.cdkj.baselibrary.utils.PermissionHelper;
 import com.cdkj.baselibrary.utils.SystemUtils;
 import com.cdkj.baselibrary.utils.ToastUtil;
 
@@ -36,7 +41,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
+/**
+ * 打开相机 相册 图片裁剪 功能
+ */
 
 public class ImageSelectActivity extends Activity implements View.OnClickListener {
 
@@ -44,9 +56,11 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
     private TextView tv_alumb;// 相册选取
     private TextView tv_cancle;// 取消
     private View empty_view;// 取消
-
-    public  final static String staticPath="ylq_pic";
+    private Uri imageUrl;
+    public final static String staticPath = "imgSelect";
     private boolean isSplit = false;//是否裁剪
+
+    private String photoPath;//拍照图片路径
 
     private static final String CACHDIR = "ylqpicimgcach";
     //private final static int RUNTIME_PERMISSION_REQUEST_CODE = 0x1;
@@ -169,7 +183,8 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
      *
      * @param uri
      */
-    public void startPhotoZoom(Uri uri) {
+    public void startPhotoZoom(File uri) {
+
         /*
          * 至于下面这个Intent的ACTION是怎么知道的，大家可以看下自己路径下的如下网页
 		 * yourself_sdk_path/docs/reference/android/content/Intent.html
@@ -177,7 +192,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
 		 * 这个不做详细了解去了，有轮子就用轮子，不再研究轮子是怎么 制做的了...吼吼
 		 */
         Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(uri, "image/*");
+        intent.setDataAndType(getImageContentUri(uri), "image/*");
         // 下面这个crop=true是设置在开启的Intent中设置显示的VIEW可裁剪
         intent.putExtra("crop", "true");
         // aspectX aspectY 是宽高的比例
@@ -189,7 +204,40 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
         intent.putExtra("return-data", true);
 
         startActivityForResult(intent, 3);
+
     }
+
+    /**
+     * 转换 content:// uri
+     *
+     * @param imageFile
+     * @return
+     */
+    public Uri getImageContentUri(File imageFile) {
+        String filePath = imageFile.getAbsolutePath();
+        Cursor cursor = getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                new String[] { MediaStore.Images.Media._ID },
+                MediaStore.Images.Media.DATA + "=? ",
+                new String[] { filePath }, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor
+                    .getColumnIndex(MediaStore.MediaColumns._ID));
+            Uri baseUri = Uri.parse("content://media/external/images/media");
+            return Uri.withAppendedPath(baseUri, "" + id);
+        } else {
+            if (imageFile.exists()) {
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.DATA, filePath);
+                return getContentResolver().insert(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            } else {
+                return null;
+            }
+        }
+    }
+
 
     // 调相册图片
     private void getImageFromAlbum() {
@@ -207,7 +255,6 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
         startActivityForResult(intent, 1);
     }
 
-    private Uri imageUrl;
 
     // 调相机拍照
     private void getImageFromCamera() {
@@ -215,9 +262,11 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
 //        isSplit = true;
         if (SDState.equals(Environment.MEDIA_MOUNTED)) {
             Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-
-            imageUrl = Uri.fromFile(new File(Environment
-                    .getExternalStorageDirectory(), "camera.jpg"));
+            String filename = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA)
+                    .format(new Date()) + "camera.jpg";
+            File file = new File(Environment.getExternalStorageDirectory(), filename);
+            imageUrl = FileProviderHelper.getUriForFile(this, file);
+            photoPath = file.getAbsolutePath();
             intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUrl);
             intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
             startActivityForResult(intent, CapturePhotoHelper.CAPTURE_PHOTO_REQUEST_CODE);
@@ -247,18 +296,20 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
                         {
                             String imgP = setPhotoForMiuiSystem(data);
 
-                            if (!TextUtils.isEmpty(imgP)) {
-                                setResult(Activity.RESULT_OK, new Intent().putExtra(staticPath, imgP));
-                                finish();
-                                return;
-                            }
-
                             if (imageUri == null) {
                                 Toast.makeText(ImageSelectActivity.this, "图片获取失败", Toast.LENGTH_SHORT);
                                 finish();
                                 return;
                             }
-                            startPhotoZoom(imageUri);
+                            if(isSplit){
+                                startPhotoZoom(new File(imgP));
+                                return;
+                            }
+
+                            if (!TextUtils.isEmpty(imgP)) {
+                                setResult(Activity.RESULT_OK, new Intent().putExtra(staticPath, imgP));
+                                finish();
+                            }
                             return;
                         }
                         if (imageUri == null) {
@@ -268,7 +319,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
                         }
 
                         if (isSplit) {
-                            startPhotoZoom(imageUri);
+                            startPhotoZoom(new File(imageUri.getPath()));
                         } else {
                             Uri selectedImage = data.getData();
                             String[] filePathColumn = {MediaStore.Images.Media.DATA};
@@ -287,10 +338,20 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
                     case CapturePhotoHelper.CAPTURE_PHOTO_REQUEST_CODE:// 拍照
 
                         if (isSplit) {
-                            startPhotoZoom(imageUrl);
+                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                                startPhotoZoom(new File(imageUrl.getPath()));
+                            } else {
+                                startPhotoZoom(new File(photoPath));
+                            }
+
                         } else {
-                            Bitmap bitmap = decodeBitmapFromFile(imageUrl.getPath(), 150, 150);
-                            String path = saveFile(bitmap, staticPath);
+                            Bitmap bitmap;
+                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                                bitmap = decodeBitmapFromFile(imageUrl.getPath(), 150, 150);
+                            } else {
+                                bitmap = decodeBitmapFromFile(photoPath, 150, 150);
+                            }
+                            String path = saveFile(bitmap,"camera");
                             setResult(Activity.RESULT_OK, new Intent().putExtra(staticPath, path));
                             finish();
                         }
@@ -298,7 +359,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
                     case 3:  //图片裁剪
                         Bundle extras = data.getExtras();
                         Bitmap photo = extras.getParcelable("data");
-                        String path = saveFile(photo, "verfy_head" + System.currentTimeMillis());  //图片名称
+                        String path = saveFile(photo,"split");  //图片名称
 
                         setResult(Activity.RESULT_OK, new Intent().putExtra(staticPath, path));
                         finish();
@@ -308,7 +369,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
                 }
             }
         } catch (Exception e) {
-            Toast.makeText(ImageSelectActivity.this,"图片获取失败", Toast.LENGTH_SHORT);
+            Toast.makeText(ImageSelectActivity.this, "图片获取失败", Toast.LENGTH_SHORT);
             finish();
         }
     }
@@ -376,10 +437,14 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
 //            options.inSampleSize = calculateInSampleSize(options, requestWidth, requestHeight); //计算获取新的采样率
             options.inSampleSize = Math.min(options.outWidth / requestWidth, options.outHeight / requestHeight);
             options.inJustDecodeBounds = false;
+            LogUtil.E("拍照生成图片true");
             return BitmapFactory.decodeFile(imagePath, options);
         } else {
+            LogUtil.E("拍照生成图片false");
             return null;
         }
+
+
     }
 
     public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
@@ -416,10 +481,10 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
         {
             //判断是否有相机权限
             if (ContextCompat.checkSelfPermission(ImageSelectActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
-                    ContextCompat.checkSelfPermission(ImageSelectActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED||
+                    ContextCompat.checkSelfPermission(ImageSelectActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
                     ContextCompat.checkSelfPermission(ImageSelectActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) //没有权限
             {
-                requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE}, requestcode);  //申请相机权限
+                requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, requestcode);  //申请相机权限
 
                 return;
             }
@@ -518,16 +583,21 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
         ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());// 把压缩后的数据baos存放到ByteArrayInputStream中
         Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);// 把ByteArrayInputStream数据生成图片
 
+
         return bitmap;
     }
 
 
     public static String saveFile(Bitmap bitmap, String imageName) {
+
         File file1 = new File(getDirectory());
         if (!file1.exists()) {
             file1.mkdirs();
         }
-        String imagename = System.currentTimeMillis() + imageName + ".jpg";
+
+        String filename = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA)
+                .format(new Date()) ;
+        String imagename = filename + imageName + ".jpg";
         File file = new File(file1, imagename);
         try {
             if (file.exists()) {
@@ -553,6 +623,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
      **/
     public static String getDirectory() {
         String dir = getSDPath() + "/" + CACHDIR;
+        LogUtil.E("拍照图片路径" + dir);
         return dir;
     }
 

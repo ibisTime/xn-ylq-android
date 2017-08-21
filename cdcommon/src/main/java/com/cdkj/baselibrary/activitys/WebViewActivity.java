@@ -11,7 +11,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.cdkj.baselibrary.MyConfig;
+import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.R;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.databinding.ActivityWebviewBinding;

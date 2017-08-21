@@ -9,7 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.bigkoo.pickerview.OptionsPickerView;
-import com.cdkj.baselibrary.MyConfig;
+import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.model.IsSuccessModes;
@@ -19,7 +19,6 @@ import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivityBankcardInfoWriteBinding;
-import com.cdkj.ylq.databinding.ActivityEmergencyInfoWriteBinding;
 import com.cdkj.ylq.model.CerttificationInfoModel;
 import com.cdkj.ylq.model.KeyDataModel;
 import com.cdkj.ylq.module.api.MyApiServer;

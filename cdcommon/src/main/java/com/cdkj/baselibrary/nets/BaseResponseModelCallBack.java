@@ -68,7 +68,7 @@ public abstract class BaseResponseModelCallBack<T> implements Callback<BaseRespo
                 BaseResponseModel t = response.body();
                 checkState(t);      //根据返回错误的状态码实现相应的操作
             } catch (Exception e) {
-                if (LogUtil.isLog) {
+                if (LogUtil.isDeBug) {
                     onReqFailure(NETERRORCODE4, "未知错误" + e.toString());
                 }else{
                     onReqFailure(NETERRORCODE4, "未知错误");
@@ -112,7 +112,7 @@ public abstract class BaseResponseModelCallBack<T> implements Callback<BaseRespo
             errorCode = NETERRORCODE4;
         }
 
-        if (LogUtil.isLog) {
+        if (LogUtil.isDeBug) {
             errorString += t.toString();
         }
 

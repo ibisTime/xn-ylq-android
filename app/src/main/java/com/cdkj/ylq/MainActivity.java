@@ -16,6 +16,7 @@ import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.model.EventBusModel;
 import com.cdkj.baselibrary.utils.DateUtil;
 import com.cdkj.baselibrary.utils.LogUtil;
+import com.cdkj.baselibrary.utils.update.UpdateManager;
 import com.cdkj.ylq.databinding.ActivityMainBinding;
 import com.cdkj.ylq.module.borrowmoney.BorrowMoneyFragment;
 import com.cdkj.ylq.module.certification.CertificationFragment;
@@ -73,6 +74,7 @@ public class MainActivity extends AbsBaseActivity {
 
         initListener();
 
+        UpdateManager.checkNewApp(this);
     }
 
     /**
@@ -178,6 +180,7 @@ public class MainActivity extends AbsBaseActivity {
 
     @Override
     public void onBackPressed() {
+        showToast(""+LogUtil.isDeBug);
         showDoubleWarnListen("确认退出？",view -> {
             EventBus.getDefault().post(EventTags.AllFINISH);
             finish();

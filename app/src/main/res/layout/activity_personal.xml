@@ -132,6 +132,7 @@
                 android:background="@color/lineColor" />
 
             <LinearLayout
+                android:visibility="gone"
                 android:id="@+id/lin_pay_password"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -206,12 +207,6 @@
                     android:background="@drawable/more_right" />
 
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginLeft="15dp"
-                android:background="@color/lineColor" />
 
             <LinearLayout
                 android:id="@+id/layout_about"

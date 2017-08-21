@@ -35,7 +35,7 @@ public class OkHttpUtils {
                     .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
                     .retryOnConnectionFailure(true)//允许失败重试
                     .cookieJar(new CookiesManager())  //cookie 管理
-                    .addInterceptor(getInterceptor(LogUtil.isLog))    //网络日志
+                    .addInterceptor(getInterceptor(LogUtil.isDeBug))    //网络日志
                     .build();
         }
 

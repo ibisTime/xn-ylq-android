@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <ScrollView
+        android:background="@color/bg_gray"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/bg_gray"
             android:orientation="vertical">
 
             <LinearLayout
@@ -123,7 +123,7 @@
                         android:layout_height="65dp"
                         android:layout_marginLeft="12.5dp"
                         app:drawVertical="true"
-                        app:lineColor="@color/activity_title_bg" />
+                        app:lineColor="#FFA7A7A7" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -135,14 +135,14 @@
                             android:layout_width="25dp"
                             android:layout_height="25dp"
                             android:layout_gravity="center_vertical"
-                            android:src="@drawable/review_2" />
+                            android:src="@drawable/review_2_un" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="20dp"
-                            android:text="放款中"
+                            android:text="已放款"
                             android:textColor="@color/text_color"
                             android:textSize="16sp" />
 

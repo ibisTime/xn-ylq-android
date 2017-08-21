@@ -98,12 +98,10 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
      */
     private void productItemClick(PorductListModel.ListBean data) {
         if (data == null) {
-            LogUtil.E("点击阻拦 数据空");
             return;
         }
 
         if (TextUtils.equals("1", data.getIsLocked())) {//锁中状态
-            LogUtil.E("点击阻拦 所中状态");
             return;
         }
 
@@ -136,7 +134,7 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
         } else if (TextUtils.equals("7", data.getUserProductStatus())) { //逾期
             UsedMoneyDetailsActivity.open(mActivity, null, data.getBorrowCode());
         }else{
-            LogUtil.E("点击 状态错误");
+
         }
 
     }
@@ -220,10 +218,7 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
         if (TextUtils.equals(tag, LOGINREFRESH)) {//登录成功刷新数据
             mPageIndex = 1;
             onMRefresh(mPageIndex, mLimit);
-        } else if (TextUtils.equals(tag, BORROWMONEYFRAGMENTREFRESH)) {//登录成功刷新数据
-            mPageIndex = 1;
-            onMRefresh(mPageIndex, mLimit);
-        } else if (TextUtils.equals(tag, BORROWMONEYFRAGMENTREFRESH)) {//登录成功刷新数据
+        } else if (TextUtils.equals(tag, BORROWMONEYFRAGMENTREFRESH)) {//刷新数据
             mPageIndex = 1;
             onMRefresh(mPageIndex, mLimit);
         }

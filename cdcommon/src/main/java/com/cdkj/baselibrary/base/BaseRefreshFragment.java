@@ -2,6 +2,7 @@ package com.cdkj.baselibrary.base;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -58,7 +59,6 @@ public abstract class BaseRefreshFragment<T> extends BaseLazyFragment {
             }
         }
 
-
         init();
 
         return mBinding.getRoot();
@@ -82,12 +82,11 @@ public abstract class BaseRefreshFragment<T> extends BaseLazyFragment {
 
         mAdapter = onCreateAdapter(mDataList);
 
-        TextView tv = new TextView(mActivity); //先设置 不显示任何东西的 emptyView
-        mAdapter.setEmptyView(tv);
-
         mBinding.rv.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
 
         if (mAdapter != null) {
+            TextView tv = new TextView(mActivity); //先设置 不显示任何东西的 emptyView
+            mAdapter.setEmptyView(tv);
             mBinding.rv.setAdapter(mAdapter);
         }
 
@@ -141,7 +140,7 @@ public abstract class BaseRefreshFragment<T> extends BaseLazyFragment {
 
     public abstract String getEmptyInfo();
 
-    public abstract int getEmptyImg();
+    public abstract @DrawableRes int getEmptyImg();
 
 
     public void loadError(String str) {
@@ -203,7 +202,12 @@ public abstract class BaseRefreshFragment<T> extends BaseLazyFragment {
 
         if (mDataList.size() == 0 && canLoadEmptyView() && mEmptyBinding != null) {
             mEmptyBinding.tv.setText(getEmptyInfo());
-            mEmptyBinding.img.setImageResource(getEmptyImg());
+            if(getEmptyImg()<=0){
+                mEmptyBinding.img.setVisibility(View.GONE);
+            }else{
+                mEmptyBinding.img.setImageResource(getEmptyImg());
+                mEmptyBinding.img.setVisibility(View.VISIBLE);
+            }
             mEmptyBinding.img.setVisibility(View.VISIBLE);
             if (mAdapter != null) mAdapter.setEmptyView(mEmptyBinding.getRoot());
             if (mBinding.refreshLayout.isLoading()) mBinding.refreshLayout.finishLoadmore();

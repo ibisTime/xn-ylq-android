@@ -255,7 +255,6 @@ public class DateUtil {
         if (TextUtils.isEmpty(s) || TextUtils.isEmpty(format)) {
             return "";
         }
-
         return DateUtil.format(new Date(s), format);
     }
 

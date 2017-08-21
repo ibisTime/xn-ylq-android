@@ -7,9 +7,8 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.TextView;
 
-import com.cdkj.baselibrary.MyConfig;
+import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.activitys.ImageSelectActivity;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
@@ -21,10 +20,8 @@ import com.cdkj.baselibrary.utils.LogUtil;
 import com.cdkj.baselibrary.utils.QiNiuUtil;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.ylq.R;
-import com.cdkj.ylq.databinding.ActivityBasisInfoCertBinding;
 import com.cdkj.ylq.databinding.ActivityIdCertBinding;
 import com.cdkj.ylq.model.CerttificationInfoModel;
-import com.cdkj.ylq.module.user.userinfo.PersonalActivity;
 import com.cdkj.ylq.mpresenter.getUserCertificationInfoListener;
 import com.cdkj.ylq.mpresenter.getUserCertificationPresenter;
 import com.qiniu.android.http.ResponseInfo;
@@ -159,7 +156,6 @@ public class IdCardCertificationActivity extends AbsBaseActivity implements getU
             new QiNiuUtil(IdCardCertificationActivity.this).getQiniuURL(new QiNiuUtil.QiNiuCallBack() {
                 @Override
                 public void onSuccess(String key, ResponseInfo info, JSONObject res) {
-                    LogUtil.E("图片success");
                     upLoadIdCard(key);
                 }
 
@@ -192,11 +188,8 @@ public class IdCardCertificationActivity extends AbsBaseActivity implements getU
             @Override
             protected void onSuccess(IsSuccessModes data, String SucMessage) {
                 if (data.isSuccess()) {
-
                     showToast("身份证上传成功");
-
                     ImgUtils.loadActImg(IdCardCertificationActivity.this, MyConfig.IMGURL + key, mBinding.imgIdCard);
-
                     if (mCertInfoGetPersenter != null) {
                         mCertInfoGetPersenter.getCertInfo();
                     }

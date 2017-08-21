@@ -7,24 +7,25 @@ import android.util.Log;
  * log工具类
  */
 public class LogUtil {
-    public static Boolean isLog = true;
+
+    public static Boolean isDeBug = false;
 
     private static final String TAG = "LOG_YITU";
 
     public static void I(String msg) {
-        if (isLog) {
+        if (isDeBug) {
             Log.i(TAG, msg);
         }
     }
 
     public static void E(String msg) {
-        if (isLog) {
+        if (isDeBug) {
             Log.e(TAG, msg);
         }
     }
 
     public static void BIGLOG(String responseInfo) {
-        if (!isLog) {
+        if (!isDeBug) {
             return;
         }
         if (responseInfo.length() > 4000) {

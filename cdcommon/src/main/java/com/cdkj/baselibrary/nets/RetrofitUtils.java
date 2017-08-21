@@ -2,6 +2,7 @@ package com.cdkj.baselibrary.nets;
 
 
 import com.cdkj.baselibrary.api.BaseApiServer;
+import com.cdkj.baselibrary.utils.LogUtil;
 
 import retrofit2.Retrofit;
 
@@ -54,9 +55,10 @@ public class RetrofitUtils {
      */
     public static String getBaseURL() {
 
-//        return "http://121.43.101.148:3701/forward-service/";
-        return "http://116.62.193.233:3701/forward-service/";
-
+        if (LogUtil.isDeBug) {
+            return "http://116.62.193.233:3701/forward-service/";
+        }
+        return "http://121.43.101.148:3701/forward-service/";
     }
 
 }

@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -123,6 +124,12 @@ public class AppUtils {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
+                        RxView.enabled(btn).accept(true);
+                        RxTextView.text(btn).accept("重发验证码");
+                    }
+                }, new Action() {
+                    @Override
+                    public void run() throws Exception {
                         RxView.enabled(btn).accept(true);
                         RxTextView.text(btn).accept("重发验证码");
                     }

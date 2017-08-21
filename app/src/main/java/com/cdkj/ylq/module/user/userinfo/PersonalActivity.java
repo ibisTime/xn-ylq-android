@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.cdkj.baselibrary.MyConfig;
+import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.activitys.FindPwdActivity;
 import com.cdkj.baselibrary.activitys.ImageSelectActivity;
 import com.cdkj.baselibrary.activitys.PayPwdModifyActivity;
@@ -16,7 +16,7 @@ import com.cdkj.baselibrary.activitys.WebViewActivity;
 import com.cdkj.baselibrary.appmanager.EventTags;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
-import com.cdkj.ylq.MainActivity;
+import com.cdkj.baselibrary.utils.LogUtil;
 import com.cdkj.ylq.model.UserInfoModel;
 import com.cdkj.baselibrary.model.EventBusModel;
 import com.cdkj.baselibrary.model.IsSuccessModes;
@@ -88,7 +88,7 @@ public class PersonalActivity extends AbsBaseActivity {
             return;
         }
 
-        ImgUtils.loadActLogo(PersonalActivity.this,MyConfig.IMGURL+mUserInfoData.getPhoto(),mBinding.imgPhoto);
+        ImgUtils.loadActLogo(PersonalActivity.this, MyConfig.IMGURL + mUserInfoData.getPhoto(), mBinding.imgPhoto);
 
         mBinding.txtPhone.setText(mUserInfoData.getMobile());
 
@@ -130,18 +130,17 @@ public class PersonalActivity extends AbsBaseActivity {
 
         //头像
         mBinding.layoutPhoto.setOnClickListener(v -> {
-            ImageSelectActivity.launch(this, PHOTOFLAG);
+            ImageSelectActivity.launch(this,false, PHOTOFLAG);
         });
         //退出登录
         mBinding.btnLogout.setOnClickListener(v -> {
-            showDoubleWarnListen("确认退出登录？",view -> {
+            showDoubleWarnListen("确认退出登录？", view -> {
                 logOut();
             });
-
         });
 
         mBinding.layoutAbout.setOnClickListener(v -> {
-            WebViewActivity.openkey(this,"关于我们","aboutUs");
+            WebViewActivity.openkey(this, "关于我们", "aboutUs");
         });
     }
 
@@ -149,12 +148,12 @@ public class PersonalActivity extends AbsBaseActivity {
 
         SPUtilHelpr.logOutClear();
         EventBus.getDefault().post(EventTags.AllFINISH);
-        EventBusModel eventBusModel=new EventBusModel();
+        EventBusModel eventBusModel = new EventBusModel();
         eventBusModel.setTag(EventTags.MAINFINISH);
 
         EventBus.getDefault().post(eventBusModel);
 
-        LoginActivity.open(this,true);
+        LoginActivity.open(this, true);
         finish();
 
     }
@@ -168,6 +167,7 @@ public class PersonalActivity extends AbsBaseActivity {
         }
         if (requestCode == PHOTOFLAG) {
             String path = data.getStringExtra(ImageSelectActivity.staticPath);
+            LogUtil.E("拍照获取路径"+path);
             new QiNiuUtil(PersonalActivity.this).getQiniuURL(new QiNiuUtil.QiNiuCallBack() {
                 @Override
                 public void onSuccess(String key, ResponseInfo info, JSONObject res) {
@@ -176,6 +176,7 @@ public class PersonalActivity extends AbsBaseActivity {
 
                 @Override
                 public void onFal(String info) {
+                    showToast(info);
                 }
             }, path);
 
@@ -183,7 +184,8 @@ public class PersonalActivity extends AbsBaseActivity {
     }
 
     /**
-     * 更新哟哦能互头像
+     * 更新头像
+     *
      * @param key
      */
     private void updateUserPhoto(final String key) {
@@ -199,6 +201,7 @@ public class PersonalActivity extends AbsBaseActivity {
             @Override
             protected void onSuccess(IsSuccessModes data, String SucMessage) {
                 if (data.isSuccess()) {
+                    showToast("头像上传成功");
                     ImgUtils.loadActLogo(PersonalActivity.this, MyConfig.IMGURL + key, mBinding.imgPhoto);
                 }
             }

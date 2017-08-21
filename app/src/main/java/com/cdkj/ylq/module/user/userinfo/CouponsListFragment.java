@@ -4,49 +4,29 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cdkj.baselibrary.appmanager.EventTags;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.BaseRefreshFragment;
-import com.cdkj.baselibrary.dialog.CommonDialog;
-import com.cdkj.baselibrary.model.EventBusModel;
-import com.cdkj.baselibrary.model.IsSuccessModes;
-import com.cdkj.baselibrary.nets.BaseResponseListCallBack;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.DateUtil;
 import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
-import com.cdkj.baselibrary.utils.ToastUtil;
-import com.cdkj.ylq.MainActivity;
 import com.cdkj.ylq.R;
-import com.cdkj.ylq.adapters.BorrowMoneyProductAdapter;
 import com.cdkj.ylq.databinding.ActivityCouponsBinding;
-import com.cdkj.ylq.databinding.LayoutProductFooterviewBinding;
 import com.cdkj.ylq.model.CoupoonsModel;
-import com.cdkj.ylq.model.PorductListModel;
 import com.cdkj.ylq.module.api.MyApiServer;
-import com.cdkj.ylq.module.certification.review.HumanReviewActivity;
-import com.cdkj.ylq.module.product.ProductDetailsActivity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
-
-import static com.cdkj.baselibrary.appmanager.EventTags.BORROWMONEYFRAGMENTREFRESH;
-import static com.cdkj.baselibrary.appmanager.EventTags.LOGINREFRESH;
 
 /**
  * 优惠券列表
@@ -77,8 +57,8 @@ public class CouponsListFragment extends BaseRefreshFragment<CoupoonsModel.ListB
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if(getArguments()!=null){
-            requestState=getArguments().getInt("state");
+        if (getArguments() != null) {
+            requestState = getArguments().getInt("state");
         }
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -169,20 +149,31 @@ public class CouponsListFragment extends BaseRefreshFragment<CoupoonsModel.ListB
             protected void convert(BaseViewHolder helper, CoupoonsModel.ListBean item) {
                 if (item == null) return;
                 helper.setText(R.id.tv_money, MoneyUtils.showPrice(item.getAmount()));
-                helper.setText(R.id.tv_use_can, "限借款"+MoneyUtils.showPrice(item.getStartAmount())+"元及以上使用");
-                helper.setText(R.id.tv_date,"截至日期"+ DateUtil.formatStringData(item.getInvalidDatetime(),DateUtil.DATE_YMD));
+                helper.setText(R.id.tv_use_can, "限借款" + MoneyUtils.showPrice(item.getStartAmount()) + "元及以上使用");
+                helper.setText(R.id.tv_date, "截至日期" + DateUtil.formatStringData(item.getInvalidDatetime(), DateUtil.DATE_YMD));
 
-                if(CANUSE == requestState){
-                    helper.setTextColor(R.id.tv_use_can, ContextCompat.getColor(mActivity,R.color.fontColor_hint));
-                    helper.setTextColor(R.id.tv_date, ContextCompat.getColor(mActivity,R.color.fontColor_hint));
+                if (CANUSE == requestState) {
+                    helper.setTextColor(R.id.tv_use_can, ContextCompat.getColor(mActivity, R.color.fontColor_hint));
+                    helper.setTextColor(R.id.tv_date, ContextCompat.getColor(mActivity, R.color.fontColor_hint));
                 }
-        }
+            }
         };
     }
 
     @Override
     public String getEmptyInfo() {
-        return "您目前没有优惠券";
+
+
+        if (requestState == CANUSE) {
+
+            return "您目前没有优惠券";
+        } else if (requestState == CANUSET) {
+
+            return "您目前没有不可使用的优惠券";
+        } else {
+            return "您目前没有优惠券";
+        }
+
     }
 
     @Override

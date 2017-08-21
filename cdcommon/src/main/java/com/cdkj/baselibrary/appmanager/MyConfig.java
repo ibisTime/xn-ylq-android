@@ -1,4 +1,4 @@
-package com.cdkj.baselibrary;
+package com.cdkj.baselibrary.appmanager;
 
 /**
  * Created by 李先俊 on 2017/8/8.

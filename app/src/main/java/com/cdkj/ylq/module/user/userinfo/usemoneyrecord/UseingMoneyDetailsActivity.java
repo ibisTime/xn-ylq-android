@@ -99,7 +99,7 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
                 if (mData == null) return;
                 PayActivity.open(this, mData.getCode(), MoneyUtils.showPrice(mData.getAmount()));
             });
-            setTopTitle("放款中详情");
+            setTopTitle("生效中详情");
 
             mBinding.fraStateNote.setVisibility(View.GONE);
             mBinding.imgState.setImageResource(R.drawable.money_state1);
