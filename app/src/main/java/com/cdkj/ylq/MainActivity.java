@@ -172,7 +172,6 @@ public class MainActivity extends AbsBaseActivity {
             finish();
         }
     }
-
     @Override
     protected boolean canEvenFinish() {
         return false;
