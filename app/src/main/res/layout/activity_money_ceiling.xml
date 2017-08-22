@@ -74,7 +74,7 @@
             android:layout_marginRight="15dp"
             android:layout_marginTop="45dp"
             android:background="@drawable/selector_login_btn"
-            android:text="使用额度"
+            tools:text="使用额度"
             android:textColor="@color/white"
             android:textSize="16sp" />
 

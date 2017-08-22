@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.bigkoo.pickerview.OptionsPickerView;
@@ -23,7 +24,10 @@ import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivityProductDetailsBinding;
 import com.cdkj.ylq.model.CanUseCouponsModel;
 import com.cdkj.ylq.model.PorductListModel;
+import com.cdkj.ylq.model.ProductSingModel;
 import com.cdkj.ylq.module.api.MyApiServer;
+import com.cdkj.ylq.module.borrowmoney.PutMoneyingActivity;
+import com.cdkj.ylq.module.certification.review.HumanReviewActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -114,12 +118,17 @@ public class ProductDetailsActivity extends AbsBaseActivity {
         });
 
         mCoupoonsPicker = new OptionsPickerView.Builder(this, (options1, options2, options3, v) -> {
-            CanUseCouponsModel selectModel = mCoupoonsModels.get(options1);
-            if (selectModel == null) {
-                return;
+            CanUseCouponsModel cmodel = mCoupoonsModels.get(options1);
+
+            if (cmodel != null) {
+                if (!cmodel.isDefuit()) {
+                    mBinding.tvSelectCoupoons.setText(MoneyUtils.showPrice(cmodel.getAmount())+"元优惠卷");
+                    mBinding.tvWillGetMoney.setText(MoneyUtils.showPrice(BigDecimalUtils.add(getWillMoney(mProductData), cmodel.getAmount())) + "元");//实际到账
+                } else {
+                    mBinding.tvSelectCoupoons.setText("选择优惠券");
+                    mBinding.tvWillGetMoney.setText(MoneyUtils.showPrice(getWillMoney(mProductData)) + "元");//实际到账
+                }
             }
-            mBinding.tvSelectCoupoons.setText(selectModel.getPickerViewText());
-            mBinding.tvWillGetMoney.setText(BigDecimalUtils.add(getWillMoney(mProductData), selectModel.getAmount()) + "元");//实际到账
 
         }).setContentTextSize(16).setLineSpacingMultiplier(4).build();
 
@@ -129,10 +138,10 @@ public class ProductDetailsActivity extends AbsBaseActivity {
      * 获取可用优惠券
      */
     private void getCanUseCoupoons() {
-        if (mProductData == null) return;
+        if (mProductData == null || mProductData.getAmount()==null) return;
         Map<String, String> map = new HashMap<>();
-        map.put("productCode", mProductData.getCode());
-        map.put("userId", SPUtilHelpr.getUserToken());
+        map.put("amount", mProductData.getAmount().intValue()+"");
+        map.put("userId", SPUtilHelpr.getUserId());
 
         Call call = RetrofitUtils.createApi(MyApiServer.class).getCanUseCouponsListData("623148", StringUtils.getJsonToString(map));
 
@@ -151,7 +160,9 @@ public class ProductDetailsActivity extends AbsBaseActivity {
                     showToast("暂无可用优惠券");
                     return;
                 }
-
+                CanUseCouponsModel model = new CanUseCouponsModel();
+                model.setDefuit(true);
+                mCoupoonsModels.add(0, model);
                 mCoupoonsPicker.setPicker(mCoupoonsModels);
                 mCoupoonsPicker.show();
 
@@ -246,21 +257,25 @@ public class ProductDetailsActivity extends AbsBaseActivity {
         map.put("applyUser", SPUtilHelpr.getUserId());
         map.put("productCode", mProductData.getCode());
 
-        Call call = RetrofitUtils.getBaseAPiService().successRequest("623020", StringUtils.getJsonToString(map));
+        Call call = RetrofitUtils.createApi(MyApiServer.class).getProductSingState("623020", StringUtils.getJsonToString(map));
 
         addCall(call);
 
         showLoadingDialog();
-
-        call.enqueue(new BaseResponseModelCallBack<IsSuccessModes>(this) {
+//1 认证中 2待审核
+        call.enqueue(new BaseResponseModelCallBack<ProductSingModel>(this) {
             @Override
-            protected void onSuccess(IsSuccessModes data, String SucMessage) {
-                if (data.isSuccess()) {
+            protected void onSuccess(ProductSingModel data, String SucMessage) {
+                if (TextUtils.equals(data.getStatus(), "1")) {
                     EventBusModel eventBusModel = new EventBusModel();
                     eventBusModel.setEvInt(MainActivity.SHOWCERT); //显示认证界面
                     eventBusModel.setTag(EventTags.MAINCHANGESHOWINDEX);
                     EventBus.getDefault().post(eventBusModel);
                     EventBus.getDefault().post(BORROWMONEYFRAGMENTREFRESH);//刷新产品列表数据
+                    showToast("您的申请已提交，请尽快认证已便快速审核");
+                    finish();
+                } else if (TextUtils.equals(data.getStatus(), "2")) {
+                    HumanReviewActivity.open(ProductDetailsActivity.this);
                     finish();
                 }
 

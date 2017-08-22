@@ -425,19 +425,21 @@
                     android:src="@drawable/phone_black" />
 
                 <TextView
+                    android:id="@+id/tv_service_phone"
                     android:textColor="@color/text_color"
                     android:layout_marginLeft="5dp"
-                    android:text="400-854-2365"
+                    tools:text="400-854-2365"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
             <TextView
+                android:id="@+id/tv_service_time"
                 android:paddingTop="10dp"
                 android:gravity="center"
                 android:background="@color/bg_gray"
                 android:textColor="@color/text_color"
-                android:text="服务时间:9:30-18:00"
+                tools:text="服务时间:9:30-18:00"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

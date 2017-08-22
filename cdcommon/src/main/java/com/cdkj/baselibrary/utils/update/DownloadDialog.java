@@ -20,9 +20,11 @@ public class DownloadDialog extends AlertDialog {
     private ProgressBar mProgressBar;
     private TextView mTipTxt;
     private TextView mProTxt;
+    private boolean mIsForceUpdate=false;
 
-    public DownloadDialog(@NonNull Context context, String title) {
+    public DownloadDialog(@NonNull Context context, String title,boolean isForceUpdate) {
         super(context);
+        mIsForceUpdate=isForceUpdate;
         setTitle(title);
         init();
     }
@@ -42,8 +44,8 @@ public class DownloadDialog extends AlertDialog {
             mProTxt.setText("100 / 100");
         } else if(progress==0) {
             mTipTxt.setText("下载失败");
-            this.setCancelable(true);
-            this.setTitle("下载失败");
+            this.setCancelable(!mIsForceUpdate);
+            this.setTitle("下载失败,请到应用市场进行更新");
         }else {
             mProgressBar.setProgress((int) progress);
             mTipTxt.setText(String.format(Locale.getDefault(), "%.2f%%", progress));

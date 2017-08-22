@@ -41,13 +41,14 @@ public class SigningSureActivity extends AbsBaseActivity {
     private PorductListModel.ListBean mProductData;
 
     private String mCouponId;//优惠券ID
+    private String mWillgetMondy;//实到金额
 
     /**
      * 打开当前页面
      *
      * @param context
      */
-    public static void open(Context context, PorductListModel.ListBean productData, String couponId) {
+    public static void open(Context context, PorductListModel.ListBean productData, String couponId,String willgetMondy) {
         if (context == null) {
             return;
         }
@@ -55,6 +56,7 @@ public class SigningSureActivity extends AbsBaseActivity {
         Intent intent = new Intent(context, SigningSureActivity.class);
         intent.putExtra("productData", productData);
         intent.putExtra("couponId", couponId);
+        intent.putExtra("willgetMondy", willgetMondy);
         context.startActivity(intent);
     }
 
@@ -75,7 +77,8 @@ public class SigningSureActivity extends AbsBaseActivity {
 
         if (getIntent() != null) {
             mProductData = getIntent().getParcelableExtra("productData");
-            mCouponId = getIntent().getParcelableExtra("couponId");
+            mCouponId = getIntent().getStringExtra("couponId");
+            mWillgetMondy = getIntent().getStringExtra("willgetMondy");
         }
 
         setShowData();
@@ -142,14 +145,13 @@ public class SigningSureActivity extends AbsBaseActivity {
         mBinding.tvDay.setText(mProductData.getDuration() + "天");
         mBinding.tvAllRate.setText(getAllRateMoney(mProductData) + "元");
         mBinding.tvUseMoneyState.setText("一次性还款" + MoneyUtils.showPrice(mProductData.getAmount()) + "元");
-
-
+        mBinding.tvShidaoRate.setText(mWillgetMondy);
         mBinding.tvDueDate.setText(DateUtil.getShowDayToData(mProductData.getDuration()));
 
         mBinding.tvRead.setText("《"+SPUtilHelpr.getUserName()+"-借款协议》");
 
-        mBinding.tvUsed.setText("7天内逾期，每天" + MoneyUtils.showPrice(mProductData.getYqRate1()) + "元\n"
-                + "7天外逾期，每天" + MoneyUtils.showPrice(mProductData.getYqRate2()) + "元");
+        mBinding.tvUsed.setText("7天内逾期，每天" + MoneyUtils.showPrice(BigDecimalUtils.multiply(mProductData.getYqRate1(),mProductData.getAmount())) + "元\n"
+                + "7天外逾期，每天" + MoneyUtils.showPrice(BigDecimalUtils.multiply(mProductData.getYqRate2(),mProductData.getAmount())) + "元");
 
     }
 
@@ -163,9 +165,9 @@ public class SigningSureActivity extends AbsBaseActivity {
             return "";
         }
 
-        BigDecimal deductMoney = BigDecimalUtils.add(mData.getXsRate(), mData.getLxRate());//审信费 + 利息
+        BigDecimal deductMoney = BigDecimalUtils.add(mData.getXsAmount(), mData.getLxAmount());//审信费 + 利息
 
-        BigDecimal deductMoney2 = BigDecimalUtils.add(mData.getGlRate(), mData.getFwRate());//管理费 + 加服务费
+        BigDecimal deductMoney2 = BigDecimalUtils.add(mData.getGlAmount(), mData.getFwAmount());//管理费 + 加服务费
 
         BigDecimal deductMoneyAll = BigDecimalUtils.add(deductMoney, deductMoney2);//总共需要扣除金额
 

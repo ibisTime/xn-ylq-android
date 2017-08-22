@@ -4,6 +4,8 @@ package com.cdkj.baselibrary;
 import android.app.Application;
 import android.content.Context;
 
+import com.cdkj.baselibrary.utils.LogUtil;
+
 public class BaseApplication extends Application {
 	/**
 	 * Global application context.
@@ -17,7 +19,8 @@ public class BaseApplication extends Application {
 		sContext = this;
 	}
 
-	public static void initialize(Context context) {
+	public static void initialize(Context context,boolean isDebug) {
+		LogUtil.isDeBug =isDebug;
         sContext = context;
     }
 

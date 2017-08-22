@@ -10,6 +10,8 @@ import com.cdkj.ylq.R;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * 启动页
@@ -35,6 +37,8 @@ public class WelcomeAcitivity extends BaseActivity {
         }
         setContentView(R.layout.activity_welcom);
         mSubscription.add(Observable.timer(2, TimeUnit.SECONDS)
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {//延迟两秒进行跳转
                     MainActivity.open(this);
                     finish();

@@ -75,53 +75,7 @@ public class MsgListActivity extends BaseRefreshActivity<MsgListModel.ListBean> 
         call.enqueue(new BaseResponseModelCallBack<MsgListModel>(this) {
             @Override
             protected void onSuccess(MsgListModel data, String SucMessage) {
-
-                List<MsgListModel.ListBean> m=new ArrayList<MsgListModel.ListBean>();
-
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                m.addAll(data.getList());
-                setData(m);
+                setData(data.getList());
             }
 
             @Override

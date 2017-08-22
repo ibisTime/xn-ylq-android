@@ -161,8 +161,39 @@
                         android:textSize="14sp"
                         tools:text="xxx" />
 
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="24dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="-20dp"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="实到费用"
+                        android:textColor="@color/txt_gray"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_shidao_rate"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_weight="1"
+                        android:textColor="@color/text_color"
+                        android:textSize="14sp"
+                        tools:text="xxx" />
 
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"

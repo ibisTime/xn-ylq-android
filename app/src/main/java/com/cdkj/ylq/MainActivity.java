@@ -41,6 +41,7 @@ public class MainActivity extends AbsBaseActivity {
     public static final int SHOWCERT = 1;//显示认证界面
     public static final int SHOWMY = 2;//显示我的界面
     private List<Fragment> fragments;
+    private UpdateManager updateManager;
 
     /**
      * 打开当前页面
@@ -74,7 +75,8 @@ public class MainActivity extends AbsBaseActivity {
 
         initListener();
 
-        UpdateManager.checkNewApp(this);
+        updateManager = new UpdateManager(getString(R.string.app_name));
+//        updateManager.checkNewApp(this);
     }
 
     /**
@@ -97,7 +99,6 @@ public class MainActivity extends AbsBaseActivity {
             }
             setShowIndex(2);
         });
-
     }
 
 
@@ -160,8 +161,6 @@ public class MainActivity extends AbsBaseActivity {
         }
         if (TextUtils.equals(eventBusModel.getTag(), MAINCHANGESHOWINDEX)) {
             setShowIndex(eventBusModel.getEvInt());
-        } else if (TextUtils.equals(eventBusModel.getTag(), MAINFINISH)) { //结束主页
-            finish();
         }
     }
 
@@ -178,8 +177,16 @@ public class MainActivity extends AbsBaseActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(updateManager!=null){
+            updateManager.clear();
+            updateManager=null;
+        }
+    }
+
+    @Override
     public void onBackPressed() {
-        showToast(""+LogUtil.isDeBug);
         showDoubleWarnListen("确认退出？",view -> {
             EventBus.getDefault().post(EventTags.AllFINISH);
             finish();

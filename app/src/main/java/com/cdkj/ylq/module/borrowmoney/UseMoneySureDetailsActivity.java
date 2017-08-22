@@ -98,23 +98,25 @@ public class UseMoneySureDetailsActivity extends AbsBaseActivity {
      */
     private void initListener() {
         mBinding.btnNext.setOnClickListener(v -> {
-            SigningSureActivity.open(this, mProductData, mCouponId);
+            SigningSureActivity.open(this, mProductData, mCouponId,  mBinding.tvWillGetMoney.getText().toString());
         });
 
         mBinding.tvSelectCoupoons.setOnClickListener(v -> {
-
             getCanUseCoupoons();
-
         });
 
         mCoupoonsPicker = new OptionsPickerView.Builder(this, (options1, options2, options3, v) -> {
             CanUseCouponsModel cmodel = mCoupoonsModels.get(options1);
             if (cmodel != null) {
-                mBinding.tvSelectCoupoons.setText(cmodel.getPickerViewText());
-                mCouponId = cmodel.getId();
-
-                mBinding.tvWillGetMoney.setText(BigDecimalUtils.add(getWillMoney(mProductData),cmodel.getAmount()) + "元");//实际到账
-
+                if (!cmodel.isDefuit()) {
+                    mBinding.tvSelectCoupoons.setText(MoneyUtils.showPrice(cmodel.getAmount())+"元优惠卷");
+                    mCouponId = cmodel.getId();
+                    mBinding.tvWillGetMoney.setText(MoneyUtils.showPrice(BigDecimalUtils.add(getWillMoney(mProductData), cmodel.getAmount())) + "元");//实际到账
+                } else {
+                    mBinding.tvSelectCoupoons.setText("选择优惠券");
+                    mCouponId = "";
+                    mBinding.tvWillGetMoney.setText(MoneyUtils.showPrice(getWillMoney(mProductData)) + "元");//实际到账
+                }
             }
 
 
@@ -126,10 +128,10 @@ public class UseMoneySureDetailsActivity extends AbsBaseActivity {
      * 获取可用优惠券
      */
     private void getCanUseCoupoons() {
-        if (mProductData == null) return;
+        if (mProductData == null || mProductData.getAmount()==null) return;
         Map<String, String> map = new HashMap<>();
-        map.put("productCode", mProductData.getCode());
-        map.put("userId", SPUtilHelpr.getUserToken());
+        map.put("amount", mProductData.getAmount().intValue()+"");
+        map.put("userId", SPUtilHelpr.getUserId());
 
         Call call = RetrofitUtils.createApi(MyApiServer.class).getCanUseCouponsListData("623148", StringUtils.getJsonToString(map));
 
@@ -148,7 +150,9 @@ public class UseMoneySureDetailsActivity extends AbsBaseActivity {
                     showToast("暂无可用优惠券");
                     return;
                 }
-
+                CanUseCouponsModel model = new CanUseCouponsModel();
+                model.setDefuit(true);
+                mCoupoonsModels.add(0, model);
                 mCoupoonsPicker.setPicker(mCoupoonsModels);
                 mCoupoonsPicker.show();
             }

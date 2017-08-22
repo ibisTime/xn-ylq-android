@@ -123,7 +123,7 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
         hashMap.put("companyCode", MyConfig.COMPANYCODE);
 
 
-        Call call = RetrofitUtils.createApi(MyApiServer.class).userRegister("805041", StringUtils.getJsonToString(hashMap));
+        Call call = RetrofitUtils.createApi(MyApiServer.class).userRegister("623800", StringUtils.getJsonToString(hashMap));
 
         addCall(call);
 
@@ -131,9 +131,8 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
         call.enqueue(new BaseResponseModelCallBack<UserLoginModel>(this) {
             @Override
             protected void onSuccess(UserLoginModel data, String SucMessage) {
-                if (!TextUtils.isEmpty(data.getToken()) || !TextUtils.isEmpty(data.getUserId())) {
+                if (!TextUtils.isEmpty(data.getToken()) && !TextUtils.isEmpty(data.getUserId())) {
                     showToast("注册成功,已自动登录");
-
 
                     SPUtilHelpr.saveUserId(data.getUserId());
                     SPUtilHelpr.saveUserToken(data.getToken());
@@ -144,8 +143,6 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
 
                     finish();
 
-                } else {
-                    showToast("注册失败");
                 }
             }
 

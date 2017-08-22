@@ -15,13 +15,14 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
-/**借贷产品列表
+/**
+ * 借贷产品列表
  * Created by 李先俊 on 2017/8/12.
  */
 
 public class BorrowMoneyProductAdapter extends BaseQuickAdapter<PorductListModel.ListBean, BaseViewHolder> {
 
-    public BorrowMoneyProductAdapter( @Nullable List<PorductListModel.ListBean> data) {
+    public BorrowMoneyProductAdapter(@Nullable List<PorductListModel.ListBean> data) {
         super(R.layout.item_borrowmoney_product, data);
     }
 
@@ -37,53 +38,52 @@ public class BorrowMoneyProductAdapter extends BaseQuickAdapter<PorductListModel
 
         if (TextUtils.equals("1", item.getIsLocked())) { //锁中状态
             cardView.setAlpha((float) 0.5);
-            helper.setVisible(R.id.tv_state,true);
-            helper.setVisible(R.id.tv_level_satate,true);
-            helper.setVisible(R.id.tv_state,false);
-
+            helper.setVisible(R.id.img_state, true);
+            helper.setVisible(R.id.tv_state, false);
+            helper.setText(R.id.tv_level_satate, item.getSlogan());
         } else {
             cardView.setAlpha(1);
             helper.setVisible(R.id.img_state, false);
             helper.setVisible(R.id.tv_state, true);
-            helper.setVisible(R.id.tv_level_satate,false);
+            helper.setText(R.id.tv_level_satate, "急速放贷");
         }
 
         helper.setText(R.id.tv_money, MoneyUtils.showPrice(item.getAmount()) + "");
         helper.setText(R.id.tv_make_day, item.getDuration() + "天");
         helper.setText(R.id.tv_state, getState(item.getUserProductStatus()));
-        helper.setText(R.id.tv_level, "Lv"+item.getLevel());
-        helper.setText(R.id.tv_level_satate, item.getSlogan());
+        helper.setText(R.id.tv_level, "Lv" + item.getLevel());
 
-        if(canUseCancle(item.getUserProductStatus()) && TextUtils.equals("0", item.getIsLocked())){
-            helper.setVisible(R.id.tv_cancle,true);
-            helper.setVisible(R.id.tv_level_satate,false);
-            helper.setOnClickListener(R.id.tv_cancle,v -> {
+
+        if (canUseCancle(item.getUserProductStatus()) && TextUtils.equals("0", item.getIsLocked())) {  //没有锁中
+            helper.setVisible(R.id.tv_cancle, true);
+            helper.setVisible(R.id.tv_level_satate, false);
+            helper.setOnClickListener(R.id.tv_cancle, v -> {
                 EventBus.getDefault().post(item);
             });
-        }else{
-            helper.setVisible(R.id.tv_cancle,false);
-            helper.setVisible(R.id.tv_level_satate,true);
-            helper.setOnClickListener(R.id.tv_cancle,null);
+        } else {
+            helper.setVisible(R.id.tv_cancle, false);
+            helper.setVisible(R.id.tv_level_satate, true);
+            helper.setOnClickListener(R.id.tv_cancle, null);
         }
     }
 
 
-
     /**
      * 能否使用取消按钮
+     *
      * @param state
      * @return
      */
-    private boolean canUseCancle(String state){
-        return  TextUtils.equals(state,"1") || TextUtils.equals(state,"2")
-                || TextUtils.equals(state,"3") || TextUtils.equals(state,"4");
+    private boolean canUseCancle(String state) {
+        return TextUtils.equals(state, "1") || TextUtils.equals(state, "2")
+                || TextUtils.equals(state, "3");
     }
 
 
     //("0", "可申请"),("1", "认证中"),("2", "人工审核中"),( "3", "已驳回"),("4", "已有额度"),("5", "等待放款中"),( "6", "生效中"),("7", "已逾期")
     private String getState(String state) {
 
-        if(TextUtils.isEmpty(state)){
+        if (TextUtils.isEmpty(state)) {
             return "";
         }
 

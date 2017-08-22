@@ -80,11 +80,10 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
 
             if (mCertData == null) return;
 
-            if (!TextUtils.equals("1", mCertData.getInfoIdentifyFlag())) {
+            if (TextUtils.equals("0", mCertData.getInfoIdentifyFlag())) {
                 ToastUtil.show(mActivity, "请进行身份认证");
                 return;
             }
-
             BasisInfoCertificationActivity.open(mActivity);
         });
 
@@ -96,11 +95,11 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
             }
             if (mCertData == null) return;
 
-            if (!TextUtils.equals("1", mCertData.getInfoIdentifyFlag())) {
+            if (TextUtils.equals("0", mCertData.getInfoIdentifyFlag())) {
                 ToastUtil.show(mActivity, "请进行身份认证");
                 return;
             }
-            if (!TextUtils.equals("1", mCertData.getInfoAntifraudFlag())) {
+            if (TextUtils.equals("0", mCertData.getInfoAntifraudFlag())) {
                 ToastUtil.show(mActivity, "请进行个人信息认证");
                 return;
             }
@@ -117,15 +116,15 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
             if (mCertData == null) return;
 
 
-            if (!TextUtils.equals("1", mCertData.getInfoIdentifyFlag())) {
+            if (TextUtils.equals("0", mCertData.getInfoIdentifyFlag())) {
                 ToastUtil.show(mActivity, "请进行身份认证");
                 return;
             }
-            if (!TextUtils.equals("1", mCertData.getInfoAntifraudFlag())) {
+            if (TextUtils.equals("0", mCertData.getInfoAntifraudFlag())) {
                 ToastUtil.show(mActivity, "请进行个人信息认证");
                 return;
             }
-            if (!TextUtils.equals("1", mCertData.getInfoZMCreditFlag())) {
+            if (TextUtils.equals("0", mCertData.getInfoZMCreditFlag())) {
                 ToastUtil.show(mActivity, "请进行芝麻认证");
                 return;
             }
@@ -257,7 +256,9 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
                                         .observeOn(AndroidSchedulers.mainThread())
                                         .subscribe(aLong -> {
                                             getMoxieRequest(jsonObject.getString("taskId"));
-                                        }, Throwable::printStackTrace));
+                                        }, throwable -> {
+                                            disMissLoading();
+                                        }));
                                 break;
                         }
                     }

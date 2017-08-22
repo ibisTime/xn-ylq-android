@@ -77,7 +77,7 @@ public class UsedMoneyDetailsActivity extends AbsBaseActivity {
         }
         setSubRightTitleAndClick("还款", v -> {
             if (mData == null) return;
-            PayActivity.open(this, mData.getCode(), MoneyUtils.showPrice(mData.getAmount()));
+            PayActivity.open(this, mData.getCode(), MoneyUtils.showPrice(mData.getTotalAmount()));
         });
 
 

@@ -12,6 +12,7 @@ import com.cdkj.ylq.model.HuokeListModel;
 import com.cdkj.ylq.model.KeyDataModel;
 import com.cdkj.ylq.model.MsgListModel;
 import com.cdkj.ylq.model.PorductListModel;
+import com.cdkj.ylq.model.ProductSingModel;
 import com.cdkj.ylq.model.UseMoneyRecordModel;
 import com.cdkj.ylq.model.UserInfoModel;
 import com.cdkj.ylq.model.ZMCertFirstStepModel;
@@ -194,6 +195,15 @@ public interface MyApiServer {
     @FormUrlEncoded
     @POST("api")
     Call<BaseResponseModel<PorductListModel.ListBean>> getProductDetail(@Field("code") String code, @Field("json") String json);
+
+    /**
+     * 获取产品申请状态
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api")
+    Call<BaseResponseModel<ProductSingModel>> getProductSingState(@Field("code") String code, @Field("json") String json);
 
 
 

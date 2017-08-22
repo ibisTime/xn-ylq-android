@@ -13,6 +13,7 @@ import com.cdkj.baselibrary.interfaces.LoginInterface;
 import com.cdkj.baselibrary.interfaces.LoginPresenter;
 import com.cdkj.baselibrary.model.EventBusModel;
 import com.cdkj.baselibrary.model.UserLoginModel;
+import com.cdkj.baselibrary.utils.ToastUtil;
 import com.cdkj.ylq.MainActivity;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivityLoginBinding;
@@ -90,7 +91,7 @@ public class LoginActivity extends AbsBaseActivity implements LoginInterface {
 
     @Override
     public void LoginFailed(String code, String msg) {
-
+        showToast(msg);
     }
 
     @Override

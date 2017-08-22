@@ -75,8 +75,11 @@ public class UseMoneyRecordFragment extends BaseRefreshFragment<UseMoneyRecordMo
 
             if (TextUtils.equals(state.getStatus(), "0")) {
                 WaiteMoneyDetailsActivity.open(mActivity, state);//待放款 详情
+
             } else if (TextUtils.equals(state.getStatus(), "1")) {//放款中详情
+
                 UseingMoneyDetailsActivity.open(mActivity, state,"");
+
             } else if (TextUtils.equals(state.getStatus(), "2")) {//逾期详情
                 UsedMoneyDetailsActivity.open(mActivity,state,"");
 
@@ -90,7 +93,7 @@ public class UseMoneyRecordFragment extends BaseRefreshFragment<UseMoneyRecordMo
 
     @Override
     protected void getListData(int pageIndex, int limit, boolean canShowDialog) {
-//0=可使用 1=已使用 2=已过期 12=已使用或已过期
+
         Map<String, String> map = new HashMap<>();
         map.put("limit", limit + "");
         map.put("start", pageIndex + "");

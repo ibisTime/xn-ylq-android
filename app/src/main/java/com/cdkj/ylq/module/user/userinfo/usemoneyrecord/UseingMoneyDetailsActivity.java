@@ -97,7 +97,7 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
         if (TextUtils.equals(mData.getStatus(), "1")) { //生效中
             setSubRightTitleAndClick("还款", v -> {
                 if (mData == null) return;
-                PayActivity.open(this, mData.getCode(), MoneyUtils.showPrice(mData.getAmount()));
+                PayActivity.open(this, mData.getCode(), MoneyUtils.showPrice(mData.getTotalAmount()));
             });
             setTopTitle("生效中详情");
 
@@ -124,6 +124,8 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
         mBinding.tvLixi.setText(MoneyUtils.showPrice(mData.getLxAmount()) + "元");
         mBinding.tvJianmian.setText(MoneyUtils.showPrice(mData.getYhAmount()) + "元");
         mBinding.tvDaoqi.setText(MoneyUtils.showPrice(mData.getTotalAmount()) + "元");
+
+        mBinding.tvService.setText(MoneyUtils.showPrice(mData.getFwAmount())+"元");
 
 
     }

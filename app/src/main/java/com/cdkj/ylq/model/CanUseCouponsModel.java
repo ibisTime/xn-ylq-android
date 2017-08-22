@@ -41,6 +41,8 @@ public class CanUseCouponsModel implements IPickerViewData {
     private String userId;
     private int validDays;
 
+    private boolean isDefuit;//判断是不是默认
+
     public BigDecimal getAmount() {
         return amount;
     }
@@ -138,8 +140,19 @@ public class CanUseCouponsModel implements IPickerViewData {
         this.validDays = validDays;
     }
 
+    public boolean isDefuit() {
+        return isDefuit;
+    }
+
+    public void setDefuit(boolean defuit) {
+        isDefuit = defuit;
+    }
+
     @Override
     public String getPickerViewText() {
+        if(isDefuit){
+            return "暂不使用优惠券";
+        }
         return "减免" + MoneyUtils.showPrice(amount) + "元" + DateUtil.formatStringData(invalidDatetime, DateUtil.DATE_YMD)+"到期";
     }
 }

@@ -92,6 +92,11 @@ public class ApkLoaderUtil implements DownloadThread.DownloadThreadListener {
                     ResponseBody responseBody = response.body();
                     mTotalCount = responseBody.contentLength();
 
+                    if(mTotalCount<=0){
+                        setLoadError();
+                        return;
+                    }
+
                     RandomAccessFile raf = new RandomAccessFile(path, "rwd");
                     raf.setLength(mTotalCount);
                     raf.close();

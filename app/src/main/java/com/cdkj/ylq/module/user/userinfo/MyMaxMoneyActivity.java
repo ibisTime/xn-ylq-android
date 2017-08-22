@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
+import com.cdkj.baselibrary.model.EventBusModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.DateUtil;
@@ -21,11 +22,16 @@ import com.cdkj.ylq.module.api.MyApiServer;
 import com.cdkj.ylq.module.borrowmoney.UseMoneySureDetailsActivity;
 import com.cdkj.ylq.module.product.ProductDetailsActivity;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import retrofit2.Call;
+
+import static com.cdkj.baselibrary.appmanager.EventTags.MAINCHANGESHOWINDEX;
+import static com.cdkj.ylq.MainActivity.SHOWMONEYPRODUCT;
 
 /**
  * 我的额度
@@ -61,9 +67,6 @@ public class MyMaxMoneyActivity extends AbsBaseActivity {
         setSubLeftImgState(true);
         getCanUseMoneyData();
 
-        mBinding.btnUse.setOnClickListener(v -> {
-            getCanUseProductData();
-        });
     }
 
     /**
@@ -77,18 +80,40 @@ public class MyMaxMoneyActivity extends AbsBaseActivity {
         call.enqueue(new BaseResponseModelCallBack<CanUseMoneyModel>(this) {
             @Override
             protected void onSuccess(CanUseMoneyModel data, String SucMessage) {
-                mBinding.tvMoney.setText(MoneyUtils.showPrice(data.getSxAmount()));
-//
-//               Date date= DateUtil.parseStringData(data.getValidDatetime(),DateUtil.DATE_YMD);
-//
-//                mBinding.tvRemainingDays.setText("还有"+DateUtil.getDatesBetweenTwoDate(new Date(),date).size()+"天当前额度失效");
-                mBinding.tvRemainingDays.setText("还有"+data.getValidDays()+"天当前额度失效");}
+                setState(data);
+            }
 
             @Override
             protected void onFinish() {
                 disMissLoading();
             }
         });
+    }
+
+    private void setState(CanUseMoneyModel data) {
+        mBinding.tvMoney.setText(MoneyUtils.showPrice(data.getSxAmount()));
+        if (data.getValidDays() <= 0) {
+            if(data.getSxAmount().doubleValue()>0){
+                mBinding.tvRemainingDays.setText("当前额度已失效");
+                mBinding.btnUse.setText("重新申请");
+            }else{
+                mBinding.tvRemainingDays.setText("您目前没有额度");
+                mBinding.btnUse.setText("申请额度");
+            }
+            mBinding.btnUse.setOnClickListener(v -> {
+                EventBusModel eventBusModel = new EventBusModel();
+                eventBusModel.setTag(MAINCHANGESHOWINDEX);
+                eventBusModel.setEvInt(SHOWMONEYPRODUCT);
+                EventBus.getDefault().post(eventBusModel);         //跳转到申请界面
+                finish();
+            });
+        } else {
+            mBinding.tvRemainingDays.setText("还有" + data.getValidDays() + "天当前额度失效");
+            mBinding.btnUse.setText("使用额度");
+            mBinding.btnUse.setOnClickListener(v -> {
+                getCanUseProductData();
+            });
+        }
     }
 
     /**

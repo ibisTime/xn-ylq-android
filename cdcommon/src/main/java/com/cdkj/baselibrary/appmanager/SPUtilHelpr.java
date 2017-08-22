@@ -105,7 +105,7 @@ public class SPUtilHelpr {
 	 * @return
 	 */
 	public static boolean isLogin(Context context,boolean canopenmain){
-		if(TextUtils.isEmpty(getUserToken())){
+		if(TextUtils.isEmpty(getUserId())){
 			SPUtilHelpr.logOutClear();
 //			ToastUtil.show(context,"请先登录");
 			// 路由跳转登录页面
@@ -123,7 +123,7 @@ public class SPUtilHelpr {
 	 * @return
 	 */
 	public static boolean isLoginNoStart(){
-		if(TextUtils.isEmpty(getUserToken())){
+		if(TextUtils.isEmpty(getUserId())){
 			return false;
 		}
 		return true;

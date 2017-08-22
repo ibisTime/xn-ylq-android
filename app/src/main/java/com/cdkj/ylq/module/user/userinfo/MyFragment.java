@@ -3,6 +3,7 @@ package com.cdkj.ylq.module.user.userinfo;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.activitys.WebViewActivity;
 import com.cdkj.baselibrary.base.BaseLazyFragment;
+import com.cdkj.baselibrary.model.IntroductionInfoModel;
 import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.ylq.model.CanUseMoneyModel;
 import com.cdkj.ylq.model.CoupoonsModel;
@@ -125,6 +127,7 @@ public class MyFragment extends BaseLazyFragment {
         });
     }
 
+    //获取额度
     public void getCanUseMoneyData() {
         Map<String, String> map = new HashMap<>();
         map.put("userId", SPUtilHelpr.getUserId());
@@ -143,7 +146,7 @@ public class MyFragment extends BaseLazyFragment {
         });
     }
 
-
+    //获取优惠券数量
     public void getCouponNums() {
 
 //        /0=可使用 1=已使用 2=已过期 12=已使用或已过期
@@ -169,23 +172,91 @@ public class MyFragment extends BaseLazyFragment {
         });
     }
 
+    //获取系统参数 服务时间
+    public void getServiceTime() {
+
+        Map<String, String> map = new HashMap<>();
+        map.put("ckey", "time");
+        map.put("systemCode", MyConfig.SYSTEMCODE);
+        map.put("companyCode", MyConfig.COMPANYCODE);
+
+        Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("805917", StringUtils.getJsonToString(map));
+        
+        addCall(call);
+
+        call.enqueue(new BaseResponseModelCallBack<IntroductionInfoModel>(mActivity) {
+            @Override
+            protected void onSuccess(IntroductionInfoModel data, String SucMessage) {
+                if (TextUtils.isEmpty(data.getCvalue())) {
+                    return;
+                }
+
+                mBinding.tvServiceTime.setText("服务时间："+data.getCvalue());
+
+            }
+
+            @Override
+            protected void onFinish() {
+                disMissLoading();
+            }
+        });
+
+    }    //获取系统参数 服务电话
+
+    public void getServiceTelephone() {
+
+        Map<String, String> map = new HashMap<>();
+        map.put("ckey", "telephone");
+        map.put("systemCode", MyConfig.SYSTEMCODE);
+        map.put("companyCode", MyConfig.COMPANYCODE);
+
+        Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("805917", StringUtils.getJsonToString(map));
+
+        addCall(call);
+
+        call.enqueue(new BaseResponseModelCallBack<IntroductionInfoModel>(mActivity) {
+            @Override
+            protected void onSuccess(IntroductionInfoModel data, String SucMessage) {
+                if (TextUtils.isEmpty(data.getCvalue())) {
+                    return;
+                }
+
+                mBinding.tvServicePhone.setText(data.getCvalue());
+
+            }
+
+            @Override
+            protected void onFinish() {
+                disMissLoading();
+            }
+        });
+
+    }
+
+
+
+
     @Override
     public void onResume() {
         super.onResume();
         if (getUserVisibleHint() && mBinding != null) {
-            getCouponNums();
-            getCanUseMoneyData();
-            getUserInfoRequest();
+            getAllData();
         }
     }
 
     @Override
     protected void lazyLoad() {
         if (mBinding != null) {
-            getCouponNums();
-            getCanUseMoneyData();
-            getUserInfoRequest();
+            getAllData();
         }
+    }
+
+    private void getAllData() {
+        getCouponNums();
+        getCanUseMoneyData();
+        getUserInfoRequest();
+        getServiceTelephone();
+        getServiceTime();
     }
 
     @Override

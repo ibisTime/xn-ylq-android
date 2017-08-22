@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
 
@@ -97,6 +99,22 @@ public class AppUtils {
         return versionName;
     }
 
+    /*获取版本信息*/
+    public static String getAppVersionName(Context context) {
+        String versionName = "";
+        try {
+            PackageManager pm = context.getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(context.getPackageName(), 0);
+            versionName = pi.versionName;
+            if (versionName == null || versionName.length() <= 0) {
+                return "";
+            }
+        } catch (Exception e) {
+            Log.e("VersionInfo", "Exception", e);
+        }
+        return versionName;
+    }
+
 
     /**
      * 验证码倒计时
@@ -107,6 +125,8 @@ public class AppUtils {
      */
     public static Disposable startCodeDown(final int count, final Button btn) {
         return Observable.interval(1, TimeUnit.SECONDS, AndroidSchedulers.mainThread())    // 创建一个按照给定的时间间隔发射从0开始的整数序列
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .take(count)//只发射开始的N项数据或者一定时间内的数据
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
@@ -136,6 +156,36 @@ public class AppUtils {
                 });
     }
 
+
+    public static void startWeb(Context context, String url) {
+
+        if (context == null || TextUtils.isEmpty(url)) {
+            return;
+        }
+
+        try {
+            Intent intent = new Intent();
+            intent.setAction("android.intent.action.VIEW");
+            Uri content_url = Uri.parse(url);
+            intent.setData(content_url);
+            if (!hasPreferredApplication(context, intent)) {
+                intent.setClassName("com.android.browser", "com.android.browser.BrowserActivity");
+            }
+            context.startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+
+        }
+    }
+
+    //如果info.activityInfo.packageName为android,则没有设置,否则,有默认的程序.
+    //判断系统是否设置了默认浏览器
+    public static boolean hasPreferredApplication(Context context, Intent intent) {
+        PackageManager pm = context.getPackageManager();
+        ResolveInfo info = pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        return !"android".equals(info.activityInfo.packageName);
+    }
 
 
 }

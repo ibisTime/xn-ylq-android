@@ -43,7 +43,7 @@ public class ToastUtil {
         try {
             showToast(context, info, Toast.LENGTH_LONG);
         }catch (Exception e){
-
+             LogUtil.E("Toast 错误"+ e.toString());
         }
 
     }
@@ -56,7 +56,7 @@ public class ToastUtil {
         try{
             showToast(context, info+"", Toast.LENGTH_LONG);
         }catch (Exception e){
-
+            LogUtil.E("Toast 错误"+ e.toString());
         }
     }
 }

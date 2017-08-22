@@ -133,7 +133,7 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
 
         } else if (TextUtils.equals("7", data.getUserProductStatus())) { //逾期
             UsedMoneyDetailsActivity.open(mActivity, null, data.getBorrowCode());
-        }else{
+        } else {
 
         }
 
@@ -212,6 +212,13 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
         return R.drawable.no_coupnos;
     }
 
+    @Override
+    protected void lazyLoad() {
+        if(mBinding!=null){
+            mPageIndex = 1;
+            onMRefresh(mPageIndex, mLimit);
+        }
+    }
 
     @Subscribe
     public void BorrowMoneyEventBus(String tag) {

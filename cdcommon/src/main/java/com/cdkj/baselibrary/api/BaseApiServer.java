@@ -5,6 +5,7 @@ import com.cdkj.baselibrary.model.CodeModel;
 import com.cdkj.baselibrary.model.IntroductionInfoModel;
 import com.cdkj.baselibrary.model.IsSuccessModes;
 import com.cdkj.baselibrary.model.QiniuGetTokenModel;
+import com.cdkj.baselibrary.model.TypeInfoModel;
 import com.cdkj.baselibrary.model.UserLoginModel;
 import com.cdkj.baselibrary.model.pay.AliPayRequestMode;
 import com.cdkj.baselibrary.model.pay.WxPayRequestModel;
@@ -98,6 +99,16 @@ public interface BaseApiServer {
     @FormUrlEncoded
     @POST("api")
     Call<BaseResponseModel<IntroductionInfoModel>> getKeySystemInfo(@Field("code") String code, @Field("json") String  json);
+
+    /**
+     * 根据type查询系统参数
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api")
+    Call<BaseResponseModel<TypeInfoModel>> getTypeSystemInfo(@Field("code") String code, @Field("json") String  json);
+
+
 
 
 }

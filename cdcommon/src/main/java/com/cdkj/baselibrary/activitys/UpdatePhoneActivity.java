@@ -75,7 +75,7 @@ public class UpdatePhoneActivity extends AbsBaseActivity implements SendCodeInte
         mBinding.btnSendNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mSendCodePresenter.sendCodeRequest(mBinding.edtPhoneNew.getText().toString(), "805061", MyConfig.USERTYPE, UpdatePhoneActivity.this);
+                mSendCodePresenter.sendCodeRequest(mBinding.edtPhoneNew.getText().toString(), "805070", MyConfig.USERTYPE, UpdatePhoneActivity.this);
             }
         });
 
@@ -111,7 +111,7 @@ public class UpdatePhoneActivity extends AbsBaseActivity implements SendCodeInte
         map.put("smsCaptcha", mBinding.edtCodeNew.getText().toString());
         map.put("token", SPUtilHelpr.getUserToken());
 
-        Call call = RetrofitUtils.getBaseAPiService().successRequest("805061", StringUtils.getJsonToString(map));
+        Call call = RetrofitUtils.getBaseAPiService().successRequest("805070", StringUtils.getJsonToString(map));
 
         addCall(call);
 
@@ -121,7 +121,7 @@ public class UpdatePhoneActivity extends AbsBaseActivity implements SendCodeInte
             protected void onSuccess(IsSuccessModes data, String SucMessage) {
                 if (data.isSuccess()) {
 
-                    showToast("手机号修改成功");
+                    showToast("申请成功，请耐心等待平台审核");
 
                     EventBusModel eventBusModel=new EventBusModel();      //刷新上一页数据
                     eventBusModel.setTag(EventTags.CHANGEPHONENUMBER_REFRESH);
