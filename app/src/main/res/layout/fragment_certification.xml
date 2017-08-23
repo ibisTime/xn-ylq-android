@@ -393,6 +393,7 @@
                     <View style="@style/style_split_vline" />
 
                     <LinearLayout
+                        android:id="@+id/layout_phone_cert"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="0.5dp"
@@ -405,12 +406,13 @@
                         android:paddingTop="15dp">
 
                         <ImageView
-                            android:id="@+id/imageView"
+                            android:id="@+id/img_add_book_state_big"
                             android:layout_width="45dp"
                             android:layout_height="45dp"
                             android:src="@drawable/phone_cert_un" />
 
                         <TextView
+                            android:id="@+id/tv_add_book"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -426,6 +428,7 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/tv_addbook_state"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -434,6 +437,7 @@
                                 android:textSize="12sp" />
 
                             <ImageView
+                                android:id="@+id/img_addbook_state"
                                 android:layout_width="12dp"
                                 android:layout_height="12dp"
                                 android:layout_gravity="center_vertical"

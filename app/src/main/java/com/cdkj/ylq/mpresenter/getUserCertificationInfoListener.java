@@ -13,8 +13,8 @@ public interface getUserCertificationInfoListener {
 
     void getInfoFailed(String code, String msg);   //失败
 
-    void startGetInfo();   //开始登录
+    void startGetInfo(boolean showDialog);   //开始登录
 
-    void endGetInfo();   //结束登录
+    void endGetInfo(boolean showDialog);   //结束登录
 
 }

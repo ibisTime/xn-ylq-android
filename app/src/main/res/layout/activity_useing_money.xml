@@ -447,7 +447,7 @@
                                 android:layout_marginLeft="8dp"
                                 android:layout_marginTop="18dp"
                                 android:gravity="right"
-                                android:textColor="@color/text_color"
+                                android:textColor="@color/activity_title_bg"
                                 android:textSize="16sp"
                                 tools:text="2017-09-09" />
 

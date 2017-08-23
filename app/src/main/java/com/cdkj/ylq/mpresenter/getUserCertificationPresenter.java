@@ -28,7 +28,7 @@ public class getUserCertificationPresenter {
         this.mListener = mListener;
     }
 
-    public void getCertInfo() {
+    public void getCertInfo(boolean showDialog) {
 
         if(!SPUtilHelpr.isLoginNoStart()){
             return;
@@ -36,7 +36,7 @@ public class getUserCertificationPresenter {
         Map<String, String> map = new HashMap<>();
         map.put("userId", SPUtilHelpr.getUserId());
         Call call = RetrofitUtils.createApi(MyApiServer.class).getCerttificationInfo("623050", StringUtils.getJsonToString(map));
-        mListener.startGetInfo();
+        mListener.startGetInfo(showDialog);
         call.enqueue(new BaseResponseModelCallBack<CerttificationInfoModel>(mContext) {
             @Override
             protected void onSuccess(CerttificationInfoModel data, String SucMessage) {
@@ -55,7 +55,7 @@ public class getUserCertificationPresenter {
 
             @Override
             protected void onFinish() {
-                mListener.endGetInfo();
+                mListener.endGetInfo(showDialog);
             }
         });
 

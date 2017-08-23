@@ -27,8 +27,8 @@
     <!--用于申请获取蓝牙信息进行室内定位-->
     <uses-permission android:name="android.permission.BLUETOOTH"></uses-permission>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"></uses-permission>
-
-
+    <!--用于读取手机联系人-->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -232,6 +232,11 @@
             android:name=".module.user.userinfo.ShareActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ActivityDialogStyleBottom"
+            android:windowSoftInputMode="adjustPan" />
+        //通讯录认证
+        <activity
+            android:name=".module.certification.AddressBoolCertActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
 

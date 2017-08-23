@@ -84,7 +84,7 @@ public class IdCardCertificationActivity extends AbsBaseActivity implements getU
         initListener();
 
         mCertInfoGetPersenter = new getUserCertificationPresenter(this);
-        mCertInfoGetPersenter.getCertInfo();
+        mCertInfoGetPersenter.getCertInfo(true);
 
     }
 
@@ -102,7 +102,7 @@ public class IdCardCertificationActivity extends AbsBaseActivity implements getU
         //
         mBinding.butSubmit.setOnClickListener(v -> {
 
-            if (mCertData == null){
+            if (mCertData == null) {
                 return;
             }
 
@@ -125,9 +125,9 @@ public class IdCardCertificationActivity extends AbsBaseActivity implements getU
             call.enqueue(new BaseResponseModelCallBack<IsSuccessModes>(this) {
                 @Override
                 protected void onSuccess(IsSuccessModes data, String SucMessage) {
-                    if(data.isSuccess()){
+                    if (data.isSuccess()) {
                         finish();
-                    }else{
+                    } else {
                         showToast("提交失败,请重试");
                     }
                 }
@@ -152,7 +152,7 @@ public class IdCardCertificationActivity extends AbsBaseActivity implements getU
         }
         if (requestCode == PHOTOFLAG) {
             String path = data.getStringExtra(ImageSelectActivity.staticPath);
-            LogUtil.E("图片"+path);
+            LogUtil.E("图片" + path);
             new QiNiuUtil(IdCardCertificationActivity.this).getQiniuURL(new QiNiuUtil.QiNiuCallBack() {
                 @Override
                 public void onSuccess(String key, ResponseInfo info, JSONObject res) {
@@ -191,7 +191,7 @@ public class IdCardCertificationActivity extends AbsBaseActivity implements getU
                     showToast("身份证上传成功");
                     ImgUtils.loadActImg(IdCardCertificationActivity.this, MyConfig.IMGURL + key, mBinding.imgIdCard);
                     if (mCertInfoGetPersenter != null) {
-                        mCertInfoGetPersenter.getCertInfo();
+                        mCertInfoGetPersenter.getCertInfo(true);
                     }
                 }
             }
@@ -254,13 +254,14 @@ public class IdCardCertificationActivity extends AbsBaseActivity implements getU
     }
 
     @Override
-    public void startGetInfo() {
-        showLoadingDialog();
+    public void startGetInfo(boolean is) {
+        if (is) showLoadingDialog();
+
     }
 
     @Override
-    public void endGetInfo() {
-        disMissLoading();
+    public void endGetInfo(boolean is) {
+        if (is) disMissLoading();
     }
 
     @Override
@@ -277,7 +278,7 @@ public class IdCardCertificationActivity extends AbsBaseActivity implements getU
 
         if (TextUtils.equals(tag, IDCARDCERTINFOREFRESH)) {
             if (mCertInfoGetPersenter != null) {
-                mCertInfoGetPersenter.getCertInfo();
+                mCertInfoGetPersenter.getCertInfo(false);
             }
         }
 

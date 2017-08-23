@@ -30,7 +30,6 @@ import retrofit2.Call;
  * 支付（还钱）
  * Created by 李先俊 on 2017/8/9.
  */
-
 public class PayActivity extends AbsBaseActivity {
 
     private ActivityPayBinding mBinding;
@@ -101,10 +100,11 @@ public class PayActivity extends AbsBaseActivity {
 
 
             if (mPayType == 2) {
-                showToast("微信支付未开放");
+                showToast("微信支付未开放,还款请联系客服");
                 //    wxPayRequest();
             } else if (mPayType == 3) {
-                AliPayRequest();
+                showToast("支付宝未开放,还款请联系客服");
+//                AliPayRequest();
             }
 
         });

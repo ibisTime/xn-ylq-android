@@ -105,7 +105,7 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements g
     @Override
     protected void onResume() {
         super.onResume();
-        if (mPresenter != null) mPresenter.getCertInfo();
+        if (mPresenter != null) mPresenter.getCertInfo(true);
     }
 
     /**
@@ -231,12 +231,12 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements g
     }
 
     @Override
-    public void startGetInfo() {
+    public void startGetInfo(boolean is) {
         showLoadingDialog();
     }
 
     @Override
-    public void endGetInfo() {
+    public void endGetInfo(boolean is) {
         disMissLoading();
     }
 

@@ -42,6 +42,8 @@ public abstract class AbsBaseActivity extends BaseActivity {
                     }
                 }
             });
+
+            mTopTitleView.findViewById(R.id.fram_img_back).setVisibility(View.GONE);
         }
 
         if(canLoadErrorView()){

@@ -45,11 +45,12 @@ dependencies {
 
     /*事件总线*/
     compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.alibaba:fastjson:1.1.60.android'
+    compile 'com.alibaba:fastjson:1.1.62.android'
     /*okhttp*/
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
     compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
+//    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.27'
 //    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.24'

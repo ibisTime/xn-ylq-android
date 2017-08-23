@@ -267,13 +267,14 @@ public class ProductDetailsActivity extends AbsBaseActivity {
             @Override
             protected void onSuccess(ProductSingModel data, String SucMessage) {
                 if (TextUtils.equals(data.getStatus(), "1")) {
-                    EventBusModel eventBusModel = new EventBusModel();
-                    eventBusModel.setEvInt(MainActivity.SHOWCERT); //显示认证界面
-                    eventBusModel.setTag(EventTags.MAINCHANGESHOWINDEX);
-                    EventBus.getDefault().post(eventBusModel);
                     EventBus.getDefault().post(BORROWMONEYFRAGMENTREFRESH);//刷新产品列表数据
-                    showToast("您的申请已提交，请尽快认证已便快速审核");
-                    finish();
+                    showDoubleWarnListen("您的信息未认证，请先完成认证",view -> {
+                        EventBusModel eventBusModel = new EventBusModel();
+                        eventBusModel.setEvInt(MainActivity.SHOWCERT); //显示认证界面
+                        eventBusModel.setTag(EventTags.MAINCHANGESHOWINDEX);
+                        EventBus.getDefault().post(eventBusModel);
+                        finish();
+                    });
                 } else if (TextUtils.equals(data.getStatus(), "2")) {
                     HumanReviewActivity.open(ProductDetailsActivity.this);
                     finish();

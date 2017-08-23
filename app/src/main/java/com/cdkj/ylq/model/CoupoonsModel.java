@@ -59,7 +59,7 @@ public class CoupoonsModel {
 
         private BigDecimal amount;
         private String getDatetime;
-        private int id;
+        private long id;
         private String invalidDatetime;
         private String remark;
         private BigDecimal startAmount;
@@ -79,20 +79,20 @@ public class CoupoonsModel {
             this.getDatetime = getDatetime;
         }
 
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
         public String getInvalidDatetime() {
             return invalidDatetime;
         }
 
         public void setInvalidDatetime(String invalidDatetime) {
             this.invalidDatetime = invalidDatetime;
+        }
+
+        public long getId() {
+            return id;
+        }
+
+        public void setId(long id) {
+            this.id = id;
         }
 
         public String getRemark() {

@@ -1,9 +1,11 @@
 package com.cdkj.ylq.module.certification;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
@@ -13,9 +15,12 @@ import android.view.ViewGroup;
 
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.BaseLazyFragment;
+import com.cdkj.baselibrary.model.IsSuccessModes;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
+import com.cdkj.baselibrary.utils.AppUtils;
 import com.cdkj.baselibrary.utils.LogUtil;
+import com.cdkj.baselibrary.utils.PermissionHelper;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.baselibrary.utils.ToastUtil;
 import com.cdkj.ylq.R;
@@ -31,12 +36,15 @@ import com.moxie.client.model.TitleParams;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 
 /**
@@ -51,6 +59,7 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
     private CerttificationInfoModel mCertData;
 
     private getUserCertificationPresenter mCertInfoPresenter;
+
 
     /**
      * 获得fragment实例
@@ -136,7 +145,14 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
         mBinding.imgCalcelCert.setOnClickListener(v -> {
             mBinding.layoutTips.setVisibility(View.GONE);
         });
+
+        //通讯录认证
+        mBinding.layoutPhoneCert.setOnClickListener(v -> {
+            AddressBoolCertActivity.open(mActivity);
+
+        });
     }
+
 
     /**
      * 检查认证状态
@@ -180,7 +196,7 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
     protected void lazyLoad() {
         if (mBinding != null) {
             if (mCertInfoPresenter != null) {
-                mCertInfoPresenter.getCertInfo();
+                mCertInfoPresenter.getCertInfo(false);
             }
         }
     }
@@ -265,7 +281,8 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
+            }else{
+                ToastUtil.show(mActivity,"请重试运营商认证");
             }
         }
     }
@@ -297,7 +314,7 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(aLong -> {
                             if (mCertInfoPresenter != null) {
-                                mCertInfoPresenter.getCertInfo();
+                                mCertInfoPresenter.getCertInfo(true);
                             }
                         }, Throwable::printStackTrace));
             }
@@ -387,6 +404,24 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
         }
 
 
+        if (TextUtils.equals("1", mCertData.getInfoAddressBookFlag())) { //通讯录认证
+            mBinding.tvAddbookState.setText("已认证");
+            mBinding.tvAddbookState.setTextColor(ContextCompat.getColor(mActivity, R.color.cert_state_ok));
+            mBinding.imgAddbookState.setImageResource(R.drawable.cert_ok);
+            mBinding.imgAddBookStateBig.setImageResource(R.drawable.phone_cert);
+
+        } else if (TextUtils.equals("2", mCertData.getInfoAddressBookFlag())) {
+            mBinding.tvAddbookState.setText("已过期");
+            mBinding.tvAddbookState.setTextColor(ContextCompat.getColor(mActivity, R.color.guoqi));
+            mBinding.imgAddbookState.setImageResource(R.drawable.guoqi);
+            mBinding.imgAddBookStateBig.setImageResource(R.drawable.phone_cert_un);
+        } else {
+            mBinding.tvAddbookState.setText("前往提交");
+            mBinding.tvAddbookState.setTextColor(ContextCompat.getColor(mActivity, R.color.cert_state_edit));
+            mBinding.imgAddbookState.setImageResource(R.drawable.can_submit);
+            mBinding.imgAddBookStateBig.setImageResource(R.drawable.phone_cert_un);
+        }
+
     }
 
     @Override
@@ -401,20 +436,19 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
     }
 
     @Override
-    public void startGetInfo() {
-//        showLoadingDialog();
+    public void startGetInfo(boolean showDialog) {
+        if(showDialog) showLoadingDialog();
     }
 
     @Override
-    public void endGetInfo() {
-//        disMissLoading();
+    public void endGetInfo(boolean showDialog) {
+        if (showDialog)  disMissLoading();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(getLayoutInflater(savedInstanceState), R.layout.fragment_certification, null, false);
-
         initListener();
         mCertInfoPresenter = new getUserCertificationPresenter(this);
         return mBinding.getRoot();
@@ -424,7 +458,7 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
     public void onResume() {
         super.onResume();
         if (getUserVisibleHint() && mCertInfoPresenter != null && mBinding != null) {
-            mCertInfoPresenter.getCertInfo();
+            mCertInfoPresenter.getCertInfo(false);
         }
     }
 

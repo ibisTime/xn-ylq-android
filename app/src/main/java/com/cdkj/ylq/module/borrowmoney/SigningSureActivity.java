@@ -107,8 +107,12 @@ public class SigningSureActivity extends AbsBaseActivity {
      */
     private void signingRequest() {
         Map<String, String> map = new HashMap<>();
-        if (!TextUtils.isEmpty(mCouponId)) {
-            map.put("couponId", mCouponId);
+        if (!TextUtils.isEmpty(mCouponId)) {    //因接收到的id类型int 1 为1.0 反传回去时会报错，所以解析成int型
+            try{
+                map.put("couponId", Integer.valueOf(mCouponId)+"");
+            }catch (Exception e){
+                map.put("couponId", mCouponId);
+            }
         }
         map.put("userId", SPUtilHelpr.getUserId());
 
@@ -146,7 +150,7 @@ public class SigningSureActivity extends AbsBaseActivity {
         mBinding.tvAllRate.setText(getAllRateMoney(mProductData) + "元");
         mBinding.tvUseMoneyState.setText("一次性还款" + MoneyUtils.showPrice(mProductData.getAmount()) + "元");
         mBinding.tvShidaoRate.setText(mWillgetMondy);
-        mBinding.tvDueDate.setText(DateUtil.getShowDayToData(mProductData.getDuration()));
+//        mBinding.tvDueDate.setText(DateUtil.getShowDayToData(mProductData.getDuration()));
 
         mBinding.tvRead.setText("《"+SPUtilHelpr.getUserName()+"-借款协议》");
 

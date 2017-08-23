@@ -27,6 +27,16 @@ public class CerttificationInfoModel  {
      */
 
     private String infoBasicFlag;
+
+    public String getInfoAddressBookFlag() {
+        return infoAddressBookFlag;
+    }
+
+    public void setInfoAddressBookFlag(String infoAddressBookFlag) {
+        this.infoAddressBookFlag = infoAddressBookFlag;
+    }
+
+    private String infoAddressBookFlag;
     private InfoBasicBean infoBasic;
     private String infoOccupationFlag;
     private InfoOccupationBean infoOccupation;

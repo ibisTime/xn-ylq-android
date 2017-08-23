@@ -4,12 +4,15 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.BaseRefreshFragment;
+import com.cdkj.baselibrary.model.IntroductionInfoModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.DateUtil;
@@ -39,6 +42,7 @@ public class CouponsListFragment extends BaseRefreshFragment<CoupoonsModel.ListB
     public static final int CANUSET = 2;//不能使用
 
     private int requestState;
+    private ActivityCouponsBinding mTips;
 
 
     /**
@@ -66,7 +70,49 @@ public class CouponsListFragment extends BaseRefreshFragment<CoupoonsModel.ListB
     @Override
     protected void afterCreate(int pageIndex, int limit) {
         getListData(pageIndex, limit, true);
+        if (requestState == CANUSE) {
+            getKeyUrl();
+        }
     }
+
+
+    public void getKeyUrl() {
+        Map<String, String> map = new HashMap<>();
+        map.put("ckey", "couponRule");
+        map.put("systemCode", MyConfig.SYSTEMCODE);
+        map.put("companyCode", MyConfig.COMPANYCODE);
+
+        Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("805917", StringUtils.getJsonToString(map));
+
+        addCall(call);
+
+        showLoadingDialog();
+
+        call.enqueue(new BaseResponseModelCallBack<IntroductionInfoModel>(mActivity) {
+            @Override
+            protected void onSuccess(IntroductionInfoModel data, String SucMessage) {
+                if (TextUtils.isEmpty(data.getCvalue())) {
+                    if(mTips!=null){
+                        mTips.layoutTips.setVisibility(View.GONE);
+                    }
+                }else{
+                    if(mTips!=null){
+                        mTips.layoutTips.setVisibility(View.VISIBLE);
+                        mTips.tvTips.setText(data.getCvalue());
+                    }
+                }
+
+            }
+
+            @Override
+            protected void onFinish() {
+                disMissLoading();
+            }
+        });
+
+
+    }
+
 
     @Override
     protected boolean canLoadEmptyView() {
@@ -80,8 +126,8 @@ public class CouponsListFragment extends BaseRefreshFragment<CoupoonsModel.ListB
 
     @Override
     public View getEmptyView() {
-        ActivityCouponsBinding mFooterView = DataBindingUtil.inflate(mActivity.getLayoutInflater(), R.layout.activity_coupons, null, false);
-        return mFooterView.getRoot();
+        mTips = DataBindingUtil.inflate(mActivity.getLayoutInflater(), R.layout.activity_coupons, null, false);
+        return mTips.getRoot();
     }
 
     @Override

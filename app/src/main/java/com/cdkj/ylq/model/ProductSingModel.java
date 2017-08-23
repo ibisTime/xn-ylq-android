@@ -1,5 +1,7 @@
 package com.cdkj.ylq.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * Created by 李先俊 on 2017/8/22.
  */
