@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
@@ -31,6 +32,7 @@ import java.util.Map;
 import retrofit2.Call;
 
 import static com.cdkj.baselibrary.appmanager.EventTags.MAINCHANGESHOWINDEX;
+import static com.cdkj.ylq.MainActivity.SHOWCERT;
 import static com.cdkj.ylq.MainActivity.SHOWMONEYPRODUCT;
 
 /**
@@ -41,6 +43,8 @@ import static com.cdkj.ylq.MainActivity.SHOWMONEYPRODUCT;
 public class MyMaxMoneyActivity extends AbsBaseActivity {
 
     public ActivityMoneyCeilingBinding mBinding;
+
+    private CanUseMoneyModel mData;
 
     /**
      * 打开当前页面
@@ -67,6 +71,26 @@ public class MyMaxMoneyActivity extends AbsBaseActivity {
         setSubLeftImgState(true);
         getCanUseMoneyData();
 
+        mBinding.btnUse.setOnClickListener(v -> {
+
+            if (mData == null) {
+                return;
+            }
+            EventBusModel eventBusModel = new EventBusModel();
+            eventBusModel.setTag(MAINCHANGESHOWINDEX);
+            if (TextUtils.equals("0", mData.getFlag())) {//没有额度
+                eventBusModel.setEvInt(SHOWMONEYPRODUCT);
+                EventBus.getDefault().post(eventBusModel);         //跳转到申请界面
+                finish();
+            } else if (TextUtils.equals("1", mData.getFlag())) {//已有额度
+                getCanUseProductData();
+            } else if (TextUtils.equals("2", mData.getFlag())) {//已经过期
+                eventBusModel.setEvInt(SHOWCERT);
+                EventBus.getDefault().post(eventBusModel);         //跳转到认证界面
+                finish();
+            }
+        });
+
     }
 
     /**
@@ -77,9 +101,11 @@ public class MyMaxMoneyActivity extends AbsBaseActivity {
         map.put("userId", SPUtilHelpr.getUserId());
         Call call = RetrofitUtils.createApi(MyApiServer.class).getCanUseMoney("623051", StringUtils.getJsonToString(map));
         addCall(call);
+        showLoadingDialog();
         call.enqueue(new BaseResponseModelCallBack<CanUseMoneyModel>(this) {
             @Override
             protected void onSuccess(CanUseMoneyModel data, String SucMessage) {
+                mData = data;
                 setState(data);
             }
 
@@ -92,27 +118,17 @@ public class MyMaxMoneyActivity extends AbsBaseActivity {
 
     private void setState(CanUseMoneyModel data) {
         mBinding.tvMoney.setText(MoneyUtils.showPrice(data.getSxAmount()));
-        if (data.getValidDays() <= 0) {
-            if(data.getSxAmount().doubleValue()>0){
-                mBinding.tvRemainingDays.setText("当前额度已失效");
-                mBinding.btnUse.setText("重新申请");
-            }else{
-                mBinding.tvRemainingDays.setText("您目前没有额度");
-                mBinding.btnUse.setText("申请额度");
-            }
-            mBinding.btnUse.setOnClickListener(v -> {
-                EventBusModel eventBusModel = new EventBusModel();
-                eventBusModel.setTag(MAINCHANGESHOWINDEX);
-                eventBusModel.setEvInt(SHOWMONEYPRODUCT);
-                EventBus.getDefault().post(eventBusModel);         //跳转到申请界面
-                finish();
-            });
-        } else {
+
+        if (TextUtils.equals("0", data.getFlag())) {//没有额度
+            mBinding.tvRemainingDays.setText("您目前没有额度");
+            mBinding.btnUse.setText("申请额度");
+        } else if (TextUtils.equals("1", data.getFlag())) {//已有额度
             mBinding.tvRemainingDays.setText("还有" + data.getValidDays() + "天当前额度失效");
             mBinding.btnUse.setText("使用额度");
-            mBinding.btnUse.setOnClickListener(v -> {
-                getCanUseProductData();
-            });
+
+        } else if (TextUtils.equals("2", data.getFlag())) {//已经过期
+            mBinding.tvRemainingDays.setText("当前额度已失效");
+            mBinding.btnUse.setText("重新申请额度");
         }
     }
 

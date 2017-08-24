@@ -58,7 +58,6 @@ public class MainActivity extends AbsBaseActivity {
 
     @Override
     public View addMainView() {
-
         mBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.activity_main, null, false);
         return mBinding.getRoot();
     }
@@ -76,7 +75,7 @@ public class MainActivity extends AbsBaseActivity {
         initListener();
 
         updateManager = new UpdateManager(getString(R.string.app_name));
-//        updateManager.checkNewApp(this);
+        updateManager.checkNewApp(this);
     }
 
     /**

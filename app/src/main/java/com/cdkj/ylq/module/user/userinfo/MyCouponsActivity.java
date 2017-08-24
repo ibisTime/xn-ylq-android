@@ -60,7 +60,7 @@ public class MyCouponsActivity extends CommonTablayoutActivity {
         List<String> mTitles = new ArrayList<>();
 
         mTitles.add("可使用");
-        mTitles.add("不可使用");
+        mTitles.add("已失效");
 
         return mTitles;
     }

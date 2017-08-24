@@ -30,7 +30,7 @@ public class CanUseCouponsModel implements IPickerViewData {
 
     private BigDecimal amount;
     private String getDatetime;
-    private String id;
+    private long id;
     private String invalidDatetime;
     private String remark;
     private BigDecimal startAmount;
@@ -41,7 +41,7 @@ public class CanUseCouponsModel implements IPickerViewData {
     private String userId;
     private int validDays;
 
-    private boolean isDefuit;//判断是不是默认
+    private transient boolean isDefuit;//判断是不是默认 不用解析
 
     public BigDecimal getAmount() {
         return amount;
@@ -67,11 +67,11 @@ public class CanUseCouponsModel implements IPickerViewData {
         this.getDatetime = getDatetime;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 

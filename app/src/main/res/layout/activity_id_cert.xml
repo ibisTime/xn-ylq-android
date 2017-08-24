@@ -76,10 +76,11 @@
                 android:background="@drawable/bg_line_gray_dashgap">
 
                 <ImageView
+                    android:id="@+id/img_face"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/face" />
+                    android:src="@drawable/face_un" />
 
 
             </FrameLayout>

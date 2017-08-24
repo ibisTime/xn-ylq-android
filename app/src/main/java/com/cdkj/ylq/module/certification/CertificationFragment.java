@@ -1,11 +1,9 @@
 package com.cdkj.ylq.module.certification;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
@@ -15,18 +13,14 @@ import android.view.ViewGroup;
 
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.BaseLazyFragment;
-import com.cdkj.baselibrary.model.IsSuccessModes;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
-import com.cdkj.baselibrary.utils.AppUtils;
 import com.cdkj.baselibrary.utils.LogUtil;
-import com.cdkj.baselibrary.utils.PermissionHelper;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.baselibrary.utils.ToastUtil;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.FragmentCertificationBinding;
 import com.cdkj.ylq.model.CerttificationInfoModel;
-import com.cdkj.ylq.module.api.MyApiServer;
 import com.cdkj.ylq.module.certification.basisinfocert.BasisInfoCertificationActivity;
 import com.cdkj.ylq.mpresenter.getUserCertificationInfoListener;
 import com.cdkj.ylq.mpresenter.getUserCertificationPresenter;
@@ -36,15 +30,12 @@ import com.moxie.client.model.TitleParams;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 
 /**
@@ -148,7 +139,10 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
 
         //通讯录认证
         mBinding.layoutPhoneCert.setOnClickListener(v -> {
-            AddressBoolCertActivity.open(mActivity);
+            if (!SPUtilHelpr.isLogin(mActivity, false)) {
+                return;
+            }
+            AddressBookCertActivity.open(mActivity);
 
         });
     }
@@ -214,7 +208,7 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
         String mApiKey = "96ee985a972a4685be2bb423588e008f";
         String mBannerTxtContent = "运营商认证"; //SDK里title的文字描述
         String mThemeColor = "#ff6702"; //SDK里页面主色调
-        String mAgreementUrl = "https://api.51datake8y.com/h5/agreement.html"; //SDK里显示的用户使用协议
+        String mAgreementUrl = ""; //SDK里显示的用户使用协议
         MxParam mxParam = new MxParam();
         mxParam.setUserId(mUserId);
         mxParam.setApiKey(mApiKey);

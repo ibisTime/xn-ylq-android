@@ -17,6 +17,7 @@ import com.cdkj.baselibrary.nets.BaseResponseListCallBack;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.BigDecimalUtils;
+import com.cdkj.baselibrary.utils.LogUtil;
 import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.ylq.MainActivity;
@@ -110,16 +111,21 @@ public class ProductDetailsActivity extends AbsBaseActivity {
      */
     private void initListener() {
         mBinding.btnNext.setOnClickListener(v -> {
+            if (!SPUtilHelpr.isLogin(this, false)) {
+                return;
+            }
             applyRequest();
         });
 
         mBinding.tvSelectCoupoons.setOnClickListener(v -> {
+            if (!SPUtilHelpr.isLogin(this, false)) {
+                return;
+            }
             getCanUseCoupoons();
         });
 
         mCoupoonsPicker = new OptionsPickerView.Builder(this, (options1, options2, options3, v) -> {
             CanUseCouponsModel cmodel = mCoupoonsModels.get(options1);
-
             if (cmodel != null) {
                 if (!cmodel.isDefuit()) {
                     mBinding.tvSelectCoupoons.setText(MoneyUtils.showPrice(cmodel.getAmount())+"元优惠卷");

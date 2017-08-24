@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.cdkj.baselibrary.appmanager.EventTags;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.model.pay.AliPayRequestMode;
 import com.cdkj.baselibrary.model.pay.PaySucceedInfo;
@@ -19,6 +20,7 @@ import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivityApplyFailureBinding;
 import com.cdkj.ylq.databinding.ActivityPayBinding;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
@@ -81,9 +83,9 @@ public class PayActivity extends AbsBaseActivity {
 
     //
     private void initListener() {
-        mBinding.imgWeixin.setImageResource(R.drawable.pay_select);
-        mBinding.imgZhifubao.setImageResource(R.drawable.un_select);
-        mPayType = 2;
+        mBinding.imgWeixin.setImageResource(R.drawable.un_select);
+        mBinding.imgZhifubao.setImageResource(R.drawable.pay_select);
+        mPayType = 3;
         mBinding.linWeixin.setOnClickListener(v -> {
             mBinding.imgWeixin.setImageResource(R.drawable.pay_select);
             mBinding.imgZhifubao.setImageResource(R.drawable.un_select);
@@ -104,7 +106,7 @@ public class PayActivity extends AbsBaseActivity {
                 //    wxPayRequest();
             } else if (mPayType == 3) {
                 showToast("支付宝未开放,还款请联系客服");
-//                AliPayRequest();
+                AliPayRequest();
             }
 
         });
@@ -175,6 +177,7 @@ public class PayActivity extends AbsBaseActivity {
 
         if (mo.getCallType() == PayUtil.ALIPAY && mo.isPaySucceed()) { //支付宝支付成功
             showToast("还款成功");
+            EventBus.getDefault().post(EventTags.AllFINISH);
             finish();
         } else if (mo.getCallType() == PayUtil.WEIXINPAY && mo.isPaySucceed()) {//微信支付成功
 

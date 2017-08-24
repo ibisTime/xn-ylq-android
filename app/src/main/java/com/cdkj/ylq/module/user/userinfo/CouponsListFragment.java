@@ -70,9 +70,6 @@ public class CouponsListFragment extends BaseRefreshFragment<CoupoonsModel.ListB
     @Override
     protected void afterCreate(int pageIndex, int limit) {
         getListData(pageIndex, limit, true);
-        if (requestState == CANUSE) {
-            getKeyUrl();
-        }
     }
 
 
@@ -127,6 +124,7 @@ public class CouponsListFragment extends BaseRefreshFragment<CoupoonsModel.ListB
     @Override
     public View getEmptyView() {
         mTips = DataBindingUtil.inflate(mActivity.getLayoutInflater(), R.layout.activity_coupons, null, false);
+        getKeyUrl();
         return mTips.getRoot();
     }
 
@@ -208,14 +206,10 @@ public class CouponsListFragment extends BaseRefreshFragment<CoupoonsModel.ListB
 
     @Override
     public String getEmptyInfo() {
-
-
         if (requestState == CANUSE) {
-
             return "您目前没有优惠券";
         } else if (requestState == CANUSET) {
-
-            return "您目前没有不可使用的优惠券";
+            return "您目前没有已失效的优惠券";
         } else {
             return "您目前没有优惠券";
         }

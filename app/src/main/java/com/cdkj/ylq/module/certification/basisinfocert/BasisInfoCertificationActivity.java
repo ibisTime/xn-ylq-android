@@ -81,8 +81,7 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements g
 
         mHelper = new PermissionHelper(this);
 
-        mHelper.requestPermissions("请授予读取手机状态权限！",
-                new PermissionHelper.PermissionListener() {
+        mHelper.requestPermissions(new PermissionHelper.PermissionListener() {
                     @Override
                     public void doAfterGrand(String... permission) {
                         mCanGetIemi = true;

@@ -62,44 +62,72 @@ public class InvitaionFriendActivity extends AbsBaseActivity {
             HuokeListActivity.open(this);
         });
         initListener();
+        getKeyUrl();
     }
 
-    //
     private void initListener() {
-       mBinding.btnInvitation.setOnClickListener(v -> {
+        mBinding.btnInvitation.setOnClickListener(v -> {
 
-           Map<String, String> map = new HashMap<>();
-           map.put("ckey", "domainUrl");
-           map.put("systemCode", MyConfig.SYSTEMCODE);
-           map.put("companyCode", MyConfig.COMPANYCODE);
+            Map<String, String> map = new HashMap<>();
+            map.put("ckey", "getKeyUrl");
+            map.put("systemCode", MyConfig.SYSTEMCODE);
+            map.put("companyCode", MyConfig.COMPANYCODE);
 
-           Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("805917", StringUtils.getJsonToString(map));
-           ;
+            Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("805917", StringUtils.getJsonToString(map));
+            ;
 
-           addCall(call);
+            addCall(call);
 
-           showLoadingDialog();
+            showLoadingDialog();
 
-           call.enqueue(new BaseResponseModelCallBack<IntroductionInfoModel>(this) {
-               @Override
-               protected void onSuccess(IntroductionInfoModel data, String SucMessage) {
-                   if (TextUtils.isEmpty(data.getCvalue())) {
-                       return;
-                   }
+            call.enqueue(new BaseResponseModelCallBack<IntroductionInfoModel>(this) {
+                @Override
+                protected void onSuccess(IntroductionInfoModel data, String SucMessage) {
+                    if (TextUtils.isEmpty(data.getCvalue())) {
+                        return;
+                    }
 
-                   ShareActivity.open(InvitaionFriendActivity.this,data.getCvalue());
-               }
+                    ShareActivity.open(InvitaionFriendActivity.this, data.getCvalue());
+                }
 
-               @Override
-               protected void onFinish() {
-                   disMissLoading();
-               }
-           });
-
-
+                @Override
+                protected void onFinish() {
+                    disMissLoading();
+                }
+            });
 
 
-       });
+        });
+    }
+
+
+    public void getKeyUrl() {
+        Map<String, String> map = new HashMap<>();
+        map.put("ckey", "activityRule");
+        map.put("systemCode", MyConfig.SYSTEMCODE);
+        map.put("companyCode", MyConfig.COMPANYCODE);
+
+        Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("805917", StringUtils.getJsonToString(map));
+
+        addCall(call);
+
+        showLoadingDialog();
+
+        call.enqueue(new BaseResponseModelCallBack<IntroductionInfoModel>(this) {
+            @Override
+            protected void onSuccess(IntroductionInfoModel data, String SucMessage) {
+                if (!TextUtils.isEmpty(data.getCvalue())) {
+                    mBinding.tvInfo.setText(data.getCvalue());
+                }
+            }
+
+            @Override
+            protected void onFinish() {
+                disMissLoading();
+            }
+        });
+
+
     }
 
 

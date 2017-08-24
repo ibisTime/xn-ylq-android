@@ -110,7 +110,7 @@ public class UseMoneySureDetailsActivity extends AbsBaseActivity {
             if (cmodel != null) {
                 if (!cmodel.isDefuit()) {
                     mBinding.tvSelectCoupoons.setText(MoneyUtils.showPrice(cmodel.getAmount())+"元优惠卷");
-                    mCouponId = cmodel.getId();
+                    mCouponId = cmodel.getId()+"";
                     mBinding.tvWillGetMoney.setText(MoneyUtils.showPrice(BigDecimalUtils.add(getWillMoney(mProductData), cmodel.getAmount())) + "元");//实际到账
                 } else {
                     mBinding.tvSelectCoupoons.setText("选择优惠券");

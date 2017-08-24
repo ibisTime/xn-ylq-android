@@ -22,15 +22,12 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author deadline
- * @time 2016-10-28
  * @usage android >=M 的权限申请统一处理
  *
  */
-
 public class PermissionHelper {
 
-    private static final int REQUEST_PERMISSION_CODE = 1000;
+    private static final int REQUEST_PERMISSION_CODE = 666;
 
     private Object mContext;
 
@@ -44,6 +41,34 @@ public class PermissionHelper {
 
     }
 
+
+    /**
+     * 权限授权申请
+     * @param permissions
+     *              要申请的权限
+     *
+     * @param listener
+     *              申请成功之后的callback
+     */
+    public void requestPermissions(@Nullable PermissionListener listener,
+                                   @NonNull final String... permissions){
+
+        if(listener != null){
+            mListener = listener;
+        }
+
+        mPermissionList = Arrays.asList(permissions);
+
+        //没全部权限
+        if (!hasPermissions(mContext, permissions)) {
+            LogUtil.E("需要申请权限");
+            executePermissionsRequest(mContext, permissions,
+                    REQUEST_PERMISSION_CODE);
+        }else if(mListener != null) { //有全部权限
+            LogUtil.E("不需要申请权限");
+            mListener.doAfterGrand(permissions);
+        }
+    }
 
     /**
      * 权限授权申请
@@ -68,9 +93,9 @@ public class PermissionHelper {
 
         //没全部权限
         if (!hasPermissions(mContext, permissions)) {
-
+            LogUtil.E("需要申请权限");
             //需要向用户解释为什么申请这个权限
-            boolean shouldShowRationale = false;
+            boolean shouldShowRationale = true;
             for (String perm : permissions) {
                 shouldShowRationale =
                         shouldShowRationale || shouldShowRequestPermissionRationale(mContext, perm);
@@ -90,6 +115,7 @@ public class PermissionHelper {
                         REQUEST_PERMISSION_CODE);
             }
         }else if(mListener != null) { //有全部权限
+            LogUtil.E("不需要申请权限");
             mListener.doAfterGrand(permissions);
         }
     }
@@ -101,6 +127,7 @@ public class PermissionHelper {
      * @param grantResults
      */
     public void handleRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        LogUtil.E("权限回调");
         switch (requestCode) {
             case REQUEST_PERMISSION_CODE:
                 boolean allGranted = true;
@@ -112,10 +139,11 @@ public class PermissionHelper {
                 }
 
                 if (allGranted && mListener != null) {
-
+                    LogUtil.E("有权限");
                     mListener.doAfterGrand((String[])mPermissionList.toArray());
 
                 }else if(!allGranted && mListener != null){
+                    LogUtil.E("没有权限");
                     mListener.doAfterDenied((String[])mPermissionList.toArray());
                 }
                 break;
@@ -144,6 +172,8 @@ public class PermissionHelper {
 
         return true;
     }
+
+
 
 
     /**

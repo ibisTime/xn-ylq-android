@@ -3,6 +3,7 @@ package com.cdkj.ylq.module.user.login;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -24,6 +25,8 @@ import com.cdkj.ylq.MainActivity;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivityRegisterBinding;
 import com.cdkj.ylq.module.api.MyApiServer;
+import com.cdkj.ylq.module.certification.basisinfocert.JobInfoCertificationWriteActivity;
+import com.lljjcoder.citypickerview.widget.CityPicker;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -40,6 +43,9 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
     private ActivityRegisterBinding mBinding;
 
     private SendPhoneCoodePresenter mSendCOdePresenter;
+
+    private CityPicker mCityPicker;//城市选择
+
 
     /**
      * 打开当前页面
@@ -66,9 +72,15 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
         setSubLeftImgState(true);
 
         setTopTitle("注册");
-
+        startLocation();//开始定位
         mSendCOdePresenter = new SendPhoneCoodePresenter(this);
 
+        initCityPicker();
+        initListener();
+
+    }
+
+    private void initListener() {
         mBinding.btnSendCode.setOnClickListener(v -> { //发送验证码
             mSendCOdePresenter.sendCodeRequest(mBinding.editUsername.getText().toString(), "805041", MyConfig.USERTYPE, this);
         });
@@ -76,7 +88,6 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
             WebViewActivity.openkey(this, "注册协议", "regProtocol");
         });
 
-        startLocation();//开始定位
 
         //注册
         mBinding.btnRegister.setOnClickListener(v -> {
@@ -93,6 +104,11 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
                 showToast("请输入密码");
                 return;
             }
+            if (TextUtils.isEmpty(mBinding.tvLocation.getText().toString())) {
+                showToast("请选择地址");
+                return;
+            }
+
             if (!mBinding.checkboxRegi.isChecked()) {
                 showToast("请阅读并同意注册协议");
                 return;
@@ -103,7 +119,53 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
 
         });
 
+        mBinding.layoutLocation.setOnClickListener(v -> {
+            if (mCityPicker == null) return;
+            mCityPicker.show();
+        });
+
+
     }
+
+
+    /**
+     * 城市选择
+     */
+    private void initCityPicker() {
+        mCityPicker = new CityPicker.Builder(this)
+                .textSize(18)
+                .titleBackgroundColor("#ffffff")
+                .titleTextColor("#ffffff")
+                .backgroundPop(0xa0000000)
+                .confirTextColor("#3DA3FF")
+                .cancelTextColor("#3DA3FF")
+                .province("北京市")
+                .city("北京市")
+                .district("昌平区")
+                .textColor(Color.parseColor("#000000"))
+                .provinceCyclic(true)
+                .cityCyclic(false)
+                .districtCyclic(false)
+                .visibleItemsCount(7)
+                .itemPadding(10)
+                .onlyShowProvinceAndCity(false)
+                .build();
+
+
+        //监听方法，获取选择结果
+        mCityPicker.setOnCityItemClickListener(new CityPicker.OnCityItemClickListener() {
+            @Override
+            public void onSelected(String... citySelected) {
+                mBinding.tvLocation.setText(citySelected[0] + " " + citySelected[1] + " " + citySelected[2]);
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        });
+    }
+
 
     /**
      * 注册请求

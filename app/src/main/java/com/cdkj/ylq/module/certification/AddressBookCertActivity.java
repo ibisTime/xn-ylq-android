@@ -15,6 +15,7 @@ import com.cdkj.baselibrary.model.IsSuccessModes;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.AppUtils;
+import com.cdkj.baselibrary.utils.LogUtil;
 import com.cdkj.baselibrary.utils.PermissionHelper;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.ylq.R;
@@ -34,7 +35,7 @@ import retrofit2.Call;
  * Created by cdkj on 2017/8/23.
  */
 
-public class AddressBoolCertActivity extends AbsBaseActivity {
+public class AddressBookCertActivity extends AbsBaseActivity {
 
     private ActivityAddressbookBinding mBinding;
 
@@ -49,7 +50,7 @@ public class AddressBoolCertActivity extends AbsBaseActivity {
         if (context == null) {
             return;
         }
-        Intent intent = new Intent(context, AddressBoolCertActivity.class);
+        Intent intent = new Intent(context, AddressBookCertActivity.class);
         context.startActivity(intent);
     }
 
@@ -81,16 +82,15 @@ public class AddressBoolCertActivity extends AbsBaseActivity {
                 showToast("请阅读并同意授权协议");
                 return;
             }
-
-            mHelper.requestPermissions("请授予读取手机联系人权限！",
-                    new PermissionHelper.PermissionListener() {
+            LogUtil.E("权限申请");
+            mHelper.requestPermissions(new PermissionHelper.PermissionListener() {
                         @Override
                         public void doAfterGrand(String... permission) {
                             showLoadingDialog();
                             mSubscription.add(Observable.just("0")
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(Schedulers.io())
-                                    .map(s -> AppUtils.getAllContactInfo(AddressBoolCertActivity.this))
+                                    .map(s -> AppUtils.getAllContactInfo(AddressBookCertActivity.this))
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(hashMaps -> {
                                         pushMobileInfo(hashMaps);
@@ -101,7 +101,8 @@ public class AddressBoolCertActivity extends AbsBaseActivity {
 
                         @Override
                         public void doAfterDenied(String... permission) {
-
+                            disMissLoading();
+                            showToast("请授予读取手机联系人权限");
                         }
                     }, Manifest.permission.READ_CONTACTS);
 
@@ -130,8 +131,9 @@ public class AddressBoolCertActivity extends AbsBaseActivity {
             @Override
             protected void onSuccess(IsSuccessModes data, String SucMessage) {
                 if (data.isSuccess()) {
-                    showToast("通讯录认证成功");
-                    finish();
+                    if(hashMaps!=null || hashMaps.size()>0){
+                        showToast("通讯录认证成功");
+                    }
                 }
             }
 

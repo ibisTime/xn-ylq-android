@@ -48,7 +48,7 @@ public class SigningSureActivity extends AbsBaseActivity {
      *
      * @param context
      */
-    public static void open(Context context, PorductListModel.ListBean productData, String couponId,String willgetMondy) {
+    public static void open(Context context, PorductListModel.ListBean productData, String couponId, String willgetMondy) {
         if (context == null) {
             return;
         }
@@ -107,12 +107,8 @@ public class SigningSureActivity extends AbsBaseActivity {
      */
     private void signingRequest() {
         Map<String, String> map = new HashMap<>();
-        if (!TextUtils.isEmpty(mCouponId)) {    //因接收到的id类型int 1 为1.0 反传回去时会报错，所以解析成int型
-            try{
-                map.put("couponId", Integer.valueOf(mCouponId)+"");
-            }catch (Exception e){
-                map.put("couponId", mCouponId);
-            }
+        if (!TextUtils.isEmpty(mCouponId)) {
+            map.put("couponId", mCouponId);
         }
         map.put("userId", SPUtilHelpr.getUserId());
 
@@ -152,10 +148,10 @@ public class SigningSureActivity extends AbsBaseActivity {
         mBinding.tvShidaoRate.setText(mWillgetMondy);
 //        mBinding.tvDueDate.setText(DateUtil.getShowDayToData(mProductData.getDuration()));
 
-        mBinding.tvRead.setText("《"+SPUtilHelpr.getUserName()+"-借款协议》");
+        mBinding.tvRead.setText("《" + SPUtilHelpr.getUserName() + "-借款协议》");
 
-        mBinding.tvUsed.setText("7天内逾期，每天" + MoneyUtils.showPrice(BigDecimalUtils.multiply(mProductData.getYqRate1(),mProductData.getAmount())) + "元\n"
-                + "7天外逾期，每天" + MoneyUtils.showPrice(BigDecimalUtils.multiply(mProductData.getYqRate2(),mProductData.getAmount())) + "元");
+        mBinding.tvUsed.setText("7天内逾期，每天" + MoneyUtils.showPrice(BigDecimalUtils.multiply(mProductData.getYqRate1(), mProductData.getAmount())) + "元\n"
+                + "7天外逾期，每天" + MoneyUtils.showPrice(BigDecimalUtils.multiply(mProductData.getYqRate2(), mProductData.getAmount())) + "元");
 
     }
 

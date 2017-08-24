@@ -207,7 +207,7 @@ public class BankInfoCertificationWriteActivity extends AbsBaseActivity {
         mCityPicker.setOnCityItemClickListener(new CityPicker.OnCityItemClickListener() {
             @Override
             public void onSelected(String... citySelected) {
-                mBinding.tvCity.setText(citySelected[0] + citySelected[1] + citySelected[3]);
+                mBinding.tvCity.setText(citySelected[0] +" " + citySelected[1] + " " +citySelected[2]);
             }
 
             @Override

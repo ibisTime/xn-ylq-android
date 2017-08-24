@@ -470,7 +470,7 @@
                                 android:textSize="16sp" />
 
                             <TextView
-                                android:id="@+id/tv_yq"
+                                android:id="@+id/tv_yq_money"
                                 android:layout_width="180dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="right"
@@ -507,7 +507,7 @@
                                 android:layout_marginLeft="8dp"
                                 android:layout_marginTop="18dp"
                                 android:gravity="right"
-                                android:textColor="@color/text_color"
+                                android:textColor="@color/item_lv1_open"
                                 android:textSize="16sp"
                                 tools:text="2017-09-09" />
 

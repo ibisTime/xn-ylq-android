@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,21 +37,10 @@
                     android:padding="15dp">
 
                     <TextView
+                        android:id="@+id/tv_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1、首次邀请5位；" />
-
-                    <TextView
-                        android:layout_marginTop="10dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2、再次邀请1位送20元红包；" />
-
-                    <TextView
-                        android:layout_marginTop="10dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="3、每天好礼不停。首次放贷则送20元现金，充值至手机，上不封顶；" />
+                        tools:text="1、首次邀请5位；" />
 
                 </LinearLayout>
 

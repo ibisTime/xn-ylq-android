@@ -226,11 +226,13 @@ public class IdCardCertificationActivity extends AbsBaseActivity implements getU
             mBinding.tvFaceState.setText("已认证");
             mBinding.tvFaceState.setTextColor(ContextCompat.getColor(this, R.color.cert_state_ok));
             mBinding.imgFaceState.setImageResource(R.drawable.cert_ok_2);
+            mBinding.imgFace.setImageResource(R.drawable.face);
 
         } else {
             mBinding.tvFaceState.setText("前往提交");
             mBinding.imgFaceState.setImageResource(R.drawable.can_submit);
             mBinding.tvFaceState.setTextColor(ContextCompat.getColor(this, R.color.cert_state_edit));
+            mBinding.imgFace.setImageResource(R.drawable.face_un);
         }
 
 

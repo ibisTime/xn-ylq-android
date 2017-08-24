@@ -81,10 +81,7 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (!SPUtilHelpr.isLogin(mActivity, false)) {
-                    LogUtil.E("点击阻拦 没有登录");
-                    return;
-                }
+
                 PorductListModel.ListBean data = (PorductListModel.ListBean) adapter.getItem(position);
                 productItemClick(data);
             }
@@ -97,6 +94,8 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
      * @param data
      */
     private void productItemClick(PorductListModel.ListBean data) {
+
+
         if (data == null) {
             return;
         }
@@ -108,8 +107,15 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
         if (TextUtils.equals("0", data.getUserProductStatus())) {
 
             ProductDetailsActivity.open(mActivity, data.getCode());
+            return;
+        }
 
-        } else if (TextUtils.equals("1", data.getUserProductStatus())) {//认证中显示认证界面
+        if (!SPUtilHelpr.isLogin(mActivity, false)) {
+            LogUtil.E("点击阻拦 没有登录");
+            return;
+        }
+
+        if (TextUtils.equals("1", data.getUserProductStatus())) {//认证中显示认证界面
 
             EventBusModel eventBusModel = new EventBusModel();
             eventBusModel.setTag(EventTags.MAINCHANGESHOWINDEX);
@@ -214,7 +220,7 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
 
     @Override
     protected void lazyLoad() {
-        if(mBinding!=null){
+        if (mBinding != null) {
             mPageIndex = 1;
             onMRefresh(mPageIndex, mLimit);
         }

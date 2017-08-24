@@ -2,6 +2,7 @@ package com.cdkj.ylq.module.user.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 
 import com.cdkj.baselibrary.base.BaseActivity;
 import com.cdkj.ylq.MainActivity;
@@ -33,9 +34,10 @@ public class WelcomeAcitivity extends BaseActivity {
                 return;
             }
         } catch (Exception e) {
-
         }
         setContentView(R.layout.activity_welcom);
+        ImageView img=(ImageView)findViewById(R.id.img_start);
+        img.setImageResource(R.drawable.start);
         mSubscription.add(Observable.timer(2, TimeUnit.SECONDS)
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -235,7 +235,7 @@
             android:windowSoftInputMode="adjustPan" />
         //通讯录认证
         <activity
-            android:name=".module.certification.AddressBoolCertActivity"
+            android:name=".module.certification.AddressBookCertActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 

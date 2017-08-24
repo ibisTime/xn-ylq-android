@@ -148,11 +148,7 @@ public class PersonalActivity extends AbsBaseActivity {
 
         SPUtilHelpr.logOutClear();
         EventBus.getDefault().post(EventTags.AllFINISH);
-        EventBusModel eventBusModel = new EventBusModel();
-        eventBusModel.setTag(EventTags.MAINFINISH);
-
-        EventBus.getDefault().post(eventBusModel);
-
+        EventBus.getDefault().post(EventTags.MAINFINISH);
         LoginActivity.open(this, true);
         finish();
 
