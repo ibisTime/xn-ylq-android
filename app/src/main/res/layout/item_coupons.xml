@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
+        android:id="@+id/layout_coupons_bg"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_width="match_parent"
@@ -71,7 +72,7 @@
                     android:layout_marginRight="5dp"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textColor="@color/text_hint_color"
+                    android:textColor="#FFCACACA"
                     android:textSize="14sp"
                     tools:text="限借款1000元及以上使用" />
 
@@ -84,7 +85,7 @@
                     android:layout_marginTop="10dp"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textColor="@color/text_hint_color"
+                    android:textColor="#FFCACACA"
                     android:textSize="14sp"
                     tools:text="截至日期2016-10-27" />
 

@@ -54,9 +54,9 @@ public class UseMoneyRecordActivity extends CommonTablayoutActivity {
     public List<Fragment> getFragments() {
         List<Fragment> mFragments = new ArrayList<>();
         mFragments.add(UseMoneyRecordFragment.getInstanse(0));
-        mFragments.add(UseMoneyRecordFragment.getInstanse(1));
         mFragments.add(UseMoneyRecordFragment.getInstanse(3));
-        mFragments.add(UseMoneyRecordFragment.getInstanse(2));
+        mFragments.add(UseMoneyRecordFragment.getInstanse(4));
+        mFragments.add(UseMoneyRecordFragment.getInstanse(5));
 
 
         return mFragments;
@@ -66,10 +66,10 @@ public class UseMoneyRecordActivity extends CommonTablayoutActivity {
     public List<String> getFragmentTitles() {
         List<String> mTitles = new ArrayList<>();
 
-        mTitles.add("待放款"); // 0
-        mTitles.add("生效中"); //1
-        mTitles.add("已还款");//3
-        mTitles.add("已逾期"); ///2
+        mTitles.add("待放款"); // 0 1
+        mTitles.add("生效中"); //3
+        mTitles.add("已还款");//4
+        mTitles.add("已逾期"); ///5
 
         return mTitles;
     }

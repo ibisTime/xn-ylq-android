@@ -20,6 +20,7 @@ import com.cdkj.baselibrary.utils.BigDecimalUtils;
 import com.cdkj.baselibrary.utils.LogUtil;
 import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
+import com.cdkj.baselibrary.utils.ToastUtil;
 import com.cdkj.ylq.MainActivity;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivityProductDetailsBinding;
@@ -272,15 +273,15 @@ public class ProductDetailsActivity extends AbsBaseActivity {
         call.enqueue(new BaseResponseModelCallBack<ProductSingModel>(this) {
             @Override
             protected void onSuccess(ProductSingModel data, String SucMessage) {
+                EventBus.getDefault().post(BORROWMONEYFRAGMENTREFRESH);//刷新产品列表数据
                 if (TextUtils.equals(data.getStatus(), "1")) {
-                    EventBus.getDefault().post(BORROWMONEYFRAGMENTREFRESH);//刷新产品列表数据
-                    showDoubleWarnListen("您的信息未认证，请先完成认证",view -> {
-                        EventBusModel eventBusModel = new EventBusModel();
-                        eventBusModel.setEvInt(MainActivity.SHOWCERT); //显示认证界面
-                        eventBusModel.setTag(EventTags.MAINCHANGESHOWINDEX);
-                        EventBus.getDefault().post(eventBusModel);
-                        finish();
-                    });
+                    EventBusModel eventBusModel = new EventBusModel();
+                    eventBusModel.setEvInt(MainActivity.SHOWCERT); //显示认证界面
+                    eventBusModel.setTag(EventTags.MAINCHANGESHOWINDEX);
+                    EventBus.getDefault().post(eventBusModel);
+                    showToast("您的信息未认证，请先完成认证");
+                    finish();
+
                 } else if (TextUtils.equals(data.getStatus(), "2")) {
                     HumanReviewActivity.open(ProductDetailsActivity.this);
                     finish();

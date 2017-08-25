@@ -13,15 +13,12 @@ import com.cdkj.baselibrary.model.IsSuccessModes;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.LogUtil;
-import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
-import com.cdkj.baselibrary.utils.ToastUtil;
 import com.cdkj.ylq.MainActivity;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.adapters.BorrowMoneyProductAdapter;
 import com.cdkj.ylq.databinding.LayoutProductFooterviewBinding;
 import com.cdkj.ylq.model.PorductListModel;
-import com.cdkj.ylq.model.UseMoneyRecordModel;
 import com.cdkj.ylq.module.api.MyApiServer;
 import com.cdkj.ylq.module.certification.review.HumanReviewActivity;
 import com.cdkj.ylq.module.product.ProductDetailsActivity;
@@ -29,7 +26,6 @@ import com.cdkj.ylq.module.user.userinfo.MsgListActivity;
 import com.cdkj.ylq.module.user.userinfo.MyMaxMoneyActivity;
 import com.cdkj.ylq.module.user.userinfo.usemoneyrecord.UsedMoneyDetailsActivity;
 import com.cdkj.ylq.module.user.userinfo.usemoneyrecord.UseingMoneyDetailsActivity;
-import com.cdkj.ylq.module.user.userinfo.usemoneyrecord.WaiteMoneyDetailsActivity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.greenrobot.eventbus.EventBus;
@@ -135,7 +131,7 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
 
         } else if (TextUtils.equals("6", data.getUserProductStatus())) { //生效中
 
-            UseingMoneyDetailsActivity.open(mActivity, null, data.getBorrowCode());
+            UseingMoneyDetailsActivity.open(mActivity, null, true, data.getBorrowCode());
 
         } else if (TextUtils.equals("7", data.getUserProductStatus())) { //逾期
             UsedMoneyDetailsActivity.open(mActivity, null, data.getBorrowCode());
@@ -160,7 +156,6 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
         addCall(call);
 
         if (canShowDialog) showLoadingDialog();
-
 
         call.enqueue(new BaseResponseModelCallBack<PorductListModel>(mActivity) {
             @Override

@@ -55,9 +55,9 @@ public class RetrofitUtils {
      */
     public static String getBaseURL() {
 
-        if (LogUtil.isDeBug) {
-            return "http://121.43.101.148:3701/forward-service/";//研发环境
-        }
+//        if (LogUtil.isDeBug) {
+//            return "http://121.43.101.148:3701/forward-service/";//研发环境
+//        }
         return "http://116.62.193.233:3701/forward-service/";//测试环境
     }
 

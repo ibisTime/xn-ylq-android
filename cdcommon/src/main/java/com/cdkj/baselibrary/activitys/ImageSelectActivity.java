@@ -100,12 +100,6 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
         init();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
-
     protected void init() {
         isSplit = getIntent().getBooleanExtra("isSplit", isSplit);
 
@@ -207,7 +201,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
 
     }
 
-    /**
+    /**7.0适配
      * 转换 content:// uri
      *
      * @param imageFile
@@ -511,37 +505,12 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
             }
         }
 
-
         if (!isgetPermissions) {
-
             if (isFinishing()) {
                 return;
             }
-//            new CommonDialog(this).builder()
-//                    .setTitle("提示").setContentMsg("权限获取失败,无法进行下一步操作.请重新获取权限或打开设置界面授予应用相机权限.")
-//                    .setMiddleBtn("设置", new CommonDialog.OnMiddleListener() {
-//                        @Override
-//                        public void onMiddle(View view) {
-//                            // 根据包名跳转到系统自带的应用程序信息界面
-//                            AppUtils.startDetailsSetting(ImageSelectActivity.this);
-//                            ImageSelectActivity.this.finish();
-//                        }
-//                    })
-//                    .setPositiveBtn("重新获取权限", new CommonDialog.OnPositiveListener() {
-//                        @Override
-//                        public void onPositive(View view) {
-//                            PermissionCheck(0);
-//                        }
-//                    })
-//                    .setNegativeBtn("取消", new CommonDialog.OnNegativeListener() {
-//                        @Override
-//                        public void onNegative(View view) {
-//                            ImageSelectActivity.this.finish();
-//                        }
-//                    }, false).show();
-
             new CommonDialog(this).builder()
-                    .setTitle("系统提示").setContentMsg("未取得您的相机、存储空间使用权限，此功能无法使用。请前往应用权限设置打开权限。")
+                    .setTitle("系统提示").setContentMsg("未取得您的:\n1.相机。\n2.存储读写。\n使用权限，此功能无法使用。请前往应用权限授予以上权限。")
 
                     .setPositiveBtn("去打开", new CommonDialog.OnPositiveListener() {
                         @Override

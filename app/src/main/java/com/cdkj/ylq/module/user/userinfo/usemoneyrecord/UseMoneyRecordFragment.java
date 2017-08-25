@@ -19,6 +19,7 @@ import com.cdkj.ylq.module.api.MyApiServer;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,30 +76,38 @@ public class UseMoneyRecordFragment extends BaseRefreshFragment<UseMoneyRecordMo
 
             if (TextUtils.equals(state.getStatus(), "0")) {
                 WaiteMoneyDetailsActivity.open(mActivity, state);//待放款 详情
+            } else if (TextUtils.equals(state.getStatus(), "1")) {//待放款 详情
+                WaiteMoneyDetailsActivity.open(mActivity, state);
 
-            } else if (TextUtils.equals(state.getStatus(), "1")) {//放款中详情
+            } else if (TextUtils.equals(state.getStatus(), "3")) {//生效中
 
-                UseingMoneyDetailsActivity.open(mActivity, state,"");
+                UseingMoneyDetailsActivity.open(mActivity, state, true, "");//
 
-            } else if (TextUtils.equals(state.getStatus(), "2")) {//逾期详情
-                UsedMoneyDetailsActivity.open(mActivity,state,"");
+            } else if (TextUtils.equals(state.getStatus(), "4")) {//已还款
+                UseingMoneyDetailsActivity.open(mActivity, state, false, "");//
 
-            } else if (TextUtils.equals(state.getStatus(), "3")) {//已还款详情
-                UseingMoneyDetailsActivity.open(mActivity, state,"");
+            } else if (TextUtils.equals(state.getStatus(), "5")) {//已逾期
+                UsedMoneyDetailsActivity.open(mActivity, state, ""); //
             }
-
-
         });
     }
 
     @Override
     protected void getListData(int pageIndex, int limit, boolean canShowDialog) {
 
-        Map<String, String> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("limit", limit + "");
         map.put("start", pageIndex + "");
         map.put("applyUser", SPUtilHelpr.getUserId());
-        map.put("status", requestState + "");
+
+        List<String> status = new ArrayList<>();
+        if (requestState == 0 || requestState == 1) {
+            status.add("0");
+            status.add("1");
+        } else {
+            status.add(requestState + "");
+        }
+        map.put("statusList", status);
 
         Call call = RetrofitUtils.createApi(MyApiServer.class).getRecordList("623087", StringUtils.getJsonToString(map));
 
@@ -166,24 +175,25 @@ public class UseMoneyRecordFragment extends BaseRefreshFragment<UseMoneyRecordMo
 
         switch (status) {
             case "0":
-                str = "待放款";
+                str = "审核中";
                 break;
             case "1":
-                str = "生效中";
-                break;
-            case "2":
-                str = "已逾期";
+                str = "审核通过";
                 break;
             case "3":
-                str = "已还款";
+                str = "已放款";
                 break;
             case "4":
-                str = "已取消";
+                str = "已还款";
+                break;
+            case "5":
+                str = "已逾期";
                 break;
         }
 
         return str;
     }
+
 
     @Override
     public String getEmptyInfo() {

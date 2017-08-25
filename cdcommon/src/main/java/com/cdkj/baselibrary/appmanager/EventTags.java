@@ -15,16 +15,15 @@ public class EventTags {
     //改变MainActivity显示界面
     public final static String MAINCHANGESHOWINDEX = "4";
     //结束MAINACTIVITY
-    public final static String MAINFINISH= "5";
- //登录成功刷新
-    public final static String LOGINREFRESH= "6";
-
+    public final static String MAINFINISH = "5";
+    //登录成功刷新
+    public final static String LOGINREFRESH = "6";
     //产品列列表刷新
-    public final static String BORROWMONEYFRAGMENTREFRESH= "7";
+    public final static String BORROWMONEYFRAGMENTREFRESH = "7";
     //身份证认证数据刷新
-    public final static String IDCARDCERTINFOREFRESH= "8";
+    public final static String IDCARDCERTINFOREFRESH = "8";
     //签约信息展示页面关闭
-    public final static String USEMONEYSUREFINISH= "9";
+    public final static String USEMONEYSUREFINISH = "9";
 
 
 }

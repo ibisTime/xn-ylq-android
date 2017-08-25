@@ -11,6 +11,7 @@ import android.view.View;
 import com.cdkj.baselibrary.activitys.WebViewActivity;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
+import com.cdkj.baselibrary.dialog.CommonDialog;
 import com.cdkj.baselibrary.model.IsSuccessModes;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
@@ -93,7 +94,18 @@ public class AddressBookCertActivity extends AbsBaseActivity {
                                     .map(s -> AppUtils.getAllContactInfo(AddressBookCertActivity.this))
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(hashMaps -> {
-                                        pushMobileInfo(hashMaps);
+                                        if(hashMaps!=null && hashMaps.size()>0){
+                                            pushMobileInfo(hashMaps);
+                                        }else{
+                                            CommonDialog commonDialog = new CommonDialog(AddressBookCertActivity.this).builder()
+                                                    .setTitle("没有获取到通讯录数据").setContentMsg("1.请授予读取手机联系人权限\n" +
+                                                            "2.请检查通讯录是否有联系人。")
+                                                    .setPositiveBtn("确定", view -> {
+                                                    });
+                                            commonDialog.show();
+
+                                            disMissLoading();
+                                        }
                                     }, throwable -> {
                                         disMissLoading();
                                     }));
@@ -131,7 +143,7 @@ public class AddressBookCertActivity extends AbsBaseActivity {
             @Override
             protected void onSuccess(IsSuccessModes data, String SucMessage) {
                 if (data.isSuccess()) {
-                    if(hashMaps!=null || hashMaps.size()>0){
+                    if(hashMaps!=null && hashMaps.size()>0){
                         showToast("通讯录认证成功");
                     }
                 }

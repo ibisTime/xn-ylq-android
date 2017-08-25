@@ -148,44 +148,6 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
     }
 
 
-    /**
-     * 检查认证状态
-     */
-
-    public boolean checkCertState() {
-
-        /*
-        * if (TextUtils.equals("1", mCertData.getInfoIdentifyFlag())) { //身份认证
-
-        if (TextUtils.equals("1", mCertData.getInfoAntifraudFlag())) { //基本信息认证
-
-        if (TextUtils.equals("1", mCertData.getInfoZMCreditFlag())) { //芝麻认证
-
-        if (TextUtils.equals("1", mCertData.getInfoCarrierFlag())) { //魔蝎认证
-        * */
-
-        if (mCertData == null) return false;
-
-        if (!TextUtils.equals("1", mCertData.getInfoIdentifyFlag())) {
-            ToastUtil.show(mActivity, "请进行身份认证");
-            return false;
-        }
-        if (!TextUtils.equals("1", mCertData.getInfoAntifraudFlag())) {
-            ToastUtil.show(mActivity, "请进行个人信息认证");
-            return false;
-        }
-        if (!TextUtils.equals("1", mCertData.getInfoZMCreditFlag())) {
-            ToastUtil.show(mActivity, "请进行芝麻认证");
-            return false;
-        }
-        if (!TextUtils.equals("1", mCertData.getInfoCarrierFlag())) {
-            ToastUtil.show(mActivity, "请进行运营商认证");
-            return false;
-        }
-        return true;
-    }
-
-
     @Override
     protected void lazyLoad() {
         if (mBinding != null) {
@@ -204,7 +166,6 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
         //合作方系统中的客户ID
         String mUserId = SPUtilHelpr.getUserId();
         //获取任务状态时使用(合作方申请接入后由魔蝎数据提供)
-//        String mApiKey = "6149056c09e1498ca9b1bcd534b5ad0c";
         String mApiKey = "96ee985a972a4685be2bb423588e008f";
         String mBannerTxtContent = "运营商认证"; //SDK里title的文字描述
         String mThemeColor = "#ff6702"; //SDK里页面主色调
@@ -216,10 +177,19 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
         mxParam.setThemeColor(mThemeColor);  // SDK里页面主色调
         mxParam.setAgreementUrl(mAgreementUrl); // SDK里显示的用户使用协议
         mxParam.setFunction(MxParam.PARAM_FUNCTION_CARRIER); // 功能名
-        mxParam.setQuitOnFail(MxParam.PARAM_COMMON_YES); // 爬取失败时是否退出SDK(登录阶段之后)
+        mxParam.setQuitOnFail(MxParam.PARAM_COMMON_NO); // 爬取失败时是否退出SDK(登录阶段之后)
         mxParam.setAgreementEntryText("同意《使用协议》"); // SDK里显示的同意协议描述语
         mxParam.setLoadingViewText("验证过程中不会浪费您任何流量\n请稍等片刻");  //设置导入过程中的自定义提示文案，为居中显示
         mxParam.setQuitDisable(true); //设置导入过程中，触发返回键或者点击actionbar的返回按钮的时候，不执行魔蝎的默认行为
+
+        HashMap<String, String> extendParam = new HashMap<String, String>();
+        extendParam.put(MxParam.PARAM_CARRIER_IDCARD, mCertData.getInfoIdentify().getIdNo()); // 身份证
+        extendParam.put(MxParam.PARAM_CARRIER_PHONE, SPUtilHelpr.getUserPhoneNum()); // 手机号
+        extendParam.put(MxParam.PARAM_CARRIER_NAME, mCertData.getInfoIdentify().getRealName()); // 姓名
+//        extendParam.put(MxParam.PARAM_CARRIER_PASSWORD, "123456"); // 密码
+        extendParam.put(MxParam.PARAM_CARRIER_EDITABLE, MxParam.PARAM_COMMON_YES); // 是否允许用户修改以上信息
+        mxParam.setExtendParams(extendParam);
+
         //设置title
         TitleParams titleParams = new TitleParams.Builder()
                 //不设置此方法会默认使用魔蝎的icon
@@ -239,13 +209,11 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
         Intent intent = new Intent(mActivity, com.moxie.client.MainActivity.class);
         intent.putExtras(bundle);
         startActivityForResult(intent, 0);
-
     }
 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if (resultCode == Activity.RESULT_OK) {  //魔蝎回调
             Bundle b = data.getExtras();
             String result = b.getString("result");
@@ -260,8 +228,8 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
                         //根据taskType进行对应的处理
                         switch (jsonObject.getString("taskType")) {
                             case MxParam.PARAM_FUNCTION_CARRIER: //成功
-                                showLoadingDialog();
-                                mSubscription.add(Observable.timer(5, TimeUnit.SECONDS)//延迟进行请求
+                                showLoadingDialog();   //进行认证结果请求之后才会消失
+                                mSubscription.add(Observable.timer(6, TimeUnit.SECONDS)//延迟进行请求
                                         .subscribeOn(AndroidSchedulers.mainThread())
                                         .observeOn(AndroidSchedulers.mainThread())
                                         .subscribe(aLong -> {
@@ -269,15 +237,23 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
                                         }, throwable -> {
                                             disMissLoading();
                                         }));
+
                                 break;
+                            default:
+                                ToastUtil.show(mActivity, "请重试运营商认证");
+                                break;
+
                         }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    ToastUtil.show(mActivity, "请重试运营商认证");
                 }
-            }else{
-                ToastUtil.show(mActivity,"请重试运营商认证");
+            } else {
+                ToastUtil.show(mActivity, "请重试运营商认证");
             }
+        } else {
+            ToastUtil.show(mActivity, "请重试运营商认证");
         }
     }
 
@@ -302,15 +278,11 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
 
             @Override
             protected void onFinish() {
-                disMissLoading();
-                mSubscription.add(Observable.timer(2, TimeUnit.SECONDS)//延迟进行请求
-                        .subscribeOn(AndroidSchedulers.mainThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(aLong -> {
-                            if (mCertInfoPresenter != null) {
-                                mCertInfoPresenter.getCertInfo(true);
-                            }
-                        }, Throwable::printStackTrace));
+                if (mCertInfoPresenter != null) {
+                    mCertInfoPresenter.getCertInfo(true);  //获取认证结果
+                } else {
+                    disMissLoading();
+                }
             }
         });
 
@@ -431,12 +403,12 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
 
     @Override
     public void startGetInfo(boolean showDialog) {
-        if(showDialog) showLoadingDialog();
+        if (showDialog) showLoadingDialog();
     }
 
     @Override
     public void endGetInfo(boolean showDialog) {
-        if (showDialog)  disMissLoading();
+        if (showDialog) disMissLoading();
     }
 
     @Nullable

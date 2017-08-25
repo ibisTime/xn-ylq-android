@@ -82,10 +82,12 @@ public class AppUtils {
      * @param activity
      */
     public static void startDetailsSetting(Activity activity) {
-        Uri packageURI = Uri.parse("package:" + getPackgeName(activity));
-        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, packageURI);
-        activity.startActivity(intent);
-        activity.finish();
+        try {
+            Uri packageURI = Uri.parse("package:" + getPackgeName(activity));
+            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, packageURI);
+            activity.startActivity(intent);
+        }catch (Exception e){
+        }
     }
 
 

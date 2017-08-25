@@ -45,6 +45,7 @@ public class CouponsListFragment extends BaseRefreshFragment<CoupoonsModel.ListB
     private ActivityCouponsBinding mTips;
 
 
+
     /**
      * 获得fragment实例
      *
@@ -83,7 +84,6 @@ public class CouponsListFragment extends BaseRefreshFragment<CoupoonsModel.ListB
 
         addCall(call);
 
-        showLoadingDialog();
 
         call.enqueue(new BaseResponseModelCallBack<IntroductionInfoModel>(mActivity) {
             @Override
@@ -103,7 +103,6 @@ public class CouponsListFragment extends BaseRefreshFragment<CoupoonsModel.ListB
 
             @Override
             protected void onFinish() {
-                disMissLoading();
             }
         });
 
@@ -123,8 +122,10 @@ public class CouponsListFragment extends BaseRefreshFragment<CoupoonsModel.ListB
 
     @Override
     public View getEmptyView() {
-        mTips = DataBindingUtil.inflate(mActivity.getLayoutInflater(), R.layout.activity_coupons, null, false);
-        getKeyUrl();
+        if(mTips==null){
+            mTips = DataBindingUtil.inflate(mActivity.getLayoutInflater(), R.layout.activity_coupons, null, false);
+            getKeyUrl();
+        }
         return mTips.getRoot();
     }
 
@@ -143,7 +144,6 @@ public class CouponsListFragment extends BaseRefreshFragment<CoupoonsModel.ListB
         } else {
             map.put("status", "0");
         }
-
 
         Call call = RetrofitUtils.createApi(MyApiServer.class).getCouponsListData("623147", StringUtils.getJsonToString(map));
 
@@ -199,6 +199,9 @@ public class CouponsListFragment extends BaseRefreshFragment<CoupoonsModel.ListB
                 if (CANUSE == requestState) {
                     helper.setTextColor(R.id.tv_use_can, ContextCompat.getColor(mActivity, R.color.fontColor_hint));
                     helper.setTextColor(R.id.tv_date, ContextCompat.getColor(mActivity, R.color.fontColor_hint));
+                    helper.setBackgroundRes(R.id.layout_coupons_bg,R.drawable.coupons);
+                }else{
+                    helper.setBackgroundRes(R.id.layout_coupons_bg,R.drawable.coupons_un);
                 }
             }
         };

@@ -114,7 +114,6 @@ public class ApplyFailureActivity extends AbsBaseActivity {
         return stateStr;
     }
 
-
     //
     private void initListener() {
       mBinding.btnRepet.setOnClickListener(v -> {

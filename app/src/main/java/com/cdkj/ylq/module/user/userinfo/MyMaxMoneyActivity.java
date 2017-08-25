@@ -85,7 +85,7 @@ public class MyMaxMoneyActivity extends AbsBaseActivity {
             } else if (TextUtils.equals("1", mData.getFlag())) {//已有额度
                 getCanUseProductData();
             } else if (TextUtils.equals("2", mData.getFlag())) {//已经过期
-                eventBusModel.setEvInt(SHOWCERT);
+                eventBusModel.setEvInt(SHOWMONEYPRODUCT);
                 EventBus.getDefault().post(eventBusModel);         //跳转到认证界面
                 finish();
             }
@@ -123,7 +123,12 @@ public class MyMaxMoneyActivity extends AbsBaseActivity {
             mBinding.tvRemainingDays.setText("您目前没有额度");
             mBinding.btnUse.setText("申请额度");
         } else if (TextUtils.equals("1", data.getFlag())) {//已有额度
-            mBinding.tvRemainingDays.setText("还有" + data.getValidDays() + "天当前额度失效");
+
+            if (data.getSxAmount() != null && data.getSxAmount().doubleValue() <= 0) {
+                mBinding.tvRemainingDays.setText("您的额度已使用完");
+            } else {
+                mBinding.tvRemainingDays.setText("还有" + data.getValidDays() + "天当前额度失效");
+            }
             mBinding.btnUse.setText("使用额度");
 
         } else if (TextUtils.equals("2", data.getFlag())) {//已经过期

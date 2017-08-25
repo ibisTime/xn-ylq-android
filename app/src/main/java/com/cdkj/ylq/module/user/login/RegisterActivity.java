@@ -198,6 +198,7 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
 
                     SPUtilHelpr.saveUserId(data.getUserId());
                     SPUtilHelpr.saveUserToken(data.getToken());
+                    SPUtilHelpr.saveUserPhoneNum(mBinding.editUsername.getText().toString());
                     EventBus.getDefault().post(EventTags.AllFINISH);
                     EventBus.getDefault().post(EventTags.MAINFINISH);
 

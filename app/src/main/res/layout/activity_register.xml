@@ -96,6 +96,7 @@
                 android:paddingTop="10dp">
 
                 <ImageView
+                    android:layout_gravity="center_vertical"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginLeft="45dp"
@@ -139,7 +140,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="58dp"
                     android:background="@null"
-                    android:hint="当前位置-自动定位"
+                    android:hint="当前位置-请选择位置"
                     android:maxLines="1"
                     android:textColorHint="@color/text_hint_color"
                     android:textSize="16sp" />

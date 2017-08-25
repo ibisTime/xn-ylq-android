@@ -40,13 +40,15 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
 
     private String mCode;
 
+    private boolean mState;//true  生效中  false //已经还款
+
 
     /**
      * 打开当前页面
      *
      * @param context
      */
-    public static void open(Context context, UseMoneyRecordModel.ListBean state, String code) {
+    public static void open(Context context, UseMoneyRecordModel.ListBean state, boolean isUseing, String code) {
         if (context == null) {
             return;
         }
@@ -54,6 +56,7 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
         Intent i = new Intent(context, UseingMoneyDetailsActivity.class);
         i.putExtra("data", state);
         i.putExtra("code", code);
+        i.putExtra("state", isUseing);
         context.startActivity(i);
     }
 
@@ -75,6 +78,7 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
         if (getIntent() != null) {
 
             mCode = getIntent().getStringExtra("code");
+            mState = getIntent().getBooleanExtra("state", false);
 
             if (TextUtils.isEmpty(mCode)) {
                 mData = getIntent().getParcelableExtra("data");
@@ -92,9 +96,9 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
     private void setShowData() {
 
         if (mData == null) return;
+//        if (TextUtils.equals(mData.getStatus(), "1")) { //生效中
 
-
-        if (TextUtils.equals(mData.getStatus(), "1")) { //生效中
+        if (mState) { //生效中
             setSubRightTitleAndClick("还款", v -> {
                 if (mData == null) return;
                 PayActivity.open(this, mData.getCode(), MoneyUtils.showPrice(mData.getTotalAmount()));
@@ -125,7 +129,7 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
         mBinding.tvJianmian.setText(MoneyUtils.showPrice(mData.getYhAmount()) + "元");
         mBinding.tvDaoqi.setText(MoneyUtils.showPrice(mData.getTotalAmount()) + "元");
 
-        mBinding.tvService.setText(MoneyUtils.showPrice(mData.getFwAmount())+"元");
+        mBinding.tvService.setText(MoneyUtils.showPrice(mData.getFwAmount()) + "元");
 
 
     }
