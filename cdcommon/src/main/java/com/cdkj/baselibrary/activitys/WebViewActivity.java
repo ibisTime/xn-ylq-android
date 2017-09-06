@@ -155,7 +155,6 @@ public class WebViewActivity extends AbsBaseActivity {
             }
         });
 
-
     }
 
 
@@ -163,7 +162,6 @@ public class WebViewActivity extends AbsBaseActivity {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             mBinding.pb.setProgress(newProgress);
-
             if (newProgress > 90) {
                 mBinding.pb.setVisibility(View.GONE);
             }

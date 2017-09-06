@@ -1,27 +1,23 @@
-package com.cdkj.ylq.module.borrowmoney;
+package com.cdkj.ylq.module.pay.fragments;
 
-import android.content.Context;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
-import com.cdkj.baselibrary.appmanager.EventTags;
-import com.cdkj.baselibrary.base.AbsBaseActivity;
+import com.cdkj.baselibrary.base.BaseFragment;
 import com.cdkj.baselibrary.model.pay.AliPayRequestMode;
-import com.cdkj.baselibrary.model.pay.PaySucceedInfo;
 import com.cdkj.baselibrary.model.pay.WxPayRequestModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.baselibrary.utils.payutils.PayUtil;
 import com.cdkj.ylq.R;
-import com.cdkj.ylq.databinding.ActivityApplyFailureBinding;
 import com.cdkj.ylq.databinding.ActivityPayBinding;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
+import com.cdkj.ylq.module.pay.AlsoMoneyTabActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,56 +25,43 @@ import java.util.Map;
 import retrofit2.Call;
 
 /**
- * 支付（还钱）
- * Created by 李先俊 on 2017/8/9.
+ * 还钱 线上支付 支付回调已经在父activity 里处理
+ * Created by 李先俊 on 2017/9/6.
  */
-public class PayActivity extends AbsBaseActivity {
+
+public class AlsoMoneyOnLineFragment extends BaseFragment {
 
     private ActivityPayBinding mBinding;
-
     private String mCode;
 
     private int mPayType;// 2=微信 3=支付宝
 
-    private static final String CALLPAYTAG = "PayActivity";
-
     /**
-     * 打开当前页面
-     *
-     * @param context
+     * @param code  还款编号
+     * @param money 还款金额
+     * @return
      */
-    public static void open(Context context, String code, String money) {
-        if (context == null) {
-            return;
-        }
-        Intent intent = new Intent(context, PayActivity.class);
-        intent.putExtra("code", code);
-        intent.putExtra("money", money);
-        context.startActivity(intent);
+    public static AlsoMoneyOnLineFragment getInstanse(String code, String money) {
+        AlsoMoneyOnLineFragment fragment = new AlsoMoneyOnLineFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("money", money);
+        bundle.putString("code", code);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
 
+    @Nullable
     @Override
-    public View addMainView() {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mBinding = DataBindingUtil.inflate(getLayoutInflater(savedInstanceState), R.layout.activity_pay, null, false);
 
-        mBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.activity_pay, null, false);
-
-        return mBinding.getRoot();
-    }
-
-    @Override
-    public void afterCreate(Bundle savedInstanceState) {
-
-        setSubLeftImgState(true);
-
-        setTopTitle("还款");
-
-        if (getIntent() != null) {
-            mCode = getIntent().getStringExtra("code");
-            mBinding.tvMoney.setText(getIntent().getStringExtra("money"));
+        if (getArguments() != null) {
+            mCode = getArguments().getString("code");
+            mBinding.tvMoney.setText(getArguments().getString("money"));
         }
-
         initListener();
+        return mBinding.getRoot();
     }
 
     //
@@ -100,12 +83,9 @@ public class PayActivity extends AbsBaseActivity {
 
         mBinding.btnSure.setOnClickListener(v -> {
 
-
             if (mPayType == 2) {
-                showToast("微信支付未开放,还款请联系客服");
                 //    wxPayRequest();
             } else if (mPayType == 3) {
-                showToast("支付宝未开放,还款请联系客服");
                 AliPayRequest();
             }
 
@@ -119,15 +99,15 @@ public class PayActivity extends AbsBaseActivity {
         }
         Map<String, String> map = new HashMap<>();
         map.put("code", mCode);
-        map.put("payType", mPayType + "");
+        map.put("payType", "2");
 
         Call call = RetrofitUtils.getBaseAPiService().wxPayRequest("623072", StringUtils.getJsonToString(map));
         addCall(call);
         showLoadingDialog();
-        call.enqueue(new BaseResponseModelCallBack<WxPayRequestModel>(this) {
+        call.enqueue(new BaseResponseModelCallBack<WxPayRequestModel>(mActivity) {
             @Override
             protected void onSuccess(WxPayRequestModel data, String SucMessage) {
-                PayUtil.callWXPay(PayActivity.this, data, CALLPAYTAG);
+                PayUtil.callWXPay(mActivity, data, AlsoMoneyTabActivity.ALSOMONEYCALLPAYTAG);
             }
 
             @Override
@@ -145,15 +125,15 @@ public class PayActivity extends AbsBaseActivity {
         }
         Map<String, String> map = new HashMap<>();
         map.put("code", mCode);
-        map.put("payType", mPayType + "");
+        map.put("payType", "3");
 
         Call call = RetrofitUtils.getBaseAPiService().aliPayRequest("623072", StringUtils.getJsonToString(map));
         addCall(call);
         showLoadingDialog();
-        call.enqueue(new BaseResponseModelCallBack<AliPayRequestMode>(this) {
+        call.enqueue(new BaseResponseModelCallBack<AliPayRequestMode>(mActivity) {
             @Override
             protected void onSuccess(AliPayRequestMode data, String SucMessage) {
-                PayUtil.callAlipay(PayActivity.this, data.getSignOrder(), CALLPAYTAG);
+                PayUtil.callAlipay(mActivity, data.getSignOrder(), AlsoMoneyTabActivity.ALSOMONEYCALLPAYTAG);
             }
 
             @Override
@@ -162,26 +142,6 @@ public class PayActivity extends AbsBaseActivity {
             }
         });
 
-    }
-
-    /**
-     * 支付回调
-     *
-     * @param mo
-     */
-    @Subscribe
-    public void PayState(PaySucceedInfo mo) {
-        if (mo == null || !TextUtils.equals(mo.getTag(), CALLPAYTAG)) {
-            return;
-        }
-
-        if (mo.getCallType() == PayUtil.ALIPAY && mo.isPaySucceed()) { //支付宝支付成功
-            showToast("还款成功");
-            EventBus.getDefault().post(EventTags.AllFINISH);
-            finish();
-        } else if (mo.getCallType() == PayUtil.WEIXINPAY && mo.isPaySucceed()) {//微信支付成功
-
-        }
     }
 
 

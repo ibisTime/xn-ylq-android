@@ -11,6 +11,7 @@ import com.bigkoo.pickerview.OptionsPickerView;
 import com.cdkj.baselibrary.appmanager.EventTags;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
+import com.cdkj.baselibrary.dialog.CommonDialog;
 import com.cdkj.baselibrary.model.EventBusModel;
 import com.cdkj.baselibrary.model.IsSuccessModes;
 import com.cdkj.baselibrary.nets.BaseResponseListCallBack;
@@ -129,7 +130,7 @@ public class ProductDetailsActivity extends AbsBaseActivity {
             CanUseCouponsModel cmodel = mCoupoonsModels.get(options1);
             if (cmodel != null) {
                 if (!cmodel.isDefuit()) {
-                    mBinding.tvSelectCoupoons.setText(MoneyUtils.showPrice(cmodel.getAmount())+"元优惠卷");
+                    mBinding.tvSelectCoupoons.setText(MoneyUtils.showPrice(cmodel.getAmount()) + "元优惠卷");
                     mBinding.tvWillGetMoney.setText(MoneyUtils.showPrice(BigDecimalUtils.add(getWillMoney(mProductData), cmodel.getAmount())) + "元");//实际到账
                 } else {
                     mBinding.tvSelectCoupoons.setText("选择优惠券");
@@ -145,9 +146,9 @@ public class ProductDetailsActivity extends AbsBaseActivity {
      * 获取可用优惠券
      */
     private void getCanUseCoupoons() {
-        if (mProductData == null || mProductData.getAmount()==null) return;
+        if (mProductData == null || mProductData.getAmount() == null) return;
         Map<String, String> map = new HashMap<>();
-        map.put("amount", mProductData.getAmount().intValue()+"");
+        map.put("amount", mProductData.getAmount().intValue() + "");
         map.put("userId", SPUtilHelpr.getUserId());
 
         Call call = RetrofitUtils.createApi(MyApiServer.class).getCanUseCouponsListData("623148", StringUtils.getJsonToString(map));
@@ -276,11 +277,15 @@ public class ProductDetailsActivity extends AbsBaseActivity {
                 EventBus.getDefault().post(BORROWMONEYFRAGMENTREFRESH);//刷新产品列表数据
                 if (TextUtils.equals(data.getStatus(), "1")) {
                     EventBusModel eventBusModel = new EventBusModel();
-                    eventBusModel.setEvInt(MainActivity.SHOWCERT); //显示认证界面
                     eventBusModel.setTag(EventTags.MAINCHANGESHOWINDEX);
-                    EventBus.getDefault().post(eventBusModel);
-                    showToast("您的信息未认证，请先完成认证");
-                    finish();
+                    CommonDialog commonDialog = new CommonDialog(ProductDetailsActivity.this).builder()
+                            .setTitle("提示").setContentMsg("您的信息未认证，请先完成认证")
+                            .setPositiveBtn("确定", view -> {
+                                eventBusModel.setEvInt(MainActivity.SHOWCERT); //显示认证界面
+                                EventBus.getDefault().post(eventBusModel);
+                                finish();
+                            });
+                    commonDialog.show();
 
                 } else if (TextUtils.equals(data.getStatus(), "2")) {
                     HumanReviewActivity.open(ProductDetailsActivity.this);

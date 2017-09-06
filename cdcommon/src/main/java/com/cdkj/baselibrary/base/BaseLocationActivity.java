@@ -222,7 +222,7 @@ public abstract class BaseLocationActivity extends AbsBaseActivity {
                     public void onPositive(View view) {
                         // 根据包名跳转到系统自带的应用程序信息界面
                         startAppSettings();
-                        finish();
+
                     }
                 })
                 .setNegativeBtn("取消", new CommonDialog.OnNegativeListener() {
@@ -254,10 +254,15 @@ public abstract class BaseLocationActivity extends AbsBaseActivity {
      * 启动应用详情的设置
      */
     private void startAppSettings() {
-        Intent intent = new Intent(
-                Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        intent.setData(Uri.parse("package:" + getPackageName()));
-        startActivityForResult(intent, APPLICATION_DETAIL_REQUESTCODE);
+        try {
+            Intent intent = new Intent(
+                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.setData(Uri.parse("package:" + getPackageName()));
+            startActivityForResult(intent, APPLICATION_DETAIL_REQUESTCODE);
+            finish();
+        } catch (Exception e) {
+
+        }
 
     }
 

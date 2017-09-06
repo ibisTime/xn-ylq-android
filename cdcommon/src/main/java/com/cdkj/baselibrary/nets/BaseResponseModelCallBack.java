@@ -70,7 +70,7 @@ public abstract class BaseResponseModelCallBack<T> implements Callback<BaseRespo
             } catch (Exception e) {
                 if (LogUtil.isDeBug) {
                     onReqFailure(NETERRORCODE4, "未知错误" + e.toString());
-                }else{
+                } else {
                     onReqFailure(NETERRORCODE4, "未知错误");
                 }
             }
@@ -167,7 +167,7 @@ public abstract class BaseResponseModelCallBack<T> implements Callback<BaseRespo
      * @param errorMessage
      */
     protected void onReqFailure(int errorCode, String errorMessage) {
-        LogUtil.E("数据  错误"+errorMessage);
+        LogUtil.E("数据  错误" + errorMessage);
         ToastUtil.show(context, errorMessage);
     }
 
@@ -177,7 +177,7 @@ public abstract class BaseResponseModelCallBack<T> implements Callback<BaseRespo
      * @param error
      */
     protected void onBuinessFailure(String code, String error) {
-        LogUtil.E("数据  错误"+error);
+        LogUtil.E("数据  错误" + error);
         ToastUtil.show(context, error);
     }
 
@@ -185,7 +185,7 @@ public abstract class BaseResponseModelCallBack<T> implements Callback<BaseRespo
     /**
      * 请求数据为空
      */
-    protected  void onNull(){
+    protected void onNull() {
         LogUtil.E("数据  空");
     }
 

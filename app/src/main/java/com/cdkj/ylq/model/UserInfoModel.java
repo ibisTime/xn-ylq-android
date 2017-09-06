@@ -49,6 +49,24 @@ public class UserInfoModel implements Parcelable {
     private String companyCode;
     private String systemCode;
     private String photo;
+    private String blacklistFlag;
+    private String bankcardFlag;
+
+    public String getBlacklistFlag() {
+        return blacklistFlag;
+    }
+
+    public void setBlacklistFlag(String blacklistFlag) {
+        this.blacklistFlag = blacklistFlag;
+    }
+
+    public String getBankcardFlag() {
+        return bankcardFlag;
+    }
+
+    public void setBankcardFlag(String bankcardFlag) {
+        this.bankcardFlag = bankcardFlag;
+    }
 
     public String getPhoto() {
         return photo;
@@ -186,6 +204,7 @@ public class UserInfoModel implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.userId);
         dest.writeString(this.loginName);
+        dest.writeString(this.realName);
         dest.writeString(this.mobile);
         dest.writeString(this.nickname);
         dest.writeString(this.loginPwdStrength);
@@ -196,6 +215,8 @@ public class UserInfoModel implements Parcelable {
         dest.writeString(this.companyCode);
         dest.writeString(this.systemCode);
         dest.writeString(this.photo);
+        dest.writeString(this.blacklistFlag);
+        dest.writeString(this.bankcardFlag);
         dest.writeByte(this.tradepwdFlag ? (byte) 1 : (byte) 0);
         dest.writeInt(this.totalFollowNum);
         dest.writeInt(this.totalFansNum);
@@ -204,6 +225,7 @@ public class UserInfoModel implements Parcelable {
     protected UserInfoModel(Parcel in) {
         this.userId = in.readString();
         this.loginName = in.readString();
+        this.realName = in.readString();
         this.mobile = in.readString();
         this.nickname = in.readString();
         this.loginPwdStrength = in.readString();
@@ -214,6 +236,8 @@ public class UserInfoModel implements Parcelable {
         this.companyCode = in.readString();
         this.systemCode = in.readString();
         this.photo = in.readString();
+        this.blacklistFlag = in.readString();
+        this.bankcardFlag = in.readString();
         this.tradepwdFlag = in.readByte() != 0;
         this.totalFollowNum = in.readInt();
         this.totalFansNum = in.readInt();

@@ -22,15 +22,15 @@ public class ToastUtil {
 
     public static void showToast(Context mContext, String text, int duration) {
 
-        mHandler.removeCallbacks(r);
-        if (mToast != null)
+        mHandler.removeCallbacksAndMessages(null);
+        if (mToast != null){
             mToast.setText(text);
-        else
+            mToast.setDuration(Toast.LENGTH_LONG);
+        } else
             mToast = Toast.makeText(mContext, text, Toast.LENGTH_LONG);
 
-        mHandler.postDelayed(r,900);
-
         mToast.show();
+        mHandler.postDelayed(r,900);
     }
 
     public static void show(Context context, String info) {

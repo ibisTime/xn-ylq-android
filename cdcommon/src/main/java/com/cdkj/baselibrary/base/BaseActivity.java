@@ -128,6 +128,18 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         commonDialog.show();
     }
+ protected void showSureDialog(String str, CommonDialog.OnPositiveListener onPositiveListener) {
+
+        if (isFinishing()) {
+            return;
+        }
+
+        CommonDialog commonDialog = new CommonDialog(this).builder()
+                .setTitle("提示").setContentMsg(str)
+                .setPositiveBtn("确定", onPositiveListener);
+
+        commonDialog.show();
+    }
 
 
     @Override

@@ -7,17 +7,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cdkj.baselibrary.appmanager.EventTags;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.BaseRefreshFragment;
+import com.cdkj.baselibrary.model.EventBusModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.ylq.R;
+import com.cdkj.ylq.appmanager.BusinessSings;
 import com.cdkj.ylq.model.UseMoneyRecordModel;
 import com.cdkj.ylq.module.api.MyApiServer;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +30,13 @@ import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
+
+import static com.cdkj.ylq.appmanager.BusinessSings.USEMONEYRECORD_0;
+import static com.cdkj.ylq.appmanager.BusinessSings.USEMONEYRECORD_1;
+import static com.cdkj.ylq.appmanager.BusinessSings.USEMONEYRECORD_2;
+import static com.cdkj.ylq.appmanager.BusinessSings.USEMONEYRECORD_3;
+import static com.cdkj.ylq.appmanager.BusinessSings.USEMONEYRECORD_4;
+import static com.cdkj.ylq.appmanager.BusinessSings.USEMONEYRECORD_7;
 
 /**
  * 借款记录列表
@@ -34,7 +46,7 @@ import retrofit2.Call;
 public class UseMoneyRecordFragment extends BaseRefreshFragment<UseMoneyRecordModel.ListBean> {
 
 
-    private int requestState;
+    private String requestState;
 
     private boolean isFirstCreate;//是否第一次创建
 
@@ -43,10 +55,10 @@ public class UseMoneyRecordFragment extends BaseRefreshFragment<UseMoneyRecordMo
      *
      * @return
      */
-    public static UseMoneyRecordFragment getInstanse(int state) {
+    public static UseMoneyRecordFragment getInstanse(String state) {
         UseMoneyRecordFragment fragment = new UseMoneyRecordFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("state", state);
+        bundle.putString("state", state);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -55,7 +67,7 @@ public class UseMoneyRecordFragment extends BaseRefreshFragment<UseMoneyRecordMo
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (getArguments() != null) {
-            requestState = getArguments().getInt("state");
+            requestState = getArguments().getString("state");
         }
         isFirstCreate = true;
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -73,21 +85,23 @@ public class UseMoneyRecordFragment extends BaseRefreshFragment<UseMoneyRecordMo
             if (state == null) {
                 return;
             }
-
-            if (TextUtils.equals(state.getStatus(), "0")) {
-                WaiteMoneyDetailsActivity.open(mActivity, state);//待放款 详情
-            } else if (TextUtils.equals(state.getStatus(), "1")) {//待放款 详情
+            if (TextUtils.equals(state.getStatus(), USEMONEYRECORD_0)//待审核
+                    || TextUtils.equals(state.getStatus(), USEMONEYRECORD_2)//审核不通过
+                    || TextUtils.equals(state.getStatus(), USEMONEYRECORD_1)//待放款
+                    || TextUtils.equals(state.getStatus(), USEMONEYRECORD_7)) {//打款失败
                 WaiteMoneyDetailsActivity.open(mActivity, state);
 
-            } else if (TextUtils.equals(state.getStatus(), "3")) {//生效中
+            } else if (TextUtils.equals(state.getStatus(), USEMONEYRECORD_3)) {//生效中
 
                 UseingMoneyDetailsActivity.open(mActivity, state, true, "");//
 
-            } else if (TextUtils.equals(state.getStatus(), "4")) {//已还款
+            } else if (TextUtils.equals(state.getStatus(), USEMONEYRECORD_4)) {//已还款
                 UseingMoneyDetailsActivity.open(mActivity, state, false, "");//
 
-            } else if (TextUtils.equals(state.getStatus(), "5")) {//已逾期
+            } else if (TextUtils.equals(state.getStatus(), USEMONEYRECORD_7)) {//已逾期
+
                 UsedMoneyDetailsActivity.open(mActivity, state, ""); //
+
             }
         });
     }
@@ -101,12 +115,7 @@ public class UseMoneyRecordFragment extends BaseRefreshFragment<UseMoneyRecordMo
         map.put("applyUser", SPUtilHelpr.getUserId());
 
         List<String> status = new ArrayList<>();
-        if (requestState == 0 || requestState == 1) {
-            status.add("0");
-            status.add("1");
-        } else {
-            status.add(requestState + "");
-        }
+        status.add(requestState);
         map.put("statusList", status);
 
         Call call = RetrofitUtils.createApi(MyApiServer.class).getRecordList("623087", StringUtils.getJsonToString(map));
@@ -159,39 +168,11 @@ public class UseMoneyRecordFragment extends BaseRefreshFragment<UseMoneyRecordMo
 
                 helper.setText(R.id.tv_money, MoneyUtils.showPrice(item.getAmount()));
                 helper.setText(R.id.tv_days, item.getDuration() + "天");
-                helper.setText(R.id.tv_state, getStateString(item.getStatus()));
+                helper.setText(R.id.tv_state, BusinessSings.getStateRecordString(item.getStatus()));
                 helper.setText(R.id.tv_code, "订单编号 " + item.getCode());
 
             }
         };
-    }
-
-    //@mock=1 ("0","等待放款中"),("1","生效中"),("2","已逾期"),("3", "已还款"),("4","已取消");
-    public String getStateString(String status) {
-        String str = "";
-        if (TextUtils.isEmpty(status)) {
-            return str;
-        }
-
-        switch (status) {
-            case "0":
-                str = "审核中";
-                break;
-            case "1":
-                str = "审核通过";
-                break;
-            case "3":
-                str = "已放款";
-                break;
-            case "4":
-                str = "已还款";
-                break;
-            case "5":
-                str = "已逾期";
-                break;
-        }
-
-        return str;
     }
 
 
@@ -211,6 +192,21 @@ public class UseMoneyRecordFragment extends BaseRefreshFragment<UseMoneyRecordMo
             getListData(mPageIndex, mLimit, true);
             isFirstCreate = false;
         }
-
     }
+
+    /**
+     * evenbus 刷新当前界面
+     * @param eventBusModel
+     */
+    @Subscribe
+    public void refresh(EventBusModel eventBusModel){
+        if(eventBusModel == null || !TextUtils.equals(eventBusModel.getTag(), EventTags.USEMONEYRECORDFRAGMENTREFRESH)){
+            return;
+        }
+        if(!TextUtils.equals(requestState,eventBusModel.getEvInfo())){//判断要刷新的code
+            return;
+        }
+        onMRefresh(1,mLimit,false);
+    }
+
 }

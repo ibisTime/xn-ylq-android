@@ -112,6 +112,16 @@
             android:name=".module.certification.IdCardCertificationActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
+        //身份证上传
+        <activity
+            android:name=".module.certification.IdInfoUpLoadCertActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        //消息详情
+        <activity
+            android:name=".module.user.userinfo.MsgDetailsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
 
         //芝麻分数获取
         <activity
@@ -204,7 +214,22 @@
             android:windowSoftInputMode="adjustPan" />
         //还款
         <activity
-            android:name=".module.borrowmoney.PayActivity"
+            android:name=".module.pay.AlsoMoneyTabActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        //续期支付
+        <activity
+            android:name=".module.pay.RenewalMoneyTabActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        //续期列表
+        <activity
+            android:name=".module.renewal.RenewalListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        //续期详情
+        <activity
+            android:name=".module.renewal.RenewalDetailsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         //逾期详情
@@ -217,16 +242,41 @@
             android:name="com.cdkj.baselibrary.activitys.WebViewActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
+
+        //添加银行卡
+        <activity
+            android:name="com.cdkj.baselibrary.activitys.AddBackCardActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        //银行卡列表
+        <activity
+            android:name="com.cdkj.baselibrary.activitys.BackCardListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+
+        //删除修改银行卡
+        <activity
+            android:name="com.cdkj.baselibrary.activitys.UpdateBackCardActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
         //消息中心
         <activity
             android:name=".module.user.userinfo.MsgListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
+
         //推荐历史
         <activity
             android:name=".module.user.userinfo.HuokeListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
+
+        //续期详情
+        <activity
+            android:name=".module.renewal.RenewalDetailsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+
         //分享
         <activity
             android:name=".module.user.userinfo.ShareActivity"
@@ -273,6 +323,19 @@
             android:value="7df4fcd424e36ceaad62d64f1c11de60">//开发者申请的key
 
         </meta-data>
+
+        //支付宝
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind"></activity>
+        <activity
+            android:name="com.alipay.sdk.auth.AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind"></activity>
+
 
     </application>
 

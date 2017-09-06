@@ -149,7 +149,7 @@
                 <EditText
                     android:id="@+id/edit_company_name"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="center_vertical"
@@ -182,7 +182,7 @@
                 <EditText
                     android:id="@+id/edit_address_job"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="center_vertical"
@@ -214,11 +214,11 @@
                 <EditText
                     android:id="@+id/edit_phone_number_job"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="center_vertical"
-                    android:hint="输入单位电话"
+                    android:hint="选填"
                     android:paddingLeft="15dp"
                     android:textColor="@color/black_2"
                     android:textColorHint="@color/text_hint_color"

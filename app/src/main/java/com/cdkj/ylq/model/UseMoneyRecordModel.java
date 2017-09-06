@@ -178,6 +178,34 @@ public class UseMoneyRecordModel implements Parcelable {
         private BigDecimal totalAmount;
         private String updateDatetime;
         private String updater;
+        private String renewalCount;
+        private String renewalStartDate;
+        private String renewalEndDate;
+
+        public String getRenewalStartDate() {
+            return renewalStartDate;
+        }
+
+        public void setRenewalStartDate(String renewalStartDate) {
+            this.renewalStartDate = renewalStartDate;
+        }
+
+        public String getRenewalEndDate() {
+            return renewalEndDate;
+        }
+
+        public void setRenewalEndDate(String renewalEndDate) {
+            this.renewalEndDate = renewalEndDate;
+        }
+
+        public String getRenewalCount() {
+            return renewalCount;
+        }
+
+        public void setRenewalCount(String renewalCount) {
+            this.renewalCount = renewalCount;
+        }
+
         private BigDecimal xsAmount;
         private BigDecimal yhAmount;
         private int yqDays;
@@ -289,6 +317,9 @@ public class UseMoneyRecordModel implements Parcelable {
             this.yqDays = yqDays;
         }
 
+        public ListBean() {
+        }
+
         @Override
         public int describeContents() {
             return 0;
@@ -317,13 +348,13 @@ public class UseMoneyRecordModel implements Parcelable {
             dest.writeSerializable(this.totalAmount);
             dest.writeString(this.updateDatetime);
             dest.writeString(this.updater);
+            dest.writeString(this.renewalCount);
+            dest.writeString(this.renewalStartDate);
+            dest.writeString(this.renewalEndDate);
             dest.writeSerializable(this.xsAmount);
             dest.writeSerializable(this.yhAmount);
             dest.writeInt(this.yqDays);
             dest.writeSerializable(this.yqlxAmount);
-        }
-
-        public ListBean() {
         }
 
         protected ListBean(Parcel in) {
@@ -348,13 +379,16 @@ public class UseMoneyRecordModel implements Parcelable {
             this.totalAmount = (BigDecimal) in.readSerializable();
             this.updateDatetime = in.readString();
             this.updater = in.readString();
+            this.renewalCount = in.readString();
+            this.renewalStartDate = in.readString();
+            this.renewalEndDate = in.readString();
             this.xsAmount = (BigDecimal) in.readSerializable();
             this.yhAmount = (BigDecimal) in.readSerializable();
             this.yqDays = in.readInt();
             this.yqlxAmount = (BigDecimal) in.readSerializable();
         }
 
-        public static final Parcelable.Creator<ListBean> CREATOR = new Parcelable.Creator<ListBean>() {
+        public static final Creator<ListBean> CREATOR = new Creator<ListBean>() {
             @Override
             public ListBean createFromParcel(Parcel source) {
                 return new ListBean(source);

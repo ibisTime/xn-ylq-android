@@ -33,7 +33,7 @@ import retrofit2.Call;
 /**
  * Created by LeiQ on 2016/12/29.
  */
-
+// TODO 七牛工具类需要优化
 public class QiNiuUtil {
 
     private static final String ANDROID = "ANDROID";
@@ -56,7 +56,7 @@ public class QiNiuUtil {
      * @param callBack
      * @param url
      */
-    private void uploadSingle(final QiNiuCallBack callBack, String url, String token) {
+    public void uploadSingle(final QiNiuCallBack callBack, String url, String token) {
 
         if (url.indexOf(ANDROID) == -1 || url.indexOf(IOS) == -1) {
 
@@ -136,7 +136,7 @@ public class QiNiuUtil {
                 token = mo.getUploadToken();
 
                 try {
-                    Compressor(callBack, data, token);
+                    compressorUpload(callBack, data, token);
                 } catch (Exception e) {
                     if (callBack != null) {
                         callBack.onFal("图片上传失败");
@@ -179,7 +179,7 @@ public class QiNiuUtil {
 
             try {
 
-                Compressor(callBack, imgPath, mToekn);
+                compressorUpload(callBack, imgPath, mToekn);
             } catch (Exception e) {
                 if (callBack != null) {
                     callBack.onFal("图片上传失败");
@@ -219,10 +219,15 @@ public class QiNiuUtil {
     }
 
 
-    private void Compressor(QiNiuCallBack callBack, String data, String token) {
-        File compressedImageFile = Compressor.getDefault(context).compressToFile(new File(data));
-        uploadSingle(callBack, compressedImageFile.getAbsolutePath(), token);
-
+    public void compressorUpload(QiNiuCallBack callBack, String data, String token) {
+        try {
+            File compressedImageFile = Compressor.getDefault(context).compressToFile(new File(data));
+            uploadSingle(callBack, compressedImageFile.getAbsolutePath(), token);
+        } catch (Exception e) {
+            if(callBack!=null){
+                callBack.onFal("图片上传失败");
+            }
+        }
     }
 
     public interface QiNiuCallBack {

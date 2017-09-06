@@ -25,7 +25,7 @@
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/idcard_big" />
+                    android:src="@drawable/idcard_flag_gray" />
 
 
             </FrameLayout>

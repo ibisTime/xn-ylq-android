@@ -485,6 +485,24 @@ public class CerttificationInfoModel  {
         private String familyMobile;
         private String societyRelation;
         private String societyMobile;
+        private String familyName;
+        private String societyName;
+
+        public String getFamilyName() {
+            return familyName;
+        }
+
+        public void setFamilyName(String familyName) {
+            this.familyName = familyName;
+        }
+
+        public String getSocietyName() {
+            return societyName;
+        }
+
+        public void setSocietyName(String societyName) {
+            this.societyName = societyName;
+        }
 
         public String getFamilyRelation() {
             return familyRelation;
@@ -518,6 +536,9 @@ public class CerttificationInfoModel  {
             this.societyMobile = societyMobile;
         }
 
+        public InfoContactBean() {
+        }
+
         @Override
         public int describeContents() {
             return 0;
@@ -529,9 +550,8 @@ public class CerttificationInfoModel  {
             dest.writeString(this.familyMobile);
             dest.writeString(this.societyRelation);
             dest.writeString(this.societyMobile);
-        }
-
-        public InfoContactBean() {
+            dest.writeString(this.familyName);
+            dest.writeString(this.societyName);
         }
 
         protected InfoContactBean(Parcel in) {
@@ -539,9 +559,11 @@ public class CerttificationInfoModel  {
             this.familyMobile = in.readString();
             this.societyRelation = in.readString();
             this.societyMobile = in.readString();
+            this.familyName = in.readString();
+            this.societyName = in.readString();
         }
 
-        public static final Parcelable.Creator<InfoContactBean> CREATOR = new Parcelable.Creator<InfoContactBean>() {
+        public static final Creator<InfoContactBean> CREATOR = new Creator<InfoContactBean>() {
             @Override
             public InfoContactBean createFromParcel(Parcel source) {
                 return new InfoContactBean(source);
@@ -641,6 +663,24 @@ public class CerttificationInfoModel  {
          */
 
         private String identifyPic;
+        private String identifyPicReverse;
+        private String identifyPicHand;
+
+        public String getIdentifyPicReverse() {
+            return identifyPicReverse;
+        }
+
+        public void setIdentifyPicReverse(String identifyPicReverse) {
+            this.identifyPicReverse = identifyPicReverse;
+        }
+
+        public String getIdentifyPicHand() {
+            return identifyPicHand;
+        }
+
+        public void setIdentifyPicHand(String identifyPicHand) {
+            this.identifyPicHand = identifyPicHand;
+        }
 
         public String getIdentifyPic() {
             return identifyPic;
@@ -648,6 +688,9 @@ public class CerttificationInfoModel  {
 
         public void setIdentifyPic(String identifyPic) {
             this.identifyPic = identifyPic;
+        }
+
+        public InfoIdentifyPicBean() {
         }
 
         @Override
@@ -658,16 +701,17 @@ public class CerttificationInfoModel  {
         @Override
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeString(this.identifyPic);
-        }
-
-        public InfoIdentifyPicBean() {
+            dest.writeString(this.identifyPicReverse);
+            dest.writeString(this.identifyPicHand);
         }
 
         protected InfoIdentifyPicBean(Parcel in) {
             this.identifyPic = in.readString();
+            this.identifyPicReverse = in.readString();
+            this.identifyPicHand = in.readString();
         }
 
-        public static final Parcelable.Creator<InfoIdentifyPicBean> CREATOR = new Parcelable.Creator<InfoIdentifyPicBean>() {
+        public static final Creator<InfoIdentifyPicBean> CREATOR = new Creator<InfoIdentifyPicBean>() {
             @Override
             public InfoIdentifyPicBean createFromParcel(Parcel source) {
                 return new InfoIdentifyPicBean(source);

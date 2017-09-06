@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.cdkj.baselibrary.activitys.AddBackCardActivity;
+import com.cdkj.baselibrary.activitys.BackCardListActivity;
 import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.activitys.FindPwdActivity;
 import com.cdkj.baselibrary.activitys.ImageSelectActivity;
@@ -130,7 +132,7 @@ public class PersonalActivity extends AbsBaseActivity {
 
         //头像
         mBinding.layoutPhoto.setOnClickListener(v -> {
-            ImageSelectActivity.launch(this,false, PHOTOFLAG);
+            ImageSelectActivity.launch(this, PHOTOFLAG);
         });
         //退出登录
         mBinding.btnLogout.setOnClickListener(v -> {
@@ -142,6 +144,12 @@ public class PersonalActivity extends AbsBaseActivity {
         mBinding.layoutAbout.setOnClickListener(v -> {
             WebViewActivity.openkey(this, "关于我们", "aboutUs");
         });
+
+        mBinding.layoutBank.setOnClickListener(v -> {
+            BackCardListActivity.open(this,false);
+        });
+
+
     }
 
     private void logOut() {

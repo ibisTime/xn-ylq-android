@@ -50,6 +50,12 @@ public class MsgListActivity extends BaseRefreshActivity<MsgListModel.ListBean> 
         setSubLeftImgState(true);
         setTopTitle("消息");
         getListData(pageIndex, limit, true);
+
+        if(mAdapter!=null){
+           mAdapter.setOnItemClickListener((adapter, view, position) -> {
+               MsgDetailsActivity.open(this,(MsgListModel.ListBean) adapter.getItem(position));
+           });
+        }
     }
 
     @Override
@@ -103,8 +109,6 @@ public class MsgListActivity extends BaseRefreshActivity<MsgListModel.ListBean> 
                 disMissLoading();
             }
         });
-
-
     }
 
     @Override

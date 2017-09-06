@@ -8,6 +8,7 @@ import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
+import com.cdkj.ylq.R;
 import com.cdkj.ylq.model.CerttificationInfoModel;
 import com.cdkj.ylq.model.ZmScoreGetModel;
 import com.cdkj.ylq.module.api.MyApiServer;
@@ -31,12 +32,13 @@ public class ZMScoreGetActivity extends CommonZMPermissionsCheckActivity {
      *
      * @param context
      */
-    public static void open(Context context, CerttificationInfoModel.InfoIdentifyBean data) {
+    public static void open(Context context, CerttificationInfoModel.InfoIdentifyBean data, boolean isCheckCert) {
         if (context == null) {
             return;
         }
         Intent intent = new Intent(context, ZMScoreGetActivity.class);
         intent.putExtra("data", data);
+        intent.putExtra("isCheckCert", isCheckCert);
         context.startActivity(intent);
     }
 
@@ -48,14 +50,25 @@ public class ZMScoreGetActivity extends CommonZMPermissionsCheckActivity {
 
         if (getIntent() != null) {
             mInfoData = getIntent().getParcelableExtra("data");
+
+            if (getIntent().getBooleanExtra("isCheckCert", false)) {
+                mBinding.butSure.setBackgroundResource(R.drawable.btn_no_click_gray);
+                mBinding.butSure.setEnabled(false);
+            } else {
+                mBinding.butSure.setBackgroundResource(R.drawable.selector_login_btn);
+                mBinding.butSure.setEnabled(true);
+            }
         }
 
+        setShowData();
+
+    }
+
+    private void setShowData() {
         if (mInfoData != null) {
             mBinding.editCardNumber.setText(mInfoData.getIdNo());
             mBinding.editName.setText(mInfoData.getRealName());
         }
-
-
     }
 
     /**
@@ -77,10 +90,12 @@ public class ZMScoreGetActivity extends CommonZMPermissionsCheckActivity {
 
             @Override
             protected void onSuccess(ZmScoreGetModel data, String SucMessage) {
-                if(data.isAuthorized()){
-                    finish();
-                }else{
-                    creditApp.authenticate(ZMScoreGetActivity.this, data.getAppId(), null,data.getParam(), data.getSignature(), null,ZMScoreGetActivity.this);
+                if (data.isAuthorized()) {
+                    showSureDialog("认证成功", view -> {
+                        finish();
+                    });
+                } else {
+                    creditApp.authenticate(ZMScoreGetActivity.this, data.getAppId(), null, data.getParam(), data.getSignature(), null, ZMScoreGetActivity.this);
                 }
             }
 

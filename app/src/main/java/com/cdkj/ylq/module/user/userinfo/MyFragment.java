@@ -35,7 +35,7 @@ import retrofit2.Call;
  * 我的
  * Created by 李先俊 on 2017/8/8.
  */
-
+//TODO 黑名单 blacklistFlag
 public class MyFragment extends BaseLazyFragment {
 
     private FragmentMyBinding mBinding;
@@ -83,6 +83,10 @@ public class MyFragment extends BaseLazyFragment {
             WebViewActivity.openkey(mActivity, "帮助中心", "helpCenter");
         });
 
+        mBinding.layoutKefu.setOnClickListener(v -> {
+            WebViewActivity.openkey(mActivity, "联系客服", "customerService ");
+        });
+
     }
 
     private void setShowData(UserInfoModel data) {
@@ -117,6 +121,7 @@ public class MyFragment extends BaseLazyFragment {
             @Override
             protected void onSuccess(UserInfoModel data, String SucMessage) {
                 mUserInfoMode = data;
+                SPUtilHelpr.saveUserIsBindCard(TextUtils.equals("1",data.getBankcardFlag()));
                 setShowData(mUserInfoMode);
             }
 

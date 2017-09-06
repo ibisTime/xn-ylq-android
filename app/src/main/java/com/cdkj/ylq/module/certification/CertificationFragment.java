@@ -104,7 +104,7 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
                 return;
             }
 
-            ZMScoreGetActivity.open(mActivity, mCertData.getInfoIdentify());
+            ZMScoreGetActivity.open(mActivity, mCertData.getInfoIdentify(), TextUtils.equals("1", mCertData.getInfoZMCreditFlag()));
         });
 
 
@@ -128,7 +128,10 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
                 ToastUtil.show(mActivity, "请进行芝麻认证");
                 return;
             }
-
+            if (TextUtils.equals("1", mCertData.getInfoCarrierFlag())) {
+                ToastUtil.show(mActivity, "运营商已经认证");
+                return;
+            }
             openMoxie();
         });
 

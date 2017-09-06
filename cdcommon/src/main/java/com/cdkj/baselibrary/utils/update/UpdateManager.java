@@ -62,7 +62,6 @@ public class UpdateManager {
                     if (TextUtils.equals(data.getForceUpdate(), "1")) {//强制更新
                         showUpdateDialog2(context, data.getDownloadUrl(), data.getNote());
                     } else {
-                        AppUtils.startWeb(context, data.getDownloadUrl());
                         showUpdateDialog(context, data.getDownloadUrl(), data.getNote());
                     }
                 }

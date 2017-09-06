@@ -79,7 +79,7 @@ public class IdCardCertificationActivity extends AbsBaseActivity implements getU
 
         setSubLeftImgState(true);
 
-        setTopTitle("身份认证");
+        setTopTitle("身份证上传");
 
         initListener();
 
@@ -92,12 +92,13 @@ public class IdCardCertificationActivity extends AbsBaseActivity implements getU
     private void initListener() {
         //相片
         mBinding.fralayoutIdCard.setOnClickListener(v -> {
-            ImageSelectActivity.launch(this, PHOTOFLAG);
+//            ImageSelectActivity.launch(this, PHOTOFLAG,ImageSelectActivity.SHOWPIC);
+            IdInfoUpLoadCertActivity.open(this,mCertData.getInfoIdentifyPic(), TextUtils.equals("1", mCertData.getInfoIdentifyPicFlag()));
         });
         //zm认证
         mBinding.fralayoutFaceCert.setOnClickListener(v -> {
             if (mCertData == null) return;
-            ZMCertificationActivity.open(this, mCertData.getInfoIdentify());
+            ZMCertificationActivity.open(this, mCertData.getInfoIdentify(), TextUtils.equals("1", mCertData.getInfoIdentifyFaceFlag()));
         });
         //
         mBinding.butSubmit.setOnClickListener(v -> {
@@ -126,7 +127,10 @@ public class IdCardCertificationActivity extends AbsBaseActivity implements getU
                 @Override
                 protected void onSuccess(IsSuccessModes data, String SucMessage) {
                     if (data.isSuccess()) {
-                        finish();
+                        showSureDialog("认证成功", view -> {
+                            finish();
+                        });
+
                     } else {
                         showToast("提交失败,请重试");
                     }
@@ -208,18 +212,34 @@ public class IdCardCertificationActivity extends AbsBaseActivity implements getU
         if (mCertData == null) return;
 
         if (mCertData.getInfoIdentifyPic() != null) {
-            ImgUtils.loadActImg(IdCardCertificationActivity.this, MyConfig.IMGURL + mCertData.getInfoIdentifyPic().getIdentifyPic(), mBinding.imgIdCard);
+//            ImgUtils.loadActImg(IdCardCertificationActivity.this, MyConfig.IMGURL + mCertData.getInfoIdentifyPic().getIdentifyPic(), mBinding.imgIdCard);
         }
 
+        //设置按钮状态 已认证变成灰色 禁止点击
+
+        if (TextUtils.equals("1", mCertData.getInfoIdentifyPicFlag()) && TextUtils.equals("1", mCertData.getInfoIdentifyFaceFlag())) {
+
+            mBinding.butSubmit.setBackgroundResource(R.drawable.btn_no_click_gray);
+            mBinding.butSubmit.setEnabled(false);
+
+        } else {
+            mBinding.butSubmit.setBackgroundResource(R.drawable.selector_login_btn);
+            mBinding.butSubmit.setEnabled(true);
+        }
+
+
+        //设置认证状态显示————————————————————————————————
         if (TextUtils.equals("1", mCertData.getInfoIdentifyPicFlag())) {
             mBinding.tvIdcardState.setText("已认证");
             mBinding.tvIdcardState.setTextColor(ContextCompat.getColor(this, R.color.cert_state_ok));
             mBinding.imgState.setImageResource(R.drawable.cert_ok_2);
+            ImgUtils.loadActImgId(IdCardCertificationActivity.this, R.drawable.idcard_big, mBinding.imgIdCard);
 
         } else {
             mBinding.tvIdcardState.setText("前往提交");
             mBinding.imgState.setImageResource(R.drawable.can_submit);
             mBinding.tvIdcardState.setTextColor(ContextCompat.getColor(this, R.color.cert_state_edit));
+            ImgUtils.loadActImgId(IdCardCertificationActivity.this, R.drawable.idcard_flag_gray, mBinding.imgIdCard);
         }
 
         if (TextUtils.equals("1", mCertData.getInfoIdentifyFaceFlag())) {
@@ -253,6 +273,7 @@ public class IdCardCertificationActivity extends AbsBaseActivity implements getU
     @Override
     public void getInfoFailed(String code, String msg) {
         showToast(msg);
+        showErrorView(msg);
     }
 
     @Override

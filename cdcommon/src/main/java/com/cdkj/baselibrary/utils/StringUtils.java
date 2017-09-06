@@ -133,6 +133,17 @@ public class StringUtils {
         return m.matches();
     }
 
+    /**
+     * 验证电话号码
+     *
+     * @param input 待验证文本
+     * @return {@code true}: 匹配<br>{@code false}: 不匹配
+     */
+    public static boolean isTel(final CharSequence input) {
+        return isMatch("^0\\d{2,3}[- ]?\\d{7,8}", input);
+    }
+
+
 
  //设置价格输入
     public static  void editSetPriceInputState(EditText editText){

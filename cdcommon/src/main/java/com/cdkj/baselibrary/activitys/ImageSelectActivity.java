@@ -65,14 +65,26 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
     private static final String CACHDIR = "ylqpicimgcach";
     //private final static int RUNTIME_PERMISSION_REQUEST_CODE = 0x1;
 
+    public static final int SHOWPIC = 1; //显示拍照按钮
+    public static final int SHOWALBUM = 2;//显示相册按钮
+
     private CapturePhotoHelper mCapturePhotoHelper;
+
+    public static void launch(Activity activity, int photoid, int showType) {
+        if (activity == null) {
+            return;
+        }
+        Intent intent = new Intent(activity, ImageSelectActivity.class);
+        intent.putExtra("showType", showType);
+        activity.startActivityForResult(intent, photoid);
+    }
 
     public static void launch(Activity activity, int photoid) {
         if (activity == null) {
             return;
         }
-        activity.startActivityForResult(new Intent(activity, ImageSelectActivity.class)
-                , photoid);
+        Intent intent = new Intent(activity, ImageSelectActivity.class);
+        activity.startActivityForResult(intent, photoid);
     }
 
     public static void launch(Activity activity, boolean isSplit, int photoid) {
@@ -80,15 +92,6 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
             return;
         }
         activity.startActivityForResult(new Intent(activity, ImageSelectActivity.class)
-                        .putExtra("isSplit", isSplit)
-                , photoid);
-    }
-
-    public static void launch(Fragment fragment, boolean isSplit, int photoid) {
-        if (fragment == null) {
-            return;
-        }
-        fragment.startActivityForResult(new Intent(fragment.getActivity(), ImageSelectActivity.class)
                         .putExtra("isSplit", isSplit)
                 , photoid);
     }
@@ -101,7 +104,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
     }
 
     protected void init() {
-        isSplit = getIntent().getBooleanExtra("isSplit", isSplit);
+
 
         tv_take_capture = (TextView) findViewById(R.id.tv_take_capture);
         tv_alumb = (TextView) findViewById(R.id.tv_alumb);
@@ -113,6 +116,29 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
         tv_alumb.setOnClickListener(this);
         tv_cancle.setOnClickListener(this);
         empty_view.setOnClickListener(this);
+
+        if (getIntent() != null) {
+            isSplit = getIntent().getBooleanExtra("isSplit", isSplit);
+
+            switch (getIntent().getIntExtra("showType", 0)) {
+                case SHOWPIC:
+                    tv_take_capture.setVisibility(View.VISIBLE);
+                    tv_alumb.setVisibility(View.GONE);
+                    break;
+                case SHOWALBUM:
+                    tv_take_capture.setVisibility(View.GONE);
+                    tv_alumb.setVisibility(View.VISIBLE);
+                    break;
+                default:
+                    tv_take_capture.setVisibility(View.VISIBLE);
+                    tv_alumb.setVisibility(View.VISIBLE);
+                    break;
+            }
+        }else{
+            tv_take_capture.setVisibility(View.VISIBLE);
+            tv_alumb.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override
@@ -201,7 +227,8 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
 
     }
 
-    /**7.0适配
+    /**
+     * 7.0适配
      * 转换 content:// uri
      *
      * @param imageFile
@@ -211,9 +238,9 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
         String filePath = imageFile.getAbsolutePath();
         Cursor cursor = getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                new String[] { MediaStore.Images.Media._ID },
+                new String[]{MediaStore.Images.Media._ID},
                 MediaStore.Images.Media.DATA + "=? ",
-                new String[] { filePath }, null);
+                new String[]{filePath}, null);
 
         if (cursor != null && cursor.moveToFirst()) {
             int id = cursor.getInt(cursor
@@ -295,7 +322,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
                                 finish();
                                 return;
                             }
-                            if(isSplit){
+                            if (isSplit) {
                                 startPhotoZoom(new File(imgP));
                                 return;
                             }
@@ -345,7 +372,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
                             } else {
                                 bitmap = decodeBitmapFromFile(photoPath, 150, 150);
                             }
-                            String path = saveFile(bitmap,"camera");
+                            String path = saveFile(bitmap, "camera");
                             setResult(Activity.RESULT_OK, new Intent().putExtra(staticPath, path));
                             finish();
                         }
@@ -353,7 +380,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
                     case 3:  //图片裁剪
                         Bundle extras = data.getExtras();
                         Bitmap photo = extras.getParcelable("data");
-                        String path = saveFile(photo,"split");  //图片名称
+                        String path = saveFile(photo, "split");  //图片名称
 
                         setResult(Activity.RESULT_OK, new Intent().putExtra(staticPath, path));
                         finish();
@@ -565,7 +592,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
         }
 
         String filename = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA)
-                .format(new Date()) ;
+                .format(new Date());
         String imagename = filename + imageName + ".jpg";
         File file = new File(file1, imagename);
         try {

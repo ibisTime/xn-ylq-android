@@ -24,6 +24,11 @@ public class EventTags {
     public final static String IDCARDCERTINFOREFRESH = "8";
     //签约信息展示页面关闭
     public final static String USEMONEYSUREFINISH = "9";
+    //线下还款成功
+    public final static String ALSOOFFLINE = "10";
+
+    //借款记录刷新
+    public final static String USEMONEYRECORDFRAGMENTREFRESH = "11";
 
 
 }

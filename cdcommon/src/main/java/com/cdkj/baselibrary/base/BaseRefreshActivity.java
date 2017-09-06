@@ -29,13 +29,13 @@ public abstract class BaseRefreshActivity<T> extends AbsBaseActivity {
 
     protected LayoutCommonRecyclerRefreshBinding mBinding;
 
-    private int mPageIndex;//分页下标
+    protected int mPageIndex;//分页下标
 
     private int mLimit;//分页数量
 
     private List<T> mDataList;
 
-    private BaseQuickAdapter mAdapter;
+    protected BaseQuickAdapter mAdapter;
 
     protected EmptyViewBinding mEmptyBinding;
 
@@ -92,8 +92,7 @@ public abstract class BaseRefreshActivity<T> extends AbsBaseActivity {
         mBinding.refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                mPageIndex = 1;
-                onMRefresh(mPageIndex, mLimit);
+                onMRefresh(1,mLimit,false);
             }
 
             @Override
@@ -114,8 +113,9 @@ public abstract class BaseRefreshActivity<T> extends AbsBaseActivity {
     protected abstract void getListData(int pageIndex, int limit, boolean canShowDialog);
 
     //刷新
-    protected void onMRefresh(int pageIndex, int limit) {
-        getListData(pageIndex, limit, false);
+    protected void onMRefresh(int pageindex,int limit,boolean isShowDialog) {
+        mPageIndex = pageindex;
+        getListData(pageindex, limit, isShowDialog);
     }
 
     //加载

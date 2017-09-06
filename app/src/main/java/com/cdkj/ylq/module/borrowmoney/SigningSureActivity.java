@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.cdkj.baselibrary.activitys.AddBackCardActivity;
 import com.cdkj.baselibrary.activitys.WebViewActivity;
 import com.cdkj.baselibrary.appmanager.EventTags;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
@@ -94,6 +95,13 @@ public class SigningSureActivity extends AbsBaseActivity {
                 showToast("请阅读并同意借款协议");
                 return;
             }
+
+            if(!SPUtilHelpr.getUserIsBindCard()){
+                showDoubleWarnListen("您还没有添加银行卡，请先添加银行卡。",view -> {
+                    AddBackCardActivity.open(this);
+                });
+            }
+
             signingRequest();
         });
 

@@ -22,9 +22,9 @@
             android:gravity="center_vertical"
             android:maxLines="1"
             android:paddingLeft="15dp"
-            tools:text="系统消息"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            tools:text="系统消息" />
 
 
         <TextView
@@ -32,7 +32,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:text="很好很好很好很好很好很好很好很好"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="很好很好很好很好很好很好很好很好ddd"
             android:textColor="@color/text_color"
             android:textSize="16sp" />
 
@@ -47,11 +49,11 @@
             android:layout_height="35dp">
 
             <LinearLayout
-                android:gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="15dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <ImageView

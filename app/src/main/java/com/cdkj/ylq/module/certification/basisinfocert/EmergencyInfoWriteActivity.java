@@ -54,12 +54,13 @@ public class EmergencyInfoWriteActivity extends AbsBaseActivity {
      *
      * @param context
      */
-    public static void open(Context context, CerttificationInfoModel.InfoContactBean data) {
+    public static void open(Context context, CerttificationInfoModel.InfoContactBean data,boolean isCheckCert) {
         if (context == null) {
             return;
         }
         Intent intent = new Intent(context, EmergencyInfoWriteActivity.class);
         intent.putExtra("data", data);
+        intent.putExtra("isCheckCert", isCheckCert);
         context.startActivity(intent);
     }
 
@@ -116,6 +117,11 @@ public class EmergencyInfoWriteActivity extends AbsBaseActivity {
             return;
         }
 
+        if (TextUtils.isEmpty(mBinding.editFamilyName.getText().toString())) {
+            showToast("请填写亲属关系联系人姓名");
+            return;
+        }
+
         if (TextUtils.isEmpty(mBinding.editFamilyRelation.getText().toString())) {
             showToast("请填写亲属关系联系方式");
             return;
@@ -125,6 +131,13 @@ public class EmergencyInfoWriteActivity extends AbsBaseActivity {
             showToast("请选择社会关系");
             return;
         }
+
+        if (TextUtils.isEmpty(mBinding.editSocietyName.getText().toString())) {
+            showToast("请填写社会关系联系人姓名");
+            return;
+        }
+
+
         if (TextUtils.isEmpty(mBinding.editSocietyRelation.getText().toString())) {
             showToast("请填写社会关系联系方式");
             return;
@@ -136,6 +149,8 @@ public class EmergencyInfoWriteActivity extends AbsBaseActivity {
         map.put("familyRelation", mFamilyCode);
         map.put("societyMobile", mBinding.editSocietyRelation.getText().toString());
         map.put("societyRelation", mSocietysCode);
+        map.put("familyName", mBinding.editFamilyName.getText().toString());
+        map.put("societyName", mBinding.editSocietyName.getText().toString());
         map.put("userId", SPUtilHelpr.getUserId());
 
         Call call = RetrofitUtils.getBaseAPiService().successRequest("623042", StringUtils.getJsonToString(map));
@@ -182,10 +197,23 @@ public class EmergencyInfoWriteActivity extends AbsBaseActivity {
     private void setShowData(CerttificationInfoModel.InfoContactBean data) {
         if (data == null) return;
 
+        if(getIntent()!=null){
+            if(getIntent().getBooleanExtra("isCheckCert",false)){
+                mBinding.btnSubmit.setBackgroundResource(R.drawable.btn_no_click_gray);
+                mBinding.btnSubmit.setEnabled(false);
+            }else{
+                mBinding.btnSubmit.setBackgroundResource(R.drawable.selector_login_btn);
+                mBinding.btnSubmit.setEnabled(true);
+            }
+        }
+
+
         mFamilyCode = data.getFamilyRelation();
         mSocietysCode = data.getSocietyRelation();
         mBinding.editFamilyRelation.setText(data.getFamilyMobile());
         mBinding.editSocietyRelation.setText(data.getSocietyMobile());
+        mBinding.editFamilyName.setText(data.getFamilyName());
+        mBinding.editSocietyName.setText(data.getSocietyName());
 
     }
 

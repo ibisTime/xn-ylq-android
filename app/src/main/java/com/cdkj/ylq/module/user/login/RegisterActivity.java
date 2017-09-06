@@ -20,6 +20,7 @@ import com.cdkj.baselibrary.model.UserLoginModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.AppUtils;
+import com.cdkj.baselibrary.utils.LogUtil;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.ylq.MainActivity;
 import com.cdkj.ylq.R;
@@ -37,7 +38,7 @@ import retrofit2.Call;
 /**
  * Created by 李先俊 on 2017/8/8.
  */
-
+// TODO 注册定位详细地址log
 public class RegisterActivity extends BaseLocationActivity implements SendCodeInterface {
 
     private ActivityRegisterBinding mBinding;
@@ -45,6 +46,8 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
     private SendPhoneCoodePresenter mSendCOdePresenter;
 
     private CityPicker mCityPicker;//城市选择
+
+    private AMapLocation mapLocation;
 
 
     /**
@@ -75,7 +78,8 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
         startLocation();//开始定位
         mSendCOdePresenter = new SendPhoneCoodePresenter(this);
 
-        initCityPicker();
+//        initCityPicker();
+
         initListener();
 
     }
@@ -104,11 +108,6 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
                 showToast("请输入密码");
                 return;
             }
-            if (TextUtils.isEmpty(mBinding.tvLocation.getText().toString())) {
-                showToast("请选择地址");
-                return;
-            }
-
             if (!mBinding.checkboxRegi.isChecked()) {
                 showToast("请阅读并同意注册协议");
                 return;
@@ -123,7 +122,6 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
             if (mCityPicker == null) return;
             mCityPicker.show();
         });
-
 
     }
 
@@ -177,13 +175,16 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
         hashMap.put("mobile", mBinding.editUsername.getText().toString());
         hashMap.put("loginPwd", mBinding.editPassword.getText().toString());
         hashMap.put("kind", MyConfig.USERTYPE);
-        if (!TextUtils.isEmpty(mBinding.tvLocation.getText().toString())) {
-            hashMap.put("city", mBinding.tvLocation.getText().toString());
+
+        if (mapLocation != null) {
+            hashMap.put("province", mapLocation.getProvince());
+            hashMap.put("city", mapLocation.getCity());
+            hashMap.put("area", mapLocation.getDistrict());
+            hashMap.put("address", mapLocation.getAddress());
         }
         hashMap.put("smsCaptcha", mBinding.editPhoneCode.getText().toString());
         hashMap.put("systemCode", MyConfig.SYSTEMCODE);
         hashMap.put("companyCode", MyConfig.COMPANYCODE);
-
 
         Call call = RetrofitUtils.createApi(MyApiServer.class).userRegister("623800", StringUtils.getJsonToString(hashMap));
 
@@ -246,7 +247,9 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
 
     @Override
     protected void locationSuccessful(AMapLocation aMapLocation) {
+        mapLocation = aMapLocation;
         mBinding.tvLocation.setText(aMapLocation.getProvince() + " " + aMapLocation.getCity() + " " + aMapLocation.getDistrict());
+        LogUtil.E("地址 "+aMapLocation.getAddress());
     }
 
     @Override

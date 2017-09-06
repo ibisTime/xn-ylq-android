@@ -48,17 +48,19 @@ public class ZMCertificationActivity extends AbsBaseActivity {
 
     private CerttificationInfoModel.InfoIdentifyBean mInfoData;
 
+
     /**
      * 打开当前页面
      *
-     * @param context
+     * @param context 认证数据 是否通过认证
      */
-    public static void open(Context context, CerttificationInfoModel.InfoIdentifyBean infoData) {
+    public static void open(Context context, CerttificationInfoModel.InfoIdentifyBean infoData, boolean isCheckCert) {
         if (context == null) {
             return;
         }
         Intent intent = new Intent(context, ZMCertificationActivity.class);
         intent.putExtra("infoData", infoData);
+        intent.putExtra("isCheckCert", isCheckCert);
         context.startActivity(intent);
     }
 
@@ -77,13 +79,34 @@ public class ZMCertificationActivity extends AbsBaseActivity {
 
         if (getIntent() != null) {
             mInfoData = getIntent().getParcelableExtra("infoData");
+
         }
 
+        setDataShow();
+        initListener();
+
+
+    }
+
+    private void setDataShow() {
         if (mInfoData != null) {
             mBinding.editCardNumber.setText(mInfoData.getIdNo());
             mBinding.editName.setText(mInfoData.getRealName());
         }
 
+        //设置按钮状态
+        if (getIntent() == null) return;
+
+        if (getIntent().getBooleanExtra("isCheckCert", false)) {
+            mBinding.butSure.setBackgroundResource(R.drawable.btn_no_click_gray);
+            mBinding.butSure.setEnabled(false);
+        } else {
+            mBinding.butSure.setBackgroundResource(R.drawable.selector_login_btn);
+            mBinding.butSure.setEnabled(true);
+        }
+    }
+
+    private void initListener() {
         //
         mBinding.butSure.setOnClickListener(v -> {
             if (TextUtils.isEmpty(mBinding.editName.getText().toString())) {
@@ -99,7 +122,6 @@ public class ZMCertificationActivity extends AbsBaseActivity {
             certRequest();
 
         });
-
     }
 
     /**

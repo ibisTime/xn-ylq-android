@@ -55,13 +55,14 @@ public class JobInfoCertificationWriteActivity extends AbsBaseActivity {
      *
      * @param context
      */
-    public static void open(Context context, CerttificationInfoModel.InfoOccupationBean data) {
+    public static void open(Context context, CerttificationInfoModel.InfoOccupationBean data,boolean isCheckCert) {
         if (context == null) {
             return;
         }
 
         Intent intent = new Intent(context, JobInfoCertificationWriteActivity.class);
         intent.putExtra("data", data);
+        intent.putExtra("isCheckCert", isCheckCert);
         context.startActivity(intent);
     }
 
@@ -139,10 +140,10 @@ public class JobInfoCertificationWriteActivity extends AbsBaseActivity {
             showToast("请输入单位地址");
             return;
         }
-        if (TextUtils.isEmpty(mBinding.editPhoneNumberJob.getText().toString())) {
-            showToast("请输入单位电话");
-            return;
-        }
+//        if (TextUtils.isEmpty(mBinding.editPhoneNumberJob.getText().toString())) {
+//            showToast("请输入单位电话");
+//            return;
+//        }
         Map<String, String> map = new HashMap<>();
         map.put("address", mBinding.editAddressJob.getText().toString());
         map.put("company", mBinding.editCompanyName.getText().toString());
@@ -174,6 +175,16 @@ public class JobInfoCertificationWriteActivity extends AbsBaseActivity {
 
     private void setShowData(CerttificationInfoModel.InfoOccupationBean mJobdata) {
         if (mJobdata == null) return;
+
+        if(getIntent()!=null){
+            if(getIntent().getBooleanExtra("isCheckCert",false)){
+                mBinding.btnSubmit.setBackgroundResource(R.drawable.btn_no_click_gray);
+                mBinding.btnSubmit.setEnabled(false);
+            }else{
+                mBinding.btnSubmit.setBackgroundResource(R.drawable.selector_login_btn);
+                mBinding.btnSubmit.setEnabled(true);
+            }
+        }
 
         mInMoneyCode = mJobdata.getIncome() + "";
         mJobCode = mJobdata.getOccupation();

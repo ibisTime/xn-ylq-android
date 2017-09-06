@@ -2,6 +2,7 @@ package com.cdkj.ylq.module.borrowmoney;
 
 import android.databinding.DataBindingUtil;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 
 import com.cdkj.baselibrary.appmanager.EventTags;
@@ -97,6 +98,12 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
         }
 
         if (TextUtils.equals("1", data.getIsLocked())) {//锁中状态
+
+            CommonDialog commonDialog = new CommonDialog(mActivity).builder()
+                    .setTitle("提示").setContentMsg("尊敬的用户,该款产品您还不能申请。")
+                    .setPositiveBtn("确定", null);
+            commonDialog.getContentView().setGravity(Gravity.CENTER_HORIZONTAL);
+            commonDialog.show();
             return;
         }
 
@@ -216,19 +223,16 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
     @Override
     protected void lazyLoad() {
         if (mBinding != null) {
-            mPageIndex = 1;
-            onMRefresh(mPageIndex, mLimit);
+            onMRefresh(1,mLimit,false);
         }
     }
 
     @Subscribe
     public void BorrowMoneyEventBus(String tag) {
         if (TextUtils.equals(tag, LOGINREFRESH)) {//登录成功刷新数据
-            mPageIndex = 1;
-            onMRefresh(mPageIndex, mLimit);
+            onMRefresh(1,mLimit,false);
         } else if (TextUtils.equals(tag, BORROWMONEYFRAGMENTREFRESH)) {//刷新数据
-            mPageIndex = 1;
-            onMRefresh(mPageIndex, mLimit);
+            onMRefresh(1,mLimit,false);
         }
     }
 
@@ -275,8 +279,7 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
         call.enqueue(new BaseResponseModelCallBack<IsSuccessModes>(mActivity) {
             @Override
             protected void onSuccess(IsSuccessModes data, String SucMessage) {
-                mPageIndex = 1;
-                onMRefresh(mPageIndex, mLimit);
+                onMRefresh(1,mLimit,false);
             }
 
             @Override

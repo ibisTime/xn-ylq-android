@@ -15,10 +15,11 @@ import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivityUseingMoneyBinding;
-import com.cdkj.ylq.databinding.ActivityWaiteMoneyDetailsBinding;
 import com.cdkj.ylq.model.UseMoneyRecordModel;
 import com.cdkj.ylq.module.api.MyApiServer;
-import com.cdkj.ylq.module.borrowmoney.PayActivity;
+import com.cdkj.ylq.module.pay.AlsoMoneyTabActivity;
+import com.cdkj.ylq.module.pay.RenewalMoneyTabActivity;
+import com.cdkj.ylq.module.renewal.RenewalListActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,10 +29,10 @@ import retrofit2.Call;
 import static com.cdkj.baselibrary.utils.DateUtil.DATE_YMD;
 
 /**
- * 借款生效中详情 (已还款显示 fra_state_note 其他隐藏  逾期显示) （借款记录）
+ * 借款生效中详情 (已还款显示 fra_state_note 其他隐藏 ) （借款记录）
  * Created by 李先俊 on 2017/8/9.
  */
-
+//TODO 借款记录详情 生效中已还款是否需要分开
 public class UseingMoneyDetailsActivity extends AbsBaseActivity {
 
     private ActivityUseingMoneyBinding mBinding;
@@ -76,16 +77,13 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
 
 
         if (getIntent() != null) {
-
             mCode = getIntent().getStringExtra("code");
             mState = getIntent().getBooleanExtra("state", false);
 
-            if (TextUtils.isEmpty(mCode)) {
+            if (TextUtils.isEmpty(mCode)) {                                     //如果code为空的话获取传递过来的数据
                 mData = getIntent().getParcelableExtra("data");
-
                 setShowData();
-
-            } else {
+            } else {                                                             //如果code不为空的话用code获取详情数据
                 getDataRequest();
             }
         }
@@ -99,18 +97,16 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
 //        if (TextUtils.equals(mData.getStatus(), "1")) { //生效中
 
         if (mState) { //生效中
-            setSubRightTitleAndClick("还款", v -> {
-                if (mData == null) return;
-                PayActivity.open(this, mData.getCode(), MoneyUtils.showPrice(mData.getTotalAmount()));
-            });
             setTopTitle("生效中详情");
 
             mBinding.fraStateNote.setVisibility(View.GONE);
-            mBinding.imgState.setImageResource(R.drawable.money_state1);
+            mBinding.imgState.setImageResource(R.drawable.record_3);
+            mBinding.layoutStateBtn.setVisibility(View.VISIBLE);
 
         } else {
             mBinding.fraStateNote.setVisibility(View.VISIBLE);
-            mBinding.imgState.setImageResource(R.drawable.money_state2);
+            mBinding.imgState.setImageResource(R.drawable.record_4);
+            mBinding.layoutStateBtn.setVisibility(View.GONE);
             setTopTitle("已还款详情");
         }
 
@@ -131,11 +127,29 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
 
         mBinding.tvService.setText(MoneyUtils.showPrice(mData.getFwAmount()) + "元");
 
+        mBinding.tvXuqiNum.setText(mData.getRenewalCount());
+
 
     }
 
 
     private void initListener() {
+
+        //还款
+        mBinding.btnPayMoney.setOnClickListener(v -> {
+            if(mData==null) return;
+            AlsoMoneyTabActivity.open(this,mData.getCode(),MoneyUtils.showPrice(mData.getAmount()));
+        });
+        //续期
+        mBinding.btnRenewal.setOnClickListener(v -> {
+            if(mData==null) return;
+            RenewalMoneyTabActivity.open(this,mData);
+        });
+
+        mBinding.fraXuqi.setOnClickListener(v -> {
+            if(mData==null) return;
+            RenewalListActivity.open(this,mData.getCode());
+        });
 
     }
 

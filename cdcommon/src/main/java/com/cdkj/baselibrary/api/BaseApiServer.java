@@ -1,9 +1,11 @@
 package com.cdkj.baselibrary.api;
 
 
+import com.cdkj.baselibrary.model.BankModel;
 import com.cdkj.baselibrary.model.CodeModel;
 import com.cdkj.baselibrary.model.IntroductionInfoModel;
 import com.cdkj.baselibrary.model.IsSuccessModes;
+import com.cdkj.baselibrary.model.MyBankCardListMode;
 import com.cdkj.baselibrary.model.QiniuGetTokenModel;
 import com.cdkj.baselibrary.model.TypeInfoModel;
 import com.cdkj.baselibrary.model.UserLoginModel;
@@ -108,7 +110,30 @@ public interface BaseApiServer {
     @POST("api")
     Call<BaseResponseModel<TypeInfoModel>> getTypeSystemInfo(@Field("code") String code, @Field("json") String  json);
 
+    /**
+     * 绑定银行卡
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api")
+    Call<BaseResponseModel<String>> bindBankCard(@Field("code") String code, @Field("json") String  json);
 
+
+    /**
+     * 获取银行卡类型
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api")
+    Call<BaseResponseListModel<BankModel>> getBackModel(@Field("code") String code, @Field("json") String  json);
+
+    /**
+     * 获取银行卡列表
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api")
+    Call<BaseResponseModel<MyBankCardListMode>> getCardListData(@Field("code") String code, @Field("json") String  json);
 
 
 }

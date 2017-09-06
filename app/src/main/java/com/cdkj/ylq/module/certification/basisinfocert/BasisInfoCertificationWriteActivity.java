@@ -59,15 +59,16 @@ public class BasisInfoCertificationWriteActivity extends AbsBaseActivity {
     /**
      * 打开当前页面
      *
-     * @param context
+     * @param context 认证数据 是否已经认证过
      */
-    public static void open(Context context, CerttificationInfoModel.InfoBasicBean data) {
+    public static void open(Context context, CerttificationInfoModel.InfoBasicBean data,boolean isCheckCert) {
         if (context == null) {
             return;
         }
 
         Intent intent = new Intent(context, BasisInfoCertificationWriteActivity.class);
         intent.putExtra("data", data);
+        intent.putExtra("isCheckCert", isCheckCert);
         context.startActivity(intent);
 
     }
@@ -155,12 +156,12 @@ public class BasisInfoCertificationWriteActivity extends AbsBaseActivity {
             showToast("请选择居住时长");
             return;
         }
-        if (TextUtils.isEmpty(mBinding.editQq.getText().toString())) {
-            showToast("请填写QQ");
-            return;
-        }
-        if (TextUtils.isEmpty(mBinding.editEmail.getText().toString()) || !StringUtils.isEmail(mBinding.editEmail.getText().toString())) {
-            showToast("请填写邮箱");
+//        if (TextUtils.isEmpty(mBinding.editQq.getText().toString())) {
+//            showToast("请填写QQ");
+//            return;
+//        }
+        if (!StringUtils.isEmail(mBinding.editEmail.getText().toString())) {
+            showToast("请填写正确的邮箱");
             return;
         }
 
@@ -276,6 +277,16 @@ public class BasisInfoCertificationWriteActivity extends AbsBaseActivity {
     private void showData(CerttificationInfoModel.InfoBasicBean mInfoData) {
 
         if (mInfoData == null) return;
+
+        if(getIntent()!=null){
+            if(getIntent().getBooleanExtra("isCheckCert",false)){
+                mBinding.btnSubmit.setBackgroundResource(R.drawable.btn_no_click_gray);
+                mBinding.btnSubmit.setEnabled(false);
+            }else{
+                mBinding.btnSubmit.setBackgroundResource(R.drawable.selector_login_btn);
+                mBinding.btnSubmit.setEnabled(true);
+            }
+        }
 
 
         mEducationCode = mInfoData.getEducation();

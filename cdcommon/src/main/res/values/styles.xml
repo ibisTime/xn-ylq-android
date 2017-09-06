@@ -110,4 +110,11 @@
         <item name="android:windowExitAnimation">@anim/pop_bottom_out</item>
     </style>
 
+
+    <attr name="LoadingViewStyle" format="reference" />
+    <declare-styleable name="LoadingView">
+        <attr name="loading_view_size" format="dimension"/>
+        <attr name="android:color"/>
+    </declare-styleable>
+
 </resources>

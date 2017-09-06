@@ -65,7 +65,6 @@ public class SendPhoneCoodePresenter {
                 }
             }
 
-
             @Override
             protected void onBuinessFailure(String code, String error) {
                 mListener.CodeFailed(code, error);
@@ -73,7 +72,7 @@ public class SendPhoneCoodePresenter {
 
             @Override
             protected void onNoNet(String msg) {
-                ToastUtil.show(mContext,"验证码发送失败");
+                ToastUtil.show(mContext,msg);
             }
 
             @Override

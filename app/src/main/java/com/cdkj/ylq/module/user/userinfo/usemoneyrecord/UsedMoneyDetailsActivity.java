@@ -15,10 +15,11 @@ import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivityUsedMoneyBinding;
-import com.cdkj.ylq.databinding.ActivityUseingMoneyBinding;
 import com.cdkj.ylq.model.UseMoneyRecordModel;
 import com.cdkj.ylq.module.api.MyApiServer;
-import com.cdkj.ylq.module.borrowmoney.PayActivity;
+import com.cdkj.ylq.module.pay.AlsoMoneyTabActivity;
+import com.cdkj.ylq.module.pay.RenewalMoneyTabActivity;
+import com.cdkj.ylq.module.renewal.RenewalListActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -75,11 +76,6 @@ public class UsedMoneyDetailsActivity extends AbsBaseActivity {
         if (getIntent() != null) {
             mData = getIntent().getParcelableExtra("data");
         }
-        setSubRightTitleAndClick("还款", v -> {
-            if (mData == null) return;
-            PayActivity.open(this, mData.getCode(), MoneyUtils.showPrice(mData.getTotalAmount()));
-        });
-
 
         if (getIntent() != null) {
 
@@ -121,6 +117,8 @@ public class UsedMoneyDetailsActivity extends AbsBaseActivity {
         mBinding.tvYuqi.setText(mData.getYqDays() + "天");
         mBinding.tvFuwu.setText(MoneyUtils.showPrice(mData.getFwAmount())+"元");
         mBinding.tvYqMoney.setText(MoneyUtils.showPrice(mData.getYqlxAmount())+"元");
+
+        mBinding.tvXuqiNum.setText(mData.getRenewalCount());
     }
 
 
@@ -152,6 +150,21 @@ public class UsedMoneyDetailsActivity extends AbsBaseActivity {
 
 
     private void initListener() {
+
+        //还款
+        mBinding.btnPayMoney.setOnClickListener(v -> {
+            if(mData==null) return;
+            AlsoMoneyTabActivity.open(this,mData.getCode(),MoneyUtils.showPrice(mData.getAmount()));
+        });
+        //续期
+        mBinding.btnRenewal.setOnClickListener(v -> {
+            if(mData==null) return;
+            RenewalMoneyTabActivity.open(this,mData);
+        });
+        mBinding.fraXuqi.setOnClickListener(v -> {
+            if(mData==null) return;
+            RenewalListActivity.open(this,mData.getCode());
+        });
 
     }
 

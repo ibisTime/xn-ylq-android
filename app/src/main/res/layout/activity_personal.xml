@@ -176,8 +176,7 @@
                 android:background="@color/lineColor" />
 
             <LinearLayout
-                android:visibility="gone"
-                android:id="@+id/layout_address"
+                android:id="@+id/layout_bank"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@color/white"
@@ -189,7 +188,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
-                    android:text="我的收货地址"
+                    android:text="我的银行卡"
                     android:textColor="@color/fontColor_gray"
                     android:textSize="15sp" />
 

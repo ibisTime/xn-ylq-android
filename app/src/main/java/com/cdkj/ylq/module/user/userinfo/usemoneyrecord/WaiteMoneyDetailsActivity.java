@@ -4,14 +4,29 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 
+import com.cdkj.baselibrary.appmanager.EventTags;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
+import com.cdkj.baselibrary.model.EventBusModel;
+import com.cdkj.baselibrary.model.IsSuccessModes;
+import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
+import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.DateUtil;
 import com.cdkj.baselibrary.utils.MoneyUtils;
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.ylq.R;
+import com.cdkj.ylq.appmanager.BusinessSings;
 import com.cdkj.ylq.databinding.ActivityWaiteMoneyDetailsBinding;
 import com.cdkj.ylq.model.UseMoneyRecordModel;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit2.Call;
 
 import static com.cdkj.baselibrary.utils.DateUtil.DATE_YMD;
 
@@ -66,7 +81,73 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
         setShowData();
 
         initListener();
+
     }
+
+    private void initListener() {
+        mBinding.btnSure.setOnClickListener(v -> {
+            reUseRequest();
+        });
+    }
+
+
+    /**
+     * 重新申请
+     */
+    public void reUseRequest() {
+
+        if (mData == null) return;
+
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("code", mData.getCode());
+        Call call = RetrofitUtils.getBaseAPiService().successRequest("623079", StringUtils.getJsonToString(map));
+
+        addCall(call);
+
+        showLoadingDialog();
+
+        call.enqueue(new BaseResponseModelCallBack<IsSuccessModes>(this) {
+            @Override
+            protected void onSuccess(IsSuccessModes data, String SucMessage) {
+                if (data.isSuccess()) {
+                    showToast("申请成功，请等待审核");
+
+                    refreshState1();
+
+                    refreshState7();
+
+                    finish();
+                }
+            }
+
+            @Override
+            protected void onFinish() {
+               disMissLoading();
+            }
+        });
+
+    }
+
+    /**
+     * 刷新待放款状态
+     */
+    private void refreshState1() {
+        EventBusModel eventBusModel=new EventBusModel();
+        eventBusModel.setTag(EventTags.USEMONEYRECORDFRAGMENTREFRESH);
+        eventBusModel.setEvInfo(BusinessSings.USEMONEYRECORD_1);
+        EventBus.getDefault().post(eventBusModel);
+    }
+
+    /**
+     * 刷新打款失败状态状态
+     */
+    private void refreshState7() {
+        EventBusModel eventBusModel=new EventBusModel();
+        eventBusModel.setTag(EventTags.USEMONEYRECORDFRAGMENTREFRESH);
+        eventBusModel.setEvInfo(BusinessSings.USEMONEYRECORD_7);
+        EventBus.getDefault().post(eventBusModel);
+    }
+
 
     private void setShowData() {
 
@@ -77,14 +158,48 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
         mBinding.tvCode.setText(mData.getCode());
         mBinding.tvSignData.setText(DateUtil.formatStringData(mData.getSignDatetime(), DATE_YMD));
         mBinding.tvState2.setText(mData.getRemark());
-        mBinding.tvDay.setText(mData.getDuration()+"天");
+        mBinding.tvDay.setText(mData.getDuration() + "天");
+
+        mBinding.imgState.setImageResource(getStateImg(mData.getStatus()));
+
+        if (TextUtils.equals(mData.getStatus(), BusinessSings.USEMONEYRECORD_7)) { //打款失败时显示按钮
+            mBinding.btnSure.setVisibility(View.VISIBLE);
+        } else {
+            mBinding.btnSure.setVisibility(View.GONE);
+        }
+
+
+        if (TextUtils.equals(mData.getStatus(), BusinessSings.USEMONEYRECORD_0)          //待审核 //待放款
+                || TextUtils.equals(mData.getStatus(), BusinessSings.USEMONEYRECORD_1)
+                ) {
+            mBinding.layoutMoneyState.setVisibility(View.VISIBLE);
+        } else {
+            mBinding.layoutMoneyState.setVisibility(View.GONE);
+        }
 
     }
 
+    /**
+     * 获取状态图片
+     *
+     * @param status
+     * @return
+     */
+    private int getStateImg(String status) {
 
-    private void initListener() {
-
+        switch (status) {
+            case BusinessSings.USEMONEYRECORD_0: //待审核
+                return R.drawable.record_0;
+            case BusinessSings.USEMONEYRECORD_2://审核不通过
+                return R.drawable.record_2;
+            case BusinessSings.USEMONEYRECORD_1://待放款
+                return R.drawable.record_1;
+            case BusinessSings.USEMONEYRECORD_7://打款失败
+                return R.drawable.record_7;
+            default:
+                mBinding.imgState.setVisibility(View.GONE);
+                return R.drawable.default_pic;
+        }
     }
-
 
 }

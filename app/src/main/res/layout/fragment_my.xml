@@ -8,9 +8,9 @@
         android:background="@color/bg_gray">
 
         <LinearLayout
-            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/white"
             android:orientation="vertical">
 
 
@@ -66,7 +66,6 @@
                         tools:text="sdfsf" />
 
                     <TextView
-                        android:visibility="gone"
                         android:id="@+id/tv_user_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -75,6 +74,7 @@
                         android:paddingLeft="15dp"
                         android:textColor="@color/white"
                         android:textSize="14sp"
+                        android:visibility="gone"
                         tools:text="sdfsf" />
 
                 </LinearLayout>
@@ -340,6 +340,39 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/layout_kefu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="25dp"
+                android:paddingRight="25dp">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/kefu" />
+
+                <TextView
+                    android:id="@+id/tv_surrounding_service"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp"
+                    android:text="联系客服"
+                    android:textColor="@color/black_2"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/more_right" />
+
+            </LinearLayout>
+
             <View style="@style/style_split_line" />
 
             <LinearLayout
@@ -411,12 +444,12 @@
             <View style="@style/style_split_line" />
 
             <LinearLayout
-                android:paddingTop="50dp"
-                android:gravity="center"
-                android:background="@color/bg_gray"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/bg_gray"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingTop="50dp">
 
                 <ImageView
                     android:layout_width="15dp"
@@ -426,22 +459,23 @@
 
                 <TextView
                     android:id="@+id/tv_service_phone"
-                    android:textColor="@color/text_color"
-                    android:layout_marginLeft="5dp"
-                    tools:text="400-854-2365"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/text_color"
+                    tools:text="400-854-2365" />
 
             </LinearLayout>
+
             <TextView
                 android:id="@+id/tv_service_time"
-                android:paddingTop="10dp"
-                android:gravity="center"
-                android:background="@color/bg_gray"
-                android:textColor="@color/text_color"
-                tools:text="服务时间:9:30-18:00"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:background="@color/bg_gray"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:textColor="@color/text_color"
+                tools:text="服务时间:9:30-18:00" />
 
 
         </LinearLayout>

@@ -97,6 +97,7 @@ public class AddressBookCertActivity extends AbsBaseActivity {
                                         if(hashMaps!=null && hashMaps.size()>0){
                                             pushMobileInfo(hashMaps);
                                         }else{
+                                            disMissLoading();
                                             CommonDialog commonDialog = new CommonDialog(AddressBookCertActivity.this).builder()
                                                     .setTitle("没有获取到通讯录数据").setContentMsg("1.请授予读取手机联系人权限\n" +
                                                             "2.请检查通讯录是否有联系人。")
@@ -104,7 +105,6 @@ public class AddressBookCertActivity extends AbsBaseActivity {
                                                     });
                                             commonDialog.show();
 
-                                            disMissLoading();
                                         }
                                     }, throwable -> {
                                         disMissLoading();

@@ -105,8 +105,7 @@ public abstract class BaseRefreshFragment<T> extends BaseLazyFragment {
         mBinding.refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                mPageIndex = 1;
-                onMRefresh(mPageIndex, mLimit);
+                onMRefresh(1,mLimit,false);
             }
 
             @Override
@@ -127,8 +126,9 @@ public abstract class BaseRefreshFragment<T> extends BaseLazyFragment {
     protected abstract void getListData(int pageIndex, int limit, boolean canShowDialog);
 
     //刷新
-    protected void onMRefresh(int pageIndex, int limit) {
-        getListData(pageIndex, limit, false);
+    protected void onMRefresh(int pageindex,int limit,boolean isShowDialog) {
+        mPageIndex = pageindex;
+        getListData(pageindex, limit, isShowDialog);
     }
 
     //加载

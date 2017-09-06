@@ -54,6 +54,16 @@ public class getUserCertificationPresenter {
             }
 
             @Override
+            protected void onNull() {
+                mListener.getInfoFailed("","网络请求失败");
+            }
+
+            @Override
+            protected void onNoNet(String msg) {
+                mListener.getInfoFailed("",msg);
+            }
+
+            @Override
             protected void onFinish() {
                 mListener.endGetInfo(showDialog);
             }

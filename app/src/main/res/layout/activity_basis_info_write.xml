@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <ScrollView
-        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,11 +35,11 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="center_vertical"
+                    android:hint="请选择"
                     android:paddingLeft="15dp"
                     android:textColor="@color/black_2"
-                    android:textSize="16sp"
                     android:textColorHint="@color/text_hint_color"
-                    android:hint="请选择" />
+                    android:textSize="16sp" />
 
                 <ImageView
                     android:layout_width="15dp"
@@ -74,11 +74,11 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="center_vertical"
+                    android:hint="请选择"
                     android:paddingLeft="15dp"
                     android:textColor="@color/black_2"
-                    android:textSize="16sp"
                     android:textColorHint="@color/text_hint_color"
-                    android:hint="请选择" />
+                    android:textSize="16sp" />
 
                 <ImageView
                     android:layout_width="15dp"
@@ -112,11 +112,12 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="center_vertical"
+                    android:hint="输入子女个数输入子女个数"
+                    android:inputType="numberDecimal"
                     android:paddingLeft="15dp"
                     android:textColor="@color/black_2"
-                    android:textSize="16sp"
                     android:textColorHint="@color/text_hint_color"
-                    android:hint="输入子女个数" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -145,11 +146,11 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="center_vertical"
+                    android:hint="请选择"
                     android:paddingLeft="15dp"
                     android:textColor="@color/black_2"
-                    android:textSize="16sp"
                     android:textColorHint="@color/text_hint_color"
-                    android:hint="请选择"/>
+                    android:textSize="16sp" />
 
                 <ImageView
                     android:layout_width="15dp"
@@ -162,8 +163,6 @@
             <View style="@style/style_split_line" />
 
             <LinearLayout
-                android:paddingBottom="15dp"
-                android:paddingTop="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -171,6 +170,7 @@
                 android:paddingRight="25dp">
 
                 <TextView
+                    android:id="@+id/textView5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
@@ -179,19 +179,19 @@
                     android:textSize="16sp" />
 
                 <EditText
-
                     android:id="@+id/edit_address"
-                    android:hint="输入详细地址"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="center_vertical"
+                    android:hint="输入详细地址(精确到门牌号)输入详细地址"
+                    android:paddingBottom="10dp"
                     android:paddingLeft="15dp"
+                    android:paddingTop="10dp"
                     android:textColor="@color/black_2"
                     android:textColorHint="@color/text_hint_color"
-                    android:textSize="16sp"
-                   />
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -220,11 +220,11 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="center_vertical"
+                    android:hint="请选择"
                     android:paddingLeft="15dp"
                     android:textColor="@color/black_2"
-                    android:textSize="16sp"
                     android:textColorHint="@color/text_hint_color"
-                    android:hint="请选择"/>
+                    android:textSize="16sp" />
 
                 <ImageView
                     android:layout_width="15dp"
@@ -258,11 +258,12 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="center_vertical"
+                    android:hint="选填"
                     android:paddingLeft="15dp"
+                    android:singleLine="true"
                     android:textColor="@color/black_2"
-                    android:textSize="16sp"
                     android:textColorHint="@color/text_hint_color"
-                    android:hint="输入QQ号码"/>
+                    android:textSize="16sp" />
 
 
             </LinearLayout>
@@ -291,11 +292,12 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="center_vertical"
+                    android:hint="选填"
                     android:paddingLeft="15dp"
+                    android:singleLine="true"
                     android:textColor="@color/black_2"
-                    android:textSize="16sp"
                     android:textColorHint="@color/text_hint_color"
-                    android:hint="输入邮箱" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -303,10 +305,10 @@
 
 
             <Button
-                android:layout_marginBottom="50dp"
                 android:id="@+id/btn_submit"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
+                android:layout_marginBottom="50dp"
                 android:layout_marginLeft="48dp"
                 android:layout_marginRight="48dp"
                 android:layout_marginTop="45dp"

@@ -2,6 +2,7 @@ package com.cdkj.baselibrary.activitys;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
@@ -48,6 +49,7 @@ public abstract class CommonTablayoutActivity extends AbsBaseActivity {
         mbinding.viewpager.setAdapter(tablayoutAdapter);
         mbinding.tablayout.setupWithViewPager(mbinding.viewpager);        //viewpager和tablayout关联
         mbinding.viewpager.setOffscreenPageLimit(tablayoutAdapter.getCount());
+//        mbinding.tablayout.setTabMode(TabLayout.MODE_SCROLLABLE);//设置滑动模式 /TabLayout.MODE_SCROLLABLE 可滑动 ，TabLayout.MODE_FIXED表示不可滑动
     }
     //获取要显示的fragment
     public abstract List<Fragment> getFragments();

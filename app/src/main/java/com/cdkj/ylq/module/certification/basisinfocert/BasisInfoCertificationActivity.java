@@ -74,7 +74,7 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements g
         setSubLeftImgState(true);
 
         setTopTitle("基本信息");
-
+        hideAllNoTitle();
         mPresenter = new getUserCertificationPresenter(this);
 
         initListeneer();
@@ -82,16 +82,16 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements g
         mHelper = new PermissionHelper(this);
 
         mHelper.requestPermissions(new PermissionHelper.PermissionListener() {
-                    @Override
-                    public void doAfterGrand(String... permission) {
-                        mCanGetIemi = true;
-                    }
+            @Override
+            public void doAfterGrand(String... permission) {
+                mCanGetIemi = true;
+            }
 
-                    @Override
-                    public void doAfterDenied(String... permission) {
-                        mCanGetIemi = false;
-                    }
-                }, Manifest.permission.READ_PHONE_STATE);
+            @Override
+            public void doAfterDenied(String... permission) {
+                mCanGetIemi = false;
+            }
+        }, Manifest.permission.READ_PHONE_STATE);
 
     }
 
@@ -117,6 +117,22 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements g
             return;
         }
 
+
+        //设置按钮状态 已认证变成灰色 禁止点击
+
+        if (TextUtils.equals("1", mCertData.getInfoBasicFlag()) &&
+                TextUtils.equals("1", mCertData.getInfoOccupationFlag()) &&
+                TextUtils.equals("1", mCertData.getInfoContactFlag())) {
+
+            mBinding.btnSure.setBackgroundResource(R.drawable.btn_no_click_gray);
+            mBinding.btnSure.setEnabled(false);
+
+        } else {
+            mBinding.btnSure.setBackgroundResource(R.drawable.selector_login_btn);
+            mBinding.btnSure.setEnabled(true);
+        }
+
+
         if (TextUtils.equals("1", mCertData.getInfoBasicFlag())) {
             mBinding.imgBasisInfo.setVisibility(View.VISIBLE);
         }
@@ -139,19 +155,21 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements g
         //基本信息填写
         mBinding.layoutBasisInfo.setOnClickListener(v -> {
             if (mCertData == null) return;
-            BasisInfoCertificationWriteActivity.open(this, mCertData.getInfoBasic());
+            BasisInfoCertificationWriteActivity.open(this, mCertData.getInfoBasic(), TextUtils.equals("1", mCertData.getInfoBasicFlag()));
         });
+
         //职业信息填写
         mBinding.layoutJobInfo.setOnClickListener(v -> {
             if (mCertData == null) return;
-            JobInfoCertificationWriteActivity.open(this, mCertData.getInfoOccupation());
+            JobInfoCertificationWriteActivity.open(this, mCertData.getInfoOccupation(), TextUtils.equals("1", mCertData.getInfoOccupationFlag()));
         });
 
         //紧急联系人信息填写
         mBinding.layoutEmergencyInfo.setOnClickListener(v -> {
             if (mCertData == null) return;
-            EmergencyInfoWriteActivity.open(this, mCertData.getInfoContact());
+            EmergencyInfoWriteActivity.open(this, mCertData.getInfoContact(), TextUtils.equals("1", mCertData.getInfoContactFlag()));
         });
+
         //银行卡信息填写
         mBinding.layoutBankCardInfo.setOnClickListener(v -> {
             if (mCertData == null) return;
@@ -176,10 +194,10 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements g
                 showToast("请提交紧急联系人信息");
                 return;
             }
-            if (!TextUtils.equals("1", mCertData.getInfoBankcardFlag())) {
-                showToast("请认证银行卡信息信息");
-                return;
-            }
+//            if (!TextUtils.equals("1", mCertData.getInfoBankcardFlag())) {
+//                showToast("请认证银行卡信息信息");
+//                return;
+//            }
 
             allSubmitRequest();
 
@@ -207,7 +225,9 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements g
             @Override
             protected void onSuccess(IsSuccessModes data, String SucMessage) {
                 if (data.isSuccess()) {
-                    finish();
+                    showSureDialog("认证成功", view -> {
+                        finish();
+                    });
                 }
             }
 
@@ -222,11 +242,13 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements g
     public void getInfoSuccess(CerttificationInfoModel userCertInfo, String msg) {
         mCertData = userCertInfo;
         setShowState(userCertInfo);
+        showContentView();
     }
 
     @Override
     public void getInfoFailed(String code, String msg) {
         ToastUtil.show(this, msg);
+        showErrorView(msg);
     }
 
     @Override
