@@ -1,8 +1,14 @@
 package com.cdkj.ylq.appmanager;
 
+import android.app.Activity;
 import android.text.TextUtils;
 
-/**业务务代码标记
+import com.cdkj.ylq.model.UseMoneyRecordModel;
+import com.cdkj.ylq.module.user.userinfo.usemoneyrecord.UsedMoneyDetailsActivity;
+import com.cdkj.ylq.module.user.userinfo.usemoneyrecord.UseingMoneyDetailsActivity;
+import com.cdkj.ylq.module.user.userinfo.usemoneyrecord.WaiteMoneyDetailsActivity;
+
+/**一些业务代码标记 逻辑判断
  * Created by 李先俊 on 2017/9/6.
  */
 
@@ -25,25 +31,25 @@ public class BusinessSings {
         }
 
         switch (status) {
-            case "0":
+            case USEMONEYRECORD_0:
                 str = "审核中";
                 break;
-            case "1":
+            case USEMONEYRECORD_1:
                 str = "审核通过";
                 break;
-            case "2":
+            case USEMONEYRECORD_2:
                 str = "审核不通过";
                 break;
-            case "3":
+            case USEMONEYRECORD_3:
                 str = "已放款";
                 break;
-            case "4":
+            case USEMONEYRECORD_4:
                 str = "已还款";
                 break;
-            case "5":
+            case USEMONEYRECORD_5:
                 str = "已逾期";
                 break;
-            case "7":
+            case USEMONEYRECORD_7:
                 str = "打款失败";
                 break;
         }
@@ -51,6 +57,34 @@ public class BusinessSings {
         return str;
     }
 
+    /**
+     * 根据订单状态跳转相应界面
+     * @param activity
+     * @param state
+     */
+    public static void startRecordActivity(Activity activity,UseMoneyRecordModel.ListBean state){
+        if (state == null || activity==null) {
+            return;
+        }
+        if (TextUtils.equals(state.getStatus(), USEMONEYRECORD_0)//待审核
+                || TextUtils.equals(state.getStatus(), USEMONEYRECORD_2)//审核不通过
+                || TextUtils.equals(state.getStatus(), USEMONEYRECORD_1)//待放款
+                || TextUtils.equals(state.getStatus(), USEMONEYRECORD_7)) {//打款失败
+            WaiteMoneyDetailsActivity.open(activity, state);
+
+        } else if (TextUtils.equals(state.getStatus(), USEMONEYRECORD_3)) {//生效中
+
+            UseingMoneyDetailsActivity.open(activity, state, true, "");//
+
+        } else if (TextUtils.equals(state.getStatus(), USEMONEYRECORD_4)) {//已还款
+            UseingMoneyDetailsActivity.open(activity, state, false, "");//
+
+        } else if (TextUtils.equals(state.getStatus(), USEMONEYRECORD_5)) {//已逾期
+
+            UsedMoneyDetailsActivity.open(activity, state, ""); //
+
+        }
+    }
 
 
 }

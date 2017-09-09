@@ -53,10 +53,8 @@ public abstract class BaseRefreshFragment<T> extends BaseLazyFragment {
         if (canLoadEmptyView()) {
             mEmptyBinding = DataBindingUtil.inflate(inflater, R.layout.empty_view, null, false);
         }
-        if (canLoadTopTitleView()) {
-            if (!mBinding.toptitlelayout.isInflated()) {
-                mTopTitleView = mBinding.toptitlelayout.getViewStub().inflate();
-            }
+        if (canLoadTopTitleView() && !mBinding.toptitlelayout.isInflated()) {
+            mTopTitleView = mBinding.toptitlelayout.getViewStub().inflate();
         }
 
         init();
@@ -264,12 +262,10 @@ public abstract class BaseRefreshFragment<T> extends BaseLazyFragment {
     }
 
     public void setTopTitleViewColor(int color) {
-        if (mTopTitleView != null) {
             if (mTopTitleView != null) {
                 TextView tvTitle = (TextView) mTopTitleView.findViewById(R.id.tv_top_title_abs);
                 tvTitle.setTextColor(ContextCompat.getColor(mActivity,color));
             }
-        }
     }
 
 

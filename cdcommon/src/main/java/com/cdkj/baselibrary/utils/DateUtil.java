@@ -36,11 +36,10 @@ public class DateUtil {
      */
     public static String getSpecifiedDayAfter(String specifiedDay) {
         Calendar c = Calendar.getInstance();
-        Date date = null;
+        Date date = new Date();
         try {
             date = new SimpleDateFormat("yyyy-MM-dd").parse(specifiedDay);
         } catch (ParseException e) {
-            e.printStackTrace();
         }
         c.setTime(date);
         int day = c.get(Calendar.DATE);
@@ -169,7 +168,6 @@ public class DateUtil {
         try {
             cal.setTime(fmt.parse(date));
         } catch (ParseException e) {
-            e.printStackTrace();
         }
         int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
         if (w < 0)
@@ -185,7 +183,6 @@ public class DateUtil {
         try {
             date = format.parse(str);
         } catch (ParseException e) {
-            e.printStackTrace();
         }
         return date;
     }

@@ -53,7 +53,6 @@ public class DownloadThread extends Thread {
         try {
             file = new RandomAccessFile(path, "rwd");
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
     }
 
@@ -91,16 +90,13 @@ public class DownloadThread extends Thread {
                 onDownloading();
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
             onError(DownloadThreadListener.DOWNLOAD_ERROR_FILE_NOT_FOUND);
         } catch (IOException e) {
             //用于切换网络导致的下载异常，只处理一次
-            e.printStackTrace();
             try {
                 sleep(500);
                 run();
             } catch (Exception e1) {
-                e1.printStackTrace();
             }
         } finally {
             try {
@@ -108,7 +104,6 @@ public class DownloadThread extends Thread {
                 if (inputStream != null) inputStream.close();
                 if (file != null) file.close();
             } catch (IOException e) {
-                e.printStackTrace();
             }
         }
     }

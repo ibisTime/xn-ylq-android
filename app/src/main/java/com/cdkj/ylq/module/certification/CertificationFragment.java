@@ -7,12 +7,16 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.BaseLazyFragment;
+import com.cdkj.baselibrary.dialog.CommonDialog;
+import com.cdkj.baselibrary.model.IntroductionInfoModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.LogUtil;
@@ -21,9 +25,12 @@ import com.cdkj.baselibrary.utils.ToastUtil;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.FragmentCertificationBinding;
 import com.cdkj.ylq.model.CerttificationInfoModel;
+import com.cdkj.ylq.model.IsBorrowFlagModel;
+import com.cdkj.ylq.module.api.MyApiServer;
 import com.cdkj.ylq.module.certification.basisinfocert.BasisInfoCertificationActivity;
-import com.cdkj.ylq.mpresenter.getUserCertificationInfoListener;
-import com.cdkj.ylq.mpresenter.getUserCertificationPresenter;
+import com.cdkj.ylq.module.certification.review.HumanReviewActivity;
+import com.cdkj.ylq.mpresenter.GetUserCertificationInfoListener;
+import com.cdkj.ylq.mpresenter.GetUserCertificationPresenter;
 import com.moxie.client.manager.MoxieSDK;
 import com.moxie.client.model.MxParam;
 import com.moxie.client.model.TitleParams;
@@ -43,13 +50,15 @@ import retrofit2.Call;
  * Created by 李先俊 on 2017/8/8.
  */
 
-public class CertificationFragment extends BaseLazyFragment implements getUserCertificationInfoListener {
+public class CertificationFragment extends BaseLazyFragment implements GetUserCertificationInfoListener {
 
     private FragmentCertificationBinding mBinding;
 
-    private CerttificationInfoModel mCertData;
+    private CerttificationInfoModel mCertData;//认证结果数据
 
-    private getUserCertificationPresenter mCertInfoPresenter;
+    private GetUserCertificationPresenter mCertInfoPresenter;//获取认证结果接口
+
+    private boolean isMoxieCallback;//是否执行过魔蝎回调 用户魔蝎回调成功弹框提醒
 
 
     /**
@@ -66,6 +75,7 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
 
         //身份认证
         mBinding.layoutIdcardCert.setOnClickListener(v -> {
+            if (mCertData == null) return;
             if (!SPUtilHelpr.isLogin(mActivity, false)) {
                 return;
             }
@@ -80,7 +90,7 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
 
             if (mCertData == null) return;
 
-            if (TextUtils.equals("0", mCertData.getInfoIdentifyFlag())) {
+            if (!TextUtils.equals("1", mCertData.getInfoIdentifyFlag())) {
                 ToastUtil.show(mActivity, "请进行身份认证");
                 return;
             }
@@ -95,11 +105,11 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
             }
             if (mCertData == null) return;
 
-            if (TextUtils.equals("0", mCertData.getInfoIdentifyFlag())) {
+            if (!TextUtils.equals("1", mCertData.getInfoIdentifyFlag())) {
                 ToastUtil.show(mActivity, "请进行身份认证");
                 return;
             }
-            if (TextUtils.equals("0", mCertData.getInfoAntifraudFlag())) {
+            if (!TextUtils.equals("1", mCertData.getInfoAntifraudFlag())) {
                 ToastUtil.show(mActivity, "请进行个人信息认证");
                 return;
             }
@@ -115,16 +125,15 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
             }
             if (mCertData == null) return;
 
-
-            if (TextUtils.equals("0", mCertData.getInfoIdentifyFlag())) {
+            if (!TextUtils.equals("1", mCertData.getInfoIdentifyFlag())) {
                 ToastUtil.show(mActivity, "请进行身份认证");
                 return;
             }
-            if (TextUtils.equals("0", mCertData.getInfoAntifraudFlag())) {
+            if (!TextUtils.equals("1", mCertData.getInfoAntifraudFlag())) {
                 ToastUtil.show(mActivity, "请进行个人信息认证");
                 return;
             }
-            if (TextUtils.equals("0", mCertData.getInfoZMCreditFlag())) {
+            if (!TextUtils.equals("1", mCertData.getInfoZMCreditFlag())) {
                 ToastUtil.show(mActivity, "请进行芝麻认证");
                 return;
             }
@@ -132,8 +141,9 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
                 ToastUtil.show(mActivity, "运营商已经认证");
                 return;
             }
-            openMoxie();
+            getMxApiKEy();
         });
+
 
 
         mBinding.imgCalcelCert.setOnClickListener(v -> {
@@ -150,6 +160,38 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
         });
     }
 
+    /**
+     * 获取魔蝎apikey
+     */
+    public void getMxApiKEy() {
+
+        Map<String, String> map = new HashMap<>();
+        map.put("key", "mxApiKey");
+        map.put("systemCode", MyConfig.SYSTEMCODE);
+        map.put("companyCode", MyConfig.COMPANYCODE);
+
+        Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("623917", StringUtils.getJsonToString(map));
+
+        addCall(call);
+
+        showLoadingDialog();
+
+        call.enqueue(new BaseResponseModelCallBack<IntroductionInfoModel>(mActivity) {
+            @Override
+            protected void onSuccess(IntroductionInfoModel data, String SucMessage) {
+                if (TextUtils.isEmpty(data.getCvalue())) {
+                    return;
+                }
+                openMoxie(data.getCvalue());
+            }
+
+            @Override
+            protected void onFinish() {
+                disMissLoading();
+            }
+        });
+
+    }
 
     @Override
     protected void lazyLoad() {
@@ -165,11 +207,10 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
 
     }
 
-    public void openMoxie() {
+    public void openMoxie(String mApiKey) {
         //合作方系统中的客户ID
         String mUserId = SPUtilHelpr.getUserId();
         //获取任务状态时使用(合作方申请接入后由魔蝎数据提供)
-        String mApiKey = "96ee985a972a4685be2bb423588e008f";
         String mBannerTxtContent = "运营商认证"; //SDK里title的文字描述
         String mThemeColor = "#ff6702"; //SDK里页面主色调
         String mAgreementUrl = ""; //SDK里显示的用户使用协议
@@ -185,14 +226,14 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
         mxParam.setLoadingViewText("验证过程中不会浪费您任何流量\n请稍等片刻");  //设置导入过程中的自定义提示文案，为居中显示
         mxParam.setQuitDisable(true); //设置导入过程中，触发返回键或者点击actionbar的返回按钮的时候，不执行魔蝎的默认行为
 
-        HashMap<String, String> extendParam = new HashMap<String, String>();
-        extendParam.put(MxParam.PARAM_CARRIER_IDCARD, mCertData.getInfoIdentify().getIdNo()); // 身份证
-        extendParam.put(MxParam.PARAM_CARRIER_PHONE, SPUtilHelpr.getUserPhoneNum()); // 手机号
-        extendParam.put(MxParam.PARAM_CARRIER_NAME, mCertData.getInfoIdentify().getRealName()); // 姓名
-//        extendParam.put(MxParam.PARAM_CARRIER_PASSWORD, "123456"); // 密码
-        extendParam.put(MxParam.PARAM_CARRIER_EDITABLE, MxParam.PARAM_COMMON_YES); // 是否允许用户修改以上信息
-        mxParam.setExtendParams(extendParam);
-
+        if(mCertData.getInfoIdentify()!=null){
+            HashMap<String, String> extendParam = new HashMap<String, String>();
+            extendParam.put(MxParam.PARAM_CARRIER_IDCARD, mCertData.getInfoIdentify().getIdNo()); // 身份证
+            extendParam.put(MxParam.PARAM_CARRIER_PHONE, SPUtilHelpr.getUserPhoneNum()); // 手机号
+            extendParam.put(MxParam.PARAM_CARRIER_NAME, mCertData.getInfoIdentify().getRealName()); // 姓名
+            extendParam.put(MxParam.PARAM_CARRIER_EDITABLE, MxParam.PARAM_COMMON_YES); // 是否允许用户修改以上信息
+            mxParam.setExtendParams(extendParam);
+        }
         //设置title
         TitleParams titleParams = new TitleParams.Builder()
                 //不设置此方法会默认使用魔蝎的icon
@@ -236,7 +277,14 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
                                         .subscribeOn(AndroidSchedulers.mainThread())
                                         .observeOn(AndroidSchedulers.mainThread())
                                         .subscribe(aLong -> {
-                                            getMoxieRequest(jsonObject.getString("taskId"));
+                                            // getMoxieRequest(jsonObject.getString("taskId"));
+                                            if (mCertInfoPresenter != null) {      //获取认证结果
+                                                isMoxieCallback = true;
+                                                mCertInfoPresenter.getCertInfo(true);
+                                            } else {
+                                                disMissLoading();
+                                            }
+
                                         }, throwable -> {
                                             disMissLoading();
                                         }));
@@ -282,6 +330,7 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
             @Override
             protected void onFinish() {
                 if (mCertInfoPresenter != null) {
+                    isMoxieCallback = true;
                     mCertInfoPresenter.getCertInfo(true);  //获取认证结果
                 } else {
                     disMissLoading();
@@ -360,6 +409,20 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
             mBinding.imgMoxieState.setImageResource(R.drawable.cert_ok);
             mBinding.imgMoxieStateBig.setImageResource(R.drawable.yuying);
 
+            if (isMoxieCallback) { //如果是魔蝎回调结果查询
+                isMoxieCallback = false;//重置
+                if (mActivity == null || mActivity.isFinishing()) {
+                    return;
+                }
+                CommonDialog commonDialog = new CommonDialog(mActivity).builder()
+                        .setTitle("提示").setContentMsg("运营商认证成功")
+                        .setPositiveBtn("确定", view -> {
+                            getIsBorrowFlag();
+                        });
+                commonDialog.getContentView().setGravity(Gravity.CENTER);
+                commonDialog.show();
+            }
+
         } else if (TextUtils.equals("2", mCertData.getInfoCarrierFlag())) {
             mBinding.tvMoxieState.setText("已过期");
             mBinding.tvMoxieState.setTextColor(ContextCompat.getColor(mActivity, R.color.guoqi));
@@ -393,6 +456,31 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
 
     }
 
+
+    public void getIsBorrowFlag() {
+        if (!SPUtilHelpr.isLoginNoStart()) {
+            return;
+        }
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("userId", SPUtilHelpr.getUserId());
+        Call call = RetrofitUtils.createApi(MyApiServer.class).getIsBorrowFlag("623091", StringUtils.getJsonToString(map));
+        addCall(call);
+        showLoadingDialog();
+        call.enqueue(new BaseResponseModelCallBack<IsBorrowFlagModel>(mActivity) {
+            @Override
+            protected void onSuccess(IsBorrowFlagModel data, String SucMessage) {
+                if (TextUtils.equals("1", data.getIsBorrowFlag())) {
+                    HumanReviewActivity.open(mActivity);
+                }
+            }
+            @Override
+            protected void onFinish() {
+                disMissLoading();
+            }
+        });
+    }
+
+
     @Override
     public void getInfoSuccess(CerttificationInfoModel userCertInfo, String msg) {
         mCertData = userCertInfo;
@@ -419,7 +507,7 @@ public class CertificationFragment extends BaseLazyFragment implements getUserCe
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(getLayoutInflater(savedInstanceState), R.layout.fragment_certification, null, false);
         initListener();
-        mCertInfoPresenter = new getUserCertificationPresenter(this);
+        mCertInfoPresenter = new GetUserCertificationPresenter(this);
         return mBinding.getRoot();
     }
 

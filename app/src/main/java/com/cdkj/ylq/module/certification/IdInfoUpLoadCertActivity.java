@@ -13,6 +13,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.cdkj.baselibrary.activitys.ImageSelectActivity;
 import com.cdkj.baselibrary.api.BaseResponseModel;
+import com.cdkj.baselibrary.appmanager.EventTags;
 import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
@@ -29,6 +30,7 @@ import com.cdkj.ylq.databinding.ActivityIdPicPutBinding;
 import com.cdkj.ylq.model.CerttificationInfoModel;
 import com.qiniu.android.http.ResponseInfo;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -52,16 +54,6 @@ public class IdInfoUpLoadCertActivity extends AbsBaseActivity {
     public final int PHOTOFLAG2 = 121;//反面
     public final int PHOTOFLAG3 = 122;//手持
 
-    //判断图片是否加载标识
-    private boolean isLoadPic1;
-    private boolean isLoadPic2;
-    private boolean isLoadPic3;
-
-    //图片本地地址
-    public String mPicPath1;
-    public String mPicPath2;
-    public String mPicPath3;
-
     //图片七牛地址
     public String mPicQiURL1;
     public String mPicQiURL2;
@@ -72,7 +64,6 @@ public class IdInfoUpLoadCertActivity extends AbsBaseActivity {
     private String mQiNiuToken;//七牛token
 
     private CerttificationInfoModel.InfoIdentifyPicBean mData;
-
 
     public static void open(Context context, CerttificationInfoModel.InfoIdentifyPicBean data, boolean isCheckCert) {
         if (context == null) {
@@ -95,12 +86,11 @@ public class IdInfoUpLoadCertActivity extends AbsBaseActivity {
     public void afterCreate(Bundle savedInstanceState) {
 
         setTopTitle("身份认证");
-
+        qiNiuUtil = new QiNiuUtil(this);
         if (getIntent() != null) {
 
-            mData=getIntent().getParcelableExtra("data");
-
-            if (getIntent().getBooleanExtra("isCheckCert", false)) {
+            mData = getIntent().getParcelableExtra("data");
+            if (getIntent().getBooleanExtra("isCheckCert", false)) { //已经认证
                 mBinding.btnSubmit.setBackgroundResource(R.drawable.btn_no_click_gray);
                 mBinding.btnSubmit.setEnabled(false);
             } else {
@@ -113,122 +103,79 @@ public class IdInfoUpLoadCertActivity extends AbsBaseActivity {
 
         setShowData();
 
-        qiNiuUtil = new QiNiuUtil(this);
-
         initListener();
 
     }
 
     private void setShowData() {
-        if(mData==null) return;
+        if (mData == null) return;
 
-        ImgUtils.loadActImg(this, MyConfig.IMGURL+mData.getIdentifyPic(),mBinding.imgIdcard);
-        ImgUtils.loadActImg(this, MyConfig.IMGURL+mData.getIdentifyPicReverse(),mBinding.imgIdcardBack);
-        ImgUtils.loadActImg(this, MyConfig.IMGURL+mData.getIdentifyPicHand(),mBinding.imgIdcardPeople);
+        mPicQiURL1 = mData.getIdentifyPic();
+        mPicQiURL2 = mData.getIdentifyPicReverse();
+        mPicQiURL3 = mData.getIdentifyPicHand();
 
+        ImgUtils.loadActImg(this, MyConfig.IMGURL + mData.getIdentifyPic(), mBinding.imgIdcard);
+        ImgUtils.loadActImg(this, MyConfig.IMGURL + mData.getIdentifyPicReverse(), mBinding.imgIdcardBack);
+        ImgUtils.loadActImg(this, MyConfig.IMGURL + mData.getIdentifyPicHand(), mBinding.imgIdcardPeople);
     }
 
 
     private void initListener() {
         //身份证正面照
         mBinding.imgIdcard.setOnClickListener(v -> {
-            ImageSelectActivity.launch(this, PHOTOFLAG1, ImageSelectActivity.SHOWPIC);
+            ImageSelectActivity.launch(this, PHOTOFLAG1, ImageSelectActivity.SHOWPIC, true);
         });
         //身份证反面面照
         mBinding.imgIdcardBack.setOnClickListener(v -> {
-            ImageSelectActivity.launch(this, PHOTOFLAG2, ImageSelectActivity.SHOWPIC);
+            ImageSelectActivity.launch(this, PHOTOFLAG2, ImageSelectActivity.SHOWPIC, true);
         });
         //手持
         mBinding.imgIdcardPeople.setOnClickListener(v -> {
-            ImageSelectActivity.launch(this, PHOTOFLAG3, ImageSelectActivity.SHOWPIC);
+            ImageSelectActivity.launch(this, PHOTOFLAG3, ImageSelectActivity.SHOWPIC, true);
         });
 
         mBinding.btnSubmit.setOnClickListener(v -> {
-            if (!isLoadPic1) {
+            if (TextUtils.isEmpty(mPicQiURL1)) {
                 showToast("请添加身份证正面照");
                 return;
             }
-            if (!isLoadPic2) {
+            if (TextUtils.isEmpty(mPicQiURL2)) {
                 showToast("请添加身份证反面照");
                 return;
             }
-            if (!isLoadPic3) {
+            if (TextUtils.isEmpty(mPicQiURL3)) {
                 showToast("请添加手持正面照");
                 return;
             }
 
-            picSubmit();
+            picUrlUpLoadRequest();
 
         });
 
     }
 
     /**
-     * 图片上传
-     */
-    private void picSubmit() {
-
-
-        showLoadingDialog();
-
-        qiNiuUtil.getQiniuToeknRequest().enqueue(new BaseResponseModelCallBack<QiniuGetTokenModel>(this) { //请求七牛token
-            @Override
-            protected void onSuccess(QiniuGetTokenModel mo, String SucMessage) {
-                if (mo == null || TextUtils.isEmpty(mo.getUploadToken())) {
-                    return;
-                }
-                mQiNiuToken = mo.getUploadToken();
-                getPicUrl(1, mPicPath1);
-            }
-
-            @Override
-            protected void onNull() {
-                disMissLoading();
-            }
-
-            @Override
-            protected void onReqFailure(int errorCode, String errorMessage) {
-                disMissLoading();
-            }
-
-            @Override
-            protected void onBuinessFailure(String code, String error) {
-                disMissLoading();
-            }
-
-            @Override
-            protected void onNoNet(String msg) {
-                disMissLoading();
-            }
-
-            @Override
-            protected void onFinish() {
-
-            }
-        });
-
-    }
-
-    /**
-     * @param type 1 正面 2反面 3手持
+     * @param type
      */
     public void getPicUrl(int type, String path) {
         //TODO 身份证图片上传是否需要压缩
+        showLoadingDialog();
         qiNiuUtil.uploadSingle(new QiNiuUtil.QiNiuCallBack() {
             @Override
             public void onSuccess(String key, ResponseInfo info, JSONObject res) {
+                disMissLoading();
                 switch (type) {
-                    case 1:
+                    case PHOTOFLAG1:
                         mPicQiURL1 = key;
-                        getPicUrl(2, mPicPath2);
+                        ImgUtils.loadActImg(IdInfoUpLoadCertActivity.this, MyConfig.IMGURL + key, mBinding.imgIdcard);
                         break;
-                    case 2:
+                    case PHOTOFLAG2:
                         mPicQiURL2 = key;
-                        getPicUrl(3, mPicPath3);
+                        ImgUtils.loadActImg(IdInfoUpLoadCertActivity.this, MyConfig.IMGURL + key, mBinding.imgIdcardBack);
                         break;
-                    case 3:
+                    case PHOTOFLAG3:
                         mPicQiURL3 = key;
-                        picUrlUpLoadRequest();
+                        ImgUtils.loadActImg(IdInfoUpLoadCertActivity.this, MyConfig.IMGURL + key, mBinding.imgIdcardPeople);
                         break;
                 }
             }
@@ -236,15 +183,14 @@ public class IdInfoUpLoadCertActivity extends AbsBaseActivity {
             @Override
             public void onFal(String info) {
                 disMissLoading();
-
                 switch (type) {
-                    case 1:
+                    case PHOTOFLAG1:
                         showToast("身份证正面照上传错误,请重试");
                         break;
-                    case 2:
+                    case PHOTOFLAG2:
                         showToast("身份证反面照上传错误,请重试");
                         break;
-                    case 3:
+                    case PHOTOFLAG3:
                         showToast("身份证手持照上传错误,请重试");
                         break;
                 }
@@ -255,10 +201,40 @@ public class IdInfoUpLoadCertActivity extends AbsBaseActivity {
 
     }
 
+    public void getQiniuToken(int type, String path) {
+
+        if (!TextUtils.isEmpty(mQiNiuToken)) { //如果已经获取到token直接 上传图片
+            getPicUrl(type, path);
+            return;
+        }
+
+        Call call = qiNiuUtil.getQiniuToeknRequest();
+        addCall(call);
+        showLoadingDialog();
+        call.enqueue(new BaseResponseModelCallBack<QiniuGetTokenModel>(this) {
+            @Override
+            protected void onSuccess(QiniuGetTokenModel data, String SucMessage) {
+                if (data == null || TextUtils.isEmpty(data.getUploadToken())) {
+                    return;
+                }
+                mQiNiuToken = data.getUploadToken();
+                getPicUrl(type, path);
+            }
+            @Override
+            protected void onFinish() {
+                disMissLoading();
+            }
+        });
+
+    }
+
+
     /**
      * 把获取到的七牛url上传
      */
     private void picUrlUpLoadRequest() {
+
+        showLoadingDialog();
 
         Map<String, String> map = new HashMap<String, String>();
         map.put("identifyPic", mPicQiURL1);
@@ -272,6 +248,7 @@ public class IdInfoUpLoadCertActivity extends AbsBaseActivity {
             protected void onSuccess(IsSuccessModes data, String SucMessage) {
                 if (data.isSuccess()) {
                     showToast("身份证图片上传成功");
+                    EventBus.getDefault().post(EventTags.IDCARDCERTINFOREFRESH);
                     finish();
                 }
             }
@@ -292,53 +269,21 @@ public class IdInfoUpLoadCertActivity extends AbsBaseActivity {
             return;
         }
         String path = data.getStringExtra(ImageSelectActivity.staticPath);
-        if (requestCode == PHOTOFLAG1) {
-            mPicPath1 = path;
-            ImgUtils.loadActImgListener(IdInfoUpLoadCertActivity.this, path, mBinding.imgIdcard, new RequestListener<String, GlideDrawable>() {
-                @Override
-                public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                    return false;
-                }
 
-                @Override
-                public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                    isLoadPic1 = true;
-                    return false;
-                }
-            });
-
-
-        } else if (requestCode == PHOTOFLAG2) {
-            mPicPath2 = path;
-            ImgUtils.loadActImgListener(IdInfoUpLoadCertActivity.this, path, mBinding.imgIdcardBack, new RequestListener<String, GlideDrawable>() {
-                @Override
-                public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                    return false;
-                }
-
-                @Override
-                public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                    isLoadPic2 = true;
-                    return false;
-                }
-            });
-
-        } else if (requestCode == PHOTOFLAG3) {
-            mPicPath3 = path;
-            ImgUtils.loadActImgListener(IdInfoUpLoadCertActivity.this, path, mBinding.imgIdcardPeople, new RequestListener<String, GlideDrawable>() {
-                @Override
-                public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                    return false;
-                }
-
-                @Override
-                public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                    isLoadPic3 = true;
-                    return false;
-                }
-            });
-
+        if (TextUtils.isEmpty(path)) {
+            switch (requestCode) {
+                case PHOTOFLAG1:
+                    showToast("身份证正面照上传错误,请重新拍摄");
+                    break;
+                case PHOTOFLAG2:
+                    showToast("身份证反面照上传错误,请重新拍摄");
+                    break;
+                case PHOTOFLAG3:
+                    showToast("身份证手持照上传错误,请重新拍摄");
+                    break;
+            }
+            return;
         }
+        getQiniuToken(requestCode, path);
     }
-
 }

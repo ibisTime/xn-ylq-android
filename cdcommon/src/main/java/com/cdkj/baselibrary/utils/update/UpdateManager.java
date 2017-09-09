@@ -89,7 +89,7 @@ public class UpdateManager {
      */
     private void showUpdateDialog(final Context context, final String url, final String note) {
 
-        final String path = ApkLoaderUtil.getFilePath(context);
+//        final String path = ApkLoaderUtil.getFilePath(context);
 
         new CommonDialog(context).builder().setTitle("发现新版本！").setContentMsg(note)
                 .setPositiveBtn("立刻更新", new CommonDialog.OnPositiveListener() {
@@ -132,7 +132,7 @@ public class UpdateManager {
      */
     private void showUpdateDialog2(final Context context, final String url, final String note) {
 
-        final String path = ApkLoaderUtil.getFilePath(context);
+//        final String path = ApkLoaderUtil.getFilePath(context);
 
         new CommonDialog(context).builder().setTitle("发现新版本！").setContentMsg(note)
                 .setPositiveBtn("立刻更新", new CommonDialog.OnPositiveListener() {

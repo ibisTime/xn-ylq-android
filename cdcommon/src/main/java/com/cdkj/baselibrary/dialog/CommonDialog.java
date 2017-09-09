@@ -18,7 +18,7 @@ import com.cdkj.baselibrary.R;
 public class CommonDialog {
     private Context mContext;
     private Dialog mDialog;
-    private LinearLayout mLayout;
+//    private LinearLayout mLayout;
     private TextView mTitle;
     private TextView mContentMsg;
     private View mDividerLeftLine;
@@ -40,7 +40,7 @@ public class CommonDialog {
     public CommonDialog builder() {
         View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_tips, null);
 
-        mLayout = (LinearLayout) view.findViewById(R.id.dialog_tips_layout);
+//        mLayout = (LinearLayout) view.findViewById(R.id.dialog_tips_layout);
         mTitle = (TextView) view.findViewById(R.id.dialog_tips_title);
         mContentMsg = (TextView) view.findViewById(R.id.dialog_tips_content_msg);
         mDividerLeftLine = view.findViewById(R.id.dialog_tips_divider_left_line);
@@ -588,14 +588,14 @@ public class CommonDialog {
 
 
     public interface OnPositiveListener {
-        public void onPositive(View view);
+         void onPositive(View view);
     }
 
     public interface OnMiddleListener {
-        public void onMiddle(View view);
+         void onMiddle(View view);
     }
 
     public interface OnNegativeListener {
-        public void onNegative(View view);
+         void onNegative(View view);
     }
 }

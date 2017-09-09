@@ -45,7 +45,7 @@ public class UseMoneyRecordActivity extends CommonTablayoutActivity {
     @Override
     public List<Fragment> getFragments() {
 
-//0 待审核 2 审核不通过 1待放款  7 打款失败 3生效中 4已还款 5已逾期
+          //0 待审核 2 审核不通过 1待放款  7 打款失败 3生效中 4已还款 5已逾期
 
         List<Fragment> mFragments = new ArrayList<>();
         mFragments.add(UseMoneyRecordFragment.getInstanse(BusinessSings.USEMONEYRECORD_0));

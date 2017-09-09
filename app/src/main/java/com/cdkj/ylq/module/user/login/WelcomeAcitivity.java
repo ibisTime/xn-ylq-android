@@ -2,17 +2,26 @@ package com.cdkj.ylq.module.user.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
+import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.base.BaseActivity;
+import com.cdkj.baselibrary.model.IntroductionInfoModel;
+import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
+import com.cdkj.baselibrary.nets.RetrofitUtils;
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.ylq.MainActivity;
 import com.cdkj.ylq.R;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
 
 /**
  * 启动页
@@ -46,5 +55,6 @@ public class WelcomeAcitivity extends BaseActivity {
                     finish();
                 }, Throwable::printStackTrace));
     }
+
 
 }

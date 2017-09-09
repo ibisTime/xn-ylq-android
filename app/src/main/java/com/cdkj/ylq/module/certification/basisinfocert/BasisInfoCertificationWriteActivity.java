@@ -160,7 +160,7 @@ public class BasisInfoCertificationWriteActivity extends AbsBaseActivity {
 //            showToast("请填写QQ");
 //            return;
 //        }
-        if (!StringUtils.isEmail(mBinding.editEmail.getText().toString())) {
+        if (!TextUtils.isEmpty(mBinding.editEmail.getText().toString()) && !StringUtils.isEmail(mBinding.editEmail.getText().toString())) {
             showToast("请填写正确的邮箱");
             return;
         }

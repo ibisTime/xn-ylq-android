@@ -72,10 +72,16 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
 
         setSubLeftImgState(true);
 
-        setTopTitle("放款中详情");
+
 
         if (getIntent() != null) {
             mData = getIntent().getParcelableExtra("data");
+        }
+
+        if(mData!=null){
+            setTopTitle(getStateTitie(mData.getStatus()));
+        }else{
+            setTopTitle("借款详情");
         }
 
         setShowData();
@@ -157,10 +163,17 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
         mBinding.tvMoney2.setText(MoneyUtils.showPrice(mData.getAmount()) + "元");
         mBinding.tvCode.setText(mData.getCode());
         mBinding.tvSignData.setText(DateUtil.formatStringData(mData.getSignDatetime(), DATE_YMD));
-        mBinding.tvState2.setText(mData.getRemark());
+
         mBinding.tvDay.setText(mData.getDuration() + "天");
 
         mBinding.imgState.setImageResource(getStateImg(mData.getStatus()));
+
+
+        if(TextUtils.equals(mData.getStatus(),BusinessSings.USEMONEYRECORD_2)){
+            mBinding.tvState2.setText(mData.getApproveNote());
+        }else{
+            mBinding.tvState2.setText(mData.getRemark());
+        }
 
         if (TextUtils.equals(mData.getStatus(), BusinessSings.USEMONEYRECORD_7)) { //打款失败时显示按钮
             mBinding.btnSure.setVisibility(View.VISIBLE);
@@ -199,6 +212,29 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
             default:
                 mBinding.imgState.setVisibility(View.GONE);
                 return R.drawable.default_pic;
+        }
+    }
+
+    /**
+     * 获取状态图片
+     *
+     * @param status
+     * @return
+     */
+    private String getStateTitie(String status) {
+
+        switch (status) {
+            case BusinessSings.USEMONEYRECORD_0: //待审核
+                return "放款中详情";
+            case BusinessSings.USEMONEYRECORD_2://审核不通过
+                return "审核失败";
+            case BusinessSings.USEMONEYRECORD_1://待放款
+                return "放款中详情";
+            case BusinessSings.USEMONEYRECORD_7://打款失败
+                return "打款失败";
+            default:
+
+                return "借款详情";
         }
     }
 

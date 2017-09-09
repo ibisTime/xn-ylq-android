@@ -18,8 +18,6 @@ import java.util.List;
  */
 public class CapturePhotoHelper {
 
-    private final static String TIMESTAMP_FORMAT = "yyyy_MM_dd_HH_mm_ss";
-
     public final static int CAPTURE_PHOTO_REQUEST_CODE = 0x1111;
 
     private Activity mActivity;
@@ -57,7 +55,6 @@ public class CapturePhotoHelper {
             captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
             mActivity.startActivityForResult(captureIntent, CAPTURE_PHOTO_REQUEST_CODE);
 
-        } else {
         }
     }
 
@@ -70,7 +67,6 @@ public class CapturePhotoHelper {
                 mPhotoFolder.mkdirs();
             }
 
-//            String fileName = new SimpleDateFormat(TIMESTAMP_FORMAT).format(new Date());
             mPhotoFile = new File(mPhotoFolder, "carema.jpg");
             if (mPhotoFile.exists()) {
                 mPhotoFile.delete();
@@ -78,7 +74,6 @@ public class CapturePhotoHelper {
             try {
                 mPhotoFile.createNewFile();
             } catch (IOException e) {
-                e.printStackTrace();
                 mPhotoFile = null;
             }
         } else {

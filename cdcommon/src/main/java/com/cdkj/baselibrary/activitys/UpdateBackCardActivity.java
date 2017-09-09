@@ -116,7 +116,7 @@ public class UpdateBackCardActivity extends AbsBaseActivity {
                     return;
                 }
 
-                updateBank("");
+                updateBank();
             }
         });
 
@@ -154,13 +154,13 @@ public class UpdateBackCardActivity extends AbsBaseActivity {
     }
 
     //更新
-    private void updateBank(String pwd) {
+    private void updateBank() {
         if (mBankModel == null) return;
         Map<String, String> object = new HashMap<>();
         object.put("realName", mBinding.editName.getText().toString().trim());
         object.put("bankcardNumber", mBinding.edtCardId.getText().toString().trim());
         object.put("bankName", mBinding.txtBankName.getText().toString().trim());
-        object.put("bankCode", mBankModel.getBankCode());
+        object.put("bankCode", mSelectCardId);
         object.put("code", mBankModel.getCode());
         object.put("status", "1");
 //        object.put("tradePwd", pwd);
@@ -206,7 +206,7 @@ public class UpdateBackCardActivity extends AbsBaseActivity {
         mBinding.txtBankName.setText(mBankModel.getBankName());
         mBinding.editName.setText(mBankModel.getRealName());
         mBinding.edtCardId.setText(mBankModel.getBankcardNumber());
-        mSelectCardId = mBankModel.getBankCode();
+//        mSelectCardId = mBankModel.getBankCode();
 
     }
 
@@ -235,6 +235,7 @@ public class UpdateBackCardActivity extends AbsBaseActivity {
                 for (BankModel b : r) {
                     mBankNames[i] = b.getBankName();
                     mBankCodes[i] = b.getBankCode();
+                    LogUtil.E("银行卡code"+b.getBankCode());
                     i++;
                 }
                 if (mBankNames.length != 0 && mBankNames.length == mBankCodes.length) {
@@ -259,6 +260,7 @@ public class UpdateBackCardActivity extends AbsBaseActivity {
 //                        txtBankCard.setText(list.get(which).getBankName());
                         mBinding.txtBankName.setText(mBankNames[which]);
                         mSelectCardId = mBankCodes[which];
+                        LogUtil.E("选择银行卡code"+mSelectCardId);
                         dialog.dismiss();
                     }
                 }).setNegativeButton("取消", null).show();

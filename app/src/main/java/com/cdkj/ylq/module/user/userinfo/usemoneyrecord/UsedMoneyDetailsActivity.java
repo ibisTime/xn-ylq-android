@@ -118,7 +118,7 @@ public class UsedMoneyDetailsActivity extends AbsBaseActivity {
         mBinding.tvFuwu.setText(MoneyUtils.showPrice(mData.getFwAmount())+"元");
         mBinding.tvYqMoney.setText(MoneyUtils.showPrice(mData.getYqlxAmount())+"元");
 
-        mBinding.tvXuqiNum.setText(mData.getRenewalCount());
+        mBinding.tvXuqiNum.setText(mData.getRenewalCount()+"");
     }
 
 

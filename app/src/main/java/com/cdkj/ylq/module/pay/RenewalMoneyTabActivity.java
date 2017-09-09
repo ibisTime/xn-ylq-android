@@ -27,7 +27,6 @@ import java.util.List;
  * 续期 tab切换
  * Created by 李先俊 on 2017/9/6.
  */
-
 public class RenewalMoneyTabActivity extends CommonTablayoutActivity {
 
 
@@ -55,7 +54,7 @@ public class RenewalMoneyTabActivity extends CommonTablayoutActivity {
         if (getIntent() != null) {
             mData = getIntent().getParcelableExtra("data");
         }
-        setTopTitle("还款");
+        setTopTitle("续期");
 
         setSubLeftImgState(true);
 
@@ -64,10 +63,9 @@ public class RenewalMoneyTabActivity extends CommonTablayoutActivity {
 
     @Override
     public List<Fragment> getFragments() {
-
         List<Fragment> mFragments = new ArrayList<>();
-        mFragments.add(RenewalMoneyOnLineFragment.getInstanse(mData));//实时还款
-        mFragments.add(RenewalMoneyOffLineFragment.getInstanse(mData));//线下还款
+        mFragments.add(RenewalMoneyOnLineFragment.getInstanse(mData));//实时
+        mFragments.add(RenewalMoneyOffLineFragment.getInstanse(mData));//线下
         return mFragments;
     }
 

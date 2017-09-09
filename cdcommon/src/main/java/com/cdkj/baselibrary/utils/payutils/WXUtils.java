@@ -57,7 +57,7 @@ public class WXUtils {
 //                returnValue = StringUtils.subString(returnValue,0,returnValue.length() - 1);
             }
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+
         }
         return returnValue;
     }

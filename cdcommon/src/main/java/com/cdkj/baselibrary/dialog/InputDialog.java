@@ -19,7 +19,7 @@ import com.cdkj.baselibrary.R;
 public class InputDialog {
     private Context mContext;
     private Dialog mDialog;
-    private LinearLayout mLayout;
+//    private LinearLayout mLayout;
     private TextView mTitle;
     private EditText mContentInput;
     private View mDividerLine;
@@ -38,7 +38,7 @@ public class InputDialog {
     public InputDialog builder() {
         View view  = LayoutInflater.from(mContext).inflate(R.layout.dialog_input, null);
 
-        mLayout = (LinearLayout) view.findViewById(R.id.dialog_input_layout);
+//        mLayout = (LinearLayout) view.findViewById(R.id.dialog_input_layout);
         mTitle = (TextView) view.findViewById(R.id.dialog_input_title);
         mContentInput = (EditText) view.findViewById(R.id.dialog_input_content_input);
         mDividerLine = view.findViewById(R.id.dialog_input_divider_line);
@@ -384,27 +384,14 @@ public class InputDialog {
     }
     /** end----------------------------------------- */
     
-    public TextView getTitleView() {
-        return this.getTitleView();
-    }
 
-    public EditText getContentView() {
-        return this.mContentInput;
-    }
 
-    public Button getPositiveBtn() {
-        return this.mPositiveBtn;
-    }
-
-    public Button getNegativeBtn() {
-        return this.mNegativeBtn;
-    }
 
     public interface OnPositiveListener {
-        public void onPositive(View view, String inputMsg);
+         void onPositive(View view, String inputMsg);
     }
 
     public interface OnNegativeListener {
-        public void onNegative(View view, String inputMsg);
+         void onNegative(View view, String inputMsg);
     }
 }

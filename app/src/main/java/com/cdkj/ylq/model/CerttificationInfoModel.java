@@ -52,6 +52,15 @@ public class CerttificationInfoModel  {
     private InfoIdentifyPicBean infoIdentifyPic;
     private String infoCarrierFlag;
     private InfoIdentifyBean infoIdentify;
+    private InfoIdentifyBean infoIdentifyFace;
+
+    public InfoIdentifyBean getInfoIdentifyFace() {
+        return infoIdentifyFace;
+    }
+
+    public void setInfoIdentifyFace(InfoIdentifyBean infoIdentifyFace) {
+        this.infoIdentifyFace = infoIdentifyFace;
+    }
 
     public InfoIdentifyBean getInfoIdentify() {
         return infoIdentify;

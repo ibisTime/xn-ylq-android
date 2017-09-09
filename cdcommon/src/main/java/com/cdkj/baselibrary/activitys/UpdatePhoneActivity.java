@@ -22,6 +22,8 @@ import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.AppUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -111,7 +113,7 @@ public class UpdatePhoneActivity extends AbsBaseActivity implements SendCodeInte
         map.put("smsCaptcha", mBinding.edtCodeNew.getText().toString());
         map.put("token", SPUtilHelpr.getUserToken());
 
-        Call call = RetrofitUtils.getBaseAPiService().successRequest("805070", StringUtils.getJsonToString(map));
+        Call call = RetrofitUtils.getBaseAPiService().successRequest("805061", StringUtils.getJsonToString(map));
 
         addCall(call);
 
@@ -121,11 +123,12 @@ public class UpdatePhoneActivity extends AbsBaseActivity implements SendCodeInte
             protected void onSuccess(IsSuccessModes data, String SucMessage) {
                 if (data.isSuccess()) {
 
-                    showToast("申请成功，请耐心等待平台审核");
+                    showToast("修改成功");
 
                     EventBusModel eventBusModel=new EventBusModel();      //刷新上一页数据
                     eventBusModel.setTag(EventTags.CHANGEPHONENUMBER_REFRESH);
                     eventBusModel.setEvInfo(mBinding.edtPhoneNew.getText().toString());
+                    EventBus.getDefault().post(eventBusModel);
                    finish();
                 }
             }

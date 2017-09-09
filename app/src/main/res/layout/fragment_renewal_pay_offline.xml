@@ -30,7 +30,7 @@
             </LinearLayout>
 
 
-            <FrameLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
@@ -50,15 +50,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="8dp"
-                    android:gravity="right"
+                    android:layout_marginLeft="30dp"
                     android:textColor="@color/text_color"
                     android:textSize="16sp"
                     tools:text="2017-09-09" />
 
-            </FrameLayout>
+            </LinearLayout>
 
-            <FrameLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
@@ -79,15 +78,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="8dp"
-                    android:gravity="right"
+                    android:layout_marginLeft="30dp"
                     android:textColor="@color/text_color"
                     android:textSize="16sp"
                     tools:text="2017-09-09" />
 
-            </FrameLayout>
+            </LinearLayout>
 
-            <FrameLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
@@ -108,14 +106,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="8dp"
-                    android:gravity="right"
+                    android:layout_marginLeft="30dp"
                     android:textColor="@color/text_color"
                     android:textSize="16sp"
                     tools:text="2017-09-09" />
 
-            </FrameLayout>
+            </LinearLayout>
 
+            <TextView
+                android:id="@+id/tv_money_tips"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_height="wrap_content"
+                tools:text="续期金额=逾期利息(10元)+续期利息(10元)"
+                android:textColor="@color/red"
+                android:textSize="12sp" />
             <WebView
                 android:id="@+id/webView"
                 android:layout_width="match_parent"

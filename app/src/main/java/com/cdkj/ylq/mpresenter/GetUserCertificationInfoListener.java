@@ -7,7 +7,7 @@ package com.cdkj.ylq.mpresenter;
 import com.cdkj.baselibrary.model.UserLoginModel;
 import com.cdkj.ylq.model.CerttificationInfoModel;
 
-public interface getUserCertificationInfoListener {
+public interface GetUserCertificationInfoListener {
 
     void getInfoSuccess(CerttificationInfoModel userCertInfo, String msg);    //成功
 

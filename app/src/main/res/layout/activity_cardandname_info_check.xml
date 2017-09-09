@@ -100,7 +100,7 @@
             android:layout_marginRight="15dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/selector_login_btn"
-            android:text="确认"
+            android:text="人脸识别"
             android:textColor="@color/btn_white" />
 
     </LinearLayout>

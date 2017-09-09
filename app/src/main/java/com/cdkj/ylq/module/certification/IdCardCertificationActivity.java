@@ -22,8 +22,8 @@ import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivityIdCertBinding;
 import com.cdkj.ylq.model.CerttificationInfoModel;
-import com.cdkj.ylq.mpresenter.getUserCertificationInfoListener;
-import com.cdkj.ylq.mpresenter.getUserCertificationPresenter;
+import com.cdkj.ylq.mpresenter.GetUserCertificationInfoListener;
+import com.cdkj.ylq.mpresenter.GetUserCertificationPresenter;
 import com.qiniu.android.http.ResponseInfo;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -41,15 +41,15 @@ import static com.cdkj.baselibrary.appmanager.EventTags.IDCARDCERTINFOREFRESH;
  * Created by 李先俊 on 2017/8/9.
  */
 
-public class IdCardCertificationActivity extends AbsBaseActivity implements getUserCertificationInfoListener {
+public class IdCardCertificationActivity extends AbsBaseActivity implements GetUserCertificationInfoListener {
 
     private ActivityIdCertBinding mBinding;
 
-    public static final int PHOTOFLAG = 120;
+    public static final int PHOTOFLAG = 120;//打开相机
 
-    private CerttificationInfoModel mCertData;
+    private CerttificationInfoModel mCertData;//认证结果数据
 
-    private getUserCertificationPresenter mCertInfoGetPersenter;
+    private GetUserCertificationPresenter mCertInfoGetPersenter;
 
     /**
      * 打开当前页面
@@ -83,7 +83,7 @@ public class IdCardCertificationActivity extends AbsBaseActivity implements getU
 
         initListener();
 
-        mCertInfoGetPersenter = new getUserCertificationPresenter(this);
+        mCertInfoGetPersenter = new GetUserCertificationPresenter(this);
         mCertInfoGetPersenter.getCertInfo(true);
 
     }
@@ -93,12 +93,14 @@ public class IdCardCertificationActivity extends AbsBaseActivity implements getU
         //相片
         mBinding.fralayoutIdCard.setOnClickListener(v -> {
 //            ImageSelectActivity.launch(this, PHOTOFLAG,ImageSelectActivity.SHOWPIC);
-            IdInfoUpLoadCertActivity.open(this,mCertData.getInfoIdentifyPic(), TextUtils.equals("1", mCertData.getInfoIdentifyPicFlag()));
+            if(mCertData==null) return;
+            IdInfoUpLoadCertActivity.open(this,mCertData.getInfoIdentifyPic(), TextUtils.equals("1", mCertData.getInfoIdentifyFlag()));
         });
+
         //zm认证
         mBinding.fralayoutFaceCert.setOnClickListener(v -> {
             if (mCertData == null) return;
-            ZMCertificationActivity.open(this, mCertData.getInfoIdentify(), TextUtils.equals("1", mCertData.getInfoIdentifyFaceFlag()));
+            ZMCertificationActivity.open(this, mCertData.getInfoIdentifyFace(), TextUtils.equals("1", mCertData.getInfoIdentifyFlag()));
         });
         //
         mBinding.butSubmit.setOnClickListener(v -> {
@@ -127,7 +129,7 @@ public class IdCardCertificationActivity extends AbsBaseActivity implements getU
                 @Override
                 protected void onSuccess(IsSuccessModes data, String SucMessage) {
                     if (data.isSuccess()) {
-                        showSureDialog("认证成功", view -> {
+                        showSureDialog("身份信息认证成功", view -> {
                             finish();
                         });
 
@@ -214,11 +216,12 @@ public class IdCardCertificationActivity extends AbsBaseActivity implements getU
         if (mCertData.getInfoIdentifyPic() != null) {
 //            ImgUtils.loadActImg(IdCardCertificationActivity.this, MyConfig.IMGURL + mCertData.getInfoIdentifyPic().getIdentifyPic(), mBinding.imgIdCard);
         }
-
+/*TextUtils.equals("1", mCertData.getInfoIdentifyPicFlag())
+                && TextUtils.equals("1", mCertData.getInfoIdentifyFaceFlag())
+                &&*/
         //设置按钮状态 已认证变成灰色 禁止点击
 
-        if (TextUtils.equals("1", mCertData.getInfoIdentifyPicFlag()) && TextUtils.equals("1", mCertData.getInfoIdentifyFaceFlag())) {
-
+        if (TextUtils.equals("1", mCertData.getInfoIdentifyFlag())) {
             mBinding.butSubmit.setBackgroundResource(R.drawable.btn_no_click_gray);
             mBinding.butSubmit.setEnabled(false);
 

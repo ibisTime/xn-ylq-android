@@ -46,10 +46,8 @@ public abstract class AbsBaseActivity extends BaseActivity {
             mTopTitleView.findViewById(R.id.fram_img_back).setVisibility(View.GONE);
         }
 
-        if(canLoadErrorView()){
-            if (!mBaseBinding.emptylayout.isInflated()) {
-                mErrorView= mBaseBinding.emptylayout.getViewStub().inflate();
-            }
+        if(canLoadErrorView() && !mBaseBinding.emptylayout.isInflated()){
+            mErrorView= mBaseBinding.emptylayout.getViewStub().inflate();
         }
 
         mMainView = addMainView();
@@ -118,7 +116,7 @@ public abstract class AbsBaseActivity extends BaseActivity {
     /**
      * 隐藏所有界面
      */
-    private void hideAll() {
+    protected void hideAll() {
         hideAllNoTitle();
         if(mTopTitleView!=null) mTopTitleView.setVisibility(View.GONE);
     }

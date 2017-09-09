@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.SystemClock;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
@@ -181,9 +182,7 @@ public class AppUtils {
             }
             context.startActivity(intent);
         } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-
+            LogUtil.E("startWeb error");
         }
     }
 
@@ -270,6 +269,8 @@ public class AppUtils {
         }
         return list;
     }
+
+
 
 
 }

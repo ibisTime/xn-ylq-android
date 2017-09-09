@@ -22,8 +22,8 @@ import com.cdkj.baselibrary.utils.ToastUtil;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivityBasisInfoCertBinding;
 import com.cdkj.ylq.model.CerttificationInfoModel;
-import com.cdkj.ylq.mpresenter.getUserCertificationInfoListener;
-import com.cdkj.ylq.mpresenter.getUserCertificationPresenter;
+import com.cdkj.ylq.mpresenter.GetUserCertificationInfoListener;
+import com.cdkj.ylq.mpresenter.GetUserCertificationPresenter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,13 +35,13 @@ import retrofit2.Call;
  * Created by 李先俊 on 2017/8/9.
  */
 
-public class BasisInfoCertificationActivity extends AbsBaseActivity implements getUserCertificationInfoListener {
+public class BasisInfoCertificationActivity extends AbsBaseActivity implements GetUserCertificationInfoListener {
 
     private ActivityBasisInfoCertBinding mBinding;
 
     private CerttificationInfoModel mCertData;
 
-    private getUserCertificationPresenter mPresenter; //获取认证信息
+    private GetUserCertificationPresenter mPresenter; //获取认证信息
     private PermissionHelper mHelper;
 
     private boolean mCanGetIemi;//
@@ -75,7 +75,7 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements g
 
         setTopTitle("基本信息");
         hideAllNoTitle();
-        mPresenter = new getUserCertificationPresenter(this);
+        mPresenter = new GetUserCertificationPresenter(this);
 
         initListeneer();
 
@@ -117,13 +117,11 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements g
             return;
         }
 
-
+/*TextUtils.equals("1", mCertData.getInfoBasicFlag())
+                && TextUtils.equals("1", mCertData.getInfoOccupationFlag())
+                && TextUtils.equals("1", mCertData.getInfoContactFlag())*/
         //设置按钮状态 已认证变成灰色 禁止点击
-
-        if (TextUtils.equals("1", mCertData.getInfoBasicFlag()) &&
-                TextUtils.equals("1", mCertData.getInfoOccupationFlag()) &&
-                TextUtils.equals("1", mCertData.getInfoContactFlag())) {
-
+        if ( TextUtils.equals("1",mCertData.getInfoAntifraudFlag())) {
             mBinding.btnSure.setBackgroundResource(R.drawable.btn_no_click_gray);
             mBinding.btnSure.setEnabled(false);
 
@@ -150,24 +148,23 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements g
 
     }
 
-
     private void initListeneer() {
         //基本信息填写
         mBinding.layoutBasisInfo.setOnClickListener(v -> {
             if (mCertData == null) return;
-            BasisInfoCertificationWriteActivity.open(this, mCertData.getInfoBasic(), TextUtils.equals("1", mCertData.getInfoBasicFlag()));
+            BasisInfoCertificationWriteActivity.open(this, mCertData.getInfoBasic(), TextUtils.equals("1", mCertData.getInfoAntifraudFlag()));
         });
 
         //职业信息填写
         mBinding.layoutJobInfo.setOnClickListener(v -> {
             if (mCertData == null) return;
-            JobInfoCertificationWriteActivity.open(this, mCertData.getInfoOccupation(), TextUtils.equals("1", mCertData.getInfoOccupationFlag()));
+            JobInfoCertificationWriteActivity.open(this, mCertData.getInfoOccupation(), TextUtils.equals("1", mCertData.getInfoAntifraudFlag()));
         });
 
         //紧急联系人信息填写
         mBinding.layoutEmergencyInfo.setOnClickListener(v -> {
             if (mCertData == null) return;
-            EmergencyInfoWriteActivity.open(this, mCertData.getInfoContact(), TextUtils.equals("1", mCertData.getInfoContactFlag()));
+            EmergencyInfoWriteActivity.open(this, mCertData.getInfoContact(), TextUtils.equals("1", mCertData.getInfoAntifraudFlag()));
         });
 
         //银行卡信息填写
@@ -225,7 +222,7 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements g
             @Override
             protected void onSuccess(IsSuccessModes data, String SucMessage) {
                 if (data.isSuccess()) {
-                    showSureDialog("认证成功", view -> {
+                    showSureDialog("基本信息认证成功", view -> {
                         finish();
                     });
                 }

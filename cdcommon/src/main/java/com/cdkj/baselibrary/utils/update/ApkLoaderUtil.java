@@ -4,6 +4,8 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.SparseArray;
 
+import com.cdkj.baselibrary.utils.LogUtil;
+
 import java.io.File;
 import java.io.RandomAccessFile;
 
@@ -115,12 +117,12 @@ public class ApkLoaderUtil implements DownloadThread.DownloadThreadListener {
                         mLoadThreads.put(i, thread);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    LogUtil.E("APKLoadError");
                     try {
                         sleep(500);
                         run();
                     } catch (InterruptedException e1) {
-                        e1.printStackTrace();
+                        LogUtil.E("APKLoadError_2");
                     }
 
                 }

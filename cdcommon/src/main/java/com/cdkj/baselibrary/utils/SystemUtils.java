@@ -154,7 +154,6 @@ public class SystemUtils {
                 }
             }
         } catch (SocketException e) {
-            e.printStackTrace();
         }
 
         return address;
@@ -251,7 +250,6 @@ public class SystemUtils {
                 }
             }
         } catch (SocketException e) {
-            e.printStackTrace();
         }
         return "";
     }

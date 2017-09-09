@@ -82,7 +82,6 @@ public abstract class BaseLocationActivity extends AbsBaseActivity {
                     LogUtil.E("定位成功");
                     locationSuccessful(aMapLocation);
                 } else {                                        //定位失败
-                    LogUtil.E("定位失败" + aMapLocation.getErrorCode() + aMapLocation.getErrorInfo());
                     locationFailure(aMapLocation);
                 }
                 //停止定位
@@ -261,7 +260,7 @@ public abstract class BaseLocationActivity extends AbsBaseActivity {
             startActivityForResult(intent, APPLICATION_DETAIL_REQUESTCODE);
             finish();
         } catch (Exception e) {
-
+          LogUtil.E("startSettingError");
         }
 
     }

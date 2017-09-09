@@ -218,7 +218,8 @@ public class PermissionHelper {
      */
     private void checkCallingObjectSuitability(@Nullable Object object) {
         if (object == null) {
-            throw new NullPointerException("Activity or Fragment should not be null");
+            LogUtil.E("object null");
+           return;
         }
 
         boolean isActivity = object instanceof android.app.Activity;

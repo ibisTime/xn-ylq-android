@@ -39,7 +39,7 @@ public class LogUtil {
                 }
             }
         } else {
-            Log.e(TAG, responseInfo.toString());
+            Log.e(TAG, responseInfo);
         }
     }
 }

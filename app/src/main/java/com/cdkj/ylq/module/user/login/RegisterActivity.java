@@ -14,6 +14,7 @@ import com.cdkj.baselibrary.base.BaseLocationActivity;
 import com.cdkj.baselibrary.activitys.WebViewActivity;
 import com.cdkj.baselibrary.appmanager.EventTags;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
+import com.cdkj.baselibrary.dialog.CommonDialog;
 import com.cdkj.baselibrary.interfaces.SendCodeInterface;
 import com.cdkj.baselibrary.interfaces.SendPhoneCoodePresenter;
 import com.cdkj.baselibrary.model.UserLoginModel;
@@ -22,6 +23,7 @@ import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.AppUtils;
 import com.cdkj.baselibrary.utils.LogUtil;
 import com.cdkj.baselibrary.utils.StringUtils;
+import com.cdkj.baselibrary.utils.ToastUtil;
 import com.cdkj.ylq.MainActivity;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivityRegisterBinding;
@@ -38,7 +40,6 @@ import retrofit2.Call;
 /**
  * Created by 李先俊 on 2017/8/8.
  */
-// TODO 注册定位详细地址log
 public class RegisterActivity extends BaseLocationActivity implements SendCodeInterface {
 
     private ActivityRegisterBinding mBinding;
@@ -71,17 +72,12 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
 
     @Override
     public void afterCreate(Bundle savedInstanceState) {
-
         setSubLeftImgState(true);
-
         setTopTitle("注册");
-        startLocation();//开始定位
         mSendCOdePresenter = new SendPhoneCoodePresenter(this);
-
 //        initCityPicker();
-
         initListener();
-
+        startLocation();//开始定位
     }
 
     private void initListener() {
@@ -180,7 +176,7 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
             hashMap.put("province", mapLocation.getProvince());
             hashMap.put("city", mapLocation.getCity());
             hashMap.put("area", mapLocation.getDistrict());
-            hashMap.put("address", mapLocation.getAddress());
+            hashMap.put("address",mapLocation.getStreet()+" "+mapLocation.getStreetNum());
         }
         hashMap.put("smsCaptcha", mBinding.editPhoneCode.getText().toString());
         hashMap.put("systemCode", MyConfig.SYSTEMCODE);
@@ -195,6 +191,7 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
             @Override
             protected void onSuccess(UserLoginModel data, String SucMessage) {
                 if (!TextUtils.isEmpty(data.getToken()) && !TextUtils.isEmpty(data.getUserId())) {
+
                     showToast("注册成功,已自动登录");
 
                     SPUtilHelpr.saveUserId(data.getUserId());
@@ -221,6 +218,7 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
     //获取验证码相关
     @Override
     public void CodeSuccess(String msg) {
+        ToastUtil.show(this,msg);
         mSubscription.add(AppUtils.startCodeDown(60, mBinding.btnSendCode));//启动倒计时
     }
 
@@ -248,12 +246,13 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
     @Override
     protected void locationSuccessful(AMapLocation aMapLocation) {
         mapLocation = aMapLocation;
-        mBinding.tvLocation.setText(aMapLocation.getProvince() + " " + aMapLocation.getCity() + " " + aMapLocation.getDistrict());
+//        mBinding.tvLocation.setText(aMapLocation.getProvince() + " " + aMapLocation.getCity() + " " + aMapLocation.getDistrict());
         LogUtil.E("地址 "+aMapLocation.getAddress());
     }
 
     @Override
     protected void locationFailure(AMapLocation aMapLocation) {
+
     }
 
     @Override

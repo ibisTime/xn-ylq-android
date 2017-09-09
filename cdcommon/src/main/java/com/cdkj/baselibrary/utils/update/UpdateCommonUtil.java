@@ -64,7 +64,6 @@ public class UpdateCommonUtil {
             }
             in.close();
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
         BigInteger bigInt = new BigInteger(1, digest.digest());

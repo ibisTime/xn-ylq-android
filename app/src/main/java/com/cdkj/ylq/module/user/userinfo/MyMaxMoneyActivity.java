@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.cdkj.baselibrary.appmanager.EventTags;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.model.EventBusModel;
@@ -24,6 +25,7 @@ import com.cdkj.ylq.module.borrowmoney.UseMoneySureDetailsActivity;
 import com.cdkj.ylq.module.product.ProductDetailsActivity;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -160,5 +162,11 @@ public class MyMaxMoneyActivity extends AbsBaseActivity {
         });
     }
 
+    @Subscribe
+    public void EventMoth(String tag) {
+        if (TextUtils.equals(tag, EventTags.USEMONEYSUREFINISH)) {
+            finish();
+        }
+    }
 
 }

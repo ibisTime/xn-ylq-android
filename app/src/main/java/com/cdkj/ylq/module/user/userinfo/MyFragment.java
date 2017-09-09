@@ -1,5 +1,6 @@
 package com.cdkj.ylq.module.user.userinfo;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,11 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cdkj.baselibrary.activitys.ImageSelectActivity;
 import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.activitys.WebViewActivity;
 import com.cdkj.baselibrary.base.BaseLazyFragment;
 import com.cdkj.baselibrary.model.IntroductionInfoModel;
+import com.cdkj.baselibrary.model.IsSuccessModes;
+import com.cdkj.baselibrary.utils.LogUtil;
 import com.cdkj.baselibrary.utils.MoneyUtils;
+import com.cdkj.baselibrary.utils.QiNiuUtil;
+import com.cdkj.baselibrary.utils.ToastUtil;
 import com.cdkj.ylq.model.CanUseMoneyModel;
 import com.cdkj.ylq.model.CoupoonsModel;
 import com.cdkj.ylq.model.UserInfoModel;
@@ -25,11 +31,15 @@ import com.cdkj.ylq.databinding.FragmentMyBinding;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.ylq.module.api.MyApiServer;
 import com.cdkj.ylq.module.user.userinfo.usemoneyrecord.UseMoneyRecordActivity;
+import com.qiniu.android.http.ResponseInfo;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import retrofit2.Call;
+
 
 /**
  * 我的
@@ -42,6 +52,7 @@ public class MyFragment extends BaseLazyFragment {
 
     private UserInfoModel mUserInfoMode;
 
+    public static final int PHOTOFLAG = 123;
     /**
      * 获得fragment实例
      *
@@ -87,6 +98,10 @@ public class MyFragment extends BaseLazyFragment {
             WebViewActivity.openkey(mActivity, "联系客服", "customerService ");
         });
 
+        mBinding.imtUserLogo.setOnClickListener(v -> {
+            ImageSelectActivity.launchFragment(this, PHOTOFLAG);
+        });
+
     }
 
     private void setShowData(UserInfoModel data) {
@@ -121,7 +136,7 @@ public class MyFragment extends BaseLazyFragment {
             @Override
             protected void onSuccess(UserInfoModel data, String SucMessage) {
                 mUserInfoMode = data;
-                SPUtilHelpr.saveUserIsBindCard(TextUtils.equals("1",data.getBankcardFlag()));
+                SPUtilHelpr.saveUserIsBindCard(TextUtils.equals("1", data.getBankcardFlag()));
                 setShowData(mUserInfoMode);
             }
 
@@ -186,7 +201,7 @@ public class MyFragment extends BaseLazyFragment {
         map.put("companyCode", MyConfig.COMPANYCODE);
 
         Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("805917", StringUtils.getJsonToString(map));
-        
+
         addCall(call);
 
         call.enqueue(new BaseResponseModelCallBack<IntroductionInfoModel>(mActivity) {
@@ -196,7 +211,7 @@ public class MyFragment extends BaseLazyFragment {
                     return;
                 }
 
-                mBinding.tvServiceTime.setText("服务时间："+data.getCvalue());
+                mBinding.tvServiceTime.setText("服务时间：" + data.getCvalue());
 
             }
 
@@ -223,9 +238,10 @@ public class MyFragment extends BaseLazyFragment {
             @Override
             protected void onSuccess(IntroductionInfoModel data, String SucMessage) {
                 if (TextUtils.isEmpty(data.getCvalue())) {
+                    mBinding.imgPhone.setVisibility(View.GONE);
                     return;
                 }
-
+                mBinding.imgPhone.setVisibility(View.VISIBLE);
                 mBinding.tvServicePhone.setText(data.getCvalue());
 
             }
@@ -237,8 +253,6 @@ public class MyFragment extends BaseLazyFragment {
         });
 
     }
-
-
 
 
     @Override
@@ -262,6 +276,66 @@ public class MyFragment extends BaseLazyFragment {
         getUserInfoRequest();
         getServiceTelephone();
         getServiceTime();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        LogUtil.E("拍照获取路径1");
+        if (resultCode != mActivity.RESULT_OK || data == null) {
+            LogUtil.E("拍照获取路径2");
+            return;
+        }
+        if (requestCode == PHOTOFLAG) {
+            String path = data.getStringExtra(ImageSelectActivity.staticPath);
+            LogUtil.E("拍照获取路径"+path);
+            new QiNiuUtil(mActivity).getQiniuURL(new QiNiuUtil.QiNiuCallBack() {
+                @Override
+                public void onSuccess(String key, ResponseInfo info, JSONObject res) {
+                    updateUserPhoto(key);
+                }
+
+                @Override
+                public void onFal(String info) {
+                    ToastUtil.show(mActivity,info);
+                }
+            }, path);
+            LogUtil.E("拍照获取路径3");
+        }
+        LogUtil.E("拍照获取路径4");
+    }
+
+    /**
+     * 更新头像
+     *
+     * @param key
+     */
+    private void updateUserPhoto(final String key) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("userId", SPUtilHelpr.getUserId());
+        map.put("photo", key);
+        map.put("token", SPUtilHelpr.getUserToken());
+
+        Call call = RetrofitUtils.getBaseAPiService().successRequest("805080", StringUtils.getJsonToString(map));
+        addCall(call);
+        showLoadingDialog();
+        call.enqueue(new BaseResponseModelCallBack<IsSuccessModes>(mActivity) {
+            @Override
+            protected void onSuccess(IsSuccessModes data, String SucMessage) {
+                if (data.isSuccess()) {
+                    ToastUtil.show(mActivity,"头像上传成功");
+                    if(mUserInfoMode!=null){
+                        mUserInfoMode.setPhoto(key);
+                    }
+                    ImgUtils.loadActLogo(mActivity, MyConfig.IMGURL + key, mBinding.imtUserLogo);
+                }
+            }
+
+            @Override
+            protected void onFinish() {
+                disMissLoading();
+            }
+        });
     }
 
     @Override

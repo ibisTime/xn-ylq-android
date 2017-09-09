@@ -19,6 +19,7 @@ import com.cdkj.baselibrary.appmanager.EventTags;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.utils.LogUtil;
+import com.cdkj.ylq.model.IsBorrowModel;
 import com.cdkj.ylq.model.UserInfoModel;
 import com.cdkj.baselibrary.model.EventBusModel;
 import com.cdkj.baselibrary.model.IsSuccessModes;
@@ -29,6 +30,7 @@ import com.cdkj.baselibrary.utils.QiNiuUtil;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivityPersonalBinding;
+import com.cdkj.ylq.module.api.MyApiServer;
 import com.cdkj.ylq.module.user.login.LoginActivity;
 import com.qiniu.android.http.ResponseInfo;
 
@@ -109,7 +111,32 @@ public class PersonalActivity extends AbsBaseActivity {
     private void initListener() {
 
         mBinding.layoutPhoneNumber.setOnClickListener(v -> {
-            UpdatePhoneActivity.open(this);
+
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("userId", SPUtilHelpr.getUserId());
+            Call call = RetrofitUtils.createApi(MyApiServer.class).isBorrowRequest("623091", StringUtils.getJsonToString(map));
+
+            addCall(call);
+
+            showLoadingDialog();
+
+            call.enqueue(new BaseResponseModelCallBack<IsBorrowModel>(this) {
+                @Override
+                protected void onSuccess(IsBorrowModel data, String SucMessage) {
+                    if (TextUtils.equals("1", data.getIsBorrowFlag())) {
+                        showSureDialog("您现在已有借款，不能修改手机号。", null);
+                        return;
+                    }
+                    UpdatePhoneActivity.open(PersonalActivity.this);
+                }
+
+                @Override
+                protected void onFinish() {
+                    disMissLoading();
+                }
+            });
+
+
         });
 
         //修改登录密码
@@ -146,20 +173,18 @@ public class PersonalActivity extends AbsBaseActivity {
         });
 
         mBinding.layoutBank.setOnClickListener(v -> {
-            BackCardListActivity.open(this,false);
+            BackCardListActivity.open(this, false);
         });
 
 
     }
 
     private void logOut() {
-
         SPUtilHelpr.logOutClear();
-        EventBus.getDefault().post(EventTags.AllFINISH);
         EventBus.getDefault().post(EventTags.MAINFINISH);
         LoginActivity.open(this, true);
+        EventBus.getDefault().post(EventTags.AllFINISH);
         finish();
-
     }
 
 
@@ -171,7 +196,7 @@ public class PersonalActivity extends AbsBaseActivity {
         }
         if (requestCode == PHOTOFLAG) {
             String path = data.getStringExtra(ImageSelectActivity.staticPath);
-            LogUtil.E("拍照获取路径"+path);
+            LogUtil.E("拍照获取路径" + path);
             new QiNiuUtil(PersonalActivity.this).getQiniuURL(new QiNiuUtil.QiNiuCallBack() {
                 @Override
                 public void onSuccess(String key, ResponseInfo info, JSONObject res) {

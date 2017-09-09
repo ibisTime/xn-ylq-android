@@ -4,6 +4,7 @@ package com.cdkj.baselibrary;
 import android.app.Application;
 import android.content.Context;
 
+import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.LogUtil;
 
 public class BaseApplication extends Application {
@@ -19,8 +20,9 @@ public class BaseApplication extends Application {
 		sContext = this;
 	}
 
-	public static void initialize(Context context,boolean isDebug) {
+	public static void initialize(Context context,boolean isDebug,String urlType) {
 		LogUtil.isDeBug =isDebug;
+		RetrofitUtils.urlType=urlType;
         sContext = context;
     }
 

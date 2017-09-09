@@ -9,10 +9,13 @@ import com.cdkj.ylq.model.CanUseMoneyModel;
 import com.cdkj.ylq.model.CerttificationInfoModel;
 import com.cdkj.ylq.model.CoupoonsModel;
 import com.cdkj.ylq.model.HuokeListModel;
+import com.cdkj.ylq.model.IsBorrowFlagModel;
+import com.cdkj.ylq.model.IsBorrowModel;
 import com.cdkj.ylq.model.KeyDataModel;
 import com.cdkj.ylq.model.MsgListModel;
 import com.cdkj.ylq.model.PorductListModel;
 import com.cdkj.ylq.model.ProductSingModel;
+import com.cdkj.ylq.model.RenewalListModel;
 import com.cdkj.ylq.model.UseMoneyRecordModel;
 import com.cdkj.ylq.model.UserInfoModel;
 import com.cdkj.ylq.model.ZMCertFirstStepModel;
@@ -204,6 +207,31 @@ public interface MyApiServer {
     @FormUrlEncoded
     @POST("api")
     Call<BaseResponseModel<ProductSingModel>> getProductSingState(@Field("code") String code, @Field("json") String json);
+
+    /**
+     * 是否已有借款
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api")
+    Call<BaseResponseModel<IsBorrowModel>> isBorrowRequest(@Field("code") String code, @Field("json") String json);
+    /**
+     * 续期记录
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api")
+    Call<BaseResponseModel<RenewalListModel>> getRenewalListData(@Field("code") String code, @Field("json") String json);
+    /**
+     * 续期记录
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api")
+    Call<BaseResponseModel<IsBorrowFlagModel>> getIsBorrowFlag(@Field("code") String code, @Field("json") String json);
 
 
 

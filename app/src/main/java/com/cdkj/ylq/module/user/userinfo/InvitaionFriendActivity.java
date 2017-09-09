@@ -69,7 +69,7 @@ public class InvitaionFriendActivity extends AbsBaseActivity {
         mBinding.btnInvitation.setOnClickListener(v -> {
 
             Map<String, String> map = new HashMap<>();
-            map.put("ckey", "getKeyUrl");
+            map.put("ckey", "domainUrl");
             map.put("systemCode", MyConfig.SYSTEMCODE);
             map.put("companyCode", MyConfig.COMPANYCODE);
 
@@ -86,7 +86,6 @@ public class InvitaionFriendActivity extends AbsBaseActivity {
                     if (TextUtils.isEmpty(data.getCvalue())) {
                         return;
                     }
-
                     ShareActivity.open(InvitaionFriendActivity.this, data.getCvalue());
                 }
 

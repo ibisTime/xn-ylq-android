@@ -11,11 +11,16 @@ import android.view.View;
 
 import com.cdkj.baselibrary.adapters.ViewPagerAdapter;
 import com.cdkj.baselibrary.appmanager.EventTags;
+import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.model.EventBusModel;
+import com.cdkj.baselibrary.model.IntroductionInfoModel;
+import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
+import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.DateUtil;
 import com.cdkj.baselibrary.utils.LogUtil;
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.baselibrary.utils.update.UpdateManager;
 import com.cdkj.ylq.databinding.ActivityMainBinding;
 import com.cdkj.ylq.module.borrowmoney.BorrowMoneyFragment;
@@ -26,7 +31,11 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import retrofit2.Call;
 
 import static com.cdkj.baselibrary.appmanager.EventTags.MAINCHANGESHOWINDEX;
 import static com.cdkj.baselibrary.appmanager.EventTags.MAINFINISH;
@@ -99,6 +108,7 @@ public class MainActivity extends AbsBaseActivity {
             setShowIndex(2);
         });
     }
+
 
 
     public void setTabIndex() {
@@ -186,7 +196,7 @@ public class MainActivity extends AbsBaseActivity {
 
     @Override
     public void onBackPressed() {
-        showDoubleWarnListen("确认退出？",view -> {
+        showDoubleWarnListen("确认退出"+getString(R.string.app_name)+"？",view -> {
             EventBus.getDefault().post(EventTags.AllFINISH);
             finish();
         });

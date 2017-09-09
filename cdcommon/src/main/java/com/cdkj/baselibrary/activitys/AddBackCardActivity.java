@@ -18,6 +18,7 @@ import com.cdkj.baselibrary.model.BankModel;
 import com.cdkj.baselibrary.nets.BaseResponseListCallBack;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
+import com.cdkj.baselibrary.utils.LogUtil;
 import com.cdkj.baselibrary.utils.StringUtils;
 
 import java.util.HashMap;
@@ -164,6 +165,7 @@ public class AddBackCardActivity extends AbsBaseActivity {
                 for (BankModel b : r) {
                     mBankNames[i] = b.getBankName();
                     mBankCodes[i] = b.getBankCode();
+                    LogUtil.E("银行卡code"+b.getBankCode());
                     i++;
                 }
                 if (mBankNames.length != 0 && mBankNames.length == mBankCodes.length) {
@@ -189,6 +191,7 @@ public class AddBackCardActivity extends AbsBaseActivity {
 //                        txtBankCard.setText(list.get(which).getBankName());
                         mBinding.txtBankName.setText(mBankNames[which]);
                         mSelectCardId = mBankCodes[which];
+                        LogUtil.E("选择银行卡code"+mSelectCardId);
                         dialog.dismiss();
                     }
                 }).setNegativeButton("取消", null).show();

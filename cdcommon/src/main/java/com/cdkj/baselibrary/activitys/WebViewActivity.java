@@ -169,10 +169,6 @@ public class WebViewActivity extends AbsBaseActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 
     @Override
     public void onBackPressed() {

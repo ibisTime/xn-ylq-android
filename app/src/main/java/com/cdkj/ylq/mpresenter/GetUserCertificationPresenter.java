@@ -18,13 +18,13 @@ import java.util.Map;
 
 import retrofit2.Call;
 
-public class getUserCertificationPresenter {
+public class GetUserCertificationPresenter {
 
-    private getUserCertificationInfoListener mListener;
+    private GetUserCertificationInfoListener mListener;
     private Context mContext;
     private Call call;
 
-    public getUserCertificationPresenter(getUserCertificationInfoListener mListener) {
+    public GetUserCertificationPresenter(GetUserCertificationInfoListener mListener) {
         this.mListener = mListener;
     }
 
@@ -35,7 +35,7 @@ public class getUserCertificationPresenter {
         }
         Map<String, String> map = new HashMap<>();
         map.put("userId", SPUtilHelpr.getUserId());
-        Call call = RetrofitUtils.createApi(MyApiServer.class).getCerttificationInfo("623050", StringUtils.getJsonToString(map));
+        call = RetrofitUtils.createApi(MyApiServer.class).getCerttificationInfo("623050", StringUtils.getJsonToString(map));
         mListener.startGetInfo(showDialog);
         call.enqueue(new BaseResponseModelCallBack<CerttificationInfoModel>(mContext) {
             @Override

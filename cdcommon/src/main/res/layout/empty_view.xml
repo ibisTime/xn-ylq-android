@@ -21,6 +21,7 @@
             tools:src="@mipmap/ic_launcher" />
 
         <TextView
+            android:maxLength="100"
             android:id="@+id/tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

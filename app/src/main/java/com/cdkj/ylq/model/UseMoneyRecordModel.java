@@ -176,11 +176,30 @@ public class UseMoneyRecordModel implements Parcelable {
         private String signDatetime;
         private String status;
         private BigDecimal totalAmount;
+
+        public BigDecimal getRenewalAmount() {
+            return renewalAmount;
+        }
+
+        public void setRenewalAmount(BigDecimal renewalAmount) {
+            this.renewalAmount = renewalAmount;
+        }
+
+        private BigDecimal renewalAmount;
         private String updateDatetime;
         private String updater;
-        private String renewalCount;
+        private int renewalCount;
         private String renewalStartDate;
         private String renewalEndDate;
+        private String approveNote;
+
+        public String getApproveNote() {
+            return approveNote;
+        }
+
+        public void setApproveNote(String approveNote) {
+            this.approveNote = approveNote;
+        }
 
         public String getRenewalStartDate() {
             return renewalStartDate;
@@ -198,11 +217,11 @@ public class UseMoneyRecordModel implements Parcelable {
             this.renewalEndDate = renewalEndDate;
         }
 
-        public String getRenewalCount() {
+        public int getRenewalCount() {
             return renewalCount;
         }
 
-        public void setRenewalCount(String renewalCount) {
+        public void setRenewalCount(int renewalCount) {
             this.renewalCount = renewalCount;
         }
 
@@ -346,11 +365,13 @@ public class UseMoneyRecordModel implements Parcelable {
             dest.writeString(this.signDatetime);
             dest.writeString(this.status);
             dest.writeSerializable(this.totalAmount);
+            dest.writeSerializable(this.renewalAmount);
             dest.writeString(this.updateDatetime);
             dest.writeString(this.updater);
-            dest.writeString(this.renewalCount);
+            dest.writeInt(this.renewalCount);
             dest.writeString(this.renewalStartDate);
             dest.writeString(this.renewalEndDate);
+            dest.writeString(this.approveNote);
             dest.writeSerializable(this.xsAmount);
             dest.writeSerializable(this.yhAmount);
             dest.writeInt(this.yqDays);
@@ -377,11 +398,13 @@ public class UseMoneyRecordModel implements Parcelable {
             this.signDatetime = in.readString();
             this.status = in.readString();
             this.totalAmount = (BigDecimal) in.readSerializable();
+            this.renewalAmount = (BigDecimal) in.readSerializable();
             this.updateDatetime = in.readString();
             this.updater = in.readString();
-            this.renewalCount = in.readString();
+            this.renewalCount = in.readInt();
             this.renewalStartDate = in.readString();
             this.renewalEndDate = in.readString();
+            this.approveNote = in.readString();
             this.xsAmount = (BigDecimal) in.readSerializable();
             this.yhAmount = (BigDecimal) in.readSerializable();
             this.yqDays = in.readInt();

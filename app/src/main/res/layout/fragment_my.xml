@@ -355,7 +355,6 @@
                     android:src="@drawable/kefu" />
 
                 <TextView
-                    android:id="@+id/tv_surrounding_service"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -452,6 +451,8 @@
                 android:paddingTop="50dp">
 
                 <ImageView
+                    android:visibility="gone"
+                    android:id="@+id/img_phone"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_gravity="center_vertical"
@@ -470,9 +471,9 @@
             <TextView
                 android:id="@+id/tv_service_time"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="60dp"
                 android:background="@color/bg_gray"
-                android:gravity="center"
+                android:gravity="center|top"
                 android:paddingTop="10dp"
                 android:textColor="@color/text_color"
                 tools:text="服务时间:9:30-18:00" />

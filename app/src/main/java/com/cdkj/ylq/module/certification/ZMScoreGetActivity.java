@@ -91,7 +91,7 @@ public class ZMScoreGetActivity extends CommonZMPermissionsCheckActivity {
             @Override
             protected void onSuccess(ZmScoreGetModel data, String SucMessage) {
                 if (data.isAuthorized()) {
-                    showSureDialog("认证成功", view -> {
+                    showSureDialog("芝麻分认证成功", view -> {
                         finish();
                     });
                 } else {

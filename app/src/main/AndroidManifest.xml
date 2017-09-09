@@ -49,7 +49,7 @@
             android:name=".module.user.login.RegisterActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-        //注册
+        //
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
@@ -271,11 +271,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
-        //续期详情
-        <activity
-            android:name=".module.renewal.RenewalDetailsActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
 
         //分享
         <activity

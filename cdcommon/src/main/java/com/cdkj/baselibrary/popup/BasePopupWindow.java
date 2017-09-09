@@ -20,6 +20,7 @@ import android.widget.PopupWindow;
 
 import com.cdkj.baselibrary.R;
 import com.cdkj.baselibrary.utils.InputMethodUtils;
+import com.cdkj.baselibrary.utils.LogUtil;
 
 import java.lang.reflect.Field;
 
@@ -136,7 +137,7 @@ public abstract class BasePopupWindow implements BasePopup, PopupWindow.OnDismis
                     mAnimaView = View.inflate(getContext(), popupLayoutid, (FrameLayout) mPopupView);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                LogUtil.E("basePopopError");
             }
         }
     }
@@ -287,7 +288,6 @@ public abstract class BasePopupWindow implements BasePopup, PopupWindow.OnDismis
             }
         } catch (Exception e) {
             Log.e(TAG, "show error");
-            e.printStackTrace();
         }
     }
 
@@ -405,11 +405,11 @@ public abstract class BasePopupWindow implements BasePopup, PopupWindow.OnDismis
                 mLayoutInScreen.setAccessible(true);
                 mLayoutInScreen.set(mPopupWindow, needFullScreen);
             } catch (NoSuchFieldException e) {
-                e.printStackTrace();
+                LogUtil.E("basePopopError_1");
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                LogUtil.E("basePopopError_2");
             }catch (Exception e){
-                e.printStackTrace();
+                LogUtil.E("basePopopError_3");
             }
         }
     }

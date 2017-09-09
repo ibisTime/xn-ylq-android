@@ -94,7 +94,6 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
     private void setShowData() {
 
         if (mData == null) return;
-//        if (TextUtils.equals(mData.getStatus(), "1")) { //生效中
 
         if (mState) { //生效中
             setTopTitle("生效中详情");
@@ -127,8 +126,7 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
 
         mBinding.tvService.setText(MoneyUtils.showPrice(mData.getFwAmount()) + "元");
 
-        mBinding.tvXuqiNum.setText(mData.getRenewalCount());
-
+        mBinding.tvXuqiNum.setText(mData.getRenewalCount()+"");
 
     }
 

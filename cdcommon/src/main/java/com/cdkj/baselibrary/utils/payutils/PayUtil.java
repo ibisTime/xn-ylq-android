@@ -35,7 +35,7 @@ public class PayUtil {
     public static final int ALIPAY = 1;         //支付宝
     public static final int WEIXINPAY = 2;      //微信支付
 
-    public static String CALLWXPAYTAG = "";      //调用微信支付类型
+    public static String CALLWXPAYTAG=null;      //调用微信支付类型
 
     /**
      * 调用微信支付
@@ -80,8 +80,6 @@ public class PayUtil {
         api.registerApp(model.getAppId());
 
         PayReq request = new PayReq();
-
-        Map<String, String> map = new HashMap<>();
 
         request.appId = model.getAppId();  //应用ID
 

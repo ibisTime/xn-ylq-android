@@ -13,6 +13,8 @@ import org.greenrobot.eventbus.EventBus;
  * 基础Application
  * Created by Administrator on 2016/8/29.
  */
+
+//TODO 项目目前需配置参数第三方 支付宝 高德 微信
 public class MyApplication extends Application {
 
 	private static MyApplication application;
@@ -21,7 +23,7 @@ public class MyApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		application=this;
-		BaseApplication.initialize(this,BuildConfig.LOG_DEBUG);
+		BaseApplication.initialize(this,BuildConfig.LOG_DEBUG,BuildConfig.URL_TYPE);
         EventBus.builder().throwSubscriberException(BuildConfig.LOG_DEBUG).installDefaultEventBus();
 		if (BuildConfig.LOG_DEBUG) {
 			ARouter.openLog();     // 打印日志

@@ -58,7 +58,6 @@ public class SendPhoneCoodePresenter {
             @Override
             protected void onSuccess(IsSuccessModes data, String SucMessage) {
                 if(data.isSuccess()){
-                    ToastUtil.show(mContext,"验证码已经发送请注意查收");
                     mListener.CodeSuccess("验证码已经发送请注意查收");
                 }else{
                     mListener.CodeFailed("", "验证码发送失败");

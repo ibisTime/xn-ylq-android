@@ -100,6 +100,7 @@ public class SigningSureActivity extends AbsBaseActivity {
                 showDoubleWarnListen("您还没有添加银行卡，请先添加银行卡。",view -> {
                     AddBackCardActivity.open(this);
                 });
+                return;
             }
 
             signingRequest();

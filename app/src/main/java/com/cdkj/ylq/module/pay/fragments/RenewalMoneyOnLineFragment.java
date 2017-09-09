@@ -13,6 +13,7 @@ import com.cdkj.baselibrary.model.pay.AliPayRequestMode;
 import com.cdkj.baselibrary.model.pay.WxPayRequestModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
+import com.cdkj.baselibrary.utils.BigDecimalUtils;
 import com.cdkj.baselibrary.utils.DateUtil;
 import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
@@ -77,18 +78,22 @@ public class RenewalMoneyOnLineFragment extends BaseFragment {
          return;
         }
 
-        mBinding.tvMoney.setText(MoneyUtils.showPrice(mData.getAmount()));
+        mBinding.tvMoney.setText(MoneyUtils.showPrice(mData.getRenewalAmount()));
 
         mBinding.tvRenewalStart.setText(DateUtil.formatStringData(mData.getRenewalStartDate(),DateUtil.DATE_YMD));
         mBinding.tvRenewalEnd.setText(DateUtil.formatStringData(mData.getRenewalEndDate(),DateUtil.DATE_YMD));
+
+        //续期利息 =逾期总额-逾期利息
+        mBinding.tvMoneyTips.setText("续期金额=逾期利息("+MoneyUtils.showPrice(mData.getYqlxAmount())+"元)+续期利息("+
+                MoneyUtils.showPrice(BigDecimalUtils.subtract(mData.getRenewalAmount(),mData.getYqlxAmount()))+"元)");
 
     }
 
     //
     private void initListener() {
-        mBinding.imgWeixin.setImageResource(R.drawable.un_select);
-        mBinding.imgZhifubao.setImageResource(R.drawable.pay_select);
-        mPayType = 3;
+        mBinding.imgWeixin.setImageResource(R.drawable.pay_select);
+        mBinding.imgZhifubao.setImageResource(R.drawable.un_select);
+        mPayType = 2;
         mBinding.linWeixin.setOnClickListener(v -> {
             mBinding.imgWeixin.setImageResource(R.drawable.pay_select);
             mBinding.imgZhifubao.setImageResource(R.drawable.un_select);

@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="5dp"
-            android:text="1.请使用本人的手机授权"
+            android:text="1.请使用本人的手机授权。"
             android:textColor="@color/txt_gray" />
 
         <TextView
@@ -98,7 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="5dp"
-            android:text="2.提供通讯录信息，有助于您通过审核"
+            android:text="2.提供通讯录信息，有助于您通过审核。"
             android:textColor="@color/txt_gray" />
 
         <TextView

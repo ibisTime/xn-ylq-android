@@ -31,13 +31,6 @@ import java.util.Map;
 
 import retrofit2.Call;
 
-import static com.cdkj.ylq.appmanager.BusinessSings.USEMONEYRECORD_0;
-import static com.cdkj.ylq.appmanager.BusinessSings.USEMONEYRECORD_1;
-import static com.cdkj.ylq.appmanager.BusinessSings.USEMONEYRECORD_2;
-import static com.cdkj.ylq.appmanager.BusinessSings.USEMONEYRECORD_3;
-import static com.cdkj.ylq.appmanager.BusinessSings.USEMONEYRECORD_4;
-import static com.cdkj.ylq.appmanager.BusinessSings.USEMONEYRECORD_7;
-
 /**
  * 借款记录列表
  * Created by 李先俊 on 2017/8/8.
@@ -82,27 +75,7 @@ public class UseMoneyRecordFragment extends BaseRefreshFragment<UseMoneyRecordMo
 
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             UseMoneyRecordModel.ListBean state = (UseMoneyRecordModel.ListBean) mAdapter.getItem(position);
-            if (state == null) {
-                return;
-            }
-            if (TextUtils.equals(state.getStatus(), USEMONEYRECORD_0)//待审核
-                    || TextUtils.equals(state.getStatus(), USEMONEYRECORD_2)//审核不通过
-                    || TextUtils.equals(state.getStatus(), USEMONEYRECORD_1)//待放款
-                    || TextUtils.equals(state.getStatus(), USEMONEYRECORD_7)) {//打款失败
-                WaiteMoneyDetailsActivity.open(mActivity, state);
-
-            } else if (TextUtils.equals(state.getStatus(), USEMONEYRECORD_3)) {//生效中
-
-                UseingMoneyDetailsActivity.open(mActivity, state, true, "");//
-
-            } else if (TextUtils.equals(state.getStatus(), USEMONEYRECORD_4)) {//已还款
-                UseingMoneyDetailsActivity.open(mActivity, state, false, "");//
-
-            } else if (TextUtils.equals(state.getStatus(), USEMONEYRECORD_7)) {//已逾期
-
-                UsedMoneyDetailsActivity.open(mActivity, state, ""); //
-
-            }
+            BusinessSings.startRecordActivity(mActivity,state);
         });
     }
 

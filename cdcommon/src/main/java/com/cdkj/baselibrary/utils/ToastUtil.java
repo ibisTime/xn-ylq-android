@@ -26,8 +26,9 @@ public class ToastUtil {
         if (mToast != null){
             mToast.setText(text);
             mToast.setDuration(Toast.LENGTH_LONG);
-        } else
+        } else{
             mToast = Toast.makeText(mContext, text, Toast.LENGTH_LONG);
+        }
 
         mToast.show();
         mHandler.postDelayed(r,900);

@@ -131,7 +131,6 @@ public class PopupWindowProxy extends PopupWindow {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -148,7 +147,6 @@ public class PopupWindowProxy extends PopupWindow {
                 view.setSystemUiVisibility(uiOptions);
             }
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -161,7 +159,6 @@ public class PopupWindowProxy extends PopupWindow {
                 view.setSystemUiVisibility(uiOptions);
             }
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

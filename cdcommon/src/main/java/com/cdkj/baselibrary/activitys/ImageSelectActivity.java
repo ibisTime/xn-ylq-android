@@ -70,12 +70,13 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
 
     private CapturePhotoHelper mCapturePhotoHelper;
 
-    public static void launch(Activity activity, int photoid, int showType) {
+    public static void launch(Activity activity, int photoid, int showType,boolean isSplit) {
         if (activity == null) {
             return;
         }
         Intent intent = new Intent(activity, ImageSelectActivity.class);
         intent.putExtra("showType", showType);
+        intent.putExtra("isSplit",isSplit);
         activity.startActivityForResult(intent, photoid);
     }
 
@@ -87,14 +88,14 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
         activity.startActivityForResult(intent, photoid);
     }
 
-    public static void launch(Activity activity, boolean isSplit, int photoid) {
-        if (activity == null) {
+    public static void launchFragment(Fragment fragment, int photoid) {
+        if (fragment == null || fragment.getActivity()==null) {
             return;
         }
-        activity.startActivityForResult(new Intent(activity, ImageSelectActivity.class)
-                        .putExtra("isSplit", isSplit)
-                , photoid);
+        Intent intent = new Intent(fragment.getActivity(), ImageSelectActivity.class);
+        fragment.startActivityForResult(intent, photoid);
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,7 +156,6 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
             } else if (i == R.id.empty_view || i == R.id.tv_cancle) {
                 finish();
 
-            } else {
             }
         } catch (Exception e) {
             Toast.makeText(ImageSelectActivity.this, "出现未知错误", Toast.LENGTH_SHORT);
@@ -407,9 +407,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
             fOut.flush();
             fOut.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
         }
 //		mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
     }
@@ -451,7 +449,6 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
                     options.outWidth = width;
                     options.outHeight = height;
                 } catch (IOException e) {
-                    e.printStackTrace();
                 }
             }
 
@@ -607,7 +604,6 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
             fos.flush();
             fos.close();
         } catch (Exception e) {
-            e.printStackTrace();
         }
 
         return file.getPath();

@@ -60,7 +60,6 @@ public class DashedLine extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        // TODO Auto-generated method stub
         super.onDraw(canvas);
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);

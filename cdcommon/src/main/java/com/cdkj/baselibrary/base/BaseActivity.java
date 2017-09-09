@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -75,7 +76,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         clearCall();
 
-        if (mSubscription != null){
+        if (mSubscription != null) {
             mSubscription.dispose();
             mSubscription.clear();
         }
@@ -102,8 +103,8 @@ public abstract class BaseActivity extends AppCompatActivity {
      * 显示dialog
      */
     public void showLoadingDialog() {
-        if(loadingDialog==null){
-            loadingDialog=new LoadingDialog(this);
+        if (loadingDialog == null) {
+            loadingDialog = new LoadingDialog(this);
         }
         if (loadingDialog != null && !loadingDialog.isShowing()) {
             loadingDialog.showDialog();
@@ -128,7 +129,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         commonDialog.show();
     }
- protected void showSureDialog(String str, CommonDialog.OnPositiveListener onPositiveListener) {
+
+    protected void showSureDialog(String str, CommonDialog.OnPositiveListener onPositiveListener) {
 
         if (isFinishing()) {
             return;
@@ -137,6 +139,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         CommonDialog commonDialog = new CommonDialog(this).builder()
                 .setTitle("提示").setContentMsg(str)
                 .setPositiveBtn("确定", onPositiveListener);
+        commonDialog.getContentView().setGravity(Gravity.CENTER);
 
         commonDialog.show();
     }
@@ -227,15 +230,14 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Subscribe
     public void finishAll(String i) {
-        if (TextUtils.equals(EventTags.AllFINISH, i)) {
-            if (canEvenFinish()) {
-                this.finish();
-            }
+        if (TextUtils.equals(EventTags.AllFINISH, i) && canEvenFinish()) {
+            this.finish();
         }
     }
 
     /**
      * 能否通过 EventBUS事件结束
+     *
      * @return
      */
     protected boolean canEvenFinish() {
