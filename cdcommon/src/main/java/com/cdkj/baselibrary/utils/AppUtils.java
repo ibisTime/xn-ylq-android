@@ -180,7 +180,11 @@ public class AppUtils {
             if (!hasPreferredApplication(context, intent)) {
                 intent.setClassName("com.android.browser", "com.android.browser.BrowserActivity");
             }
-            context.startActivity(intent);
+            if (intent.resolveActivity(context.getPackageManager()) != null) {
+                context.startActivity(Intent.createChooser(intent, "请选择浏览器"));
+            }else{
+                ToastUtil.show(context,"没有可用浏览器");
+            }
         } catch (Exception e) {
             LogUtil.E("startWeb error");
         }
