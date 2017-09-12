@@ -74,10 +74,6 @@ public class UsedMoneyDetailsActivity extends AbsBaseActivity {
         setTopTitle("已逾期详情");
 
         if (getIntent() != null) {
-            mData = getIntent().getParcelableExtra("data");
-        }
-
-        if (getIntent() != null) {
 
             mCode = getIntent().getStringExtra("code");
 

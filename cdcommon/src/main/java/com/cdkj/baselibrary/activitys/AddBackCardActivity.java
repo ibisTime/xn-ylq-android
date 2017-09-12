@@ -77,6 +77,11 @@ public class AddBackCardActivity extends AbsBaseActivity {
         });
 
 
+        if(!TextUtils.isEmpty(SPUtilHelpr.getUserName())){
+            mBinding.editName.setText(SPUtilHelpr.getUserName());
+        }
+
+
         //添加银行卡
         mBinding.txtConfirm.setOnClickListener(new View.OnClickListener() {
             @Override

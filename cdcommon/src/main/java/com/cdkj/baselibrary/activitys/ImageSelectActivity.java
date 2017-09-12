@@ -10,6 +10,7 @@ import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
@@ -358,6 +359,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
                         break;
                     case CapturePhotoHelper.CAPTURE_PHOTO_REQUEST_CODE:// 拍照
 
+
                         if (isSplit) {
                             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
                                 startPhotoZoom(new File(imageUrl.getPath()));
@@ -368,9 +370,9 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
                         } else {
                             Bitmap bitmap;
                             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                                bitmap = decodeBitmapFromFile(imageUrl.getPath(), 150, 150);
+                                bitmap = decodeBitmapFromFile(imageUrl.getPath(), 400, 400);
                             } else {
-                                bitmap = decodeBitmapFromFile(photoPath, 150, 150);
+                                bitmap = decodeBitmapFromFile(photoPath, 400, 400);
                             }
                             String path = saveFile(bitmap, "camera");
                             setResult(Activity.RESULT_OK, new Intent().putExtra(staticPath, path));
@@ -393,6 +395,59 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
             Toast.makeText(ImageSelectActivity.this, "图片获取失败", Toast.LENGTH_SHORT);
             finish();
         }
+    }
+    /**
+     * 读取图片的旋转的角度
+     *
+     * @param path
+     *            图片绝对路径
+     * @return 图片的旋转角度
+     */
+    private int getBitmapDegree(String path) {
+        int degree = 0;
+        try {
+            // 从指定路径下读取图片，并获取其EXIF信息
+            ExifInterface exifInterface = new ExifInterface(path);
+            // 获取图片的旋转信息
+            int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_NORMAL);
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    degree = 90;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    degree = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    degree = 270;
+                    break;
+            }
+        } catch (IOException e) {
+            LogUtil.E("图片旋转角度异常"+e);
+        }
+        LogUtil.E("图片旋转角度"+degree);
+        return degree;
+    }
+
+    /*
+   * 旋转图片
+   * @param angle
+   * @param bitmap
+   * @return Bitmap
+   */
+    public  Bitmap rotaingImageView(int angle , Bitmap bitmap) {
+        try {
+            //旋转图片 动作
+            Matrix matrix = new Matrix();;
+            matrix.postRotate(angle);
+            // 创建新的图片
+            Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
+                    bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            return resizedBitmap;
+        }catch (Exception e){
+
+        }
+        return bitmap;
     }
 
     public void saveMyBitmap(Bitmap mBitmap, String bitName) {
@@ -432,7 +487,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
      * @param requestHeight 压缩到想要的高度
      * @return Bitmap
      */
-    public static Bitmap decodeBitmapFromFile(String imagePath, int requestWidth, int requestHeight) {
+    public Bitmap decodeBitmapFromFile(String imagePath, int requestWidth, int requestHeight) {
         if (!TextUtils.isEmpty(imagePath)) {
             if (requestWidth <= 0 || requestHeight <= 0) {
                 Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
@@ -448,15 +503,24 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
                     int width = exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_WIDTH, ExifInterface.ORIENTATION_NORMAL);//获取图片的宽度
                     options.outWidth = width;
                     options.outHeight = height;
+
                 } catch (IOException e) {
                 }
             }
 
 //            options.inSampleSize = calculateInSampleSize(options, requestWidth, requestHeight); //计算获取新的采样率
             options.inSampleSize = Math.min(options.outWidth / requestWidth, options.outHeight / requestHeight);
+
             options.inJustDecodeBounds = false;
-            LogUtil.E("拍照生成图片true");
-            return BitmapFactory.decodeFile(imagePath, options);
+
+            int degree =getBitmapDegree(imagePath);//获取旋转角度
+
+            if(degree==0){
+                return BitmapFactory.decodeFile(imagePath, options);
+            }else{
+                return rotaingImageView(degree,BitmapFactory.decodeFile(imagePath, options));
+            }
+
         } else {
             LogUtil.E("拍照生成图片false");
             return null;
@@ -635,7 +699,6 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
             return "";
         }
     }
-
 
     /**
      * MIUI系统的相册选择

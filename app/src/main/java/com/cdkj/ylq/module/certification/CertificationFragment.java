@@ -59,6 +59,7 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
     private GetUserCertificationPresenter mCertInfoPresenter;//获取认证结果接口
 
     private boolean isMoxieCallback;//是否执行过魔蝎回调 用户魔蝎回调成功弹框提醒
+    private boolean isResumeShow;//用户魔蝎回调认证中弹框提醒
 
 
     /**
@@ -75,10 +76,10 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
 
         //身份认证
         mBinding.layoutIdcardCert.setOnClickListener(v -> {
-            if (mCertData == null) return;
             if (!SPUtilHelpr.isLogin(mActivity, false)) {
                 return;
             }
+            if (mCertData == null) return;
             IdCardCertificationActivity.open(mActivity);
         });
 
@@ -94,6 +95,7 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
                 ToastUtil.show(mActivity, "请进行身份认证");
                 return;
             }
+
             BasisInfoCertificationActivity.open(mActivity);
         });
 
@@ -141,9 +143,14 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
                 ToastUtil.show(mActivity, "运营商已经认证");
                 return;
             }
+
+            if (TextUtils.equals("3", mCertData.getInfoCarrierFlag())){
+                ToastUtil.show(mActivity, "运营商信息正在认证中,请稍后");
+                return;
+            }
+
             getMxApiKEy();
         });
-
 
 
         mBinding.imgCalcelCert.setOnClickListener(v -> {
@@ -204,7 +211,7 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
 
     @Override
     protected void onInvisible() {
-
+       isResumeShow=false;
     }
 
     public void openMoxie(String mApiKey) {
@@ -226,12 +233,12 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
         mxParam.setLoadingViewText("验证过程中不会浪费您任何流量\n请稍等片刻");  //设置导入过程中的自定义提示文案，为居中显示
         mxParam.setQuitDisable(true); //设置导入过程中，触发返回键或者点击actionbar的返回按钮的时候，不执行魔蝎的默认行为
 
-        if(mCertData.getInfoIdentify()!=null){
+        if (mCertData != null && mCertData.getInfoIdentify() != null) {
             HashMap<String, String> extendParam = new HashMap<String, String>();
             extendParam.put(MxParam.PARAM_CARRIER_IDCARD, mCertData.getInfoIdentify().getIdNo()); // 身份证
             extendParam.put(MxParam.PARAM_CARRIER_PHONE, SPUtilHelpr.getUserPhoneNum()); // 手机号
             extendParam.put(MxParam.PARAM_CARRIER_NAME, mCertData.getInfoIdentify().getRealName()); // 姓名
-            extendParam.put(MxParam.PARAM_CARRIER_EDITABLE, MxParam.PARAM_COMMON_YES); // 是否允许用户修改以上信息
+            extendParam.put(MxParam.PARAM_CARRIER_EDITABLE, MxParam.PARAM_COMMON_NO); // 是否允许用户修改以上信息
             mxParam.setExtendParams(extendParam);
         }
         //设置title
@@ -280,6 +287,7 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
                                             // getMoxieRequest(jsonObject.getString("taskId"));
                                             if (mCertInfoPresenter != null) {      //获取认证结果
                                                 isMoxieCallback = true;
+                                                isResumeShow = true;
                                                 mCertInfoPresenter.getCertInfo(true);
                                             } else {
                                                 disMissLoading();
@@ -331,6 +339,7 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
             protected void onFinish() {
                 if (mCertInfoPresenter != null) {
                     isMoxieCallback = true;
+                    isResumeShow = true;
                     mCertInfoPresenter.getCertInfo(true);  //获取认证结果
                 } else {
                     disMissLoading();
@@ -428,6 +437,16 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
             mBinding.tvMoxieState.setTextColor(ContextCompat.getColor(mActivity, R.color.guoqi));
             mBinding.imgMoxieState.setImageResource(R.drawable.guoqi);
             mBinding.imgMoxieStateBig.setImageResource(R.drawable.yunying_un);
+        } else if (TextUtils.equals("3", mCertData.getInfoCarrierFlag())) {
+            mBinding.tvMoxieState.setText("认证中");
+            mBinding.tvMoxieState.setTextColor(ContextCompat.getColor(mActivity, R.color.cert_state_edit));
+            mBinding.imgMoxieState.setImageResource(R.drawable.can_submit);
+            mBinding.imgMoxieStateBig.setImageResource(R.drawable.yunying_un);
+            if(isResumeShow){
+                ToastUtil.show(mActivity, "运营商数据正在认证，请稍后");
+                isResumeShow =false;
+            }
+
         } else {
             mBinding.tvMoxieState.setText("前往提交");
             mBinding.tvMoxieState.setTextColor(ContextCompat.getColor(mActivity, R.color.cert_state_edit));
@@ -473,6 +492,7 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
                     HumanReviewActivity.open(mActivity);
                 }
             }
+
             @Override
             protected void onFinish() {
                 disMissLoading();
@@ -511,10 +531,12 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
         return mBinding.getRoot();
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
         if (getUserVisibleHint() && mCertInfoPresenter != null && mBinding != null) {
+            isResumeShow =true;
             mCertInfoPresenter.getCertInfo(false);
         }
     }

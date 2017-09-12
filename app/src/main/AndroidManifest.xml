@@ -82,6 +82,7 @@
         //相机
         <activity
             android:name="com.cdkj.baselibrary.activitys.ImageSelectActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/ActivityDialogStyleBottom" />
         //基础信息认证
         <activity

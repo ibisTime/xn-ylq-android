@@ -206,7 +206,7 @@ public class UpdateBackCardActivity extends AbsBaseActivity {
         mBinding.txtBankName.setText(mBankModel.getBankName());
         mBinding.editName.setText(mBankModel.getRealName());
         mBinding.edtCardId.setText(mBankModel.getBankcardNumber());
-//        mSelectCardId = mBankModel.getBankCode();
+        mSelectCardId = mBankModel.getBankCode();
 
     }
 

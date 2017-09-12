@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.cdkj.baselibrary.activitys.BackCardListActivity;
 import com.cdkj.baselibrary.appmanager.EventTags;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.model.EventBusModel;
@@ -20,6 +21,7 @@ import com.cdkj.ylq.R;
 import com.cdkj.ylq.appmanager.BusinessSings;
 import com.cdkj.ylq.databinding.ActivityWaiteMoneyDetailsBinding;
 import com.cdkj.ylq.model.UseMoneyRecordModel;
+import com.cdkj.ylq.module.api.MyApiServer;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -41,20 +43,21 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
 
 
     private UseMoneyRecordModel.ListBean mData;
-
+    private String mCode;
 
     /**
      * 打开当前页面
      *
      * @param context
      */
-    public static void open(Context context, UseMoneyRecordModel.ListBean state) {
+    public static void open(Context context, UseMoneyRecordModel.ListBean state,String code) {
         if (context == null) {
             return;
         }
 
         Intent i = new Intent(context, WaiteMoneyDetailsActivity.class);
         i.putExtra("data", state);
+        i.putExtra("code", code);
         context.startActivity(i);
     }
 
@@ -75,7 +78,15 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
 
 
         if (getIntent() != null) {
-            mData = getIntent().getParcelableExtra("data");
+            mCode = getIntent().getStringExtra("code");
+
+            if (TextUtils.isEmpty(mCode)) {
+                mData = getIntent().getParcelableExtra("data");
+                setShowData();
+            } else {
+                getDataRequest();
+            }
+
         }
 
         if(mData!=null){
@@ -84,11 +95,38 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
             setTopTitle("借款详情");
         }
 
-        setShowData();
-
         initListener();
 
     }
+
+
+    public void getDataRequest() {
+
+        Map<String, String> map = new HashMap<>();
+        map.put("code", mCode);
+
+        Call call = RetrofitUtils.createApi(MyApiServer.class).getUseMoneyData("623086", StringUtils.getJsonToString(map));
+
+        addCall(call);
+
+        showLoadingDialog();
+
+        call.enqueue(new BaseResponseModelCallBack<UseMoneyRecordModel.ListBean>(this) {
+            @Override
+            protected void onSuccess(UseMoneyRecordModel.ListBean data, String SucMessage) {
+                mData = data;
+                setShowData();
+            }
+
+            @Override
+            protected void onFinish() {
+                disMissLoading();
+            }
+        });
+
+    }
+
+
 
     private void initListener() {
         mBinding.btnSure.setOnClickListener(v -> {
@@ -175,8 +213,13 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
             mBinding.tvState2.setText(mData.getRemark());
         }
 
-        if (TextUtils.equals(mData.getStatus(), BusinessSings.USEMONEYRECORD_7)) { //打款失败时显示按钮
+        if (TextUtils.equals(mData.getStatus(), BusinessSings.USEMONEYRECORD_7)) { //打款失败时显示按钮 显示弹框
             mBinding.btnSure.setVisibility(View.VISIBLE);
+
+            showDoubleWarnListen("打款失败,请核对银行卡信息",view -> {
+                BackCardListActivity.open(this,false);
+            });
+
         } else {
             mBinding.btnSure.setVisibility(View.GONE);
         }

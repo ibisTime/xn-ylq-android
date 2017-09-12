@@ -53,7 +53,7 @@ public class BackCardListActivity extends BaseRefreshActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        getListData(0,0,true);
+        getListData(0, 0, true);
     }
 
 
@@ -113,7 +113,7 @@ public class BackCardListActivity extends BaseRefreshActivity {
 
     @Override
     protected BaseQuickAdapter onCreateAdapter(List mDataList) {
-        return new BaseQuickAdapter<BankCardModel, BaseViewHolder>( R.layout.item_my_bank_card, mDataList) {
+        return new BaseQuickAdapter<BankCardModel, BaseViewHolder>(R.layout.item_my_bank_card, mDataList) {
             @Override
             protected void convert(BaseViewHolder holder, final BankCardModel bankCardModel) {
                 if (bankCardModel == null) return;
@@ -128,7 +128,7 @@ public class BackCardListActivity extends BaseRefreshActivity {
                             UpdateBackCardActivity.open(mContext, bankCardModel);
                         }
                     }
-               });
+                });
 
                 holder.setText(R.id.txt_name, bankCardModel.getBankName());
                 if (!TextUtils.isEmpty(bankCardModel.getBankcardNumber()) && bankCardModel.getBankcardNumber().length() > 5) {
@@ -136,8 +136,12 @@ public class BackCardListActivity extends BaseRefreshActivity {
                 } else {
                     holder.setText(R.id.txt_number, bankCardModel.getBankcardNumber());
                 }
-                int logoId = mContext.getResources().getIdentifier("logo_" + bankCardModel.getBankCode().toLowerCase(), "mipmap", mContext.getPackageName());
-                int backId = mContext.getResources().getIdentifier("back_" + bankCardModel.getBankCode().toLowerCase(), "mipmap", mContext.getPackageName());
+                int logoId = R.mipmap.logo_defalut;
+                int backId = R.mipmap.back_default;
+                if (!TextUtils.isEmpty(bankCardModel.getBankCode())) {
+                    logoId = mContext.getResources().getIdentifier("logo_" + bankCardModel.getBankCode().toLowerCase(), "mipmap", mContext.getPackageName());
+                    backId = mContext.getResources().getIdentifier("back_" + bankCardModel.getBankCode().toLowerCase(), "mipmap", mContext.getPackageName());
+                }
 
                 ImgUtils.loadBankLogo(mContext, logoId, (ImageView) holder.getView(R.id.img_bankCart));
                 ImgUtils.loadBankBg(mContext, backId, (ImageView) holder.getView(R.id.img_back_bg));

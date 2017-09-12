@@ -17,6 +17,7 @@ import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.dialog.CommonDialog;
 import com.cdkj.baselibrary.interfaces.SendCodeInterface;
 import com.cdkj.baselibrary.interfaces.SendPhoneCoodePresenter;
+import com.cdkj.baselibrary.model.IsSuccessModes;
 import com.cdkj.baselibrary.model.UserLoginModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
@@ -34,6 +35,7 @@ import com.lljjcoder.citypickerview.widget.CityPicker;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.Call;
 
@@ -82,7 +84,7 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
 
     private void initListener() {
         mBinding.btnSendCode.setOnClickListener(v -> { //发送验证码
-            mSendCOdePresenter.sendCodeRequest(mBinding.editUsername.getText().toString(), "805041", MyConfig.USERTYPE, this);
+            checkPhoneNumAndSendCode();
         });
         mBinding.tvIRead.setOnClickListener(v -> {
             WebViewActivity.openkey(this, "注册协议", "regProtocol");
@@ -119,6 +121,41 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
             mCityPicker.show();
         });
 
+    }
+
+    /**
+     * 检车手机号是否可以注册然后发送验证码
+     */
+    private void checkPhoneNumAndSendCode() {
+        if (TextUtils.isEmpty(mBinding.editUsername.getText().toString())) {
+            showToast("请输入手机号");
+            return;
+        }
+
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("companyCode", MyConfig.COMPANYCODE);
+        map.put("systemCode", MyConfig.SYSTEMCODE);
+        map.put("mobile", mBinding.editUsername.getText().toString());
+        map.put("kind", MyConfig.USERTYPE);
+        Call call = RetrofitUtils.getBaseAPiService().successRequest("805040", StringUtils.getJsonToString(map));
+
+        addCall(call);
+        showLoadingDialog();
+        call.enqueue(new BaseResponseModelCallBack<IsSuccessModes>(this) {
+            @Override
+            protected void onSuccess(IsSuccessModes data, String SucMessage) {
+                if (data.isSuccess()) {
+                    mSendCOdePresenter.sendCodeRequest(mBinding.editUsername.getText().toString(), "805041", MyConfig.USERTYPE, RegisterActivity.this);
+                }else{
+                    showToast("手机号已经存在");
+                }
+            }
+
+            @Override
+            protected void onFinish() {
+                disMissLoading();
+            }
+        });
     }
 
 
@@ -176,7 +213,16 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
             hashMap.put("province", mapLocation.getProvince());
             hashMap.put("city", mapLocation.getCity());
             hashMap.put("area", mapLocation.getDistrict());
-            hashMap.put("address",mapLocation.getStreet()+" "+mapLocation.getStreetNum());
+            StringBuffer sbaddress = new StringBuffer();
+            if (!TextUtils.isEmpty(mapLocation.getStreet())) {
+                sbaddress.append(mapLocation.getStreet());
+            }
+            if (!TextUtils.isEmpty(mapLocation.getStreetNum())) {
+                sbaddress.append(mapLocation.getStreet());
+            }
+            if(!TextUtils.isEmpty(sbaddress.toString())){
+                hashMap.put("address", sbaddress.toString());
+            }
         }
         hashMap.put("smsCaptcha", mBinding.editPhoneCode.getText().toString());
         hashMap.put("systemCode", MyConfig.SYSTEMCODE);
@@ -218,7 +264,7 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
     //获取验证码相关
     @Override
     public void CodeSuccess(String msg) {
-        ToastUtil.show(this,msg);
+        ToastUtil.show(this, msg);
         mSubscription.add(AppUtils.startCodeDown(60, mBinding.btnSendCode));//启动倒计时
     }
 
@@ -247,7 +293,7 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
     protected void locationSuccessful(AMapLocation aMapLocation) {
         mapLocation = aMapLocation;
 //        mBinding.tvLocation.setText(aMapLocation.getProvince() + " " + aMapLocation.getCity() + " " + aMapLocation.getDistrict());
-        LogUtil.E("地址 "+aMapLocation.getAddress());
+        LogUtil.E("地址 " + aMapLocation.getAddress());
     }
 
     @Override

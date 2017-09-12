@@ -114,6 +114,9 @@ public class BorrowMoneyProductAdapter extends BaseQuickAdapter<PorductListModel
             case "7":
                 stateStr = "已逾期";
                 break;
+            case "11":
+                stateStr = "打款失败";
+                break;
         }
 
         return stateStr;

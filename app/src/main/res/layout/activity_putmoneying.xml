@@ -80,7 +80,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="20dp"
-                                android:text="额度使用"
+                                android:text="绑定银行卡"
                                 android:textColor="@color/text_color"
                                 android:textSize="16sp" />
 

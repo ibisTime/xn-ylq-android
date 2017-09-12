@@ -20,6 +20,7 @@ import com.cdkj.ylq.R;
 import com.cdkj.ylq.adapters.BorrowMoneyProductAdapter;
 import com.cdkj.ylq.databinding.LayoutProductFooterviewBinding;
 import com.cdkj.ylq.model.PorductListModel;
+import com.cdkj.ylq.model.UseMoneyRecordModel;
 import com.cdkj.ylq.module.api.MyApiServer;
 import com.cdkj.ylq.module.certification.review.HumanReviewActivity;
 import com.cdkj.ylq.module.product.ProductDetailsActivity;
@@ -27,6 +28,7 @@ import com.cdkj.ylq.module.user.userinfo.MsgListActivity;
 import com.cdkj.ylq.module.user.userinfo.MyMaxMoneyActivity;
 import com.cdkj.ylq.module.user.userinfo.usemoneyrecord.UsedMoneyDetailsActivity;
 import com.cdkj.ylq.module.user.userinfo.usemoneyrecord.UseingMoneyDetailsActivity;
+import com.cdkj.ylq.module.user.userinfo.usemoneyrecord.WaiteMoneyDetailsActivity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.greenrobot.eventbus.EventBus;
@@ -107,8 +109,7 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
             return;
         }
 
-        if (TextUtils.equals("0", data.getUserProductStatus())) {
-
+        if (TextUtils.equals("0", data.getUserProductStatus())) {      //产品详情
             ProductDetailsActivity.open(mActivity, data.getCode());
             return;
         }
@@ -132,8 +133,10 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
             ApplyFailureActivity.open(mActivity, data);
 
         } else if (TextUtils.equals("4", data.getUserProductStatus())) {//已有额度
+
             MyMaxMoneyActivity.open(mActivity);
         } else if (TextUtils.equals("5", data.getUserProductStatus())) { //等待放款中
+
             PutMoneyingActivity.open(mActivity);
 
         } else if (TextUtils.equals("6", data.getUserProductStatus())) { //生效中
@@ -141,11 +144,12 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
             UseingMoneyDetailsActivity.open(mActivity, null, true, data.getBorrowCode());
 
         } else if (TextUtils.equals("7", data.getUserProductStatus())) { //逾期
+
             UsedMoneyDetailsActivity.open(mActivity, null, data.getBorrowCode());
-        } else {
 
+        } else if(TextUtils.equals("11", data.getUserProductStatus())){//打款失败
+            WaiteMoneyDetailsActivity.open(mActivity,null,data.getBorrowCode());
         }
-
     }
 
     @Override

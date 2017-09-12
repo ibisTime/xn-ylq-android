@@ -183,7 +183,7 @@ public interface MyApiServer {
     Call<BaseResponseModel<UseMoneyRecordModel>> getRecordList(@Field("code") String code, @Field("json") String json);
 
     /**
-     * 获取推荐列表
+     * 获取消息列表
      * @return
      */
     @FormUrlEncoded
@@ -191,7 +191,7 @@ public interface MyApiServer {
     Call<BaseResponseModel<MsgListModel>> getMsgList(@Field("code") String code, @Field("json") String  json);
 
     /**
-     * 获取推荐列表
+     * 获取产品详情
      *
      * @return
      */
@@ -217,7 +217,7 @@ public interface MyApiServer {
     @POST("api")
     Call<BaseResponseModel<IsBorrowModel>> isBorrowRequest(@Field("code") String code, @Field("json") String json);
     /**
-     * 续期记录
+     * 续期记录列表
      *
      * @return
      */
@@ -225,7 +225,7 @@ public interface MyApiServer {
     @POST("api")
     Call<BaseResponseModel<RenewalListModel>> getRenewalListData(@Field("code") String code, @Field("json") String json);
     /**
-     * 续期记录
+     * 是否有产品审核
      *
      * @return
      */

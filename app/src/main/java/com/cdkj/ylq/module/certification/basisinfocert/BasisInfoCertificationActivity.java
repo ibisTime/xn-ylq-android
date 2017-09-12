@@ -142,9 +142,9 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements G
         if (TextUtils.equals("1", mCertData.getInfoContactFlag())) {
             mBinding.imgEmergencyInfo.setVisibility(View.VISIBLE);
         }
-        if (TextUtils.equals("1", mCertData.getInfoBankcardFlag())) {
-            mBinding.imgBancardInfo.setVisibility(View.VISIBLE);
-        }
+//        if (TextUtils.equals("1", mCertData.getInfoBankcardFlag())) {
+//            mBinding.imgBancardInfo.setVisibility(View.VISIBLE);
+//        }
 
     }
 
@@ -168,10 +168,10 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements G
         });
 
         //银行卡信息填写
-        mBinding.layoutBankCardInfo.setOnClickListener(v -> {
-            if (mCertData == null) return;
-            BankInfoCertificationWriteActivity.open(this, mCertData.getInfoBankcard());
-        });
+//        mBinding.layoutBankCardInfo.setOnClickListener(v -> {
+//            if (mCertData == null) return;
+//            BankInfoCertificationWriteActivity.open(this, mCertData.getInfoBankcard());
+//        });
         //反欺诈认证 all提交
         mBinding.btnSure.setOnClickListener(v -> {
 
@@ -241,7 +241,6 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements G
         setShowState(userCertInfo);
         showContentView();
     }
-
     @Override
     public void getInfoFailed(String code, String msg) {
         ToastUtil.show(this, msg);

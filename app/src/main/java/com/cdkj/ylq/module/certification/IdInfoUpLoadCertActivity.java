@@ -3,6 +3,7 @@ package com.cdkj.ylq.module.certification;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.media.ExifInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.cdkj.baselibrary.model.QiniuGetTokenModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.ImgUtils;
+import com.cdkj.baselibrary.utils.LogUtil;
 import com.cdkj.baselibrary.utils.QiNiuUtil;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.baselibrary.utils.ToastUtil;
@@ -33,6 +35,7 @@ import com.qiniu.android.http.ResponseInfo;
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -123,15 +126,15 @@ public class IdInfoUpLoadCertActivity extends AbsBaseActivity {
     private void initListener() {
         //身份证正面照
         mBinding.imgIdcard.setOnClickListener(v -> {
-            ImageSelectActivity.launch(this, PHOTOFLAG1, ImageSelectActivity.SHOWPIC, true);
+            ImageSelectActivity.launch(this, PHOTOFLAG1, ImageSelectActivity.SHOWPIC, false);
         });
         //身份证反面面照
         mBinding.imgIdcardBack.setOnClickListener(v -> {
-            ImageSelectActivity.launch(this, PHOTOFLAG2, ImageSelectActivity.SHOWPIC, true);
+            ImageSelectActivity.launch(this, PHOTOFLAG2, ImageSelectActivity.SHOWPIC, false);
         });
         //手持
         mBinding.imgIdcardPeople.setOnClickListener(v -> {
-            ImageSelectActivity.launch(this, PHOTOFLAG3, ImageSelectActivity.SHOWPIC, true);
+            ImageSelectActivity.launch(this, PHOTOFLAG3, ImageSelectActivity.SHOWPIC, false);
         });
 
         mBinding.btnSubmit.setOnClickListener(v -> {
@@ -201,6 +204,12 @@ public class IdInfoUpLoadCertActivity extends AbsBaseActivity {
 
     }
 
+
+    /**
+     * 获取七牛Token
+     * @param type
+     * @param path
+     */
     public void getQiniuToken(int type, String path) {
 
         if (!TextUtils.isEmpty(mQiNiuToken)) { //如果已经获取到token直接 上传图片
@@ -215,6 +224,7 @@ public class IdInfoUpLoadCertActivity extends AbsBaseActivity {
             @Override
             protected void onSuccess(QiniuGetTokenModel data, String SucMessage) {
                 if (data == null || TextUtils.isEmpty(data.getUploadToken())) {
+                    LogUtil.E("服务器连接失败,请重试");
                     return;
                 }
                 mQiNiuToken = data.getUploadToken();
@@ -261,13 +271,13 @@ public class IdInfoUpLoadCertActivity extends AbsBaseActivity {
 
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK || data == null) {
             return;
         }
+
         String path = data.getStringExtra(ImageSelectActivity.staticPath);
 
         if (TextUtils.isEmpty(path)) {
