@@ -113,6 +113,10 @@ public class InputDialog {
         return this;
     }
 
+    public EditText getContentView(){
+        return mContentInput;
+    }
+
     /**
      * 设置确定按钮
      * @param text

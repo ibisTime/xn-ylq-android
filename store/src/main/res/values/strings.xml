@@ -1,0 +1,79 @@
+<resources>
+    <string name="app_name">健康e购</string>
+    <string name="txt_login">登录</string>
+    <string name="username">账号</string>
+    <string name="password">密码</string>
+    <string name="txt_register">注册</string>
+    <string name="store_type">商户分类</string>
+    <string name="store_type_list">分类列表</string>
+    <string name="store_details">商家详情</string>
+    <string name="txt_food">健康美食</string>
+    <string name="txt_movement">运动健身</string>
+    <string name="txt_women_home">女人馆</string>
+    <string name="txt_life">养生休闲</string>
+    <string name="txt_hotel">酒店住宿</string>
+    <string name="txt_dabaojian">医疗保健</string>
+    <string name="txt_life2">便民生活</string>
+    <string name="txt_sopping">周边购物</string>
+    <string name="txt_register_read">我已阅读并同意遵守注册协议</string>
+    <string name="txt_all">全部</string>
+    <string name="txt_pay">支付</string>
+    <string name="txt_change_city">选择城市</string>
+    <string name="price_sing">￥</string>
+    <string name="search">搜索</string>
+    <string name="txt_setting">设置</string>
+    <string name="txt_city_select">城市选择</string>
+    <string name="txt_pay_car">购物车</string>
+
+
+    <string-array name="store_type">
+        <item>健康美食</item>
+        <item>运动健身 </item>
+        <item>女人馆</item>
+        <item>养生休闲</item>
+        <item>酒店住宿</item>
+        <item>医疗保健</item>
+        <item>便民生活</item>
+        <item>周边购物</item>
+    </string-array>
+
+    <string name="txt_xinlv_test">心率是指正常人安静状态下每分钟心跳的次数，也叫安静心率，一般为60～100次/分，可因年龄、性别或其他生理因素产生个体差异。一般来说，年龄越小，心率越快，老年人心跳比年轻人慢，女性的心率比同龄男性快，这些都是正常的生理现象。</string>
+    <string name="txt_fei_test">肺活量是指在不限时间的情况下，一次最大吸气后再尽最大能力所呼出的气体量，这代表肺一次最大的机能活动量，是反映人体生长发育水平的重要机能指标之一。肺活量能够显示一个人的心肺功能，肺活量大的人，身体供氧能力更强</string>
+    <string name="txt_xuey_test">血氧饱和度(SpO2)是血液中被氧结合的氧合血红蛋白(HbO2)的容量占全部可结合的血红蛋白(Hb，hemoglobin)容量的百分比，即血液中血氧的浓度，它是呼吸循环的重要生理参数，正常人体动脉血的血氧饱和度为94%-100%。</string>
+
+    <string name="txt_xinlv_40">您的心率测量结果属于重度心率过慢，应及早去医院做进一步的详细检查，以便针对病因进行治疗。祝您身体健康，生活愉快！</string>
+    <string name="txt_xinlv_40_60">您的心率测试结果属于轻度心率过慢，建议规律作息，加强锻炼。一旦有头晕、乏力等症状就应该去医院检查，以排除其他可致心动过缓的心率失常，如病窦等。祝您身体健康，生活愉快！</string>
+    <string name="txt_xinlv_60_100">您的心率测量结果属于正常心率。恭喜您，您的体检结果是正常的，但是也要注意多家预防哦！</string>
+    <string name="txt_xinlv_100">您的心率测量结果属于轻度心率过快。建议您控烟控酒，保持平稳的心态，加强体育锻炼，关注健康状况，及时问诊就医。祝您身体健康，生活愉快！</string>
+
+
+    <!--v肺活量 0-10000
+<=1500 你真的吹完最后一口气了吗？
+>1500 <=3000 你真的吹完最后一口气了吗？
+>3000 <=4500 没事多游游泳，跑跑步。年轻人，我看好你呦
+>4500 ”吹啊，吹啊，我的骄傲放纵“ 大圣，收了神通吧-->
+
+    <string name="txt_fei_1500">你真的吹完最后一口气了吗？</string>
+    <string name="txt_fei_1500_3000">你真的吹完最后一口气了吗？</string>
+    <string name="txt_fei_3000_4500">没事多游游泳，跑跑步。年轻人，我看好你呦</string>
+    <string name="txt_fei_4500">吹啊，吹啊，我的骄傲放纵“ 大圣，收了神通吧</string>
+
+    <!--血氧测试 60-100
+<90 您的血氧饱和度属于重度供氧不足，希望能引起足够的重视。身体如有任何不适症状，及时就医进行进一步检查。祝您身体健康，生活愉快。
+>=90 <=93 您的血氧饱和度属于一般供氧不足。血氧饱和过低，最常见的原因就是呼吸道吸入氧气不足、肺部换气功能异常等。请您密切留意身体状况，及时问诊就医。
+>93 恭喜您，您的血氧测试结果非常正常，希望继续保持！祝您身体健康，生活愉快！-->
+
+    <string name="txt_xueyang_90">您的血氧饱和度属于重度供氧不足，希望能引起足够的重视。身体如有任何不适症状，及时就医进行进一步检查。祝您身体健康，生活愉快。</string>
+    <string name="txt_xueyang_90_93">您的血氧饱和度属于一般供氧不足。血氧饱和过低，最常见的原因就是呼吸道吸入氧气不足、肺部换气功能异常等。请您密切留意身体状况，及时问诊就医。</string>
+    <string name="txt_xueyang_93">恭喜您，您的血氧测试结果非常正常，希望继续保持！祝您身体健康，生活愉快！</string>
+    <string name="tv_xinlv_40"><![CDATA[<40]]></string>
+    <string name="tv_fei_90"><![CDATA[<90]]></string>
+    <string name="_1500"><![CDATA[<=1500]]></string>
+    <string name="txt_get_jf_no_login_tips">这里有10W+的会员等你一起赚积分！</string>
+    <string name="txt_no_data">暂无数据</string>
+    <string name="txt_health_circle">健康友圈</string>
+    <string name="txt_surrounding">周边商家</string>
+    <string name="txt_health_store">健康商城</string>
+    <string name="txt_tourism">智慧民宿</string>
+
+</resources>

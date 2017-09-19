@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.cdkj.baselibrary.appmanager.MyConfig;
+import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.BaseActivity;
 import com.cdkj.baselibrary.model.IntroductionInfoModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
@@ -51,7 +53,9 @@ public class WelcomeAcitivity extends BaseActivity {
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {//延迟两秒进行跳转
-                    MainActivity.open(this);
+//                    MainActivity.open(this);
+  ARouter.getInstance().build("/store/welcome")
+                            .navigation();
                     finish();
                 }, Throwable::printStackTrace));
     }

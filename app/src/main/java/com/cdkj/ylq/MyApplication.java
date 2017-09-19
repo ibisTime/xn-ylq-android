@@ -1,10 +1,12 @@
 package com.cdkj.ylq;
 
 import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.cdkj.baselibrary.BaseApplication;
 import com.cdkj.baselibrary.utils.LogUtil;
+import com.chengdai.ehealthproject.base.BaseStoreApplication;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -15,7 +17,7 @@ import org.greenrobot.eventbus.EventBus;
  */
 
 //TODO 项目目前需配置参数第三方 支付宝 高德 微信
-public class MyApplication extends Application {
+public class MyApplication extends MultiDexApplication {
 
 	private static MyApplication application;
 
@@ -24,6 +26,7 @@ public class MyApplication extends Application {
 		super.onCreate();
 		application=this;
 		BaseApplication.initialize(this,BuildConfig.LOG_DEBUG,BuildConfig.URL_TYPE);
+		BaseStoreApplication.initialize(this,BuildConfig.LOG_DEBUG);
         EventBus.builder().throwSubscriberException(BuildConfig.LOG_DEBUG).installDefaultEventBus();
 		if (BuildConfig.LOG_DEBUG) {
 			ARouter.openLog();     // 打印日志
