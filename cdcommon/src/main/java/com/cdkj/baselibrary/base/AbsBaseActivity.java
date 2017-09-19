@@ -19,6 +19,7 @@ public abstract class AbsBaseActivity extends BaseActivity {
     private View mErrorView;
     private View mMainView;
     private View mTopTitleView;
+    private ActivityAbsBaseBinding mBaseBinding;
 
     /**
      * 布局文件xml的resId,无需添加标题栏、加载、错误及空页面
@@ -26,7 +27,7 @@ public abstract class AbsBaseActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityAbsBaseBinding mBaseBinding= DataBindingUtil.setContentView(this, R.layout.activity_abs_base);
+        mBaseBinding = DataBindingUtil.setContentView(this, R.layout.activity_abs_base);
 
         if(canLoadTopTitleView()){
 
@@ -46,9 +47,7 @@ public abstract class AbsBaseActivity extends BaseActivity {
             mTopTitleView.findViewById(R.id.fram_img_back).setVisibility(View.GONE);
         }
 
-        if(canLoadErrorView() && !mBaseBinding.emptylayout.isInflated()){
-            mErrorView= mBaseBinding.emptylayout.getViewStub().inflate();
-        }
+
 
         mMainView = addMainView();
 
@@ -57,6 +56,12 @@ public abstract class AbsBaseActivity extends BaseActivity {
         }
 
         afterCreate(savedInstanceState);
+    }
+
+    private void loadErrorView() {
+        if(mErrorView == null && !mBaseBinding.emptylayout.isInflated()){
+            mErrorView= mBaseBinding.emptylayout.getViewStub().inflate();
+        }
     }
 
     /**
@@ -73,13 +78,6 @@ public abstract class AbsBaseActivity extends BaseActivity {
      */
     protected  boolean canLoadTopTitleView(){
         return true;
-    }
-    /**
-     * 能否加载错误提示View
-     * @return
-     */
-    protected  boolean canLoadErrorView(){
-        return false;
     }
 
 
@@ -99,6 +97,7 @@ public abstract class AbsBaseActivity extends BaseActivity {
      * @param resId
      */
     protected void setErrorIcon(int resId) {
+        loadErrorView();
         if(mErrorView==null)return;
         ImageView mIcon = (ImageView) mErrorView.findViewById(R.id.iv_icon_error);
         mIcon.setImageResource(resId);
@@ -108,6 +107,7 @@ public abstract class AbsBaseActivity extends BaseActivity {
      * @param  errer
      */
     protected void setErroryText(String errer) {
+        loadErrorView();
         if(mErrorView==null) return;
         TextView mText = (TextView) mErrorView.findViewById( R.id.tv_error);
         mText.setText(errer);
@@ -124,6 +124,7 @@ public abstract class AbsBaseActivity extends BaseActivity {
      * 隐藏除标题栏的所有界面,辅助显示各个页面的
      */
     protected void hideAllNoTitle() {
+        loadErrorView();
         if (mErrorView != null) {
             mErrorView.setVisibility(View.GONE);
         }
@@ -134,6 +135,7 @@ public abstract class AbsBaseActivity extends BaseActivity {
 
 
     public void showErrorView() {
+        loadErrorView();
         hideAllNoTitle();
         if(mErrorView!=null) mErrorView.setVisibility(View.VISIBLE);
     }
@@ -144,6 +146,7 @@ public abstract class AbsBaseActivity extends BaseActivity {
     }
 
     public void showErrorView(int imgResId, String error) {
+        loadErrorView();
         hideAllNoTitle();
         if(mErrorView!=null)  mErrorView.setVisibility(View.VISIBLE);
         setErrorIcon(imgResId);
@@ -151,6 +154,7 @@ public abstract class AbsBaseActivity extends BaseActivity {
     }
 
     public void showErrorView(String error) {
+        loadErrorView();
         hideAllNoTitle();
         if(mErrorView!=null)  mErrorView.setVisibility(View.VISIBLE);
         setErroryText(error);

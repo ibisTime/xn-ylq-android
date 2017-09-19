@@ -168,6 +168,8 @@ public class AppUtils {
 
     public static void startWeb(Context context, String url) {
 
+        LogUtil.E("downloadUrl___"+url);
+
         if (context == null || TextUtils.isEmpty(url)) {
             return;
         }

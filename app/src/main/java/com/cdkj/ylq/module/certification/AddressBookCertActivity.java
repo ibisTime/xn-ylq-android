@@ -116,7 +116,7 @@ public class AddressBookCertActivity extends AbsBaseActivity {
                             disMissLoading();
                             showToast("请授予读取手机联系人权限");
                         }
-                    }, Manifest.permission.READ_CONTACTS);
+                    }, Manifest.permission.READ_CONTACTS,Manifest.permission.READ_EXTERNAL_STORAGE);
 
         });
 
