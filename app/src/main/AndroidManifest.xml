@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cdkj.ylq">
 
-    <!--用于访问网络，网络定位需要上网-->
+    <!--用于访问网络，网络定位需要上网fff-->
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     //相机
     <uses-permission android:name="android.permission.CAMERA" />
