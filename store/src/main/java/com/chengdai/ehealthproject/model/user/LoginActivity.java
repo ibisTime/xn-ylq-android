@@ -6,15 +6,15 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.AbsStoreBaseActivity;
 import com.chengdai.ehealthproject.databinding.ActivityLoginStorBinding;
 import com.chengdai.ehealthproject.model.common.model.EventBusModel;
 import com.chengdai.ehealthproject.model.other.MainActivity;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 
 import org.greenrobot.eventbus.EventBus;
@@ -98,7 +98,7 @@ public class LoginActivity extends AbsStoreBaseActivity {
         hashMap.put("loginName",mBinding.editUsername.getText().toString());
         hashMap.put("loginPwd",mBinding.editUserpass.getText().toString());
         hashMap.put("kind","f1");
-        hashMap.put("systemCode",MyConfig.SYSTEMCODE);
+        hashMap.put("systemCode", MyConfigStore.SYSTEMCODE);
 
         mSubscription.add(RetrofitUtils.getLoaderServer().UserLogin("805043", StringUtils.getJsonToString(hashMap) )
                 .compose(RxTransformerHelper.applySchedulerResult(this))

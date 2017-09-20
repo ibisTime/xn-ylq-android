@@ -3,7 +3,6 @@ package com.chengdai.ehealthproject.model.healthcircle.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.chengdai.ehealthproject.uitls.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;

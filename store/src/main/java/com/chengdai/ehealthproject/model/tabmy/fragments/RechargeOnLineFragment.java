@@ -10,16 +10,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cdkj.baselibrary.utils.ImgUtils;
+import com.cdkj.baselibrary.utils.MoneyUtils;
+import com.cdkj.baselibrary.utils.StringUtils;
+import com.cdkj.baselibrary.utils.ToastUtil;
+import com.cdkj.baselibrary.utils.payutils.PayUtil;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.BaseLazyFragment;
 import com.chengdai.ehealthproject.databinding.ActivityRechargeBinding;
 import com.chengdai.ehealthproject.model.tabmy.activitys.RechargeTabActivity;
-import com.chengdai.ehealthproject.uitls.ImgUtils;
-import com.chengdai.ehealthproject.uitls.StringUtils;
-import com.chengdai.ehealthproject.uitls.ToastUtil;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
-import com.chengdai.ehealthproject.uitls.payutils.PayUtil;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 
 import java.math.BigDecimal;
@@ -71,7 +72,7 @@ public class RechargeOnLineFragment extends BaseLazyFragment {
                 return;
             }
 
-            if(mPayType==PayUtil.ALIPAY){  //支付宝充值
+            if(mPayType== PayUtil.ALIPAY){  //支付宝充值
                 rechargeAliRequest();
             }else{
                 rechargeWXRequest();//微信充值
@@ -90,10 +91,10 @@ public class RechargeOnLineFragment extends BaseLazyFragment {
         Map<String,String> map=new HashMap<>();
         map.put("applyUser", SPUtilHelpr.getUserId());
         map.put("channelType","36");//36微信app支付 30支付宝支付
-        map.put("amount", StringUtils.getRequestPrice(mBinding.edtPrice.getText().toString()));
+        map.put("amount", MoneyUtils.getRequestPrice(mBinding.edtPrice.getText().toString()));
         map.put("token",SPUtilHelpr.getUserToken());
 
-        mSubscription.add(RetrofitUtils.getLoaderServer().wxPayRequest("802710",StringUtils.getJsonToString(map))
+        mSubscription.add(RetrofitUtils.getLoaderServer().wxPayRequest("802710", StringUtils.getJsonToString(map))
                 .compose(RxTransformerHelper.applySchedulerResult(mActivity))
                 .subscribe(model -> {
                     PayUtil.callWXPay(mActivity,model, RechargeTabActivity.CALLPAYTAG);
@@ -108,7 +109,7 @@ public class RechargeOnLineFragment extends BaseLazyFragment {
         Map<String,String> map=new HashMap<>();
         map.put("applyUser", SPUtilHelpr.getUserId());
         map.put("channelType","30");//36微信app支付 30支付宝支付
-        map.put("amount",StringUtils.getRequestPrice(mBinding.edtPrice.getText().toString()));
+        map.put("amount",MoneyUtils.getRequestPrice(mBinding.edtPrice.getText().toString()));
         map.put("token",SPUtilHelpr.getUserToken());
 
         mSubscription.add(RetrofitUtils.getLoaderServer().rechargeRequest("802710",StringUtils.getJsonToString(map))

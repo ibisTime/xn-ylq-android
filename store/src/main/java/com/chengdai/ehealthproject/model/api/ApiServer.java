@@ -1,14 +1,14 @@
 package com.chengdai.ehealthproject.model.api;
 
 
+import com.cdkj.baselibrary.model.pay.AliPayRequestMode;
+import com.cdkj.baselibrary.model.pay.WxPayRequestModel;
 import com.chengdai.ehealthproject.model.common.model.AmountModel;
 import com.chengdai.ehealthproject.model.common.model.CodeModel;
 import com.chengdai.ehealthproject.model.common.model.IntroductionInfoModel;
 import com.chengdai.ehealthproject.model.common.model.IsSuccessModes;
 import com.chengdai.ehealthproject.model.common.model.UpdateModel;
 import com.chengdai.ehealthproject.model.common.model.UserInfoModel;
-import com.chengdai.ehealthproject.model.common.model.pay.AliPayRequestMode;
-import com.chengdai.ehealthproject.model.common.model.pay.WxPayRequestModel;
 import com.chengdai.ehealthproject.model.common.model.qiniu.QiniuGetTokenModel;
 import com.chengdai.ehealthproject.model.healthcircle.models.ArticleModel;
 import com.chengdai.ehealthproject.model.healthmanager.model.JfGuideListModel;

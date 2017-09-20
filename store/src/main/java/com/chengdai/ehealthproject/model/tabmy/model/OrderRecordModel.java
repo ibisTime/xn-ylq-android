@@ -3,7 +3,8 @@ package com.chengdai.ehealthproject.model.tabmy.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.chengdai.ehealthproject.uitls.StringUtils;
+
+import com.cdkj.baselibrary.utils.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.List;

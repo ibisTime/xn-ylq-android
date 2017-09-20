@@ -1,175 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:banner="http://schemas.android.com/apk/res-auto"
->
-<LinearLayout
-    android:background="@color/white"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:banner="http://schemas.android.com/apk/res-auto">
 
-    <FrameLayout
-        android:background="@color/activity_title_bg"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/title_height">
-
-        <TextView
-            style="@style/title_top"
-            android:text="@string/txt_health_store"
-           />
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
 
         <FrameLayout
-            android:layout_gravity="right|center_vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/img_pay_car"
-                android:layout_marginRight="15dp"
-                android:src="@mipmap/pay_car"
-                android:layout_width="20dp"
-                android:layout_height="20dp" />
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_height"
+            android:background="@color/activity_title_bg">
 
-            <View
-                android:visibility="gone"
-                android:background="@drawable/bg_red_oval"
-                android:layout_width="8dp"
-                android:layout_height="8dp"/>
+            <TextView
+                style="@style/title_top"
+                android:text="@string/txt_health_store" />
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical">
+
+                <ImageView
+                    android:id="@+id/img_pay_car"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginRight="15dp"
+                    android:src="@mipmap/pay_car" />
+
+                <View
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:background="@drawable/bg_red_oval"
+                    android:visibility="gone" />
+
+            </FrameLayout>
+
 
         </FrameLayout>
 
 
-    </FrameLayout>
-
-
-    <com.liaoinstan.springview.widget.SpringView
-        android:id="@+id/springview_surrounding"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ScrollView
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:scrollbars="none"
+        <com.liaoinstan.springview.widget.SpringView
+            android:id="@+id/springview_surrounding"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <include  android:id="@+id/search" layout="@layout/layout_search_no_input"/>
-
-
-    <com.youth.banner.Banner
-        android:id="@+id/banner"
-        banner:indicator_drawable_selected="@drawable/banner_select"
-        banner:indicator_drawable_unselected="@drawable/banner_un_select"
-        banner:indicator_width="8dp"
-        banner:indicator_height="8dp"
-        banner:indicator_margin="5dp"
-        banner:delay_time="4000"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/banner_height"/>
-
-        <com.chengdai.ehealthproject.weigit.views.GridViewForScrollView
-            android:verticalSpacing="28dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="15dp"
-            android:numColumns="4"
-            android:id="@+id/grid_store_type"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-
-        </com.chengdai.ehealthproject.weigit.views.GridViewForScrollView>
-
-        <include  android:visibility="gone" android:id="@+id/layout_surrounding_menu" layout="@layout/layout_surrounding_menu"/>
-
-        <View
-            android:layout_marginTop="15dp"
-            android:background="@color/gray"
-            android:layout_width="match_parent"
-            android:layout_height="10dp"/>
-
-        <ImageView
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
-            android:id="@+id/img_jfshop_into"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-<!--        <View
-            android:background="@color/gray"
-            android:layout_width="match_parent"
-            android:layout_height="10dp"/>-->
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tablayout"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            style="@style/MyTabLayout"
-            android:background="@color/gray"
-            >
-
-            <android.support.design.widget.TabItem
-                android:layout_width="wrap_content"
+            <ScrollView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="今日特价"
-                />
-
-            <android.support.design.widget.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="人气推荐"
-                />
-
-            <android.support.design.widget.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="超值热卖"
-                />
-
-        </android.support.design.widget.TabLayout>
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_margin="10dp"
-            android:id="@+id/recycler_goods_type"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </android.support.v7.widget.RecyclerView>
-        <View
-            style="@style/style_split_line"/>
-
-        <TextView
-            android:textColor="@color/text_color"
-            android:text="精品推荐"
-            android:gravity="center"
-            android:textSize="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="50dp" />
-
-        <View
-           style="@style/style_split_line"/>
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:scrollbars="none">
 
 
-        <com.chengdai.ehealthproject.weigit.views.ListViewForScrollView
-            android:scrollbars="none"
-            android:id="@+id/lv_store_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
+                    <include
+                        android:id="@+id/search"
+                        layout="@layout/layout_search_no_input" />
+
+
+                    <com.youth.banner.Banner
+                        android:id="@+id/banner"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/banner_height"
+                        banner:delay_time="4000"
+                        banner:indicator_drawable_selected="@drawable/banner_select"
+                        banner:indicator_drawable_unselected="@drawable/banner_un_select"
+                        banner:indicator_height="8dp"
+                        banner:indicator_margin="5dp"
+                        banner:indicator_width="8dp" />
+
+                    <com.chengdai.ehealthproject.weigit.views.GridViewForScrollView
+                        android:id="@+id/grid_store_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="15dp"
+                        android:numColumns="4"
+                        android:verticalSpacing="28dp">
+
+
+                    </com.chengdai.ehealthproject.weigit.views.GridViewForScrollView>
+
+                    <include
+                        android:id="@+id/layout_surrounding_menu"
+                        layout="@layout/layout_surrounding_menu"
+                        android:visibility="gone" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@color/gray" />
+
+                    <ImageView
+                        android:id="@+id/img_jfshop_into"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:gravity="center" />
+
+                    <!--        <View
+                                android:background="@color/gray"
+                                android:layout_width="match_parent"
+                                android:layout_height="10dp"/>-->
+
+                    <android.support.design.widget.TabLayout
+                        android:id="@+id/tablayout"
+                        style="@style/MyTabLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@color/gray">
+
+                        <android.support.design.widget.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="今日特价" />
+
+                        <android.support.design.widget.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="人气推荐" />
+
+                        <android.support.design.widget.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="超值热卖" />
+
+                    </android.support.design.widget.TabLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_goods_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp">
+
+                    </android.support.v7.widget.RecyclerView>
+
+                    <View style="@style/style_split_line" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="center"
+                        android:text="精品推荐"
+                        android:textColor="@color/text_color"
+                        android:textSize="15dp" />
+
+                    <View style="@style/style_split_line" />
+
+
+                    <com.chengdai.ehealthproject.weigit.views.ListViewForScrollView
+                        android:id="@+id/lv_store_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none" />
+
+
+                </LinearLayout>
+
+            </ScrollView>
+
+        </com.liaoinstan.springview.widget.SpringView>
 
     </LinearLayout>
-
-        </ScrollView>
-
-    </com.liaoinstan.springview.widget.SpringView>
-
-</LinearLayout>
 </layout>

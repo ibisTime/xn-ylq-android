@@ -8,14 +8,14 @@ import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cdkj.baselibrary.utils.DateUtil;
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
-import com.chengdai.ehealthproject.uitls.DateUtil;
-import com.chengdai.ehealthproject.uitls.LogUtil;
 import com.chengdai.ehealthproject.uitls.OrderDateUtil;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.weigit.views.ScrollPicker;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**时间弹框选择
@@ -136,8 +136,7 @@ public class SelectUseDayPopup extends BasePopupWindow implements View.OnClickLi
     }
 
     public void setCurrentDate(){
-        String currDate = DateUtil.getCurrentDate();
-        LogUtil.I(currDate);
+        String currDate = DateUtil.format(new Date(), "yyyy-MM-dd");
         setSelected(currDate);
     }
 

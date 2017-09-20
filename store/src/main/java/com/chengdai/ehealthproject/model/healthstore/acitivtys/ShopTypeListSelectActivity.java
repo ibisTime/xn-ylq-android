@@ -7,16 +7,16 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.AbsStoreBaseActivity;
 import com.chengdai.ehealthproject.databinding.ActivityStoreTypeBinding;
 import com.chengdai.ehealthproject.databinding.LayoutSearchNoInputBinding;
 import com.chengdai.ehealthproject.model.healthstore.adapters.ShopTypeListAdapter;
 import com.chengdai.ehealthproject.model.healthstore.models.ShopListModel;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.liaoinstan.springview.container.DefaultFooter;
 import com.liaoinstan.springview.container.DefaultHeader;
 import com.liaoinstan.springview.widget.SpringView;
@@ -154,12 +154,12 @@ public class ShopTypeListSelectActivity extends AbsStoreBaseActivity {
         map.put("type",mType+"");
         map.put("start",mStoreStart+"");
         map.put("limit","10");
-        map.put("companyCode",MyConfig.COMPANYCODE);
-        map.put("systemCode",MyConfig.SYSTEMCODE);
+        map.put("companyCode", MyConfigStore.COMPANYCODE);
+        map.put("systemCode", MyConfigStore.SYSTEMCODE);
         map.put("orderDir","asc");
         map.put("orderColumn","order_no");
 
-        mSubscription.add(  RetrofitUtils.getLoaderServer().GetShopList("808025",StringUtils.getJsonToString(map))
+        mSubscription.add(  RetrofitUtils.getLoaderServer().GetShopList("808025", StringUtils.getJsonToString(map))
 
                 .compose(RxTransformerHelper.applySchedulerResult(act))
 

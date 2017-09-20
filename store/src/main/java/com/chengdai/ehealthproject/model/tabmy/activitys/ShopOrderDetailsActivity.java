@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.cdkj.baselibrary.utils.DateUtil;
+import com.cdkj.baselibrary.utils.ImgUtils;
+import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.AbsStoreBaseActivity;
 import com.chengdai.ehealthproject.databinding.ActivityShopOrderDetailsBinding;
@@ -14,12 +17,10 @@ import com.chengdai.ehealthproject.model.common.model.EventBusModel;
 import com.chengdai.ehealthproject.model.healthstore.acitivtys.ShopPayConfirmActivity;
 import com.chengdai.ehealthproject.model.healthstore.models.ShopListModel;
 import com.chengdai.ehealthproject.model.healthstore.models.ShopOrderDetailBean;
-import com.chengdai.ehealthproject.uitls.DateUtil;
-import com.chengdai.ehealthproject.uitls.ImgUtils;
 import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -68,7 +69,7 @@ public class ShopOrderDetailsActivity extends AbsStoreBaseActivity {
         if(getIntent()!=null){
 
             mData= getIntent().getParcelableExtra("data");
-            mType= getIntent().getIntExtra("type",MyConfig.JFORDER);
+            mType= getIntent().getIntExtra("type", MyConfigStore.JFORDER);
 
         }
 
@@ -99,13 +100,13 @@ public class ShopOrderDetailsActivity extends AbsStoreBaseActivity {
 
         if(mData.getProductOrderList() !=null && mData.getProductOrderList().size()>0 && mData.getProductOrderList().get(0) !=null
                 && mData.getProductOrderList().get(0).getProduct()!=null ){
-            ImgUtils.loadImgURL(this, MyConfig.IMGURL+mData.getProductOrderList().get(0).getProduct().getAdvPic(),mBinding.imgGood);
+            ImgUtils.loadImgURL(this, MyConfigStore.IMGURL+mData.getProductOrderList().get(0).getProduct().getAdvPic(),mBinding.imgGood);
 
 
-           if(mType == MyConfig.JFORDER){
-               mBinding.txtPrice.setText(StringUtils.showJF(mData.getProductOrderList().get(0).getPrice1())+"  积分");
+           if(mType == MyConfigStore.JFORDER){
+               mBinding.txtPrice.setText(MoneyUtils.showPrice(mData.getProductOrderList().get(0).getPrice1())+"  积分");
            }else{
-               mBinding.txtPrice.setText(StringUtils.getShowPriceSign(mData.getProductOrderList().get(0).getPrice1()));
+               mBinding.txtPrice.setText(MoneyUtils.getShowPriceSign(mData.getProductOrderList().get(0).getPrice1()));
            }
 
             mBinding.txtNumber.setText("X" + mData.getProductOrderList().get(0).getQuantity());
@@ -120,7 +121,7 @@ public class ShopOrderDetailsActivity extends AbsStoreBaseActivity {
 
         }
 
-        if(TextUtils.equals(MyConfig.ORDERTYPEWAITSHOUHUO,mData.getStatus())){//待收货状态
+        if(TextUtils.equals(MyConfigStore.ORDERTYPEWAITSHOUHUO,mData.getStatus())){//待收货状态
             mBinding.linLogistics.setVisibility(View.VISIBLE);
             mBinding.txtBtn.setVisibility(View.VISIBLE);
             mBinding.txtBtn.setText("确认收货");

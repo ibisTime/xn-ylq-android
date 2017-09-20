@@ -5,12 +5,13 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 
+import com.cdkj.baselibrary.utils.MoneyUtils;
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.AbsStoreBaseActivity;
 import com.chengdai.ehealthproject.databinding.ActivityJfPayConfirmBinding;
 import com.chengdai.ehealthproject.model.common.model.EventBusModel;
 import com.chengdai.ehealthproject.model.healthstore.models.ShopListModel;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
@@ -70,7 +71,7 @@ public class ShopPayJfConfirmActivity extends AbsStoreBaseActivity {
             isStartMain=getIntent().getBooleanExtra("isStartMain",true);
         }
 
-        mBinding.tvJifen.setText(StringUtils.showPrice(mData.getPrice1()));
+        mBinding.tvJifen.setText(MoneyUtils.showPrice(mData.getPrice1()));
 
         initViews();
 

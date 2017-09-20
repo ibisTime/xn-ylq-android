@@ -5,24 +5,20 @@ import android.databinding.DataBindingUtil;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.cdkj.baselibrary.utils.ImgUtils;
+import com.cdkj.baselibrary.utils.MoneyUtils;
+import com.cdkj.baselibrary.utils.ToastUtil;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.databinding.PopupShopPayBinding;
 import com.chengdai.ehealthproject.model.healthstore.acitivtys.ShopPayActivity;
 import com.chengdai.ehealthproject.model.healthstore.models.ShopListModel;
-import com.chengdai.ehealthproject.uitls.ImgUtils;
-import com.chengdai.ehealthproject.uitls.StringUtils;
-import com.chengdai.ehealthproject.uitls.ToastUtil;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
-
-import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -55,7 +51,7 @@ public class ShopPayPopup extends BasePopupWindow{
 
             mQuantitySum=0;
 
-            ImgUtils.loadImgIdforRound(mContext, MyConfig.IMGURL+mData.getSplitAdvPic(),mBinding.imgPhoto);
+            ImgUtils.loadImgURL(mContext, MyConfigStore.IMGURL+mData.getSplitAdvPic(),mBinding.imgPhoto);
 
             if(mData.getProductSpecsList() != null && mData.getProductSpecsList().size() >0 && mData.getProductSpecsList().get(0) !=null){
 
@@ -66,7 +62,7 @@ public class ShopPayPopup extends BasePopupWindow{
             mSelectProductData=mData.getProductSpecsList().get(0);
 
             mBinding.txtQuantity.setText("库存"+mData.getProductSpecsList().get(0).getQuantity());
-            mBinding.txtPrice.setText(mContext.getString(R.string.price_sing)+ StringUtils.showPrice(mData.getProductSpecsList().get(0).getPrice1()));
+            mBinding.txtPrice.setText(mContext.getString(R.string.price_sing)+ MoneyUtils.showPrice(mData.getProductSpecsList().get(0).getPrice1()));
 
              mQuantitySum=mData.getProductSpecsList().get(0).getQuantity(); //设置产品库存
 
@@ -134,7 +130,7 @@ public class ShopPayPopup extends BasePopupWindow{
                 return;
             }
 
-            ShopPayActivity.open(mContext,mSelectProductData,mPaySum,MyConfig.IMGURL+mData.getSplitAdvPic());
+            ShopPayActivity.open(mContext,mSelectProductData,mPaySum, MyConfigStore.IMGURL+mData.getSplitAdvPic());
         });
 
         mBinding.layoutCancel.setOnClickListener(v -> {
@@ -166,7 +162,7 @@ public class ShopPayPopup extends BasePopupWindow{
                     }
 
                     mBinding.txtQuantity.setText("库存"+mData.getProductSpecsList().get(x).getQuantity());
-                    mBinding.txtPrice.setText(mContext.getString(R.string.price_sing)+ StringUtils.showPrice(mData.getProductSpecsList().get(x).getPrice1()));
+                    mBinding.txtPrice.setText(mContext.getString(R.string.price_sing)+ MoneyUtils.showPrice(mData.getProductSpecsList().get(x).getPrice1()));
 
                 }else{
                     mSelectProductData =null;

@@ -13,8 +13,8 @@ import android.widget.EditText;
 
 import com.cdkj.baselibrary.dialog.CommonDialog;
 import com.cdkj.baselibrary.dialog.LoadingDialog;
+import com.cdkj.baselibrary.utils.ToastUtil;
 import com.chengdai.ehealthproject.model.common.model.EventBusModel;
-import com.chengdai.ehealthproject.uitls.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

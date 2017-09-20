@@ -6,15 +6,15 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.cdkj.baselibrary.utils.ImgUtils;
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.AbsStoreBaseActivity;
 import com.chengdai.ehealthproject.databinding.ActivityAddHealthTaskBinding;
 import com.chengdai.ehealthproject.model.tabmy.model.MyTaskListModel;
-import com.chengdai.ehealthproject.uitls.ImgUtils;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 import com.chengdai.ehealthproject.weigit.popwindows.SelectMinutesTimePopup;
 
@@ -65,7 +65,7 @@ public class UpdateMyHelathTaskActivity extends AbsStoreBaseActivity {
             mData=getIntent().getParcelableExtra("data");
             if(mData!=null){
                 if(mData.getHealthTask()!=null){
-                    ImgUtils.loadImgURL(this, MyConfig.IMGURL+mData.getHealthTask().getLogo(),mBinding.imgTitle);
+                    ImgUtils.loadImgURL(this, MyConfigStore.IMGURL+mData.getHealthTask().getLogo(),mBinding.imgTitle);
                     mBinding.tvName.setText(mData.getHealthTask().getName());
                 }
 

@@ -3,9 +3,7 @@
     <string name="txt_login">登录</string>
     <string name="username">账号</string>
     <string name="password">密码</string>
-    <string name="store_type">商户分类</string>
     <string name="store_type_list">分类列表</string>
-    <string name="store_details">商家详情</string>
     <string name="txt_food">健康美食</string>
     <string name="txt_movement">运动健身</string>
     <string name="txt_women_home">女人馆</string>
@@ -19,7 +17,6 @@
     <string name="price_sing">￥</string>
     <string name="search">搜索</string>
     <string name="txt_setting">设置</string>
-    <string name="txt_city_select">城市选择</string>
     <string name="txt_pay_car">购物车</string>
 
 

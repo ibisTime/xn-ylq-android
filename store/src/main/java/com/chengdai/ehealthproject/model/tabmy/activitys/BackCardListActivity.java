@@ -7,15 +7,15 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 
+import com.cdkj.baselibrary.utils.ImgUtils;
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.AbsStoreBaseActivity;
 import com.chengdai.ehealthproject.databinding.CommonRecycleerBinding;
 import com.chengdai.ehealthproject.model.tabmy.model.BankCardModel;
-import com.chengdai.ehealthproject.uitls.ImgUtils;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 import com.chengdai.ehealthproject.weigit.views.MyDividerItemDecoration;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -121,7 +121,7 @@ public class BackCardListActivity extends AbsStoreBaseActivity {
 
         Map<String,String> object=new HashMap<>();
 
-        object.put("systemCode", MyConfig.SYSTEMCODE);
+        object.put("systemCode", MyConfigStore.SYSTEMCODE);
         object.put("token", SPUtilHelpr.getUserToken());
         object.put("userId",SPUtilHelpr.getUserId());
         object.put("start", "1");

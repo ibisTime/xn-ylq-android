@@ -6,17 +6,14 @@ import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.model.common.model.qiniu.QiniuGetTokenModel;
-import com.chengdai.ehealthproject.uitls.LogUtil;
-import com.chengdai.ehealthproject.uitls.StringUtils;
-import com.chengdai.ehealthproject.uitls.ToastUtil;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.Configuration;
-import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
 
 import org.json.JSONObject;
@@ -65,7 +62,6 @@ public class QiNiuUtil {
             String key = ANDROID + timestamp() + getImageWidthHeight(url) + ".jpg";
 
 
-            LogUtil.E("图片");
             uploadManager.put(url, key, token,
 
                   (key1, info, res) -> {
@@ -110,7 +106,7 @@ public class QiNiuUtil {
     public Observable<QiniuGetTokenModel> getQiniuToeknRequest(){
         Map<String,String> object=new HashMap<>();
         object.put("token", SPUtilHelpr.getUserToken());
-        object.put("systemCode", MyConfig.SYSTEMCODE);
+        object.put("systemCode", MyConfigStore.SYSTEMCODE);
         return RetrofitUtils.getLoaderServer().GetQiniuTOken("807900", StringUtils.getJsonToString(object))
                 .compose(RxTransformerHelper.applySchedulerResult(null));
     }

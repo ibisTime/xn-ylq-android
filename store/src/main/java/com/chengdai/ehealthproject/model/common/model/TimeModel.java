@@ -1,6 +1,7 @@
 package com.chengdai.ehealthproject.model.common.model;
 
-import com.chengdai.ehealthproject.uitls.DateUtil;
+
+import com.cdkj.baselibrary.utils.DateUtil;
 
 /**
  * Created by Administrator on 2016/8/29.

@@ -5,10 +5,10 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
+import com.cdkj.baselibrary.utils.SPUtils;
 import com.chengdai.ehealthproject.base.BaseStoreApplication;
 import com.chengdai.ehealthproject.model.common.model.LocationModel;
 import com.chengdai.ehealthproject.uitls.OnLoginFailure;
-import com.chengdai.ehealthproject.uitls.SPUtils;
 
 /**
  * SPUtils 工具辅助类

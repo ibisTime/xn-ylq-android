@@ -6,13 +6,13 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.AbsStoreBaseActivity;
 import com.chengdai.ehealthproject.databinding.ActivityIntroductionBinding;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 
 import java.util.HashMap;
@@ -65,7 +65,7 @@ public class IntroductionActivity extends AbsStoreBaseActivity {
 
         Map<String ,String > map=new HashMap<>();
         map.put("ckey",mCode);
-        map.put("systemCode", MyConfig.SYSTEMCODE);
+        map.put("systemCode", MyConfigStore.SYSTEMCODE);
         map.put("token", SPUtilHelpr.getUserToken());
        mSubscription.add( RetrofitUtils.getLoaderServer().getInfoByKey("807717", StringUtils.getJsonToString(map))
                 .compose(RxTransformerHelper.applySchedulerResult(this))

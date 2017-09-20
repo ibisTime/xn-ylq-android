@@ -5,11 +5,10 @@ import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cdkj.baselibrary.utils.ImgUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.model.healthstore.models.ShopEvaluateModel;
-import com.chengdai.ehealthproject.model.healthstore.models.ShopListModel;
-import com.chengdai.ehealthproject.uitls.ImgUtils;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.zhy.adapter.abslistview.CommonAdapter;
 import com.zhy.adapter.abslistview.ViewHolder;
 
@@ -54,7 +53,7 @@ public class ShopEvaluateAdapter extends CommonAdapter<ShopEvaluateModel> {
 
         if(item .getUser() != null){
             txtName.setText(item.getUser().getNickname());
-            ImgUtils.loadImgIdforCircle(mContext, MyConfig.IMGURL+item.getUser().getPhoto(),imgPhoto);
+            ImgUtils.loadActLogo(mContext, MyConfigStore.IMGURL+item.getUser().getPhoto(),imgPhoto);
             if(item.getType().equals("3")){
                imgEvalute.setImageResource(R.mipmap.evaluate_good);
                 txtEvalute.setText("好评");

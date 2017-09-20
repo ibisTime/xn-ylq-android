@@ -7,11 +7,8 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.widget.TextView;
 
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
-import com.chengdai.ehealthproject.model.common.model.TimeModel;
-import com.chengdai.ehealthproject.uitls.StringUtils;
-import com.chengdai.ehealthproject.uitls.TimeUtil;
-import com.chengdai.ehealthproject.weigit.views.MyScrollPicker;
 import com.chengdai.ehealthproject.weigit.views.ScrollPicker;
 
 import java.text.ParseException;

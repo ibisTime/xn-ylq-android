@@ -6,15 +6,15 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.cdkj.baselibrary.model.pay.PaySucceedInfo;
+import com.cdkj.baselibrary.utils.payutils.PayUtil;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.AbsStoreBaseActivity;
 import com.chengdai.ehealthproject.databinding.ActivitySurroundingOrderStateBinding;
 import com.chengdai.ehealthproject.model.common.model.EventBusModel;
-import com.chengdai.ehealthproject.model.common.model.pay.PaySucceedInfo;
 import com.chengdai.ehealthproject.model.dataadapters.TablayoutAdapter;
 import com.chengdai.ehealthproject.model.tabmy.fragments.RechargeInLineFragment;
 import com.chengdai.ehealthproject.model.tabmy.fragments.RechargeOnLineFragment;
-import com.chengdai.ehealthproject.uitls.payutils.PayUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

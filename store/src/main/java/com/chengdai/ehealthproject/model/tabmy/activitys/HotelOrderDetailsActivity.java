@@ -6,13 +6,13 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.cdkj.baselibrary.utils.DateUtil;
+import com.cdkj.baselibrary.utils.ImgUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.AbsStoreBaseActivity;
 import com.chengdai.ehealthproject.databinding.ActivityHotelOrderDetails2Binding;
 import com.chengdai.ehealthproject.model.tabmy.model.HotelOrderRecordModel;
-import com.chengdai.ehealthproject.uitls.DateUtil;
-import com.chengdai.ehealthproject.uitls.ImgUtils;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 
 import java.util.Date;
 
@@ -109,7 +109,7 @@ public class HotelOrderDetailsActivity extends AbsStoreBaseActivity {
         if(mShowData.getProduct() !=null){
             mBinding.tvHotelSize.setText(mShowData.getProduct().getName());
             mBinding.tvHotelInfo.setText(mShowData.getProduct().getSlogan());
-            ImgUtils.loadImgURL(this, MyConfig.IMGURL+mShowData.getProduct().getSplitAdvPic(),mBinding.imgHotelInfo);
+            ImgUtils.loadActImg(this, MyConfigStore.IMGURL+mShowData.getProduct().getSplitAdvPic(),mBinding.imgHotelInfo);
 
             if(!TextUtils.isEmpty(mShowData.getStartDate()) && !TextUtils.isEmpty(mShowData.getEndDate())){
                 mBinding.tvHotelData.setText(
@@ -128,28 +128,28 @@ public class HotelOrderDetailsActivity extends AbsStoreBaseActivity {
      */
     private void initPayTypeSelectState() {
 
-        ImgUtils.loadImgId(HotelOrderDetailsActivity.this,R.mipmap.pay_select,mBinding.pay.imgBalace);
-        ImgUtils.loadImgId(HotelOrderDetailsActivity.this,R.mipmap.un_select,mBinding.pay.imgWeixin);
-        ImgUtils.loadImgId(HotelOrderDetailsActivity.this,R.mipmap.un_select,mBinding.pay.imgZhifubao);
+        ImgUtils.loadActImgId(HotelOrderDetailsActivity.this,R.mipmap.pay_select,mBinding.pay.imgBalace);
+        ImgUtils.loadActImgId(HotelOrderDetailsActivity.this,R.mipmap.un_select,mBinding.pay.imgWeixin);
+        ImgUtils.loadActImgId(HotelOrderDetailsActivity.this,R.mipmap.un_select,mBinding.pay.imgZhifubao);
 
         mBinding.pay.linBalace.setOnClickListener(v -> {
             mPayType=1;
-            ImgUtils.loadImgId(HotelOrderDetailsActivity.this,R.mipmap.pay_select,mBinding.pay.imgBalace);
-            ImgUtils.loadImgId(HotelOrderDetailsActivity.this,R.mipmap.un_select,mBinding.pay.imgWeixin);
-            ImgUtils.loadImgId(HotelOrderDetailsActivity.this,R.mipmap.un_select,mBinding.pay.imgZhifubao);
+            ImgUtils.loadActImgId(HotelOrderDetailsActivity.this,R.mipmap.pay_select,mBinding.pay.imgBalace);
+            ImgUtils.loadActImgId(HotelOrderDetailsActivity.this,R.mipmap.un_select,mBinding.pay.imgWeixin);
+            ImgUtils.loadActImgId(HotelOrderDetailsActivity.this,R.mipmap.un_select,mBinding.pay.imgZhifubao);
         });
         mBinding.pay.linWeipay.setOnClickListener(v -> {
             mPayType=2;
-            ImgUtils.loadImgId(HotelOrderDetailsActivity.this,R.mipmap.un_select,mBinding.pay.imgBalace);
-            ImgUtils.loadImgId(HotelOrderDetailsActivity.this,R.mipmap.pay_select,mBinding.pay.imgWeixin);
-            ImgUtils.loadImgId(HotelOrderDetailsActivity.this,R.mipmap.un_select,mBinding.pay.imgZhifubao);
+            ImgUtils.loadActImgId(HotelOrderDetailsActivity.this,R.mipmap.un_select,mBinding.pay.imgBalace);
+            ImgUtils.loadActImgId(HotelOrderDetailsActivity.this,R.mipmap.pay_select,mBinding.pay.imgWeixin);
+            ImgUtils.loadActImgId(HotelOrderDetailsActivity.this,R.mipmap.un_select,mBinding.pay.imgZhifubao);
         });
 
         mBinding.pay.linZhifubao.setOnClickListener(v -> {
             mPayType=3;
-            ImgUtils.loadImgId(HotelOrderDetailsActivity.this,R.mipmap.un_select,mBinding.pay.imgBalace);
-            ImgUtils.loadImgId(HotelOrderDetailsActivity.this,R.mipmap.un_select,mBinding.pay.imgWeixin);
-            ImgUtils.loadImgId(HotelOrderDetailsActivity.this,R.mipmap.pay_select,mBinding.pay.imgZhifubao);
+            ImgUtils.loadActImgId(HotelOrderDetailsActivity.this,R.mipmap.un_select,mBinding.pay.imgBalace);
+            ImgUtils.loadActImgId(HotelOrderDetailsActivity.this,R.mipmap.un_select,mBinding.pay.imgWeixin);
+            ImgUtils.loadActImgId(HotelOrderDetailsActivity.this,R.mipmap.pay_select,mBinding.pay.imgZhifubao);
         });
 
 

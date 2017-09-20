@@ -16,7 +16,7 @@ import com.chengdai.ehealthproject.model.dataadapters.ViewPagerAdapter;
 import com.chengdai.ehealthproject.model.healthstore.fragments.ShopCommodityFragment;
 import com.chengdai.ehealthproject.model.healthstore.fragments.ShopDeatilsFragment;
 import com.chengdai.ehealthproject.model.healthstore.models.ShopListModel;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 
 import java.util.ArrayList;
@@ -115,7 +115,7 @@ public class ShopJfDetailsActivity extends AbsStoreBaseActivity {
                     return;
                 }
 
-                ShopPayJfActivity.open(this,mData.getProductSpecsList().get(0),1,MyConfig.IMGURL+mData.getSplitAdvPic());
+                ShopPayJfActivity.open(this,mData.getProductSpecsList().get(0),1, MyConfigStore.IMGURL+mData.getSplitAdvPic());
             }
         });
 
@@ -129,7 +129,7 @@ public class ShopJfDetailsActivity extends AbsStoreBaseActivity {
     private void initViewPager() {
 
         List<Fragment> fragments=new ArrayList<>();
-        fragments.add(ShopCommodityFragment.getInstanse(mData, MyConfig.JFORDER));
+        fragments.add(ShopCommodityFragment.getInstanse(mData, MyConfigStore.JFORDER));
         fragments.add(ShopDeatilsFragment.getInstanse(mData));
 //        fragments.add(ShopEvaluateFragment.getInstanse(mData));
         mBinding.viewpager.setOffscreenPageLimit(3);

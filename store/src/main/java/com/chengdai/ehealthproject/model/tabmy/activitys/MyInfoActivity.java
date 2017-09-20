@@ -8,20 +8,20 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.DatePicker;
 
+import com.cdkj.baselibrary.activitys.ImageSelectActivity;
 import com.cdkj.baselibrary.dialog.CommonDialog;
+import com.cdkj.baselibrary.utils.ImgUtils;
+import com.cdkj.baselibrary.utils.LogUtil;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.AbsStoreBaseActivity;
 import com.chengdai.ehealthproject.databinding.ActivityMyInfoBinding;
 import com.chengdai.ehealthproject.model.common.model.EventBusModel;
 import com.chengdai.ehealthproject.model.common.model.UserInfoModel;
-import com.chengdai.ehealthproject.model.common.model.activitys.ImageSelectActivity;
-import com.chengdai.ehealthproject.uitls.ImgUtils;
-import com.chengdai.ehealthproject.uitls.LogUtil;
 import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
 import com.chengdai.ehealthproject.uitls.qiniu.QiNiuUtil;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 import com.qiniu.android.http.ResponseInfo;
 
@@ -101,11 +101,11 @@ public class MyInfoActivity extends AbsStoreBaseActivity {
             CommonDialog commonDialog = new CommonDialog(this).builder()
                     .setTitle("提示").setContentMsg("请选择性别")
                     .setPositiveBtn("女", view -> {
-                        mGender=MyConfig.GENDERWOMAN;
+                        mGender= MyConfigStore.GENDERWOMAN;
                         mBinding.tvGender.setText("女");
                     })
                     .setNegativeBtn("男", view -> {
-                        mGender=MyConfig.GENDERMAN;
+                        mGender= MyConfigStore.GENDERMAN;
                         mBinding.tvGender.setText("男");
                     }, false);
 
@@ -160,7 +160,7 @@ public class MyInfoActivity extends AbsStoreBaseActivity {
                             .compose(RxTransformerHelper.applySchedulerResult(MyInfoActivity.this))
                             .filter(isSuccessModes -> isSuccessModes!=null && isSuccessModes.isSuccess())
                             .subscribe(isSuccessModes -> {
-                                ImgUtils.loadImgLogo(MyInfoActivity.this,MyConfig.IMGURL+key,mBinding.imgLogo);
+                                ImgUtils.loadActLogo(MyInfoActivity.this, MyConfigStore.IMGURL+key,mBinding.imgLogo);
                                 MyFragmentRefeshUserIfo();
                             },Throwable::printStackTrace));
                 }
@@ -181,16 +181,16 @@ public class MyInfoActivity extends AbsStoreBaseActivity {
             return;
         }
 
-        ImgUtils.loadImgLogo(this, MyConfig.IMGURL+mData.getUserExt().getPhoto(),mBinding.imgLogo);
+        ImgUtils.loadActLogo(this, MyConfigStore.IMGURL+mData.getUserExt().getPhoto(),mBinding.imgLogo);
         mBinding.tvName.setText(mData.getNickname());
         if(mData.getUserExt()!=null){
         mBinding.tvBirthday.setText(mData.getUserExt().getBirthday());
-        if(MyConfig.GENDERMAN.equals(mData.getUserExt().getGender())){
-            mGender=MyConfig.GENDERMAN;
+        if(MyConfigStore.GENDERMAN.equals(mData.getUserExt().getGender())){
+            mGender= MyConfigStore.GENDERMAN;
          mBinding.tvGender.setText("男");
-        }else if (MyConfig.GENDERWOMAN.equals(mData.getUserExt().getGender())){
+        }else if (MyConfigStore.GENDERWOMAN.equals(mData.getUserExt().getGender())){
             mBinding.tvGender.setText("女");
-            mGender=MyConfig.GENDERWOMAN;
+            mGender= MyConfigStore.GENDERWOMAN;
         }
          mBinding.tvEmail.setText(mData.getUserExt().getEmail());
             mBinding.edit.setText(mData.getUserExt().getIntroduce());

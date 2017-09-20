@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -15,9 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
+import com.cdkj.baselibrary.utils.ImgUtils;
+import com.cdkj.baselibrary.utils.MoneyUtils;
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.BaseLazyFragment;
 import com.chengdai.ehealthproject.databinding.FragmentShopTabBinding;
@@ -33,18 +33,15 @@ import com.chengdai.ehealthproject.model.healthstore.models.ShopListModel;
 import com.chengdai.ehealthproject.model.tabsurrounding.adapters.SurroundingStoreTypeAdapter;
 import com.chengdai.ehealthproject.model.tabsurrounding.model.BannerModel;
 import com.chengdai.ehealthproject.model.tabsurrounding.model.StoreTypeModel;
-import com.chengdai.ehealthproject.uitls.DensityUtil;
-import com.chengdai.ehealthproject.uitls.ImgUtils;
-import com.chengdai.ehealthproject.uitls.LogUtil;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerListHelper;
 import com.chengdai.ehealthproject.weigit.GlideImageLoader;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 import com.liaoinstan.springview.container.DefaultFooter;
 import com.liaoinstan.springview.container.DefaultHeader;
+import com.liaoinstan.springview.utils.DensityUtil;
 import com.liaoinstan.springview.widget.SpringView;
 import com.youth.banner.BannerConfig;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -317,7 +314,7 @@ public class HealthStoreFragment extends BaseLazyFragment{
 
         map.put("location","1");//0周边1商城
         map.put("type","2"); //(1 菜单 2 banner 3 模块 4 引流)
-        map.put("systemCode", MyConfig.SYSTEMCODE);
+        map.put("systemCode", MyConfigStore.SYSTEMCODE);
         map.put("token", SPUtilHelpr.getUserToken());
 
         mSubscription.add(RetrofitUtils.getLoaderServer().GetBanner("806052", StringUtils.getJsonToString(map))
@@ -359,8 +356,8 @@ public class HealthStoreFragment extends BaseLazyFragment{
         map.put("status","3");//已上架
         map.put("start","1");
         map.put("limit","20");
-        map.put("companyCode",MyConfig.COMPANYCODE);
-        map.put("systemCode",MyConfig.SYSTEMCODE);
+        map.put("companyCode", MyConfigStore.COMPANYCODE);
+        map.put("systemCode", MyConfigStore.SYSTEMCODE);
         map.put("orderDir","asc");
         map.put("orderColumn","order_no");
         map.put("location",location);  //1推荐 0普通 2 今日特价  3人气推荐 4超值热卖
@@ -385,14 +382,14 @@ public class HealthStoreFragment extends BaseLazyFragment{
 
                             img.setLayoutParams(layoutParams);
 
-                            ImgUtils.loadImgURL(mContext,MyConfig.IMGURL+bean.getSplitAdvPic(),img);
+                            ImgUtils.loadFraImgId(HealthStoreFragment.this, MyConfigStore.IMGURL+bean.getSplitAdvPic(),img);
 
                             img.setOnClickListener(v -> {
                                 ShopDetailsActivity.open(mActivity,bean);
                             });
 
                             if(bean.getProductSpecsList()!=null && bean.getProductSpecsList().size()>0){
-                                holder.setText(R.id.tv_price,mContext.getString(R.string.price_sing)+StringUtils.showPrice(bean.getProductSpecsList().get(0).getPrice1()));
+                                holder.setText(R.id.tv_price,mContext.getString(R.string.price_sing)+ MoneyUtils.showPrice(bean.getProductSpecsList().get(0).getPrice1()));
                             }
                         }
 
@@ -418,8 +415,8 @@ public class HealthStoreFragment extends BaseLazyFragment{
         map.put("status","3");//已上架
         map.put("start",mStoreStart+"");
         map.put("limit","10");
-        map.put("companyCode",MyConfig.COMPANYCODE);
-        map.put("systemCode",MyConfig.SYSTEMCODE);
+        map.put("companyCode", MyConfigStore.COMPANYCODE);
+        map.put("systemCode", MyConfigStore.SYSTEMCODE);
         map.put("orderDir","asc");
         map.put("orderColumn","order_no");
         map.put("location","1");  //1推荐 0普通
@@ -460,14 +457,13 @@ public class HealthStoreFragment extends BaseLazyFragment{
      * @param context
      */
     private void shopMenuRequest(Context context) {
-        LogUtil.E("商城3");
         Map<String,String> map=new HashMap();
 
         map.put("parentCode","0");
         map.put("type","1");
         map.put("status","1");
-        map.put("companyCode",MyConfig.COMPANYCODE);
-        map.put("systemCode", MyConfig.SYSTEMCODE);
+        map.put("companyCode", MyConfigStore.COMPANYCODE);
+        map.put("systemCode", MyConfigStore.SYSTEMCODE);
 
 
         mSubscription.add( RetrofitUtils.getLoaderServer().GetStoreType("808007", StringUtils.getJsonToString(map))
@@ -494,14 +490,14 @@ public class HealthStoreFragment extends BaseLazyFragment{
 
         map.put("location","2");//0周边1商城 2
         map.put("type","2"); //(1 菜单 2 banner 3 模块 4 引流)
-        map.put("systemCode", MyConfig.SYSTEMCODE);
+        map.put("systemCode", MyConfigStore.SYSTEMCODE);
         map.put("token", SPUtilHelpr.getUserToken());
 
         mSubscription.add(RetrofitUtils.getLoaderServer().GetBanner("806052", StringUtils.getJsonToString(map))
                 .compose(RxTransformerListHelper.applySchedulerResult(context))
                 .filter(banners -> banners!=null && banners.size()>0 && banners.get(0)!=null)
                 .subscribe(banners -> {
-                    ImgUtils.loadImgURL(mActivity,MyConfig.IMGURL+ banners.get(0).getPic(),mBinding.imgJfshopInto);
+                    ImgUtils.loadFraImgId(HealthStoreFragment.this, MyConfigStore.IMGURL+ banners.get(0).getPic(),mBinding.imgJfshopInto);
 
                 },Throwable::printStackTrace));
 

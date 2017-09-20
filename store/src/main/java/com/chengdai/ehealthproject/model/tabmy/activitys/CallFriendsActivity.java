@@ -11,15 +11,15 @@ import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.cdkj.baselibrary.utils.ImgUtils;
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.AbsStoreBaseActivity;
 import com.chengdai.ehealthproject.databinding.ActivityCallFriendBinding;
 import com.chengdai.ehealthproject.model.common.model.UserInfoModel;
-import com.chengdai.ehealthproject.uitls.ImgUtils;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
@@ -107,7 +107,7 @@ public class CallFriendsActivity extends AbsStoreBaseActivity {
 
         if(mUserInfo.getUserExt() == null) return;
 
-        ImgUtils.loadImgLogo(this, MyConfig.IMGURL+mUserInfo.getUserExt().getPhoto(),mBinding.imgLogo);
+        ImgUtils.loadActLogo(this, MyConfigStore.IMGURL+mUserInfo.getUserExt().getPhoto(),mBinding.imgLogo);
 
     }
 
@@ -116,7 +116,7 @@ public class CallFriendsActivity extends AbsStoreBaseActivity {
 
         Map<String ,String > map=new HashMap<>();
         map.put("ckey","domainUrl");
-        map.put("systemCode", MyConfig.SYSTEMCODE);
+        map.put("systemCode", MyConfigStore.SYSTEMCODE);
         map.put("token", SPUtilHelpr.getUserToken());
         mSubscription.add( RetrofitUtils.getLoaderServer().getInfoByKey("807717", StringUtils.getJsonToString(map))
                 .compose(RxTransformerHelper.applySchedulerResult(null))

@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 
 import com.cdkj.baselibrary.dialog.CommonDialog;
+import com.cdkj.baselibrary.utils.ToastUtil;
 import com.chengdai.ehealthproject.R;
-import com.chengdai.ehealthproject.uitls.ToastUtil;
 
 import java.io.File;
 

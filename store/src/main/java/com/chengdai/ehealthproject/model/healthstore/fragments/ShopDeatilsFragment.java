@@ -13,7 +13,6 @@ import com.chengdai.ehealthproject.base.BaseFragment;
 import com.chengdai.ehealthproject.databinding.FragmentShopCommodityBinding;
 import com.chengdai.ehealthproject.databinding.FragmentShopTabDetailsBinding;
 import com.chengdai.ehealthproject.model.healthstore.models.ShopListModel;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.weigit.GlideImageLoader;
 import com.chengdai.ehealthproject.weigit.appmanager.AppOhterManager;
 import com.youth.banner.BannerConfig;

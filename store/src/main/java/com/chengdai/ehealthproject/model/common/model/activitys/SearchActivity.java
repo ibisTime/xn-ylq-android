@@ -11,18 +11,16 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.AbsStoreBaseActivity;
 import com.chengdai.ehealthproject.databinding.ActivitySearchBinding;
 import com.chengdai.ehealthproject.model.common.model.LocationModel;
-import com.chengdai.ehealthproject.model.tabsurrounding.activitys.HoteldetailsActivity;
-import com.chengdai.ehealthproject.model.tabsurrounding.activitys.StoredetailsActivity;
 import com.chengdai.ehealthproject.model.tabsurrounding.adapters.StoreTypeListAdapter;
 import com.chengdai.ehealthproject.model.tabsurrounding.model.StoreListModel;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 import com.liaoinstan.springview.container.DefaultFooter;
 import com.liaoinstan.springview.widget.SpringView;
@@ -140,9 +138,9 @@ public class SearchActivity extends AbsStoreBaseActivity {
             StoreListModel.ListBean model= (StoreListModel.ListBean) mStoreTypeAdapter.getItem(position);
 
             if("2".equals(model.getLevel())){  //民宿类型
-                HoteldetailsActivity.open(this,model.getCode());
+//                HoteldetailsActivity.open(this,model.getCode());
             }else{
-                StoredetailsActivity.open(this,model.getCode());
+//                StoredetailsActivity.open(this,model.getCode());
             }
         });
 
@@ -170,8 +168,8 @@ public class SearchActivity extends AbsStoreBaseActivity {
         map.put("start",mStoreStart+"");
         map.put("limit","10");
         map.put("name",name);
-        map.put("companyCode", MyConfig.COMPANYCODE);
-        map.put("systemCode",MyConfig.SYSTEMCODE);
+        map.put("companyCode", MyConfigStore.COMPANYCODE);
+        map.put("systemCode", MyConfigStore.SYSTEMCODE);
         map.put("orderDir","asc");
         map.put("orderColumn","ui_order");
         map.put("level",mType+""); //1 店铺 2民宿

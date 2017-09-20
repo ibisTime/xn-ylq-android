@@ -9,7 +9,6 @@
     <color name="white">#ffffff</color>
     <color name="gray">#ececec</color>
     <color name="gray_4">#f4f4f4</color>
-    <color name="whilte_80">#d2fcfcfc</color>
     <color name="fontColor_support">#999999</color>
     <color name="text_gray">#999999</color>
     <color name="text_hint_color">#a1a1a1</color>
@@ -30,7 +29,6 @@
     <color name="txt_gray">#a7a5a5</color>
     <!--颜色值规范-->
     <color name="black">#000000</color>
-    <color name="black_50">#6a0e0e0e</color>
     <color name="black_2">#303030</color>
     <color name="lineColor_gray">#dedede</color>
     <color name="fontColor_gray">#7f7e7e</color>
@@ -89,7 +87,6 @@
     <color name="txt_orange">#ff6702</color>
     <color name="fontColor_orange">#ff6702</color>
     <color name="price_color">#ed5461</color>
-    <color name="orange_btn">#ffa302</color>
 
     <!--司导认证 hintcolor-->
 

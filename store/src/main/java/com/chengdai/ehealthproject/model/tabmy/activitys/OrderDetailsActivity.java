@@ -6,14 +6,14 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.cdkj.baselibrary.utils.DateUtil;
+import com.cdkj.baselibrary.utils.ImgUtils;
+import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.AbsStoreBaseActivity;
 import com.chengdai.ehealthproject.databinding.ActivityHotelOrderDetailsBinding;
 import com.chengdai.ehealthproject.model.tabmy.model.OrderRecordModel;
-import com.chengdai.ehealthproject.uitls.DateUtil;
-import com.chengdai.ehealthproject.uitls.ImgUtils;
-import com.chengdai.ehealthproject.uitls.StringUtils;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 
 import java.util.Date;
 
@@ -76,12 +76,12 @@ public class OrderDetailsActivity extends AbsStoreBaseActivity {
 
         mBinding.tvCode.setText(mShowData.getCode());
         mBinding.tvOrderState.setText("已支付");
-        mBinding.tvPrice.setText(getString(R.string.price_sing)+ StringUtils.showPrice(mShowData.getPrice()));
+        mBinding.tvPrice.setText(getString(R.string.price_sing)+ MoneyUtils.showPrice(mShowData.getPrice()));
 
 
         if(mShowData.getStore()!=null){
             mBinding.tvName.setText(mShowData.getStore().getName());
-            ImgUtils.loadImgURL(this, MyConfig.IMGURL+mShowData.getStore().getSplitAdvPic(),   mBinding.imgTitle);
+            ImgUtils.loadImgURL(this, MyConfigStore.IMGURL+mShowData.getStore().getSplitAdvPic(),   mBinding.imgTitle);
         }
 
         if(!TextUtils.isEmpty(mShowData.getCreateDatetime())){

@@ -6,15 +6,16 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.cdkj.baselibrary.utils.MoneyUtils;
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.AbsStoreBaseActivity;
 import com.chengdai.ehealthproject.databinding.ActivityWithdrawalBinding;
 import com.chengdai.ehealthproject.model.common.model.EventBusModel;
 import com.chengdai.ehealthproject.model.tabmy.model.BankCardModel;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 
 import org.greenrobot.eventbus.EventBus;
@@ -118,8 +119,8 @@ public class WithdrawalActivity extends AbsStoreBaseActivity {
         Map<String, String> map = new HashMap<>();
 
         map.put("key","CUSERQXBS");
-        map.put("systemCode", MyConfig.SYSTEMCODE);
-        map.put("companyCode", MyConfig.COMPANYCODE);
+        map.put("systemCode", MyConfigStore.SYSTEMCODE);
+        map.put("companyCode", MyConfigStore.COMPANYCODE);
 
         mSubscription.add(RetrofitUtils.getLoaderServer().getRechargeNum("802027", StringUtils.getJsonToString(map))
                 .compose(RxTransformerHelper.applySchedulerResult(null))
@@ -136,11 +137,11 @@ public class WithdrawalActivity extends AbsStoreBaseActivity {
     private void withdrawalRequest() {
 
         Map<String,String> object=new HashMap<>();
-        object.put("systemCode", MyConfig.SYSTEMCODE);
+        object.put("systemCode", MyConfigStore.SYSTEMCODE);
         object.put("token", SPUtilHelpr.getUserToken());
         object.put("accountNumber", mAccountNumber);
 //        object.put("amount",new BigDecimal(StringUtils.doubleFormatMoney2(new BigDecimal(mBinding.editPrice.getText().toString()).doubleValue()*1000)).intValue()+"");
-        object.put("amount",StringUtils.getRequestPrice(mBinding.editPrice.getText().toString()));
+        object.put("amount", MoneyUtils.getRequestPrice(mBinding.editPrice.getText().toString()));
         object.put("payCardNo", mBankCardModel.getBankcardNumber());
         // 开户行
         object.put("payCardInfo", mBankCardModel.getBankName());

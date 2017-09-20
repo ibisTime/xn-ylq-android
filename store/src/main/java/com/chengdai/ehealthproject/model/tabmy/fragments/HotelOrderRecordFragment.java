@@ -6,16 +6,16 @@ import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cdkj.baselibrary.utils.DateUtil;
+import com.cdkj.baselibrary.utils.ImgUtils;
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.BaseListFragment;
 import com.chengdai.ehealthproject.model.tabmy.activitys.HotelOrderDetailsActivity;
 import com.chengdai.ehealthproject.model.tabmy.model.HotelOrderRecordModel;
-import com.chengdai.ehealthproject.uitls.DateUtil;
-import com.chengdai.ehealthproject.uitls.ImgUtils;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -85,7 +85,8 @@ public class HotelOrderRecordFragment extends BaseListFragment<HotelOrderRecordM
         tvCode.setText(item.getCode());
 
         if(!TextUtils.isEmpty(item.getPayDatetime())){
-            tvDate.setText(DateUtil.format( new Date(item.getPayDatetime()), DateUtil.DATE_YMD));
+            tvDate.setText(
+                    DateUtil.format( new Date(item.getPayDatetime()), DateUtil.DATE_YMD));
         }
 
 
@@ -98,7 +99,7 @@ public class HotelOrderRecordFragment extends BaseListFragment<HotelOrderRecordM
         if(item.getProduct() !=null){
             tv_hotel_size.setText(item.getProduct().getName());
             tv_hotel_info.setText(item.getProduct().getSlogan());
-            ImgUtils.loadImgURL(mActivity, MyConfig.IMGURL+item.getProduct().getSplitAdvPic(),img_hotel_info);
+            ImgUtils.loadImgURL(mActivity, MyConfigStore.IMGURL+item.getProduct().getSplitAdvPic(),img_hotel_info);
 
             if(!TextUtils.isEmpty(item.getStartDate()) && !TextUtils.isEmpty(item.getEndDate())){
                 tv_hotel_data.setText(
@@ -120,8 +121,8 @@ public class HotelOrderRecordFragment extends BaseListFragment<HotelOrderRecordM
         map.put("start",page+"");
         map.put("limit","10");
 //        map.put("status","1");
-        map.put("companyCode",MyConfig.COMPANYCODE);
-        map.put("systemCode", MyConfig.SYSTEMCODE);
+        map.put("companyCode", MyConfigStore.COMPANYCODE);
+        map.put("systemCode", MyConfigStore.SYSTEMCODE);
 
         mSubscription.add(RetrofitUtils.getLoaderServer().HotelOrderRecordRequest("808468", StringUtils.getJsonToString(map))
                 .compose(RxTransformerHelper.applySchedulerResult(context))

@@ -4,12 +4,11 @@ import android.content.Context;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cdkj.baselibrary.utils.ImgUtils;
+import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.chengdai.ehealthproject.R;
-import com.chengdai.ehealthproject.model.healthstore.models.PayCarListModel;
 import com.chengdai.ehealthproject.model.healthstore.models.ShopListModel;
-import com.chengdai.ehealthproject.uitls.ImgUtils;
-import com.chengdai.ehealthproject.uitls.StringUtils;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.zhy.adapter.abslistview.CommonAdapter;
 import com.zhy.adapter.abslistview.ViewHolder;
 
@@ -52,15 +51,15 @@ public class ShopHotJfAdapter extends CommonAdapter<ShopListModel.ListBean> {
         TextView tv_jf_number=viewHolder.getView(R.id.tv_jf_number);
         TextView tv_price=viewHolder.getView(R.id.tv_price);
 
-        ImgUtils.loadImgURL(mContext, MyConfig.IMGURL+item.getSplitAdvPic(),img_jf_hot);
+        ImgUtils.loadImgURL(mContext, MyConfigStore.IMGURL+item.getSplitAdvPic(),img_jf_hot);
 
         tv_name_jf.setText(item.getName());
 
         tv_slogan_jf.setText(item.getSlogan());
 
         if(item.getProductSpecsList() !=null && item.getProductSpecsList().get(0)!=null){
-            tv_jf_number.setText(StringUtils.showJF(item.getProductSpecsList().get(0).getPrice1()));
-            tv_price.setText("市场参考价:"+StringUtils.getShowPriceSign(item.getProductSpecsList().get(0).getOriginalPrice()));
+            tv_jf_number.setText(MoneyUtils.showPrice(item.getProductSpecsList().get(0).getPrice1()));
+            tv_price.setText("市场参考价:"+MoneyUtils.getShowPriceSign(item.getProductSpecsList().get(0).getOriginalPrice()));
         }
 
 

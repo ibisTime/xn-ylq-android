@@ -16,7 +16,7 @@ import com.chengdai.ehealthproject.model.dataadapters.ViewPagerAdapter;
 import com.chengdai.ehealthproject.model.healthstore.fragments.ShopCommodityFragment;
 import com.chengdai.ehealthproject.model.healthstore.fragments.ShopDeatilsFragment;
 import com.chengdai.ehealthproject.model.healthstore.models.ShopListModel;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 import com.chengdai.ehealthproject.weigit.popwindows.ShopAddPayCarPopup;
 import com.chengdai.ehealthproject.weigit.popwindows.ShopPayPopup;
@@ -159,7 +159,7 @@ public class ShopDetailsActivity extends AbsStoreBaseActivity {
     private void initViewPager() {
 
         List<Fragment> fragments=new ArrayList<>();
-        fragments.add(ShopCommodityFragment.getInstanse(mData, MyConfig.PRICEORDER));
+        fragments.add(ShopCommodityFragment.getInstanse(mData, MyConfigStore.PRICEORDER));
         fragments.add(ShopDeatilsFragment.getInstanse(mData));
 //        fragments.add(ShopEvaluateFragment.getInstanse(mData));
 

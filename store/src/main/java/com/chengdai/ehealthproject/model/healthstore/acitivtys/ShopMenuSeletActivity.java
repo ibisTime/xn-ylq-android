@@ -7,15 +7,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.AbsStoreBaseActivity;
 import com.chengdai.ehealthproject.databinding.ActivitySurroundingMenuselectBinding;
 import com.chengdai.ehealthproject.model.tabsurrounding.adapters.SurroundingMenuLeftAdapter;
 import com.chengdai.ehealthproject.model.tabsurrounding.model.StoreTypeModel;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerListHelper;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -88,8 +88,8 @@ public class ShopMenuSeletActivity extends AbsStoreBaseActivity {
         map.put("parentCode","0");
         map.put("type","1");
         map.put("status","1");
-        map.put("companyCode",MyConfig.COMPANYCODE);
-        map.put("systemCode", MyConfig.SYSTEMCODE);
+        map.put("companyCode", MyConfigStore.COMPANYCODE);
+        map.put("systemCode", MyConfigStore.SYSTEMCODE);
 
         //先请求一级菜单，再请求二级菜单
        mSubscription.add( RetrofitUtils.getLoaderServer().GetStoreType("808007", StringUtils.getJsonToString(map))
@@ -169,8 +169,8 @@ public class ShopMenuSeletActivity extends AbsStoreBaseActivity {
         map2.put("parentCode",parentCode);
         map2.put("type","1");
         map2.put("status","1");
-        map2.put("companyCode", MyConfig.COMPANYCODE);
-        map2.put("systemCode", MyConfig.SYSTEMCODE);
+        map2.put("companyCode", MyConfigStore.COMPANYCODE);
+        map2.put("systemCode", MyConfigStore.SYSTEMCODE);
 
         mSubscription.add(RetrofitUtils.getLoaderServer().GetStoreType("808007", StringUtils.getJsonToString(map2))
                 .compose(RxTransformerListHelper.applySchedulerResult(this))

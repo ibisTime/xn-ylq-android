@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.cdkj.baselibrary.utils.ToastUtil;
 import com.chengdai.ehealthproject.base.BaseStoreApplication;
 import com.chengdai.ehealthproject.model.common.model.EventBusModel;
 import com.chengdai.ehealthproject.model.user.LoginActivity;
-import com.chengdai.ehealthproject.uitls.ToastUtil;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 
 import org.greenrobot.eventbus.EventBus;

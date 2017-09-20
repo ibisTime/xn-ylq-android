@@ -3,7 +3,8 @@ package com.chengdai.ehealthproject.model.tabsurrounding.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.chengdai.ehealthproject.uitls.StringUtils;
+
+import com.cdkj.baselibrary.utils.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -180,7 +181,7 @@ public class HotelListModel implements Parcelable {
 
         public String getSplitAdvPic(){
 
-            List<String> list=StringUtils.splitAsList(advPic,"\\|\\|");
+            List<String> list= StringUtils.splitAsList(advPic,"\\|\\|");
 
             if(list.size()>1){
                 return list.get(0);

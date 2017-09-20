@@ -1,8 +1,8 @@
 package com.chengdai.ehealthproject.uitls.nets;
 
 
+import com.cdkj.baselibrary.utils.LogUtil;
 import com.chengdai.ehealthproject.base.BaseStoreApplication;
-import com.chengdai.ehealthproject.uitls.LogUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -72,7 +72,7 @@ public class OkHttpUtils {
 //                    .cache(cache)
                     .retryOnConnectionFailure(true)//允许失败重试
                     .cookieJar(new CookiesManager())  //cookie 管理
-                    .addInterceptor(getInterceptor(LogUtil.isLog))    //网络日志
+                    .addInterceptor(getInterceptor(LogUtil.isDeBug))    //网络日志
 //            .addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
                     .build();
         }

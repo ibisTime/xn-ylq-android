@@ -1,20 +1,18 @@
 package com.chengdai.ehealthproject.model.tabsurrounding.adapters;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
+import com.cdkj.baselibrary.utils.ImgUtils;
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.model.tabsurrounding.model.DZUpdateModel;
 import com.chengdai.ehealthproject.model.tabsurrounding.model.StoreListModel;
-import com.chengdai.ehealthproject.uitls.ImgUtils;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 import com.zhy.adapter.abslistview.CommonAdapter;
 import com.zhy.adapter.abslistview.ViewHolder;
@@ -139,7 +137,7 @@ public class StoreTypeListAdapter extends CommonAdapter {
 
         if(storeListModel != null){
 
-            ImgUtils.loadImgURL(mContext, MyConfig.IMGURL+ storeListModel.getSplitAdvPic(),imgTitle);
+            ImgUtils.loadImgURL(mContext, MyConfigStore.IMGURL+ storeListModel.getSplitAdvPic(),imgTitle);
 
             tvTitle.setText(storeListModel.getName());
 

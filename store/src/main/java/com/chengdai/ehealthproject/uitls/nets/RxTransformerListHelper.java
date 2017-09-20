@@ -2,9 +2,9 @@ package com.chengdai.ehealthproject.uitls.nets;
 
 import android.content.Context;
 
+import com.cdkj.baselibrary.utils.LogUtil;
 import com.chengdai.ehealthproject.base.BaseStoreActivity;
 import com.chengdai.ehealthproject.model.api.BaseResponseListModel;
-import com.chengdai.ehealthproject.uitls.LogUtil;
 
 import java.util.List;
 
@@ -55,6 +55,7 @@ public class RxTransformerListHelper {
                     }
 
                 }
+
                 LogUtil.E("网络请求"+isSuccess+responseCode);
                 return isSuccess;
             } else {
@@ -87,7 +88,7 @@ public class RxTransformerListHelper {
                     errorVerify.call(NET_ERROR, "暂无网络");
 
                 }else {
-                    if(LogUtil.isLog){
+                    if(LogUtil.isDeBug){
                         errorVerify.call("0",throwable.toString());
                     }else{
                         errorVerify.call("0", "未知错误");

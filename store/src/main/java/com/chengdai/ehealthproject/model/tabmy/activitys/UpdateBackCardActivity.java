@@ -8,17 +8,17 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.cdkj.baselibrary.utils.LogUtil;
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.AbsStoreBaseActivity;
 import com.chengdai.ehealthproject.databinding.ActivityBindBankCardStoreBinding;
 import com.chengdai.ehealthproject.model.tabmy.model.BankCardModel;
 import com.chengdai.ehealthproject.model.tabmy.model.BankModel;
-import com.chengdai.ehealthproject.uitls.LogUtil;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerListHelper;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 
 import java.util.HashMap;
@@ -117,9 +117,9 @@ public class UpdateBackCardActivity extends AbsStoreBaseActivity {
         Map<String,String> object=new HashMap<>();
         object.put("code", mBankModel.getCode());
         object.put("token", SPUtilHelpr.getUserToken());
-        object.put("systemCode",MyConfig.SYSTEMCODE);
+        object.put("systemCode", MyConfigStore.SYSTEMCODE);
 
-        mSubscription.add( RetrofitUtils.getLoaderServer().updateBankCard("802011",StringUtils.getJsonToString(object))
+        mSubscription.add( RetrofitUtils.getLoaderServer().updateBankCard("802011", StringUtils.getJsonToString(object))
                 .compose(RxTransformerHelper.applySchedulerResult(this))
                 .filter(isSuccessModes -> isSuccessModes!=null && isSuccessModes.isSuccess())
                 .subscribe(stringBaseResponseListModel -> {
@@ -141,7 +141,7 @@ public class UpdateBackCardActivity extends AbsStoreBaseActivity {
 //        object.put("tradePwd", pwd);
         object.put("token", SPUtilHelpr.getUserToken());
         object.put("userId", SPUtilHelpr.getUserId());
-        object.put("systemCode",MyConfig.SYSTEMCODE);
+        object.put("systemCode", MyConfigStore.SYSTEMCODE);
 /*802013*/
        mSubscription.add( RetrofitUtils.getLoaderServer().updateBankCard("802012",StringUtils.getJsonToString(object))
                 .compose(RxTransformerHelper.applySchedulerResult(this))
@@ -186,7 +186,7 @@ public class UpdateBackCardActivity extends AbsStoreBaseActivity {
         object.put("type", "C");
         object.put("token", SPUtilHelpr.getUserToken());
         object.put("userId",SPUtilHelpr.getUserId());
-        object.put("systemCode", MyConfig.SYSTEMCODE);
+        object.put("systemCode", MyConfigStore.SYSTEMCODE);
 
        mSubscription.add( RetrofitUtils.getLoaderServer().bindBankCard("802010",StringUtils.getJsonToString(object))
                 .compose(RxTransformerHelper.applySchedulerAndAllFilter(this))

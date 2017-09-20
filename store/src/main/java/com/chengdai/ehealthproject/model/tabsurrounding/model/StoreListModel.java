@@ -1,6 +1,7 @@
 package com.chengdai.ehealthproject.model.tabsurrounding.model;
 
-import com.chengdai.ehealthproject.uitls.StringUtils;
+
+import com.cdkj.baselibrary.utils.StringUtils;
 
 import java.util.List;
 

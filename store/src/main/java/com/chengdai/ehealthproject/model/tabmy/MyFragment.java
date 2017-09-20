@@ -8,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cdkj.baselibrary.utils.ImgUtils;
+import com.cdkj.baselibrary.utils.MoneyUtils;
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.BaseLazyFragment;
 import com.chengdai.ehealthproject.databinding.FragmentMyStoreBinding;
@@ -18,17 +21,13 @@ import com.chengdai.ehealthproject.model.tabmy.activitys.HotelOrderStateLookActi
 import com.chengdai.ehealthproject.model.tabmy.activitys.MyAmountActivity;
 import com.chengdai.ehealthproject.model.tabmy.activitys.MyInfoActivity;
 import com.chengdai.ehealthproject.model.tabmy.activitys.MyJFDetailsActivity;
-import com.chengdai.ehealthproject.model.tabmy.activitys.MyLuntanActivity;
 import com.chengdai.ehealthproject.model.tabmy.activitys.MyTestHistoryActivity;
 import com.chengdai.ehealthproject.model.tabmy.activitys.SettingActivity;
 import com.chengdai.ehealthproject.model.tabmy.activitys.ShopAllOrderLookActivity;
-import com.chengdai.ehealthproject.uitls.ImgUtils;
-import com.chengdai.ehealthproject.uitls.LogUtil;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerListHelper;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -88,7 +87,7 @@ public class MyFragment extends BaseLazyFragment {
             if (!SPUtilHelpr.isLogin(mActivity)) {
                 return;
             }
-            MyLuntanActivity.open(mActivity, SPUtilHelpr.getUserId());
+//            MyLuntanActivity.open(mActivity, SPUtilHelpr.getUserId());
         });
 
         //健康任务
@@ -170,7 +169,7 @@ public class MyFragment extends BaseLazyFragment {
                 .subscribe(r -> {
                     mAmountaccountNumber = r.get(0).getAccountNumber();
                     SPUtilHelpr.saveAmountaccountNumber(mAmountaccountNumber);
-                    mAmount = StringUtils.showPrice(r.get(0).getAmount());
+                    mAmount = MoneyUtils.showPrice(r.get(0).getAmount());
                     mBinding.tvYe.setText(mAmount);
 
                 }, Throwable::printStackTrace));
@@ -194,7 +193,7 @@ public class MyFragment extends BaseLazyFragment {
                 .subscribe(r -> {
 
                     accountNumber = r.get(0).getAccountNumber();
-                    mBinding.tvJf.setText(StringUtils.showJF(r.get(0).getAmount()));
+                    mBinding.tvJf.setText(MoneyUtils.showPrice(r.get(0).getAmount()));
 
                 }, Throwable::printStackTrace));
 
@@ -225,17 +224,17 @@ public class MyFragment extends BaseLazyFragment {
 
                     if (r.getUserExt() == null) return;
 
-                    ImgUtils.loadImgLogo(mActivity, MyConfig.IMGURL + r.getUserExt().getPhoto(), mBinding.imtUserLogo);
+                    ImgUtils.loadActLogo(mActivity, MyConfigStore.IMGURL + r.getUserExt().getPhoto(), mBinding.imtUserLogo);
 
-                    if (MyConfig.GENDERMAN.equals(r.getUserExt().getGender())) {
+                    if (MyConfigStore.GENDERMAN.equals(r.getUserExt().getGender())) {
                         ImgUtils.loadImgId(mActivity, R.mipmap.man, mBinding.imgUserSex);
-                    } else if (MyConfig.GENDERWOMAN.equals(r.getUserExt().getGender())) {
+                    } else if (MyConfigStore.GENDERWOMAN.equals(r.getUserExt().getGender())) {
                         ImgUtils.loadImgId(mActivity, R.mipmap.woman, mBinding.imgUserSex);
                     }
 
-                    if (MyConfig.LEVEL_NOT_VIP.equals(r.getLevel())) {
+                    if (MyConfigStore.LEVEL_NOT_VIP.equals(r.getLevel())) {
                         mBinding.imgVip.setVisibility(View.GONE);
-                    } else if (MyConfig.LEVEL_VIP.equals(r.getLevel())) {
+                    } else if (MyConfigStore.LEVEL_VIP.equals(r.getLevel())) {
                         mBinding.imgVip.setVisibility(View.VISIBLE);
                     }
 
@@ -250,7 +249,7 @@ public class MyFragment extends BaseLazyFragment {
 
         Map<String ,String > map=new HashMap<>();
         map.put("ckey","telephone");
-        map.put("systemCode", MyConfig.SYSTEMCODE);
+        map.put("systemCode", MyConfigStore.SYSTEMCODE);
         map.put("token", SPUtilHelpr.getUserToken());
         mSubscription.add( RetrofitUtils.getLoaderServer().getInfoByKey("807717", StringUtils.getJsonToString(map))
                 .compose(RxTransformerHelper.applySchedulerResult(mActivity))
@@ -267,7 +266,7 @@ public class MyFragment extends BaseLazyFragment {
 
         Map<String ,String > map=new HashMap<>();
         map.put("ckey","time");
-        map.put("systemCode", MyConfig.SYSTEMCODE);
+        map.put("systemCode", MyConfigStore.SYSTEMCODE);
         map.put("token", SPUtilHelpr.getUserToken());
         mSubscription.add( RetrofitUtils.getLoaderServer().getInfoByKey("807717", StringUtils.getJsonToString(map))
                 .compose(RxTransformerHelper.applySchedulerResult(mActivity))

@@ -8,6 +8,8 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 
 import com.cdkj.baselibrary.dialog.CommonDialog;
+import com.cdkj.baselibrary.utils.AppUtils;
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.BaseStoreActivity;
 import com.chengdai.ehealthproject.databinding.ActivityMainStoreBinding;
@@ -16,13 +18,10 @@ import com.chengdai.ehealthproject.model.common.model.IntroductionInfoModel;
 import com.chengdai.ehealthproject.model.dataadapters.ViewPagerAdapter;
 import com.chengdai.ehealthproject.model.healthstore.HealthStoreFragment;
 import com.chengdai.ehealthproject.model.tabmy.MyFragment;
-import com.chengdai.ehealthproject.model.tabsurrounding.SurroundingFragment;
 import com.chengdai.ehealthproject.model.user.LoginActivity;
-import com.chengdai.ehealthproject.uitls.AppUtils;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 
 import org.greenrobot.eventbus.EventBus;
@@ -272,8 +271,8 @@ public class MainActivity extends BaseStoreActivity {
 
         Map<String, String> map = new HashMap<>();
         map.put("type", "3");
-        map.put("systemCode", MyConfig.SYSTEMCODE);
-        map.put("companyCode", MyConfig.COMPANYCODE);
+        map.put("systemCode", MyConfigStore.SYSTEMCODE);
+        map.put("companyCode", MyConfigStore.COMPANYCODE);
         map.put("start", "1");
         map.put("limit", "30");
 

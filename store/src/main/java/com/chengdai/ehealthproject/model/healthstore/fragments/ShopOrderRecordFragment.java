@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cdkj.baselibrary.utils.DateUtil;
+import com.cdkj.baselibrary.utils.ImgUtils;
+import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.BaseListFragment;
 import com.chengdai.ehealthproject.model.healthstore.acitivtys.ShopPayConfirmActivity;
@@ -17,12 +20,10 @@ import com.chengdai.ehealthproject.model.healthstore.models.ShopListModel;
 import com.chengdai.ehealthproject.model.healthstore.models.ShopOrderDetailBean;
 import com.chengdai.ehealthproject.model.tabmy.activitys.OrderConfirmGetActivity;
 import com.chengdai.ehealthproject.model.tabmy.activitys.ShopOrderDetailsActivity;
-import com.chengdai.ehealthproject.uitls.DateUtil;
-import com.chengdai.ehealthproject.uitls.ImgUtils;
 import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -109,9 +110,9 @@ public class ShopOrderRecordFragment extends BaseListFragment<ShopOrderDetailBea
 
         if(item.getProductOrderList() !=null && item.getProductOrderList().size()>0 && item.getProductOrderList().get(0) !=null
                 && item.getProductOrderList().get(0).getProduct()!=null ){
-            ImgUtils.loadImgURL(mActivity, MyConfig.IMGURL+item.getProductOrderList().get(0).getProduct().getAdvPic(),imgGood);
+            ImgUtils.loadFraImgId(ShopOrderRecordFragment.this, MyConfigStore.IMGURL+item.getProductOrderList().get(0).getProduct().getAdvPic(),imgGood);
 
-            txtPrice.setText(StringUtils.getShowPriceSign(item.getProductOrderList().get(0).getPrice1()));
+            txtPrice.setText(MoneyUtils.getShowPriceSign(item.getProductOrderList().get(0).getPrice1()));
 
             tvNumber.setText("X" + item.getProductOrderList().get(0).getQuantity());
 
@@ -130,7 +131,7 @@ public class ShopOrderRecordFragment extends BaseListFragment<ShopOrderDetailBea
 
                     ShopPayConfirmActivity.open(mActivity,data,item.getCode(),false);
                 }
-            }else if(TextUtils.equals(MyConfig.ORDERTYPEWAITSHOUHUO,item.getStatus())){  //待收获状态
+            }else if(TextUtils.equals(MyConfigStore.ORDERTYPEWAITSHOUHUO,item.getStatus())){  //待收获状态
                 OrderConfirmGetActivity.open(mActivity,item.getCode());
             }
         });
@@ -139,7 +140,7 @@ public class ShopOrderRecordFragment extends BaseListFragment<ShopOrderDetailBea
 
     @Override
     protected void onItemCilck(ShopOrderDetailBean shopOrderDetailBean, int position) {
-        ShopOrderDetailsActivity.open(mActivity,shopOrderDetailBean,MyConfig.PRICEORDER);
+        ShopOrderDetailsActivity.open(mActivity,shopOrderDetailBean, MyConfigStore.PRICEORDER);
     }
 
     @Override
@@ -162,7 +163,7 @@ public class ShopOrderRecordFragment extends BaseListFragment<ShopOrderDetailBea
         object.put("limit", "10");
         object.put("status", mState+"");
         object.put("token", SPUtilHelpr.getUserToken());
-        object.put("systemCode", MyConfig.SYSTEMCODE);
+        object.put("systemCode", MyConfigStore.SYSTEMCODE);
         object.put("type","1");//普通商城
 
 

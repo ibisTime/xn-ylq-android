@@ -10,18 +10,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cdkj.baselibrary.utils.MoneyUtils;
+import com.cdkj.baselibrary.utils.StringUtils;
+import com.cdkj.baselibrary.utils.ToastUtil;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.BaseFragment;
 import com.chengdai.ehealthproject.databinding.FragmentInLineRechargeBinding;
 import com.chengdai.ehealthproject.model.tabmy.activitys.RechargeTabActivity;
-import com.chengdai.ehealthproject.uitls.StringUtils;
-import com.chengdai.ehealthproject.uitls.ToastUtil;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
 import com.chengdai.ehealthproject.weigit.appmanager.AppOhterManager;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
-import com.zzhoujay.richtext.RichText;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -96,7 +96,7 @@ public class RechargeInLineFragment extends BaseFragment {
         Map<String, String> map = new HashMap<>();
 
         map.put("accountNumber", SPUtilHelpr.getAmountaccountNumber());
-        map.put("amount", StringUtils.getRequestPrice(mBinding.editMoney.getText().toString()));
+        map.put("amount", MoneyUtils.getRequestPrice(mBinding.editMoney.getText().toString()));
         map.put("payCardInfo", mBinding.editBankInfo.getText().toString());
         map.put("payCardNo", mBinding.editCard.getText().toString());
         map.put("applyUser", SPUtilHelpr.getUserId());
@@ -118,7 +118,7 @@ public class RechargeInLineFragment extends BaseFragment {
 
         Map<String, String> map = new HashMap<>();
         map.put("ckey", "chargeAccount");
-        map.put("systemCode", MyConfig.SYSTEMCODE);
+        map.put("systemCode", MyConfigStore.SYSTEMCODE);
         map.put("token", SPUtilHelpr.getUserToken());
         mSubscription.add(RetrofitUtils.getLoaderServer().getInfoByKey("807717", StringUtils.getJsonToString(map))
                 .compose(RxTransformerHelper.applySchedulerResult(null))

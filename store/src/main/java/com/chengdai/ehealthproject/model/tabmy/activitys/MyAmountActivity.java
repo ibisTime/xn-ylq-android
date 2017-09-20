@@ -7,17 +7,18 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 
+import com.cdkj.baselibrary.utils.DateUtil;
+import com.cdkj.baselibrary.utils.MoneyUtils;
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.AbsStoreBaseActivity;
 import com.chengdai.ehealthproject.databinding.ActivityAmountDetailsListBinding;
 import com.chengdai.ehealthproject.model.common.model.EventBusModel;
 import com.chengdai.ehealthproject.model.common.model.UserInfoModel;
 import com.chengdai.ehealthproject.model.tabmy.model.JfDetailsListModel;
-import com.chengdai.ehealthproject.uitls.DateUtil;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 import com.chengdai.ehealthproject.weigit.views.MyDividerItemDecoration;
 import com.liaoinstan.springview.container.DefaultFooter;
@@ -148,7 +149,7 @@ public class MyAmountActivity extends AbsStoreBaseActivity {
                     return;
                 }
                 holder.setText(R.id.tv_name,listBean.getBizNote());
-                holder.setText(R.id.tv_sum, StringUtils.showJF(listBean.getTransAmount()));
+                holder.setText(R.id.tv_sum, MoneyUtils.showPrice(listBean.getTransAmount()));
                 holder.setText(R.id.tv_time, DateUtil.formatStringData(listBean.getCreateDatetime(),DateUtil.DEFAULT_DATE_FMT));
 
             }
@@ -162,8 +163,8 @@ public class MyAmountActivity extends AbsStoreBaseActivity {
     public void getJfDetailsList(Context c) {
 
         Map<String,String> map=new HashMap<>();
-        map.put("systemCode", MyConfig.SYSTEMCODE);
-        map.put("companyCode", MyConfig.COMPANYCODE);
+        map.put("systemCode", MyConfigStore.SYSTEMCODE);
+        map.put("companyCode", MyConfigStore.COMPANYCODE);
         map.put("token", SPUtilHelpr.getUserToken());
         map.put("accountNumber", accountNumber);
         map.put("accountType", "C");

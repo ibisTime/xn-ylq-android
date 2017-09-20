@@ -7,12 +7,12 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 
+import com.cdkj.baselibrary.utils.DateUtil;
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.AbsStoreBaseActivity;
 import com.chengdai.ehealthproject.databinding.CommonRecycleerBinding;
 import com.chengdai.ehealthproject.model.tabmy.model.MyTestHistoryListModel;
-import com.chengdai.ehealthproject.uitls.DateUtil;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
@@ -28,7 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.chengdai.ehealthproject.uitls.DateUtil.DEFAULT_DATE_FMT;
+import static com.cdkj.baselibrary.utils.DateUtil.DEFAULT_DATE_FMT;
+
 
 /**自测历史
  * Created by 李先俊 on 2017/6/16.

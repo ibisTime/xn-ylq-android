@@ -6,15 +6,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cdkj.baselibrary.dialog.CommonDialog;
+import com.cdkj.baselibrary.utils.ImgUtils;
+import com.cdkj.baselibrary.utils.MoneyUtils;
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.model.common.model.EventBusModel;
 import com.chengdai.ehealthproject.model.healthstore.models.PayCarListModel;
-import com.chengdai.ehealthproject.model.healthstore.models.ShopListModel;
-import com.chengdai.ehealthproject.uitls.ImgUtils;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.zhy.adapter.abslistview.CommonAdapter;
 import com.zhy.adapter.abslistview.ViewHolder;
 
@@ -50,7 +50,7 @@ public class ShopPayCarListAdApter extends CommonAdapter<PayCarListModel.ListBea
 
         PayCarListModel.ListBean data=   getmSelectPositionItem();
         if(data !=null && data.getProductSpecs()!=null){
-            return StringUtils.getShowPriceSign(data.getProductSpecs().getPrice1(),data.getQuantity())  ;
+            return MoneyUtils.getShowPriceSign(data.getProductSpecs().getPrice1(),data.getQuantity())  ;
         }
 
         return "0";
@@ -212,11 +212,11 @@ public class ShopPayCarListAdApter extends CommonAdapter<PayCarListModel.ListBea
 
 
         if(item.getProductSpecs() != null){
-            txt_price.setText(StringUtils.getShowPriceSign(item.getProductSpecs().getPrice1()));
+            txt_price.setText(MoneyUtils.getShowPriceSign(item.getProductSpecs().getPrice1()));
 
         }
         if(item.getProduct() != null){
-           ImgUtils.loadImgURL(mContext, MyConfig.IMGURL+item.getProduct().getSplitAdvPic(),img_good);
+           ImgUtils.loadImgURL(mContext, MyConfigStore.IMGURL+item.getProduct().getSplitAdvPic(),img_good);
           }
     }
 

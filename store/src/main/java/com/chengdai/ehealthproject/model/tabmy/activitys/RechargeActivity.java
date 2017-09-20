@@ -8,16 +8,17 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
 
+import com.cdkj.baselibrary.model.pay.PaySucceedInfo;
+import com.cdkj.baselibrary.utils.ImgUtils;
+import com.cdkj.baselibrary.utils.MoneyUtils;
+import com.cdkj.baselibrary.utils.StringUtils;
+import com.cdkj.baselibrary.utils.payutils.PayUtil;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.AbsStoreBaseActivity;
 import com.chengdai.ehealthproject.databinding.ActivityRechargeBinding;
 import com.chengdai.ehealthproject.model.common.model.EventBusModel;
-import com.chengdai.ehealthproject.model.common.model.pay.PaySucceedInfo;
-import com.chengdai.ehealthproject.uitls.ImgUtils;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
-import com.chengdai.ehealthproject.uitls.payutils.PayUtil;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 
 import org.greenrobot.eventbus.EventBus;
@@ -94,7 +95,7 @@ public class RechargeActivity extends AbsStoreBaseActivity {
                 return;
             }
 
-            if(mPayType==PayUtil.ALIPAY){  //支付宝充值
+            if(mPayType== PayUtil.ALIPAY){  //支付宝充值
                 rechargeAliRequest();
             }else{
                 rechargeWXRequest();//微信充值
@@ -109,10 +110,10 @@ public class RechargeActivity extends AbsStoreBaseActivity {
         Map<String,String> map=new HashMap<>();
         map.put("applyUser", SPUtilHelpr.getUserId());
         map.put("channelType","36");//36微信app支付 30支付宝支付
-        map.put("amount",StringUtils.getRequestPrice(mBinding.edtPrice.getText().toString()));
+        map.put("amount", MoneyUtils.getRequestPrice(mBinding.edtPrice.getText().toString()));
         map.put("token",SPUtilHelpr.getUserToken());
 
-        mSubscription.add(RetrofitUtils.getLoaderServer().wxPayRequest("802710",StringUtils.getJsonToString(map))
+        mSubscription.add(RetrofitUtils.getLoaderServer().wxPayRequest("802710", StringUtils.getJsonToString(map))
                 .compose(RxTransformerHelper.applySchedulerResult(this))
                 .subscribe(model -> {
                     PayUtil.callWXPay(this,model,CALLPAYTAG);
@@ -127,7 +128,7 @@ public class RechargeActivity extends AbsStoreBaseActivity {
         Map<String,String> map=new HashMap<>();
         map.put("applyUser", SPUtilHelpr.getUserId());
         map.put("channelType","30");//36微信app支付 30支付宝支付
-        map.put("amount",StringUtils.getRequestPrice(mBinding.edtPrice.getText().toString()));
+        map.put("amount",MoneyUtils.getRequestPrice(mBinding.edtPrice.getText().toString()));
         map.put("token",SPUtilHelpr.getUserToken());
 
         mSubscription.add(RetrofitUtils.getLoaderServer().rechargeRequest("802710",StringUtils.getJsonToString(map))

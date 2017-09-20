@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.AbsStoreBaseActivity;
 import com.chengdai.ehealthproject.databinding.ActivityPayCarSelectBinding;
@@ -12,7 +13,6 @@ import com.chengdai.ehealthproject.model.common.model.EventBusModel;
 import com.chengdai.ehealthproject.model.healthstore.adapters.ShopPayCarListAdApter;
 import com.chengdai.ehealthproject.model.healthstore.models.PayCarListModel;
 import com.chengdai.ehealthproject.model.healthstore.models.ShopListModel;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.chengdai.ehealthproject.weigit.appmanager.MyConfig.IMGURL;
+import static com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore.IMGURL;
 
 /**购物车查看
  * Created by 李先俊 on 2017/6/15.
@@ -140,7 +140,7 @@ public class ShopPayCarSelectActivity extends AbsStoreBaseActivity {
        map.put("start", mPageStart+"");
        map.put("limit", "10");
 
-      mSubscription.add ( RetrofitUtils.getLoaderServer().GetPayCarList("808045",StringUtils.getJsonToString(map))
+      mSubscription.add ( RetrofitUtils.getLoaderServer().GetPayCarList("808045", StringUtils.getJsonToString(map))
                 .compose(RxTransformerHelper.applySchedulerResult(context))
                 .subscribe(data -> {
 

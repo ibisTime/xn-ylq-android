@@ -6,16 +6,17 @@ import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cdkj.baselibrary.utils.DateUtil;
+import com.cdkj.baselibrary.utils.ImgUtils;
+import com.cdkj.baselibrary.utils.MoneyUtils;
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.BaseListFragment;
 import com.chengdai.ehealthproject.model.tabmy.activitys.OrderDetailsActivity;
 import com.chengdai.ehealthproject.model.tabmy.model.OrderRecordModel;
-import com.chengdai.ehealthproject.uitls.DateUtil;
-import com.chengdai.ehealthproject.uitls.ImgUtils;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -82,13 +83,13 @@ public class OrderRecordFragment extends BaseListFragment<OrderRecordModel.ListB
             tvDate.setText(DateUtil.format( new Date(item.getCreateDatetime()), DateUtil.DATE_YMD));
         }
 
-        tvPrice.setText(mActivity.getString(R.string.price_sing)+ StringUtils.showPrice(item.getPrice()));
+        tvPrice.setText(mActivity.getString(R.string.price_sing)+ MoneyUtils.showPrice(item.getPrice()));
 
         tvCode.setText(item.getCode());
 
         if(item.getStore() !=null ){
             tvName.setText(item.getStore().getName());
-            ImgUtils.loadImgURL(mActivity, MyConfig.IMGURL+item.getStore().getSplitAdvPic(),imgTitle);
+            ImgUtils.loadImgURL(mActivity, MyConfigStore.IMGURL+item.getStore().getSplitAdvPic(),imgTitle);
         }
     }
 

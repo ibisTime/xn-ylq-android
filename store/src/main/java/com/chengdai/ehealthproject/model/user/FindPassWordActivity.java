@@ -7,14 +7,14 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.cdkj.baselibrary.utils.AppUtils;
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.AbsStoreBaseActivity;
 import com.chengdai.ehealthproject.databinding.ActivityFindPwdBinding;
-import com.chengdai.ehealthproject.uitls.AppUtils;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -121,10 +121,10 @@ public class FindPassWordActivity extends AbsStoreBaseActivity {
         hashMap.put("loginPwdStrength","2");
         hashMap.put("smsCaptcha",mBinding.editPhoneCode.getText().toString());
         hashMap.put("kind","f1");
-        hashMap.put("systemCode",MyConfig.SYSTEMCODE);
+        hashMap.put("systemCode", MyConfigStore.SYSTEMCODE);
 
 
-        mSubscription.add(RetrofitUtils.getLoaderServer().FindPassWord("805048",StringUtils.getJsonToString(hashMap) )
+        mSubscription.add(RetrofitUtils.getLoaderServer().FindPassWord("805048", StringUtils.getJsonToString(hashMap) )
                 .compose(RxTransformerHelper.applySchedulerResult(this))
                 .subscribe(data -> {
                     if(data!=null && data.isSuccess()){
@@ -147,7 +147,7 @@ public class FindPassWordActivity extends AbsStoreBaseActivity {
     private void sendCodeRequest() {
         HashMap<String,String> hashMap=new LinkedHashMap<String, String>();
 
-        hashMap.put("systemCode", MyConfig.SYSTEMCODE);
+        hashMap.put("systemCode", MyConfigStore.SYSTEMCODE);
         hashMap.put("mobile",mBinding.editUsername.getText().toString());
         hashMap.put("bizType","805048");
         hashMap.put("kind","f1");

@@ -3,7 +3,8 @@ package com.chengdai.ehealthproject.model.healthstore.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.chengdai.ehealthproject.uitls.StringUtils;
+
+import com.cdkj.baselibrary.utils.StringUtils;
 
 import java.util.List;
 

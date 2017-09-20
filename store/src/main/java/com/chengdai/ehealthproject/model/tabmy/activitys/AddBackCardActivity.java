@@ -10,15 +10,15 @@ import android.text.InputFilter;
 import android.text.TextUtils;
 
 import com.cdkj.baselibrary.dialog.InputDialog;
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.AbsStoreBaseActivity;
 import com.chengdai.ehealthproject.databinding.ActivityBindBankCardStoreBinding;
 import com.chengdai.ehealthproject.model.tabmy.model.BankModel;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerListHelper;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 
 import java.util.HashMap;
@@ -110,9 +110,9 @@ public class AddBackCardActivity extends AbsStoreBaseActivity {
         object.put("type", "C");
         object.put("token", SPUtilHelpr.getUserToken());
         object.put("userId",SPUtilHelpr.getUserId());
-        object.put("systemCode", MyConfig.SYSTEMCODE);
+        object.put("systemCode", MyConfigStore.SYSTEMCODE);
 
-       mSubscription.add( RetrofitUtils.getLoaderServer().bindBankCard("802010",StringUtils.getJsonToString(object))
+       mSubscription.add( RetrofitUtils.getLoaderServer().bindBankCard("802010", StringUtils.getJsonToString(object))
                 .compose(RxTransformerHelper.applySchedulerAndAllFilter(this))
                 .subscribe(isSuccessModes -> {
                     showToast("绑定成功");

@@ -1,12 +1,11 @@
 package com.chengdai.ehealthproject.weigit;
 
 import android.content.Context;
-import android.net.Uri;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.chengdai.ehealthproject.R;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.youth.banner.loader.ImageLoader;
 
 /**
@@ -17,6 +16,6 @@ public class GlideImageLoader extends ImageLoader {
     @Override
     public void displayImage(Context context, Object path, ImageView imageView) {
         //Glide 加载图片简单用法
-        Glide.with(context).load(MyConfig.IMGURL+path).error(R.mipmap.default_pic).into(imageView);
+        Glide.with(context).load(MyConfigStore.IMGURL+path).error(R.mipmap.default_pic).into(imageView);
     }
 }

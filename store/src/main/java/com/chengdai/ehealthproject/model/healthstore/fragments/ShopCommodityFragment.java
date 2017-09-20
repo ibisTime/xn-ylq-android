@@ -3,24 +3,20 @@ package com.chengdai.ehealthproject.model.healthstore.fragments;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cdkj.baselibrary.utils.MoneyUtils;
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.BaseFragment;
 import com.chengdai.ehealthproject.databinding.FragmentShopCommodityBinding;
-import com.chengdai.ehealthproject.model.common.model.activitys.WebViewActivity;
 import com.chengdai.ehealthproject.model.healthstore.models.ShopListModel;
-import com.chengdai.ehealthproject.model.tabmy.fragments.HotelOrderRecordFragment;
-import com.chengdai.ehealthproject.uitls.LogUtil;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.weigit.GlideImageLoader;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.youth.banner.BannerConfig;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -82,12 +78,12 @@ public class ShopCommodityFragment extends BaseFragment {
         mBinding.txtInfo.setText(mData.getSlogan());
 
         if(mData.getProductSpecsList()!=null && mData.getProductSpecsList().size()>0){
-            if(mType== MyConfig.JFORDER){
-                mBinding.txtPrice.setText(StringUtils.showPrice(mData.getProductSpecsList().get(0).getPrice1())+"  积分");
+            if(mType== MyConfigStore.JFORDER){
+                mBinding.txtPrice.setText(MoneyUtils.showPrice(mData.getProductSpecsList().get(0).getPrice1())+"  积分");
             }else{
-                mBinding.txtPrice.setText(StringUtils.getShowPriceSign(mData.getProductSpecsList().get(0).getPrice1()));
+                mBinding.txtPrice.setText(MoneyUtils.getShowPriceSign(mData.getProductSpecsList().get(0).getPrice1()));
             }
-            mBinding.txtShichang.setText("市场参考价"+StringUtils.getShowPriceSign(mData.getProductSpecsList().get(0).getOriginalPrice()));
+            mBinding.txtShichang.setText("市场参考价"+MoneyUtils.getShowPriceSign(mData.getProductSpecsList().get(0).getOriginalPrice()));
 
         }
 

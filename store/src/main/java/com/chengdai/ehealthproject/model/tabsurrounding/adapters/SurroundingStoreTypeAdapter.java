@@ -4,10 +4,10 @@ import android.content.Context;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cdkj.baselibrary.utils.ImgUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.model.tabsurrounding.model.StoreTypeModel;
-import com.chengdai.ehealthproject.uitls.ImgUtils;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.zhy.adapter.abslistview.CommonAdapter;
 import com.zhy.adapter.abslistview.ViewHolder;
 
@@ -40,7 +40,7 @@ public class SurroundingStoreTypeAdapter extends CommonAdapter {
         StoreTypeModel model= (StoreTypeModel) item;
         if(model!=null){
             tv.setText(model.getName());
-            ImgUtils.loadImgURL(mContext, MyConfig.IMGURL+model.getPic(),img);
+            ImgUtils.loadActImg(mContext, MyConfigStore.IMGURL+model.getPic(),img);
         }
 
     }

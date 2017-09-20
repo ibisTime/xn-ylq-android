@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.cdkj.baselibrary.utils.ImgUtils;
+import com.cdkj.baselibrary.utils.MoneyUtils;
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.AbsStoreBaseActivity;
 import com.chengdai.ehealthproject.databinding.ActivityJfShopBinding;
@@ -15,12 +18,10 @@ import com.chengdai.ehealthproject.model.common.model.EventBusModel;
 import com.chengdai.ehealthproject.model.healthstore.adapters.ShopHotJfAdapter;
 import com.chengdai.ehealthproject.model.healthstore.adapters.ShopJfAdapter;
 import com.chengdai.ehealthproject.model.healthstore.models.ShopListModel;
-import com.chengdai.ehealthproject.uitls.ImgUtils;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerListHelper;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 import com.liaoinstan.springview.container.DefaultFooter;
 import com.liaoinstan.springview.container.DefaultHeader;
@@ -236,8 +237,8 @@ public class ShopJfActivity extends AbsStoreBaseActivity {
         map.put("status", "3");//已上架
         map.put("start", mJfStoreStart + "");
         map.put("limit", "10");
-        map.put("companyCode", MyConfig.COMPANYCODE);
-        map.put("systemCode", MyConfig.SYSTEMCODE);
+        map.put("companyCode", MyConfigStore.COMPANYCODE);
+        map.put("systemCode", MyConfigStore.SYSTEMCODE);
         map.put("orderDir", "asc");
         map.put("orderColumn", "order_no");
         map.put("location", "0");
@@ -297,8 +298,8 @@ public class ShopJfActivity extends AbsStoreBaseActivity {
         map.put("status", "3");//已上架
         map.put("start", mHotStoreStart + "");
         map.put("limit", "10");
-        map.put("companyCode", MyConfig.COMPANYCODE);
-        map.put("systemCode", MyConfig.SYSTEMCODE);
+        map.put("companyCode", MyConfigStore.COMPANYCODE);
+        map.put("systemCode", MyConfigStore.SYSTEMCODE);
         map.put("orderDir", "asc");
         map.put("orderColumn", "order_no");
         map.put("location", "1");
@@ -361,7 +362,7 @@ public class ShopJfActivity extends AbsStoreBaseActivity {
                 .subscribe(r -> {
                     mBinding.linJfInfo.setVisibility(View.VISIBLE);
                     mJfaccountNumber = r.get(0).getAccountNumber();
-                    mBinding.tvJf.setText(StringUtils.showJF(r.get(0).getAmount()));
+                    mBinding.tvJf.setText(MoneyUtils.showPrice(r.get(0).getAmount()));
 
                 }, throwable -> {
 //                    mBinding.linJfInfo.setVisibility(View.GONE);
@@ -389,15 +390,15 @@ public class ShopJfActivity extends AbsStoreBaseActivity {
 
                     if (r.getUserExt() == null) return;
 
-                    ImgUtils.loadImgLogo(this, MyConfig.IMGURL + r.getUserExt().getPhoto(), mBinding.imgUserLogo);
-                    if (MyConfig.GENDERMAN.equals(r.getUserExt().getGender())) {
+                    ImgUtils.loadActLogo(this, MyConfigStore.IMGURL + r.getUserExt().getPhoto(), mBinding.imgUserLogo);
+                    if (MyConfigStore.GENDERMAN.equals(r.getUserExt().getGender())) {
                         ImgUtils.loadImgId(this, R.mipmap.man, mBinding.imgSex);
-                    } else if (MyConfig.GENDERWOMAN.equals(r.getUserExt().getGender())) {
+                    } else if (MyConfigStore.GENDERWOMAN.equals(r.getUserExt().getGender())) {
                         ImgUtils.loadImgId(this, R.mipmap.woman, mBinding.imgSex);
                     }
-                    if (MyConfig.LEVEL_NOT_VIP.equals(r.getLevel())) {
+                    if (MyConfigStore.LEVEL_NOT_VIP.equals(r.getLevel())) {
                         mBinding.imgVip.setVisibility(View.GONE);
-                    } else if (MyConfig.LEVEL_VIP.equals(r.getLevel())) {
+                    } else if (MyConfigStore.LEVEL_VIP.equals(r.getLevel())) {
                         mBinding.imgVip.setVisibility(View.VISIBLE);
                     }
 

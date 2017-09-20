@@ -7,13 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.BaseFragment;
 import com.chengdai.ehealthproject.databinding.FragmentEvaluateBinding;
-import com.chengdai.ehealthproject.databinding.FragmentShopTabDetailsBinding;
 import com.chengdai.ehealthproject.model.healthstore.adapters.ShopEvaluateAdapter;
 import com.chengdai.ehealthproject.model.healthstore.models.ShopListModel;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerListHelper;
 

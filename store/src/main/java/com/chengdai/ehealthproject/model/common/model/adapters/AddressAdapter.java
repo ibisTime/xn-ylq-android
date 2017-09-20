@@ -7,17 +7,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cdkj.baselibrary.dialog.CommonDialog;
+import com.cdkj.baselibrary.utils.StringUtils;
+import com.cdkj.baselibrary.utils.ToastUtil;
 import com.chengdai.ehealthproject.R;
-import com.chengdai.ehealthproject.model.common.model.CityModel;
 import com.chengdai.ehealthproject.model.common.model.EventBusModel;
 import com.chengdai.ehealthproject.model.common.model.activitys.AddAddressActivity;
 import com.chengdai.ehealthproject.model.healthstore.models.getOrderAddressModel;
-import com.chengdai.ehealthproject.uitls.StringUtils;
-import com.chengdai.ehealthproject.uitls.ToastUtil;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
-import com.chengdai.ehealthproject.uitls.nets.RxTransformerListHelper;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 import com.zhy.adapter.abslistview.CommonAdapter;
 import com.zhy.adapter.abslistview.ViewHolder;
@@ -27,9 +25,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by 李先俊 on 2017/6/17.
@@ -122,10 +117,10 @@ public class AddressAdapter extends CommonAdapter<getOrderAddressModel> {
 
         object.put("code", code);
         object.put("token",SPUtilHelpr.getUserToken());
-        object.put("systemCode", MyConfig.SYSTEMCODE);
+        object.put("systemCode", MyConfigStore.SYSTEMCODE);
 
 
-        RetrofitUtils.getLoaderServer().AddressDelete("805161",StringUtils.getJsonToString(object))
+        RetrofitUtils.getLoaderServer().AddressDelete("805161", StringUtils.getJsonToString(object))
                 .compose(RxTransformerHelper.applySchedulerResult(mContext))
                 .subscribe(isSuccessModes -> {
 
@@ -165,7 +160,7 @@ public class AddressAdapter extends CommonAdapter<getOrderAddressModel> {
         map.put("code", code.getCode());
         map.put("token", SPUtilHelpr.getUserToken());
         map.put("userId", SPUtilHelpr.getUserId());
-        map.put("systemCode", MyConfig.SYSTEMCODE);
+        map.put("systemCode", MyConfigStore.SYSTEMCODE);
 
 
         RetrofitUtils.getLoaderServer().SetDefultAddress("805163", StringUtils.getJsonToString(map))

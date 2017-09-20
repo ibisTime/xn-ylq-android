@@ -2,9 +2,9 @@ package com.chengdai.ehealthproject.uitls.nets;
 
 import android.content.Context;
 
+import com.cdkj.baselibrary.utils.LogUtil;
 import com.chengdai.ehealthproject.base.BaseStoreActivity;
 import com.chengdai.ehealthproject.model.api.BaseResponseModel;
-import com.chengdai.ehealthproject.uitls.LogUtil;
 
 import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -84,7 +84,7 @@ public class RxTransformerHelper {
                     errorVerify.call(NET_ERROR, "暂无网络");
 
                 }else {
-                    if(LogUtil.isLog){
+                    if(LogUtil.isDeBug){
                         LogUtil.E("请求错误"+throwable.toString());
                         errorVerify.call("0",throwable.toString());
                     }else{

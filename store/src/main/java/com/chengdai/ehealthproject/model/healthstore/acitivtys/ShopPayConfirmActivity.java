@@ -6,18 +6,19 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.cdkj.baselibrary.model.pay.PaySucceedInfo;
+import com.cdkj.baselibrary.utils.ImgUtils;
+import com.cdkj.baselibrary.utils.MoneyUtils;
+import com.cdkj.baselibrary.utils.StringUtils;
+import com.cdkj.baselibrary.utils.payutils.PayUtil;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.AbsStoreBaseActivity;
 import com.chengdai.ehealthproject.databinding.ActivityShopPayConfirmBinding;
 import com.chengdai.ehealthproject.model.common.model.EventBusModel;
-import com.chengdai.ehealthproject.model.common.model.pay.PaySucceedInfo;
 import com.chengdai.ehealthproject.model.healthstore.models.ShopListModel;
-import com.chengdai.ehealthproject.uitls.ImgUtils;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerListHelper;
-import com.chengdai.ehealthproject.uitls.payutils.PayUtil;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 
 import org.greenrobot.eventbus.EventBus;
@@ -83,8 +84,8 @@ public class ShopPayConfirmActivity extends AbsStoreBaseActivity {
         }
 
         if(mData!=null){
-            mBinding.tvPrice.setText(StringUtils.getShowPriceSign(mData.getPrice1(),mData.getmBuyNum()));
-            mBinding.txtDiscountMoney.setText(StringUtils.getShowPriceSign(mData.getPrice1(),mData.getmBuyNum()));
+            mBinding.tvPrice.setText(MoneyUtils.getShowPriceSign(mData.getPrice1(),mData.getmBuyNum()));
+            mBinding.txtDiscountMoney.setText(MoneyUtils.getShowPriceSign(mData.getPrice1(),mData.getmBuyNum()));
         }
 
         initViews();
@@ -99,28 +100,28 @@ public class ShopPayConfirmActivity extends AbsStoreBaseActivity {
      */
     private void initPayTypeSelectState() {
 
-        ImgUtils.loadImgId(ShopPayConfirmActivity.this,R.mipmap.pay_select,mBinding.imgBalace);
-        ImgUtils.loadImgId(ShopPayConfirmActivity.this,R.mipmap.un_select,mBinding.imgWeixin);
-        ImgUtils.loadImgId(ShopPayConfirmActivity.this,R.mipmap.un_select,mBinding.imgZhifubao);
+        ImgUtils.loadActImgId(ShopPayConfirmActivity.this, R.mipmap.pay_select, mBinding.imgBalace);
+        ImgUtils.loadActImgId(ShopPayConfirmActivity.this,R.mipmap.un_select,mBinding.imgWeixin);
+        ImgUtils.loadActImgId(ShopPayConfirmActivity.this,R.mipmap.un_select,mBinding.imgZhifubao);
 
         mBinding.linBalace.setOnClickListener(v -> {
             mPayType=1;
-            ImgUtils.loadImgId(ShopPayConfirmActivity.this,R.mipmap.pay_select,mBinding.imgBalace);
-            ImgUtils.loadImgId(ShopPayConfirmActivity.this,R.mipmap.un_select,mBinding.imgWeixin);
-            ImgUtils.loadImgId(ShopPayConfirmActivity.this,R.mipmap.un_select,mBinding.imgZhifubao);
+            ImgUtils.loadActImgId(ShopPayConfirmActivity.this,R.mipmap.pay_select,mBinding.imgBalace);
+            ImgUtils.loadActImgId(ShopPayConfirmActivity.this,R.mipmap.un_select,mBinding.imgWeixin);
+            ImgUtils.loadActImgId(ShopPayConfirmActivity.this,R.mipmap.un_select,mBinding.imgZhifubao);
         });
      mBinding.linWeipay.setOnClickListener(v -> {
             mPayType=2;
-            ImgUtils.loadImgId(ShopPayConfirmActivity.this,R.mipmap.un_select,mBinding.imgBalace);
-            ImgUtils.loadImgId(ShopPayConfirmActivity.this,R.mipmap.pay_select,mBinding.imgWeixin);
-            ImgUtils.loadImgId(ShopPayConfirmActivity.this,R.mipmap.un_select,mBinding.imgZhifubao);
+            ImgUtils.loadActImgId(ShopPayConfirmActivity.this,R.mipmap.un_select,mBinding.imgBalace);
+            ImgUtils.loadActImgId(ShopPayConfirmActivity.this,R.mipmap.pay_select,mBinding.imgWeixin);
+            ImgUtils.loadActImgId(ShopPayConfirmActivity.this,R.mipmap.un_select,mBinding.imgZhifubao);
         });
 
      mBinding.linZhifubao.setOnClickListener(v -> {
            mPayType=3;
-            ImgUtils.loadImgId(ShopPayConfirmActivity.this,R.mipmap.un_select,mBinding.imgBalace);
-            ImgUtils.loadImgId(ShopPayConfirmActivity.this,R.mipmap.un_select,mBinding.imgWeixin);
-            ImgUtils.loadImgId(ShopPayConfirmActivity.this,R.mipmap.pay_select,mBinding.imgZhifubao);
+            ImgUtils.loadActImgId(ShopPayConfirmActivity.this,R.mipmap.un_select,mBinding.imgBalace);
+            ImgUtils.loadActImgId(ShopPayConfirmActivity.this,R.mipmap.un_select,mBinding.imgWeixin);
+            ImgUtils.loadActImgId(ShopPayConfirmActivity.this,R.mipmap.pay_select,mBinding.imgZhifubao);
         });
 
 
@@ -236,7 +237,7 @@ public class ShopPayConfirmActivity extends AbsStoreBaseActivity {
                 .compose(RxTransformerListHelper.applySchedulerResult(null))
                 .filter(r -> r != null && r.size() > 0 && r.get(0) != null)
                 .subscribe(r -> {
-                    mBinding.txtBalaceEnd.setText("(余额：" + getString(R.string.price_sing) + StringUtils.showPrice(r.get(0).getAmount()) + ")");
+                    mBinding.txtBalaceEnd.setText("(余额：" + getString(R.string.price_sing) + MoneyUtils.showPrice(r.get(0).getAmount()) + ")");
                 }, Throwable::printStackTrace));
     }
 

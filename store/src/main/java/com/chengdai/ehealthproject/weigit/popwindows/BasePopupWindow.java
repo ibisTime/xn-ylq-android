@@ -18,9 +18,7 @@ import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.PopupWindow;
 
-import com.chengdai.ehealthproject.uitls.InputMethodUtils;
-import com.chengdai.ehealthproject.weigit.popwindows.BasePopup;
-import com.chengdai.ehealthproject.weigit.popwindows.CustomPopupWindow;
+import com.cdkj.baselibrary.utils.InputMethodUtils;
 
 
 /**

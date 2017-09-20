@@ -19,7 +19,8 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.chengdai.ehealthproject.uitls.DensityUtil;
+
+import com.liaoinstan.springview.utils.DensityUtil;
 
 import java.util.List;
 

@@ -7,18 +7,19 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.cdkj.baselibrary.utils.ImgUtils;
+import com.cdkj.baselibrary.utils.MoneyUtils;
+import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.AbsStoreBaseActivity;
 import com.chengdai.ehealthproject.databinding.ActivityShopPayBinding;
 import com.chengdai.ehealthproject.model.common.model.activitys.AddressSelectActivity;
 import com.chengdai.ehealthproject.model.healthstore.models.ShopListModel;
 import com.chengdai.ehealthproject.model.healthstore.models.getOrderAddressModel;
-import com.chengdai.ehealthproject.uitls.ImgUtils;
-import com.chengdai.ehealthproject.uitls.StringUtils;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerHelper;
 import com.chengdai.ehealthproject.uitls.nets.RxTransformerListHelper;
-import com.chengdai.ehealthproject.weigit.appmanager.MyConfig;
+import com.chengdai.ehealthproject.weigit.appmanager.MyConfigStore;
 import com.chengdai.ehealthproject.weigit.appmanager.SPUtilHelpr;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -101,13 +102,13 @@ public class ShopCarPayActivity extends AbsStoreBaseActivity {
     private void setShowData() {
         if(mSelectProductData!=null){
 
-            mBinding.txtPriceSingle.setText(StringUtils.getShowPriceSign(mSelectProductData.getPrice1()));
+            mBinding.txtPriceSingle.setText(MoneyUtils.getShowPriceSign(mSelectProductData.getPrice1()));
 
             mBinding.txtName.setText(mSelectProductData.getName());
 
             mBinding.txtNumber.setText("X"+mBuyNum);
 
-            mBinding.textMoney.setText(StringUtils.getShowPriceSign(mSelectProductData.getPrice1(),mBuyNum));
+            mBinding.textMoney.setText(MoneyUtils.getShowPriceSign(mSelectProductData.getPrice1(),mBuyNum));
         }
 
         ImgUtils.loadImgURL(this,imgUrl,mBinding.imgGood);
@@ -146,8 +147,8 @@ public class ShopCarPayActivity extends AbsStoreBaseActivity {
         pojo.put("reAddress", mAddressList.get(0).getProvince() + " " + mAddressList.get(0).getCity() + " " + mAddressList.get(0).getDistrict() + " " + mAddressList.get(0).getDetailAddress());
         pojo.put("applyUser", SPUtilHelpr.getUserId());
         pojo.put("applyNote", mBinding.edtEnjoin.getText().toString().trim());
-        pojo.put("companyCode", MyConfig.COMPANYCODE);
-        pojo.put("systemCode", MyConfig.SYSTEMCODE);
+        pojo.put("companyCode", MyConfigStore.COMPANYCODE);
+        pojo.put("systemCode", MyConfigStore.SYSTEMCODE);
         pojo.put("token", SPUtilHelpr.getUserToken());
 
         object.put("cartCodeList",codelist );
@@ -157,7 +158,7 @@ public class ShopCarPayActivity extends AbsStoreBaseActivity {
 
 
 
-       mSubscription.add( RetrofitUtils.getLoaderServer().ShopOrderCerate("808051",StringUtils.getJsonToString(object))
+       mSubscription.add( RetrofitUtils.getLoaderServer().ShopOrderCerate("808051", StringUtils.getJsonToString(object))
                 .compose(RxTransformerHelper.applySchedulerResult(this))
                 .subscribe(codeModel -> {
                    if(!TextUtils.isEmpty(codeModel)){

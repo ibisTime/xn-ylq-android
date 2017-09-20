@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.model.common.model.TimeModel;
 import com.chengdai.ehealthproject.uitls.TimeUtil;
-import com.chengdai.ehealthproject.weigit.popwindows.BasePopupWindow;
 import com.chengdai.ehealthproject.weigit.views.MyScrollPicker;
 import com.chengdai.ehealthproject.weigit.views.ScrollPicker;
 
