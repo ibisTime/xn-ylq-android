@@ -203,6 +203,7 @@
                 <View style="@style/split_line_5" />
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/lin_health_task"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -238,6 +239,7 @@
 
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/lin_health_doc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -272,6 +274,7 @@
                 <View style="@style/style_split_line" />
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/healthcircle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -280,6 +283,7 @@
                     android:paddingRight="25dp">
 
                     <ImageView
+                        android:id="@+id/imageView"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_gravity="center_vertical"
@@ -327,7 +331,7 @@
                         android:layout_weight="1"
                         android:gravity="center_vertical"
                         android:paddingLeft="15dp"
-                        android:text="@string/txt_health_store"
+                        android:text="商城订单"
                         android:textColor="@color/black_2"
                         android:textSize="16sp" />
 
@@ -343,6 +347,7 @@
 
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"

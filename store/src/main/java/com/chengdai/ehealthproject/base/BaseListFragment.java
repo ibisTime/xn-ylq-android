@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cdkj.baselibrary.base.BaseLazyFragment;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.databinding.CommonRecycleerBinding;
 import com.chengdai.ehealthproject.weigit.views.MyDividerItemDecoration;

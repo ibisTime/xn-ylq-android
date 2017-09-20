@@ -8,11 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cdkj.baselibrary.base.BaseLazyFragment;
 import com.cdkj.baselibrary.utils.ImgUtils;
 import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
-import com.chengdai.ehealthproject.base.BaseLazyFragment;
 import com.chengdai.ehealthproject.databinding.FragmentMyStoreBinding;
 import com.chengdai.ehealthproject.model.common.model.EventBusModel;
 import com.chengdai.ehealthproject.model.common.model.UserInfoModel;
@@ -21,7 +21,6 @@ import com.chengdai.ehealthproject.model.tabmy.activitys.HotelOrderStateLookActi
 import com.chengdai.ehealthproject.model.tabmy.activitys.MyAmountActivity;
 import com.chengdai.ehealthproject.model.tabmy.activitys.MyInfoActivity;
 import com.chengdai.ehealthproject.model.tabmy.activitys.MyJFDetailsActivity;
-import com.chengdai.ehealthproject.model.tabmy.activitys.MyTestHistoryActivity;
 import com.chengdai.ehealthproject.model.tabmy.activitys.SettingActivity;
 import com.chengdai.ehealthproject.model.tabmy.activitys.ShopAllOrderLookActivity;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
@@ -101,7 +100,7 @@ public class MyFragment extends BaseLazyFragment {
 
         //健康档案
         mBinding.linHealthDoc.setOnClickListener(v -> {
-            MyTestHistoryActivity.open(mActivity);
+//            MyTestHistoryActivity.open(mActivity);
         });
 
         //积分流水

@@ -10,13 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cdkj.baselibrary.base.BaseLazyFragment;
 import com.cdkj.baselibrary.utils.ImgUtils;
 import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.baselibrary.utils.ToastUtil;
 import com.cdkj.baselibrary.utils.payutils.PayUtil;
 import com.chengdai.ehealthproject.R;
-import com.chengdai.ehealthproject.base.BaseLazyFragment;
 import com.chengdai.ehealthproject.databinding.ActivityRechargeBinding;
 import com.chengdai.ehealthproject.model.tabmy.activitys.RechargeTabActivity;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;

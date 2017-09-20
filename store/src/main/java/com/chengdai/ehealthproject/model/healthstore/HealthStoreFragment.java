@@ -15,11 +15,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.cdkj.baselibrary.base.BaseLazyFragment;
 import com.cdkj.baselibrary.utils.ImgUtils;
 import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.chengdai.ehealthproject.R;
-import com.chengdai.ehealthproject.base.BaseLazyFragment;
 import com.chengdai.ehealthproject.databinding.FragmentShopTabBinding;
 import com.chengdai.ehealthproject.model.common.model.EventBusModel;
 import com.chengdai.ehealthproject.model.common.model.activitys.WebViewActivity;
@@ -59,7 +59,7 @@ import java.util.Map;
  * Created by 李先俊 on 2017/6/8.
  */
 
-public class HealthStoreFragment extends BaseLazyFragment{
+public class HealthStoreFragment extends BaseLazyFragment {
 
     private FragmentShopTabBinding mBinding;
 
@@ -218,7 +218,7 @@ public class HealthStoreFragment extends BaseLazyFragment{
                 return;
             }
 
-            ShopPayCarSelectActivity.open(mActivity);
+//            ShopPayCarSelectActivity.open(mActivity);
         });
 
         mBinding.search.editSerchView.setHint("请输入您感兴趣的商品");

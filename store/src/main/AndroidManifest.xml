@@ -36,7 +36,7 @@
         android:allowBackup="true"
         android:label="@string/app_name"
         android:supportsRtl="true">
-        <activity android:name=".model.other.WelcomeAcitivity">
+        <activity android:name=".model.other.MainActivity">
         </activity>
 
         //高德定位
@@ -53,13 +53,6 @@
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
             android:screenOrientation="behind"></activity>
-
-
-        //主页
-        <activity
-            android:name=".model.other.MainActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
         //选择地图
         <activity
             android:name=".base.SelectMapActivity"
@@ -74,54 +67,6 @@
         //登录
         <activity
             android:name=".model.user.LoginActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        //周边商户选择
-        <activity
-            android:name=".model.tabsurrounding.activitys.SurroundingMenuSeletActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        //商户详情
-        <activity
-            android:name=".model.tabsurrounding.activitys.StoredetailsActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        //商户分类列表
-        <activity
-            android:name=".model.tabsurrounding.activitys.StoreTypeActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        //支付
-        <activity
-            android:name=".model.tabsurrounding.activitys.SurroundingPayActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-
-        //房间选择
-        <activity
-            android:name=".model.tabsurrounding.activitys.HotelSelectActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        //酒店详情
-        <activity
-            android:name=".model.tabsurrounding.activitys.HoteldetailsActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-
-        //酒店订单创建
-        <activity
-            android:name=".model.tabsurrounding.activitys.HotelOrderCreateActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        //酒店订单支付
-        <activity
-            android:name=".model.tabsurrounding.activitys.HotelOrderPayActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-
-        //酒店房间详情
-        <activity
-            android:name=".model.tabsurrounding.activitys.HotelRoomDetailsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
@@ -141,11 +86,6 @@
             android:name=".model.tabmy.activitys.HotelOrderDetailsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-        //周边搜索
-        <activity
-            android:name=".model.common.model.activitys.SearchActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
         //Web
         <activity
             android:name=".model.common.model.activitys.WebViewActivity"
@@ -154,11 +94,6 @@
         //设置界面
         <activity
             android:name=".model.tabmy.activitys.SettingActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        //城市选择
-        <activity
-            android:name=".model.common.model.activitys.CitySelectActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         //商城分类

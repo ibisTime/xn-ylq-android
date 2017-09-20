@@ -8,7 +8,6 @@
     <!--登录状态栏颜色-->
     <color name="white">#ffffff</color>
     <color name="gray">#ececec</color>
-    <color name="gray_4">#f4f4f4</color>
     <color name="fontColor_support">#999999</color>
     <color name="text_gray">#999999</color>
     <color name="text_hint_color">#a1a1a1</color>
@@ -41,7 +40,6 @@
     <color name="color_common_white">#FFFFFF</color>
     <!--共用的黑色-->
     <!--<color name="color_common_black">#000000</color>-->
-    <color name="color_common_black">#2B2D3A</color>
     <!--白色标题背景颜色-->
     <!--编辑框提示输入颜色-->
     <color name="color_hint">#979797</color>

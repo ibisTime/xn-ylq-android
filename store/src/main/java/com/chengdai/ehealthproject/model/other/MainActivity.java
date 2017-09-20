@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.cdkj.baselibrary.dialog.CommonDialog;
 import com.cdkj.baselibrary.utils.AppUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
@@ -17,6 +18,7 @@ import com.chengdai.ehealthproject.model.common.model.EventBusModel;
 import com.chengdai.ehealthproject.model.common.model.IntroductionInfoModel;
 import com.chengdai.ehealthproject.model.dataadapters.ViewPagerAdapter;
 import com.chengdai.ehealthproject.model.healthstore.HealthStoreFragment;
+import com.chengdai.ehealthproject.model.paycar.MyPayCarFragment;
 import com.chengdai.ehealthproject.model.tabmy.MyFragment;
 import com.chengdai.ehealthproject.model.user.LoginActivity;
 import com.chengdai.ehealthproject.uitls.nets.RetrofitUtils;
@@ -35,7 +37,7 @@ import java.util.Map;
 /**
  * 主页面
  */
-
+@Route(path = "/store/welcome")
 public class MainActivity extends BaseStoreActivity {
 
     private ActivityMainStoreBinding mainBinding;
@@ -93,41 +95,21 @@ public class MainActivity extends BaseStoreActivity {
         mainBinding.pagerMain.setPagingEnabled(false);//禁止左右切换
 
         List<Fragment> fragments = new ArrayList<>(); //设置fragment数据
-
-//        fragments.add(new HealthManagerFragment());
         fragments.add(new HealthStoreFragment());
-        fragments.add(new HealthStoreFragment());
-        fragments.add(new HealthStoreFragment());
-        fragments.add(new HealthStoreFragment());
+        fragments.add(new MyPayCarFragment());
         fragments.add(new MyFragment());
 
         mainBinding.pagerMain.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), fragments));
 
         mainBinding.pagerMain.setOffscreenPageLimit(fragments.size());
 
-        mainBinding.layoutMainButtomStore.radioMainTabManager.setOnClickListener(v -> {
+        mainBinding.layoutMainButtomStore.radioMainTabStore.setOnClickListener(v -> {
             mainBinding.pagerMain.setCurrentItem(0, false);
             mTabIndex = 1;
         });
-        mainBinding.layoutMainButtomStore.radioMainTabFriend.setOnClickListener(v -> {
-
+        mainBinding.layoutMainButtomStore.radioMainTabCar.setOnClickListener(v -> {
             mainBinding.pagerMain.setCurrentItem(1, false);
             mTabIndex = 2;
-        });
-
-
-        mainBinding.layoutMainButtomStore.radioMainTabTourism.setOnClickListener(v -> {
-            mainBinding.pagerMain.setCurrentItem(2, false);
-            mTabIndex = 3;
-        });
-
-        mainBinding.layoutMainButtomStore.radioMainTabSurrounding.setOnClickListener(v -> {
-            mainBinding.pagerMain.setCurrentItem(3, false);
-            mTabIndex = 4;
-        });
-        mainBinding.layoutMainButtomStore.radioMainTabShop.setOnClickListener(v -> {
-            mainBinding.pagerMain.setCurrentItem(4, false);
-            mTabIndex = 5;
         });
 
 
@@ -138,8 +120,8 @@ public class MainActivity extends BaseStoreActivity {
 
                 LoginActivity.open(this, false);
             } else {
-                mTabIndex = 6;
-                mainBinding.pagerMain.setCurrentItem(6, false);
+                mTabIndex = 3;
+                mainBinding.pagerMain.setCurrentItem(2, false);
             }
         });
         setTabIndex();
@@ -180,21 +162,12 @@ public class MainActivity extends BaseStoreActivity {
     private void setTabIndex() {
         switch (mTabIndex) {
             case 1:
-                mainBinding.layoutMainButtomStore.radioMainTabManager.setChecked(true);
+                mainBinding.layoutMainButtomStore.radioMainTabStore.setChecked(true);
                 break;
             case 2:
-                mainBinding.layoutMainButtomStore.radioMainTabFriend.setChecked(true);
+                mainBinding.layoutMainButtomStore.radioMainTabCar.setChecked(true);
                 break;
             case 3:
-                mainBinding.layoutMainButtomStore.radioMainTabTourism.setChecked(true);
-                break;
-            case 4:
-                mainBinding.layoutMainButtomStore.radioMainTabSurrounding.setChecked(true);
-                break;
-            case 5:
-                mainBinding.layoutMainButtomStore.radioMainTabShop.setChecked(true);
-                break;
-            case 6:
                 mainBinding.layoutMainButtomStore.radioMainTabMy.setChecked(true);
                 break;
         }

@@ -34,7 +34,7 @@ import java.util.Map;
  * Created by 李先俊 on 2017/6/15.
  */
 
-public class ShopJfOrderRecordFragment extends BaseListFragment<ShopOrderDetailBean>{
+public class ShopJfOrderRecordFragment extends BaseListFragment<ShopOrderDetailBean> {
 
     private String mState;
 

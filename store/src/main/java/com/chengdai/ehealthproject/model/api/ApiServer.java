@@ -10,8 +10,6 @@ import com.chengdai.ehealthproject.model.common.model.IsSuccessModes;
 import com.chengdai.ehealthproject.model.common.model.UpdateModel;
 import com.chengdai.ehealthproject.model.common.model.UserInfoModel;
 import com.chengdai.ehealthproject.model.common.model.qiniu.QiniuGetTokenModel;
-import com.chengdai.ehealthproject.model.healthcircle.models.ArticleModel;
-import com.chengdai.ehealthproject.model.healthmanager.model.JfGuideListModel;
 import com.chengdai.ehealthproject.model.healthstore.models.JfPicModel;
 import com.chengdai.ehealthproject.model.healthstore.models.PayCarListModel;
 import com.chengdai.ehealthproject.model.healthstore.models.ShopEvaluateModel;
@@ -385,15 +383,6 @@ public interface ApiServer {
     @POST("api")
     Observable<BaseResponseModel<QiniuGetTokenModel>> GetQiniuTOken(@Field("code") String code, @Field("json") String  json);
 
-    /**
-     * 获取帖子列表数据
-     * @param code
-     * @param json
-     * @return
-             */
-    @FormUrlEncoded
-    @POST("api")
-    Observable<BaseResponseModel<ArticleModel>> GetArticleLisData(@Field("code") String code, @Field("json") String  json);
 
     /**
      * 更新健康任务
@@ -437,14 +426,6 @@ public interface ApiServer {
     @FormUrlEncoded
     @POST("api")
     Observable<BaseResponseModel<IsSuccessModes>> deleteTiezi(@Field("code") String code, @Field("json") String  json);
-
-  /**
-     * 获取积分引导页面数据
-     * @return
-     */
-    @FormUrlEncoded
-    @POST("api")
-    Observable<BaseResponseModel<JfGuideListModel>> getJfGuideList(@Field("code") String code, @Field("json") String  json);
 
     /**
      * 根据ckey查询系统参数

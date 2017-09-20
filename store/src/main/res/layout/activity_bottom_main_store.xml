@@ -17,60 +17,12 @@
         android:layout_height="wrap_content">
 
         <RadioButton
-            android:visibility="gone"
             android:clickable="false"
-            android:id="@+id/radio_main_tab_manager"
+            android:id="@+id/radio_main_tab_store"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="健康管理"
-            android:button="@null"
-            android:drawablePadding="7dp"
-            android:drawableTop="@drawable/main_buttom_tab_1"
-            android:gravity="center"
-            android:textColor="@drawable/tab_txtcolor"
-            android:textSize="12sp"
-            android:checked="true" />
-
-        <RadioButton
-            android:visibility="gone"
-            android:clickable="false"
-            android:id="@+id/radio_main_tab_friend"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/txt_health_circle"
-            android:button="@null"
-            android:drawableTop="@drawable/main_buttom_tab_2"
-            android:gravity="center"
-            android:drawablePadding="5dp"
-            android:textColor="@drawable/tab_txtcolor"
-            android:textSize="12sp"
-            android:checked="false" />
-
-        <RadioButton
-            android:visibility="gone"
-            android:clickable="false"
-            android:id="@+id/radio_main_tab_tourism"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/txt_tourism"
-            android:button="@null"
-            android:drawableTop="@drawable/main_buttom_tab_6"
-            android:gravity="center"
-            android:drawablePadding="5dp"
-            android:textColor="@drawable/tab_txtcolor"
-            android:textSize="12sp"
-            android:checked="false" />
-
-        <RadioButton
-            android:clickable="false"
-            android:id="@+id/radio_main_tab_surrounding"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/txt_surrounding"
+            android:text="商城"
             android:button="@null"
             android:drawableTop="@drawable/main_buttom_tab_3"
             android:gravity="center"
@@ -82,11 +34,11 @@
 
         <RadioButton
             android:clickable="false"
-            android:id="@+id/radio_main_tab_shop"
+            android:id="@+id/radio_main_tab_car"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/txt_health_store"
+            android:text="购物车"
             android:button="@null"
             android:drawableTop="@drawable/main_buttom_tab_4"
             android:gravity="center"
