@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <View
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/mydialog_bg"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="center"
+            android:text="选择地图"
+            android:textColor="@color/color_common_font"
+            android:textSize="14sp" />
+
+        <View style="@style/style_split_line" />
+
+        <TextView
+            android:id="@+id/tv_baidu_map"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="center"
+            android:text="百度地图(推荐)"
+            android:textColor="@color/color_common_blue"
+            android:textSize="16sp" />
+
+        <View style="@style/style_split_line" />
+
+        <TextView
+            android:id="@+id/tv_gaode_map"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="center"
+            android:text="高德地图"
+            android:textColor="@color/color_common_blue"
+            android:textSize="16sp" />
+
+        <View style="@style/style_split_line" />
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_google_map"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="center"
+            android:text="google地图"
+            android:textColor="@color/color_common_blue"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/mydialog_bg"
+        android:gravity="center"
+        android:text="取消"
+        android:textColor="@color/color_hint"
+        android:textSize="16sp" />
+
+</LinearLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="tjtype">
+        <item>会员</item>
+        <item>供应商</item>
+        <item>o2o商家</item>
+        <item>名宿主</item>
+        <item>市/区运营商</item>
+    </string-array>
+
+    <string-array name="tj_type_code">
+        <item>f1</item>
+        <item>supplier</item>
+        <item>o2o</item>
+        <item>mingsu</item>
+        <item>operator</item>
+    </string-array>
+    <attr name="LoadingViewStyle" format="reference" />
+    <declare-styleable name="LoadingView">
+        <attr name="loading_view_size" format="dimension"/>
+        <attr name="android:color"/>
+    </declare-styleable>
+</resources>

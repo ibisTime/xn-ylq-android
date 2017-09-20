@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+        <FrameLayout
+            android:layout_marginTop="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimens_44_height">
+
+
+            <RadioGroup
+                android:id="@+id/radiogroup"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/whilte_bg_line"
+                android:layout_marginBottom="7px"
+                android:layout_marginTop="7px"
+                android:weightSum="2">
+
+                <RadioButton
+                    android:checked="true"
+                    android:id="@+id/radio_left"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:background="@drawable/call_friend_top_check_left"
+                    android:gravity="center"
+                    android:padding="@dimen/dimens_6_distance"
+                    android:text="二维码"
+                    android:textColor="@drawable/btn_checkcolor"
+                    android:textSize="@dimen/dimens_12_font" />
+
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/color_common_white" />
+
+                <RadioButton
+                    android:id="@+id/radio_right"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/call_friend_top_check_right"
+                    android:button="@null"
+                    android:checked="false"
+                    android:gravity="center"
+                    android:padding="@dimen/dimens_6_distance"
+                    android:text="邀请码"
+                    android:textColor="@drawable/btn_checkcolor"
+                    android:textSize="@dimen/dimens_12_font" />
+            </RadioGroup>
+
+        </FrameLayout>
+</layout>

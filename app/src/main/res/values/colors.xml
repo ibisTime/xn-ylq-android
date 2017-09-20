@@ -21,15 +21,6 @@
 
 
     <color name="item_lv1_open">#0cb8ae</color>
-    <color name="item_none">#00e1d0d0</color>
-    <color name="item_lv2_open">#fba72e</color>
-    <color name="item_lv3_open">#f16254</color>
-    <color name="item_lv4_open">#28a6e6</color>
-
-  <color name="item_lv1_close">#820cb8ae</color>
-    <color name="item_lv2_close">#82fba72e</color>
-    <color name="item_lv3_close">#82f16254</color>
-    <color name="item_lv4_close">#8128a6e6</color>
 
 
     <color name="money_yellow">#fba72e</color>
@@ -37,5 +28,4 @@
 
     <color name="cert_state_edit">#3db3f7</color>
     <color name="cert_state_ok">#0cb8ae</color>
-    <color name="cert_state_yellow">#fba72e</color>
 </resources>

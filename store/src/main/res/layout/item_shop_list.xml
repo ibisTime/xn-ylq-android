@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ra_itme_surrounding"
+    android:paddingTop="15dp"
+    android:paddingBottom="10dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:scaleType="fitXY"
+        android:id="@+id/img_shop_title"
+        android:layout_marginLeft="15dp"
+        tools:src="@mipmap/hotel"
+        android:layout_width="80dp"
+        android:layout_height="75dp" />
+
+        <TextView
+            android:layout_marginRight="15dp"
+            android:maxLines="1"
+            android:layout_marginLeft="14dp"
+            android:layout_toRightOf="@+id/img_shop_title"
+            android:id="@+id/tv_store_title"
+            android:ellipsize="end"
+            android:textSize="14sp"
+            android:textColor="@color/text_color"
+            tools:text="好吃好吃啊后士大夫士大夫"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+            <TextView
+                android:maxLines="1"
+                android:ellipsize="end"
+                tools:text="好吃好吃好吃"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="15dp"
+                android:layout_toRightOf="@+id/img_shop_title"
+                android:id="@+id/tv_slogan"
+                android:gravity="left"
+                android:layout_below="@+id/tv_store_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+               />
+
+        <TextView
+            android:layout_marginRight="15dp"
+            android:maxLines="1"
+            android:layout_below="@+id/tv_slogan"
+            android:layout_marginTop="5dp"
+            android:id="@+id/tv_price"
+            android:ellipsize="end"
+            android:textSize="12sp"
+            android:textColor="@color/price_color"
+            tools:text="天使城dfdfdfddfdfdfdfdfdfdfdfdfd8号楼"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/tv_slogan" />
+
+    <TextView
+            android:maxLines="1"
+            android:layout_below="@+id/tv_price"
+            android:layout_marginTop="5dp"
+            android:id="@+id/tv_price_reference"
+            android:ellipsize="end"
+            android:textSize="12sp"
+            android:textColor="@color/text_gray"
+            tools:text="天使城dfdf8号楼"
+            android:layout_marginRight="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/tv_slogan" />
+
+<!--    <View
+        android:layout_marginTop="20dp"
+      android:layout_below="@+id/img_shop_title"
+        style="@style/hline"
+     />-->
+</RelativeLayout>
+
+
+
+

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lin_root"
+    android:background="@color/white"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginLeft="15dp"
+            android:text="订单编号:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_marginRight="15dp"
+            android:layout_gravity="right"
+            tools:text="121211"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_code"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        tools:text="sdfsdfsdfsdfsdfdsf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_marginTop="10dp"
+        style="@style/style_split_line"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/img_hotel_info"
+            android:layout_width="95dp"
+            android:layout_height="90dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:scaleType="fitXY"
+            tools:src="@mipmap/icon" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_hotel_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color"
+                android:textSize="16sp"
+                tools:text="标准单人间" />
+
+            <TextView
+                android:id="@+id/tv_hotel_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:lineSpacingExtra="5dp"
+                android:textColor="@color/text_gray"
+                android:textSize="16sp"
+                tools:text="标准单人间标准单人间标准单人间标准单人间标准单人间" />
+
+
+            <TextView
+                android:id="@+id/tv_hotel_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:lineSpacingExtra="5dp"
+                android:textColor="@color/text_gray"
+                android:textSize="16sp"
+                tools:text="标准单人间标准单人间标准单人间标准单人间标准单人间" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:visibility="gone"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="right"
+        android:id="@+id/tv_sure_pay"
+        android:text="确认支付"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:background="@color/orange"
+        android:textColor="@color/white"
+        android:layout_width="100dp"
+        android:layout_height="40dp" />
+
+
+</LinearLayout>

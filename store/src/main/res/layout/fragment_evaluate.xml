@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:background="@color/gray"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:layout_height="44dp">
+
+            <TextView
+                android:layout_marginLeft="15dp"
+                android:text="好评率"
+                android:textSize="15sp"
+                android:textColor="@color/fontColor_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        <!--    <com.chengdai.ehealthproject.weigit.views.StarBar
+                app:starCount="5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />-->
+
+
+
+            <TextView
+                android:id="@+id/txt_number"
+                android:gravity="right"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:textSize="14sp"
+                android:textColor="@color/fontColor_support"
+                android:text="购买人数(0)"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:visibility="gone"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="暂无评论"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <com.liaoinstan.springview.widget.SpringView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ListView
+                android:id="@+id/list_evaluate"
+                android:dividerHeight="0.5dp"
+                android:divider="@color/lineColor"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></ListView>
+
+        </com.liaoinstan.springview.widget.SpringView>
+
+
+    </LinearLayout>
+</layout>

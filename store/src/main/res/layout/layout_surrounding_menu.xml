@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_weight="4"
+        >
+
+
+        <LinearLayout
+            android:id="@+id/lin_food"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@mipmap/food"
+                android:layout_width="35dp"
+                android:layout_height="35dp" />
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:text="@string/txt_food"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/lin_movement"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@mipmap/movement"
+                android:layout_width="35dp"
+                android:layout_height="35dp" />
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:text="@string/txt_movement"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/lin_womenhome"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@mipmap/womenhome"
+                android:layout_width="35dp"
+                android:layout_height="35dp" />
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:text="@string/txt_women_home"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/lin_life"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@mipmap/life"
+                android:layout_width="35dp"
+                android:layout_height="35dp" />
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:text="@string/txt_life"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_marginTop="28dp"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_weight="4"
+        >
+
+
+        <LinearLayout
+            android:id="@+id/lin_hotel"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@mipmap/hotel"
+                android:layout_width="35dp"
+                android:layout_height="35dp" />
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:text="@string/txt_hotel"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/lin_dabaojian"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@mipmap/dabaojian"
+                android:layout_width="35dp"
+                android:layout_height="35dp" />
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:text="@string/txt_dabaojian"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/lin_life2"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@mipmap/life2"
+                android:layout_width="35dp"
+                android:layout_height="35dp" />
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:text="@string/txt_life2"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_shopping"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@mipmap/shopping"
+                android:layout_width="35dp"
+                android:layout_height="35dp" />
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:text="@string/txt_sopping"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+</LinearLayout>
+</layout>

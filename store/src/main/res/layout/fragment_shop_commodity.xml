@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:banner="http://schemas.android.com/apk/res-auto">
+<LinearLayout
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+                <com.youth.banner.Banner
+                    android:id="@+id/banner"
+                    banner:delay_time="4000"
+                    banner:indicator_drawable_selected="@drawable/banner_select"
+                    banner:indicator_drawable_unselected="@drawable/banner_un_select"
+                    banner:indicator_width="8dp"
+                    banner:indicator_height="8dp"
+                    banner:indicator_margin="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/banner_height" />
+
+
+            <View
+                android:background="@color/text_gray2"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    tools:text="sdfsdf"
+                    android:id="@+id/txt_name"
+                    android:textSize="16sp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:textColor="@color/text_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    tools:text="sdfsdf"
+                    android:id="@+id/txt_info"
+                    android:textColor="@color/fontColor_support"
+                    android:textSize="14sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                 <TextView
+                     tools:text="sdfsdf"
+                    android:id="@+id/txt_price"
+                    android:textColor="@color/price_color"
+                    android:textSize="14sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    tools:text="市场参考价"
+                    android:id="@+id/txt_shichang"
+                    android:textColor="@color/fontColor_support"
+                    android:textSize="12sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:gravity="bottom"
+                    android:layout_marginTop="11dp"
+                    android:layout_marginLeft="15dp"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <View
+                android:background="@color/gray"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"/>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+                <TextView
+                    android:textSize="14sp"
+                    android:textColor="@color/text_gray2"
+                    android:text="数量"
+                    android:layout_marginLeft="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/txt_subtract"
+                    android:text="-"
+                    android:gravity="center"
+                    android:textColor="@color/text_gray2"
+                    android:background="@drawable/border_number"
+                    android:layout_marginLeft="19dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp" />
+
+                <TextView
+                    android:id="@+id/txt_number"
+                    android:gravity="center"
+                    android:textSize="15sp"
+                    android:textColor="@color/text_gray2"
+                    android:layout_marginLeft="35dp"
+                    android:layout_width="35dp"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/txt_add"
+                    android:text="+"
+                    android:gravity="center"
+                    android:textColor="@color/text_gray2"
+                    android:background="@drawable/border_number"
+                    android:layout_marginLeft="35dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+    
+</LinearLayout>
+</layout>

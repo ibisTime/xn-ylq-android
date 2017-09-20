@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_jfnum"
+            android:gravity="center"
+            tools:text="18"
+            android:background="@color/txt_title_bg"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:layout_width="match_parent"
+            android:layout_height="45dp" />
+        <TextView
+
+            android:paddingBottom="5dp"
+            android:gravity="center"
+            android:text="积分"
+            android:background="@color/txt_title_bg"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <com.liaoinstan.springview.widget.SpringView
+        android:id="@+id/springvew"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:background="@color/white"
+            android:id="@+id/cycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </com.liaoinstan.springview.widget.SpringView>
+
+
+</LinearLayout>
+
+</layout>

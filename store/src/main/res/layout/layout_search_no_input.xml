@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/gray"
+    >
+    <!--  <View
+          style="@style/black_hline"
+        />-->
+    <LinearLayout
+        android:id="@+id/lin_serchtop"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/shape_search_bg"
+        android:paddingLeft="15dp">
+
+        <ImageView
+            android:id="@+id/img_search"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/search" />
+
+        <TextView
+            android:gravity="center_vertical"
+            android:id="@+id/edit_serchView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:hint="请输入您感兴趣的商户"
+            android:textColorHint="@color/text_hint_color"
+            android:paddingLeft="10dp"
+            android:paddingRight="12dp"
+            android:textSize="13sp" />
+    </LinearLayout>
+    <!--   <View
+           style="@style/black_hline"
+           />-->
+</LinearLayout>
+</layout>

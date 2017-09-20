@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+
+            android:id="@+id/tv_title"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:text="健康管理"
+            android:textSize="18sp"
+            android:background="@color/activity_title_bg"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_height"/>
+
+
+        <FrameLayout
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.liaoinstan.springview.widget.SpringView
+                android:id="@+id/springview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ListView
+                    android:scrollbars="none"
+                    android:id="@+id/lv_manager_first"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </com.liaoinstan.springview.widget.SpringView>
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_empty"
+                android:layout_marginTop="160dp"
+                android:gravity="center"
+                android:text="暂无数据"
+                android:textSize="18sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
+
+
+    </LinearLayout>
+</layout>

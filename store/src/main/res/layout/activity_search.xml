@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+ <include android:id="@+id/search" layout="@layout/layout_search"/>
+
+<include android:id="@+id/listlayout" layout="@layout/common_list_refresh_nodriver"/>
+
+</LinearLayout>
+</layout>

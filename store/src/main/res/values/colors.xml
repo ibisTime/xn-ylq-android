@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#45a74f</color>
+    <color name="colorPrimaryDark">#45a74f</color>
+    <color name="colorAccent">#45a74f</color>
+
+    <!--****************账号管理*************-->
+    <!--登录状态栏颜色-->
+    <color name="white">#ffffff</color>
+    <color name="gray">#ececec</color>
+    <color name="gray_4">#f4f4f4</color>
+    <color name="whilte_80">#d2fcfcfc</color>
+    <color name="fontColor_support">#999999</color>
+    <color name="text_gray">#999999</color>
+    <color name="text_hint_color">#a1a1a1</color>
+    <color name="text_gray2">#7f7e7e</color>
+    <color name="text_gray3">#626262</color>
+    <color name="text_color">#484848</color>
+    <color name="intervalColor">#f0f0f0</color>
+    <color name="activity_title_bg">#45a74f</color>
+    <color name="flow_tag_bg">#45a74f</color>
+    <color name="main_tab_text_select">#45a74f</color>
+    <color name="login_select">#45a74f</color>
+    <color name="login_unselect">#3a7e41</color>
+    <color name="banner_select">#45a74f</color>
+    <color name="tab_select">#45a74f</color>
+    <color name="txt_title_bg">#45a74f</color>
+    <color name="fontColor_hint">#979797</color>
+    <color name="lineColor">#eeeeee</color>
+    <color name="txt_gray">#a7a5a5</color>
+    <!--颜色值规范-->
+    <color name="black">#000000</color>
+    <color name="black_50">#6a0e0e0e</color>
+    <color name="black_2">#303030</color>
+    <color name="lineColor_gray">#dedede</color>
+    <color name="fontColor_gray">#7f7e7e</color>
+    <!--共用的蓝色-->
+    <color name="color_common_blue">#3DA3FF</color>
+
+    <!--分割线颜色-->
+    <color name="splitLine_Color">#dededf</color>
+    <!--共用的白色-->
+    <color name="color_common_white">#FFFFFF</color>
+    <!--共用的黑色-->
+    <!--<color name="color_common_black">#000000</color>-->
+    <color name="color_common_black">#2B2D3A</color>
+    <!--白色标题背景颜色-->
+    <!--编辑框提示输入颜色-->
+    <color name="color_hint">#979797</color>
+    <!--编辑框输入内容后颜色-->
+    <!--共用的分割线颜色-->
+    <!--按钮正常颜色-->
+    <!--按钮禁用颜色-->
+    <!--按钮按下的颜色-->
+    <!--内容以及行标题颜色-->
+    <!--内容，选择区号英文以及部分备注信息字体颜色-->
+    <color name="color_content_font">#979797</color>
+    <!--共用的主界面背景颜色-->
+    <!--搜索框背景颜色-->
+    <!--搜索框背景颜色-->
+    <!--接单城市国家列表英文字体颜色-->
+    <!--登录提示字体颜色（带透明度）-->
+    <!--登录按钮正常背景颜色-->
+    <!--登录按钮按下背景颜色-->
+
+    <!--透明度颜色-->
+    <color name="transparent">#00000000</color>
+    <color name="color_common_font">#6f6f6f</color>
+
+    <!--订单状态颜色-->
+
+    <!--添加车辆图片-->
+    <!--dialog-->
+    <color name="dialog_tips_content_txt">#444444</color>
+    <color name="dialog_tips_bg">#FAFAFA</color>
+    <color name="dialog_tips_title_txt">#030303</color>
+    <color name="dialog_tips_btn">#d6d6d6</color>
+    <color name="dialog_tips_line">#EAEAEA</color>
+    <color name="dialog_tips_negative_btn_txt">#0076ff</color>
+    <color name="dialog_tips_negative_btn_txt_red">#fe3824</color>
+    <color name="dialog_tips_positive_btn_txt">#0076ff</color>
+
+    <!--订单itme-->
+    <!--透明黑色背景-->
+    <!--订单详情-->
+    <color name="red">#ed5461</color>
+
+    <color name="orange">#ff6702</color>
+    <color name="txt_orange">#ff6702</color>
+    <color name="fontColor_orange">#ff6702</color>
+    <color name="price_color">#ed5461</color>
+    <color name="orange_btn">#ffa302</color>
+
+    <!--司导认证 hintcolor-->
+
+    <!--车辆管理模块相关颜色-->
+
+    <!---->
+
+</resources>

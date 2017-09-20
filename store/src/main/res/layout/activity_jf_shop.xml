@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <com.liaoinstan.springview.widget.SpringView
+        android:id="@+id/springvew"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:id="@+id/linlayout_head"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_marginRight="15dp"
+                android:layout_height="wrap_content">
+                <FrameLayout
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp">
+                    <ImageView
+                        android:layout_gravity="center"
+                        android:id="@+id/img_user_logo"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:src="@mipmap/icon"
+                        />
+                    <ImageView
+                        android:visibility="gone"
+                        android:src="@mipmap/vip"
+                        android:id="@+id/img_vip"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="right|bottom" />
+
+                </FrameLayout>
+
+
+                <LinearLayout
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="14dp"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/txt_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txt_get_jf_no_login_tips"
+                            android:textColor="@color/text_color"
+                            android:textSize="16sp" />
+
+                        <ImageView
+                            android:visibility="gone"
+                            android:id="@+id/img_sex"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_marginLeft="15dp"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:visibility="gone"
+                       android:layout_marginBottom="10dp"
+                        android:id="@+id/lin_jf_info"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:text="我的积分:"
+                            android:textColor="@color/fontColor_gray"
+                            android:textSize="14sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+
+                        <TextView
+                            android:id="@+id/tv_jf"
+                            android:layout_marginLeft="5dp"
+                            tools:text="10000"
+                            android:textColor="@color/txt_title_bg"
+                            android:textSize="14sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_start_get_jf"
+                    android:gravity="center"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:background="@drawable/selector_login_btn"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
+                    android:text="去赚积分"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp" />
+
+
+            </LinearLayout>
+
+
+
+            <View style="@style/style_split_line"/>
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_hot_change"
+                android:textColor="@color/text_color"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:text="热门兑换"
+                android:layout_width="match_parent"
+                android:layout_height="45dp" />
+
+
+            <com.chengdai.ehealthproject.weigit.views.ListViewForScrollView
+                android:divider="@color/gray"
+                android:dividerHeight="0.5dp"
+                android:listSelector="@color/white"
+                android:id="@+id/list_hot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+            </com.chengdai.ehealthproject.weigit.views.ListViewForScrollView>
+
+            <View style="@style/style_split_line"/>
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_jfchange"
+                android:textColor="@color/text_color"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:text="积分兑换"
+                android:layout_width="match_parent"
+                android:layout_height="45dp" />
+
+            <View style="@style/style_split_line"/>
+
+            <com.chengdai.ehealthproject.weigit.views.ListViewForScrollView
+                android:divider="@color/gray"
+                android:dividerHeight="0.5dp"
+                android:listSelector="@color/white"
+                android:id="@+id/list_jf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+            </com.chengdai.ehealthproject.weigit.views.ListViewForScrollView>
+        </LinearLayout>
+
+
+    </ScrollView>
+
+    </com.liaoinstan.springview.widget.SpringView>
+</LinearLayout>
+</layout>

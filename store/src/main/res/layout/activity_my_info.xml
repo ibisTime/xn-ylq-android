@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+    <ScrollView
+        android:background="@color/gray"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+<LinearLayout
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <FrameLayout
+        android:id="@+id/lin_logo"
+        android:paddingLeft="15dp"
+        android:paddingRight="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/black_2"
+            android:textSize="16sp"
+            android:text="头像"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="right"
+            tools:src="@mipmap/food_l"
+            android:id="@+id/img_logo"
+            android:textColor="@color/black_2"
+            android:textSize="16sp"
+            android:layout_marginRight="35dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+
+        <ImageView
+            android:layout_gravity="center_vertical|right"
+            android:src="@mipmap/more_right"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+
+    </FrameLayout>
+
+    <View
+        style="@style/style_split_line"/>
+
+
+    <LinearLayout
+        android:id="@+id/lin_name"
+        android:paddingLeft="15dp"
+        android:paddingRight="25dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textColor="@color/black_2"
+            android:textSize="16sp"
+            android:text="昵称"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_name"
+            android:textColor="@color/black_2"
+            android:textSize="16sp"
+            android:layout_weight="1"
+            android:paddingLeft="15dp"
+            android:gravity="center_vertical|right"
+            android:hint="请输入昵称"
+            android:textColorHint="@color/text_hint_color"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+        <ImageView
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/more_right"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+
+    </LinearLayout>
+
+    <View
+        style="@style/style_split_line"/>
+
+    <LinearLayout
+        android:id="@+id/lin_birthday"
+        android:paddingLeft="15dp"
+        android:paddingRight="25dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textColor="@color/black_2"
+            android:textSize="16sp"
+            android:text="生日"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textColorHint="@color/text_hint_color"
+            android:id="@+id/tv_birthday"
+            android:textColor="@color/black_2"
+            android:textSize="16sp"
+            android:layout_weight="1"
+            android:paddingLeft="15dp"
+            android:gravity="center_vertical|right"
+            android:hint="请选择生日"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+        <ImageView
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/more_right"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+
+    </LinearLayout>
+
+    <View
+        style="@style/style_split_line"/>
+    <LinearLayout
+        android:id="@+id/lin_gender"
+        android:paddingLeft="15dp"
+        android:paddingRight="25dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textColor="@color/black_2"
+            android:textSize="16sp"
+            android:text="性别"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_gender"
+            android:textColor="@color/black_2"
+            android:textSize="16sp"
+            android:layout_weight="1"
+            android:paddingLeft="15dp"
+            android:gravity="center_vertical|right"
+            android:hint="请选择性别"
+            android:textColorHint="@color/text_hint_color"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+        <ImageView
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/more_right"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+
+    </LinearLayout>
+
+    <View
+        style="@style/style_split_line"/>
+    <LinearLayout
+        android:id="@+id/lin_email"
+        android:paddingLeft="15dp"
+        android:paddingRight="25dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textColor="@color/black_2"
+            android:textSize="16sp"
+            android:text="邮箱"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_email"
+            android:textColor="@color/black_2"
+            android:textSize="16sp"
+            android:layout_weight="1"
+            android:paddingLeft="15dp"
+            android:gravity="center_vertical|right"
+            android:hint="请输入邮箱"
+            android:textColorHint="@color/text_hint_color"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+        <ImageView
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/more_right"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+
+    </LinearLayout>
+
+
+    <View
+        style="@style/split_line_10"/>
+
+    <LinearLayout
+        android:paddingLeft="15dp"
+        android:paddingRight="25dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textColor="@color/black_2"
+            android:textSize="16sp"
+            android:text="推荐人电话"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_tj_name"
+            android:textColor="@color/black_2"
+            android:textSize="16sp"
+            android:layout_weight="1"
+            android:paddingLeft="15dp"
+            android:gravity="center_vertical|right"
+            android:hint="暂无"
+            android:textColorHint="@color/text_hint_color"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+    </LinearLayout>
+    <View
+        style="@style/style_split_line"/>
+    <LinearLayout
+        android:visibility="gone"
+        android:paddingLeft="15dp"
+        android:paddingRight="25dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textColor="@color/black_2"
+            android:textSize="16sp"
+            android:text="推荐人ID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_tj_id"
+            android:textColor="@color/black_2"
+            android:textSize="16sp"
+            android:layout_weight="1"
+            android:paddingLeft="15dp"
+            android:gravity="center_vertical|right"
+            android:hint="暂无"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+    </LinearLayout>
+
+    <View
+        style="@style/style_split_line"/>
+    <LinearLayout
+        android:paddingLeft="15dp"
+        android:paddingRight="25dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textColor="@color/black_2"
+            android:textSize="16sp"
+            android:text="推荐人类型"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_tj_type"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical|right"
+            android:hint="暂无"
+            android:textColorHint="@color/text_hint_color"
+            android:paddingLeft="15dp"
+            android:textColor="@color/black_2"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+    <View
+        style="@style/split_line_10"/>
+
+    <EditText
+        android:textColor="@color/text_color"
+        android:textSize="13sp"
+        android:padding="10dp"
+        android:id="@+id/edit"
+        android:textColorHint="@color/text_hint_color"
+        android:gravity="top"
+        android:background="@null"
+        android:hint="个性签名···"
+        android:layout_width="match_parent"
+        android:layout_height="150dp" />
+
+
+</LinearLayout>
+
+</ScrollView>
+
+</layout>

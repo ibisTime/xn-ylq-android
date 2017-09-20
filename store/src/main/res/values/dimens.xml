@@ -1,0 +1,35 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!--相关dimens属性设置如下-->
+    <!--不同字体大小dimens属性设置  dp单位-->
+    <dimen name="dimens_12_font">12sp</dimen>
+
+    <!--间距dimens属性设置  dp单位-->
+    <dimen name="dimens_6_distance">6dp</dimen>
+
+
+    <!--控件高度dimens属性设置  dp单位-->
+    <dimen name="dimens_44_height">44dp</dimen>
+
+    <!--addcar Photp  添加车辆 照片布局  dp单位-->
+
+    <!--登陆左右间距-->
+
+    <!--相关控件其他属性设置 dp单位-->
+    <dimen name="dimens_0.5_dp">0.5dp</dimen>
+    <!--圆角的radius属性设置 dp单位-->
+
+
+    <dimen name="dialog_tips_corner">16dp</dimen>
+    <dimen name="dp_4">4dp</dimen>
+
+      <!--司导认证-->
+    <!--分割线高度设置-->
+    <dimen name="splitLine_Height">0.5dp</dimen>
+    <dimen name="title_height">44dp</dimen>
+    <dimen name="banner_height">200dp</dimen>
+
+</resources>

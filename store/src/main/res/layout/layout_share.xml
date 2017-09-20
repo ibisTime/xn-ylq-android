@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+           style="@style/style_split_line"/>
+
+    <LinearLayout
+    android:gravity="center"
+    android:weightSum="2"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="40dp">
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/lin_shear"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:src="@mipmap/share"
+            android:layout_width="18dp"
+            android:layout_height="18dp" />
+
+        <TextView
+            android:textColor="@color/text_color"
+            android:textSize="16sp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:layout_marginLeft="10dp"
+            android:text="分享"
+            android:src="@mipmap/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"  />
+
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+       style="@style/style_dialog_vline"/>
+
+    <LinearLayout
+        android:gravity="center"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:src="@mipmap/comment"
+            android:layout_width="18dp"
+            android:layout_height="18dp" />
+
+        <TextView
+            android:id="@+id/tv_pinlun"
+            android:textColor="@color/text_color"
+            android:textSize="16sp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:layout_marginLeft="10dp"
+            tools:text="300"
+            android:src="@mipmap/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"  />
+
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        style="@style/style_dialog_vline"/>
+
+    <LinearLayout
+        android:id="@+id/lin_DZ"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/img_isDZ"
+            android:src="@mipmap/good_hand_"
+            android:layout_width="18dp"
+            android:layout_height="18dp" />
+
+        <TextView
+            android:id="@+id/tv_dz_sum"
+            android:textColor="@color/text_color"
+            android:textSize="16sp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:layout_marginLeft="10dp"
+            tools:text="300"
+            android:src="@mipmap/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"  />
+
+    </LinearLayout>
+
+
+  </LinearLayout>
+
+        <View
+            style="@style/style_split_line"/>
+
+    </LinearLayout>
+</layout>

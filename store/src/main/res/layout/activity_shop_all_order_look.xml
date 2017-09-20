@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/gray"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/tv_jf_order"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:gravity="center_vertical|left"
+        android:textColor="@color/text_color"
+        android:textSize="16sp"
+        android:text="积分订单"
+        android:layout_width="match_parent"
+        android:layout_height="45dp" />
+    <View
+        style="@style/style_split_line"/>
+    <TextView android:paddingLeft="15dp"
+        android:id="@+id/tv_order"
+        android:background="@color/white"
+        android:gravity="center_vertical|left"
+        android:textColor="@color/text_color"
+        android:textSize="16sp"
+        android:text="普通订单"
+        android:layout_width="match_parent"
+        android:layout_height="45dp" />
+    <View
+        style="@style/style_split_line"/>
+</LinearLayout>
+</layout>
