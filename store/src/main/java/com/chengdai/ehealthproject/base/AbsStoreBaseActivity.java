@@ -25,8 +25,8 @@ public abstract class AbsStoreBaseActivity extends BaseStoreActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.setContentView(R.layout.activity_abs_base);
-        findViewById(R.id.fram_img_back).setOnClickListener(v -> {
+        super.setContentView(R.layout.activity_abs_base_store);
+        findViewById(R.id.fram_img_back_store).setOnClickListener(v -> {
             if(canFinish()){
                 this.finish();
             }
@@ -158,7 +158,7 @@ public abstract class AbsStoreBaseActivity extends BaseStoreActivity {
      * @param subTitle
      */
     public void setSubLeftTitle(String subTitle) {
-        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fram_img_back);
+        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fram_img_back_store);
         TextView tvSubTitle = (TextView) findViewById(R.id.tv_back);
         tvSubTitle.setText(subTitle);
         tvSubTitle.setVisibility(View.VISIBLE);
@@ -173,7 +173,7 @@ public abstract class AbsStoreBaseActivity extends BaseStoreActivity {
 
    public void setSubLeftImgState(boolean isShow) {
        ImageView tvSubTitle = (ImageView) findViewById(R.id.img_back);
-       FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fram_img_back);
+       FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fram_img_back_store);
        if(isShow){
            tvSubTitle.setVisibility(View.VISIBLE);
            frameLayout.setVisibility(View.VISIBLE);

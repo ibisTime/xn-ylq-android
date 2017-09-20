@@ -11,12 +11,13 @@
         android:id="@+id/radiogroup"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:weightSum="6"
+        android:weightSum="3"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <RadioButton
+            android:visibility="gone"
             android:clickable="false"
             android:id="@+id/radio_main_tab_manager"
             android:layout_weight="1"
@@ -32,6 +33,7 @@
             android:checked="true" />
 
         <RadioButton
+            android:visibility="gone"
             android:clickable="false"
             android:id="@+id/radio_main_tab_friend"
             android:layout_weight="1"
@@ -47,6 +49,7 @@
             android:checked="false" />
 
         <RadioButton
+            android:visibility="gone"
             android:clickable="false"
             android:id="@+id/radio_main_tab_tourism"
             android:layout_weight="1"
