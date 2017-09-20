@@ -48,7 +48,7 @@ public class ShopPayCarListAdApter extends CommonAdapter<PayCarListModel.ListBea
 
     public String getSelectPriceShowString(){
 
-        PayCarListModel.ListBean data=   getmSelectPositionItem();
+        PayCarListModel.ListBean data=  getmSelectPositionItem();
         if(data !=null && data.getProductSpecs()!=null){
             return MoneyUtils.getShowPriceSign(data.getProductSpecs().getPrice1(),data.getQuantity())  ;
         }

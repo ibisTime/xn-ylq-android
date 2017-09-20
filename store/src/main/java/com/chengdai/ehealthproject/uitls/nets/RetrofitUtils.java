@@ -61,9 +61,9 @@ public class RetrofitUtils {
 
         }
 
-//        return "http://121.43.101.148:3401/forward-service/";//开发
+        return "http://121.43.101.148:3401/forward-service/";//开发
 //        return "http://118.178.124.16:3401/forward-service/";//测试
-                return "http://116.62.114.86:8901/forward-service/";//线上
+//                return "http://116.62.114.86:8901/forward-service/";//线上
     }
 
 }

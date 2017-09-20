@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.cdkj.baselibrary.activitys.FindPwdActivity;
+import com.cdkj.baselibrary.appmanager.ARouteConfig;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.interfaces.LoginInterface;
 import com.cdkj.baselibrary.interfaces.LoginPresenter;
@@ -26,7 +27,7 @@ import static com.cdkj.baselibrary.appmanager.EventTags.LOGINREFRESH;
 /**
  * Created by 李先俊 on 2017/8/8.
  */
-@Route(path = "/user/login")
+@Route(path = ARouteConfig.AppUserLogin)
 public class LoginActivity extends AbsBaseActivity implements LoginInterface {
 
     private LoginPresenter mPresenter;

@@ -16,6 +16,7 @@
         android:textSize="18sp" />
 
     <com.liaoinstan.springview.widget.SpringView
+        android:visibility="gone"
         android:id="@+id/springview"
         android:layout_weight="1"
         android:layout_height="0dp"
@@ -31,10 +32,18 @@
 
     </com.liaoinstan.springview.widget.SpringView>
 
-    <View
-       style="@style/style_split_line"/>
+    <TextView
+        android:id="@+id/tv_car_empty"
+        android:layout_marginTop="150dp"
+        android:layout_gravity="center"
+        android:text="您还没有添加商品"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 
     <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/lin_money_sum"
         android:background="@color/white"
         android:orientation="horizontal"
         android:layout_width="match_parent"

@@ -27,7 +27,7 @@
             android:drawableTop="@drawable/main_buttom_tab_3"
             android:gravity="center"
             android:drawablePadding="5dp"
-            android:textColor="@drawable/tab_txtcolor"
+            android:textColor="@drawable/tab_txtcolor_store"
             android:textSize="12sp"
             android:checked="false" />
 
@@ -43,7 +43,7 @@
             android:drawableTop="@drawable/main_buttom_tab_4"
             android:gravity="center"
             android:drawablePadding="5dp"
-            android:textColor="@drawable/tab_txtcolor"
+            android:textColor="@drawable/tab_txtcolor_store"
             android:textSize="12sp"
             android:checked="false" />
 
@@ -60,7 +60,7 @@
             android:gravity="center"
             android:checked="false"
             android:textSize="12sp"
-            android:textColor="@drawable/tab_txtcolor"
+            android:textColor="@drawable/tab_txtcolor_store"
             />
     </RadioGroup>
 </LinearLayout>

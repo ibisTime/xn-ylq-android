@@ -73,9 +73,11 @@ public class RechargeOnLineFragment extends BaseLazyFragment {
             }
 
             if(mPayType== PayUtil.ALIPAY){  //支付宝充值
-                rechargeAliRequest();
+//                rechargeAliRequest();
+                ToastUtil.show(mActivity,"支付宝支付功能正在开发中");
             }else{
-                rechargeWXRequest();//微信充值
+//                rechargeWXRequest();//微信充值
+                ToastUtil.show(mActivity,"微信支付功能正在开发中");
             }
         });
 

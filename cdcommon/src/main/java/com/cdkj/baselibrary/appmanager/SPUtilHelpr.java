@@ -117,7 +117,7 @@ public class SPUtilHelpr {
             SPUtilHelpr.logOutClear();
 //			ToastUtil.show(context,"请先登录");
             // 路由跳转登录页面
-            ARouter.getInstance().build("/user/login")
+            ARouter.getInstance().build(ARouteConfig.AppUserLogin)
                     .withBoolean("canOpenMain", canopenmain)
                     .navigation();
             return false;

@@ -171,10 +171,12 @@ public class ShopPayConfirmActivity extends AbsStoreBaseActivity {
                 yuPay(object);//余额支付
                 break;
             case 2:
-                wxPay(object);//微信支付
+                showToast("微信支付功能正在开发中");
+//                wxPay(object);//微信支付
                 break;
             case 3://支付宝支付
-                aliPay(object);
+                showToast("支付宝支付功能正在开发中");
+//                aliPay(object);
                 break;
         }
 

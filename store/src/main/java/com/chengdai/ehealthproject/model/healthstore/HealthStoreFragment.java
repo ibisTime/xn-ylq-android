@@ -252,7 +252,8 @@ public class HealthStoreFragment extends BaseLazyFragment {
     public void onResume() {
         super.onResume();
 
-        if(getUserVisibleHint()){
+        if(getUserVisibleHint() && mBinding!=null){
+            getAllData();
             mBinding.banner.startAutoPlay();
         }
     }
@@ -262,12 +263,14 @@ public class HealthStoreFragment extends BaseLazyFragment {
         mBinding.banner.stopAutoPlay();
     }
 
+
+
+
     @Override
     protected void lazyLoad() {
         if (isCreate){
             getAllData();
             isCreate=false;
-
         }
 
     }

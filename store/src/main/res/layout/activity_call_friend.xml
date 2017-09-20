@@ -140,6 +140,7 @@
 
 
             <Button
+                android:visibility="gone"
                 android:id="@+id/btn_share"
                 android:textColor="@color/white"
                 android:background="@color/activity_title_bg"

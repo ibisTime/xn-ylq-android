@@ -39,7 +39,6 @@
         <activity android:name=".model.other.MainActivity">
         </activity>
 
-        //高德定位
 
 
         //支付宝
@@ -62,6 +61,11 @@
         //找回密码
         <activity
             android:name=".model.user.FindPassWordActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        //找回密码
+        <activity
+            android:name=".model.tabmy.activitys.CallFriendsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         //登录
@@ -189,29 +193,7 @@
             android:name=".model.tabmy.activitys.ShopJfOrderStateLookActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-        //评论列表查看
-        //我的帖子详情
-        <activity
-            android:name=".model.tabmy.activitys.MyLuntanActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
 
-        //健康自测
-        <activity
-            android:name=".model.healthmanager.acitivitys.HealthTestActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-
-        //健康自测
-        <activity
-            android:name=".model.healthmanager.acitivitys.TestPageDetailsActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        / /我的健康任务修改
-        <activity
-            android:name=".model.tabmy.activitys.UpdateMyHelathTaskActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
         //我的信息
         <activity
             android:name=".model.tabmy.activitys.MyInfoActivity"
@@ -220,11 +202,6 @@
         //我的信息
         <activity
             android:name=".model.tabmy.activitys.UserInfoInputUpdateActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        //我的信息
-        <activity
-            android:name=".model.tabmy.activitys.MyTestHistoryActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -290,49 +267,6 @@
             android:name=".model.tabmy.activitys.WithdrawalActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-        //邀请好又
-        <activity
-            android:name=".model.tabmy.activitys.CallFriendsActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        // 图片放大预览
-        <activity android:name=".base.ImagePrviewActivity2"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            />
-
-
-        <!--评论列表查看-->
-
-        <!--图片选择-->
-        <activity
-            android:name=".model.common.model.activitys.ImageSelectActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/ActivityDialogStyleBottom"
-            android:windowSoftInputMode="adjustPan" />
-
-
-        <!--&lt;!&ndash;相册&ndash;&gt;-->
-        <!--<activity-->
-            <!--android:name="com.yanzhenjie.album.AlbumActivity"-->
-            <!--android:configChanges="orientation|keyboardHidden|screenSize"-->
-            <!--android:theme="@style/Theme.AppCompat.Light.NoActionBar"-->
-            <!--android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />-->
-
-
-        <!-- 微信支付entry -->
-        <activity
-            android:name=".wxapi.WXPayEntryActivity"
-            android:exported="true"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-
-        <!-- 微信分享回调 -->
-        <activity
-            android:name=".wxapi.WXEntryActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="true"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
 
     </application>
 

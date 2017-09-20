@@ -23,7 +23,7 @@
         <TextView
             android:paddingBottom="5dp"
             android:gravity="center"
-            android:text="健康币余额"
+            android:text="余额"
             android:background="@color/txt_title_bg"
             android:textColor="@color/white"
             android:textSize="16sp"

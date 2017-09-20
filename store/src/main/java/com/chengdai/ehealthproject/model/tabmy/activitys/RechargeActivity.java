@@ -12,6 +12,7 @@ import com.cdkj.baselibrary.model.pay.PaySucceedInfo;
 import com.cdkj.baselibrary.utils.ImgUtils;
 import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
+import com.cdkj.baselibrary.utils.ToastUtil;
 import com.cdkj.baselibrary.utils.payutils.PayUtil;
 import com.chengdai.ehealthproject.R;
 import com.chengdai.ehealthproject.base.AbsStoreBaseActivity;
@@ -96,9 +97,11 @@ public class RechargeActivity extends AbsStoreBaseActivity {
             }
 
             if(mPayType== PayUtil.ALIPAY){  //支付宝充值
-                rechargeAliRequest();
+//                rechargeAliRequest();
+                ToastUtil.show(this,"支付宝支付功能正在开发中");
             }else{
-                rechargeWXRequest();//微信充值
+//                rechargeWXRequest();//微信充值
+                ToastUtil.show(this,"微信支付功能正在开发中");
             }
         });
     }

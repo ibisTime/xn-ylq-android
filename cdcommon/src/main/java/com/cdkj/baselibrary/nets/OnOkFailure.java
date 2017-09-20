@@ -3,6 +3,7 @@ package com.cdkj.baselibrary.nets;
 import android.content.Context;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.cdkj.baselibrary.appmanager.ARouteConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.utils.ToastUtil;
 
@@ -16,7 +17,7 @@ public class OnOkFailure {
         SPUtilHelpr.logOutClear();
         ToastUtil.show(context,errorMessage);
         // 路由跳转登录页面
-        ARouter.getInstance().build("/user/login")
+        ARouter.getInstance().build(ARouteConfig.AppUserLogin)
                 .withBoolean("canOpenMain",false)
                 .navigation();
 

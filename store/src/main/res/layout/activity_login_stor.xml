@@ -110,6 +110,7 @@
                 android:layout_marginTop="14dp">
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/tv_start_registr"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"

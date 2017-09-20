@@ -8,6 +8,8 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.cdkj.baselibrary.appmanager.ARouteConfig;
+import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.dialog.CommonDialog;
 import com.cdkj.baselibrary.utils.AppUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
@@ -37,7 +39,7 @@ import java.util.Map;
 /**
  * 主页面
  */
-@Route(path = "/store/welcome")
+@Route(path = ARouteConfig.StoreMain)
 public class MainActivity extends BaseStoreActivity {
 
     private ActivityMainStoreBinding mainBinding;
@@ -178,7 +180,7 @@ public class MainActivity extends BaseStoreActivity {
         if (!isFinishing()) {
             new CommonDialog(this).builder().setPositiveBtn("确认", (view) -> {
                 logOut();
-            }).setNegativeBtn("取消", null).setTitle("提示").setContentMsg("确认退出健康e购？").show();
+            }).setNegativeBtn("取消", null).setTitle("提示").setContentMsg("确认退出九州宝？").show();
         } else {
             logOut();
         }

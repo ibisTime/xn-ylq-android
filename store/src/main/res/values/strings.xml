@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">健康e购</string>
+    <string name="app_name">九州宝</string>
     <string name="txt_login">登录</string>
     <string name="username">账号</string>
     <string name="password">密码</string>
@@ -19,17 +19,6 @@
     <string name="txt_setting">设置</string>
     <string name="txt_pay_car">购物车</string>
 
-
-    <!--v肺活量 0-10000
-<=1500 你真的吹完最后一口气了吗？
->1500 <=3000 你真的吹完最后一口气了吗？
->3000 <=4500 没事多游游泳，跑跑步。年轻人，我看好你呦
->4500 ”吹啊，吹啊，我的骄傲放纵“ 大圣，收了神通吧-->
-
-    <!--血氧测试 60-100
-<90 您的血氧饱和度属于重度供氧不足，希望能引起足够的重视。身体如有任何不适症状，及时就医进行进一步检查。祝您身体健康，生活愉快。
->=90 <=93 您的血氧饱和度属于一般供氧不足。血氧饱和过低，最常见的原因就是呼吸道吸入氧气不足、肺部换气功能异常等。请您密切留意身体状况，及时问诊就医。
->93 恭喜您，您的血氧测试结果非常正常，希望继续保持！祝您身体健康，生活愉快！-->
 
     <string name="txt_get_jf_no_login_tips">这里有10W+的会员等你一起赚积分！</string>
     <string name="txt_health_circle">健康友圈</string>

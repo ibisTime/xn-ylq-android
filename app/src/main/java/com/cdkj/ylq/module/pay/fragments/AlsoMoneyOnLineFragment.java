@@ -84,7 +84,7 @@ public class AlsoMoneyOnLineFragment extends BaseFragment {
         mBinding.btnSure.setOnClickListener(v -> {
 
             if (mPayType == 2) {
-                //    wxPayRequest();
+                 wxPayRequest();
             } else if (mPayType == 3) {
                 AliPayRequest();
             }

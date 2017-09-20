@@ -130,9 +130,7 @@ public class MyPayCarFragment extends BaseLazyFragment {
                         if (data != null && data.getList() != null) {
                             mAdapter.setData(data.getList());
                         }
-                        if (mAdapter.getCount() <= 0) {
-//                            showErrorView("您还没有添加商品");
-                        }
+                        showEmptyState();
 
                     } else {
                         if (data != null && data.getList() != null && data.getList().size() > 0) {
@@ -145,6 +143,21 @@ public class MyPayCarFragment extends BaseLazyFragment {
                     mBinding.txtDiscountMoney.setText(mAdapter.getSelectPriceShowString());
                 }, Throwable::printStackTrace));
 
+    }
+
+    /**
+     *设置空数据显示状态
+     */
+    private void showEmptyState() {
+        if (mAdapter.getCount() <= 0) {
+            mBinding.springview.setVisibility(View.GONE);
+            mBinding.linMoneySum.setVisibility(View.GONE);
+            mBinding.tvCarEmpty.setVisibility(View.VISIBLE);
+        }else{
+            mBinding.springview.setVisibility(View.VISIBLE);
+            mBinding.linMoneySum.setVisibility(View.VISIBLE);
+            mBinding.tvCarEmpty.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -169,6 +182,7 @@ public class MyPayCarFragment extends BaseLazyFragment {
     @Subscribe
     public void CarRefrshRequestEvent(EventBusModel model) {
         if (model != null && "ShopPayCarSelectActivityFresh".equals(model.getTag()) && mAdapter != null) {
+            showEmptyState();
             mBinding.txtDiscountMoney.setText(mAdapter.getSelectPriceShowString());
         }
     }

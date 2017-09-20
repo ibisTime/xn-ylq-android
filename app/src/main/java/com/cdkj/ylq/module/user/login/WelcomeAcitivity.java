@@ -6,12 +6,14 @@ import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.cdkj.baselibrary.appmanager.ARouteConfig;
 import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.BaseActivity;
 import com.cdkj.baselibrary.model.IntroductionInfoModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
+import com.cdkj.baselibrary.utils.LogUtil;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.ylq.MainActivity;
 import com.cdkj.ylq.R;
@@ -29,7 +31,6 @@ import retrofit2.Call;
  * 启动页
  * Created by 李先俊 on 2017/6/8.
  */
-
 public class WelcomeAcitivity extends BaseActivity {
 
     @Override
@@ -47,17 +48,55 @@ public class WelcomeAcitivity extends BaseActivity {
         } catch (Exception e) {
         }
         setContentView(R.layout.activity_welcom);
-        ImageView img=(ImageView)findViewById(R.id.img_start);
+        ImageView img = (ImageView) findViewById(R.id.img_start);
         img.setImageResource(R.drawable.start);
         mSubscription.add(Observable.timer(2, TimeUnit.SECONDS)
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {//延迟两秒进行跳转
-//                    MainActivity.open(this);
-  ARouter.getInstance().build("/store/welcome")
-                            .navigation();
-                    finish();
+                    getServiceTime();
                 }, Throwable::printStackTrace));
+    }
+
+    //获取系统参数 环境配置  0-审核环境 1-生产环境
+    public void getServiceTime() {
+
+        Map<String, String> map = new HashMap<>();
+        map.put("ckey", "showFlag");
+        map.put("systemCode", MyConfig.SYSTEMCODE);
+        map.put("companyCode", MyConfig.COMPANYCODE);
+
+        Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("805917", StringUtils.getJsonToString(map));
+
+        addCall(call);
+
+        call.enqueue(new BaseResponseModelCallBack<IntroductionInfoModel>(WelcomeAcitivity.this) {
+            @Override
+            protected void onSuccess(IntroductionInfoModel data, String SucMessage) {
+
+//                if (TextUtils.isEmpty(data.getCvalue())) {
+//                    ARouter.getInstance().build(ARouteConfig.StoreMain)
+//                            .navigation();
+//                    finish();
+//                    return;
+//                }
+//                if (data.getCvalue().equals("0")) {
+//                    ARouter.getInstance().build(ARouteConfig.StoreMain)
+//                            .navigation();
+//                } else if (data.getCvalue().equals("1")) {
+//                    MainActivity.open(WelcomeAcitivity.this);
+//                }
+                ARouter.getInstance().build(ARouteConfig.StoreMain)
+                           .navigation();
+                finish();
+            }
+
+            @Override
+            protected void onFinish() {
+                disMissLoading();
+            }
+        });
+
     }
 
 
