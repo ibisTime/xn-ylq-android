@@ -247,7 +247,7 @@ public class MyFragment extends BaseLazyFragment {
     public void getTimeReqeust() {
 
         Map<String ,String > map=new HashMap<>();
-        map.put("ckey","telephone");
+        map.put("ckey","time");
         map.put("systemCode", MyConfigStore.SYSTEMCODE);
         map.put("token", SPUtilHelpr.getUserToken());
         mSubscription.add( RetrofitUtils.getLoaderServer().getInfoByKey("807717", StringUtils.getJsonToString(map))
@@ -264,7 +264,7 @@ public class MyFragment extends BaseLazyFragment {
     public void getPhoneReqeust() {
 
         Map<String ,String > map=new HashMap<>();
-        map.put("ckey","time");
+        map.put("ckey","telephone");
         map.put("systemCode", MyConfigStore.SYSTEMCODE);
         map.put("token", SPUtilHelpr.getUserToken());
         mSubscription.add( RetrofitUtils.getLoaderServer().getInfoByKey("807717", StringUtils.getJsonToString(map))

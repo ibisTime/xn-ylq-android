@@ -75,7 +75,7 @@ public class MyAmountActivity extends AbsStoreBaseActivity {
 
         mBinding= DataBindingUtil.inflate(getLayoutInflater(), R.layout.activity_amount_details_list, null, false);
         addMainView(mBinding.getRoot());
-        setTopTitle("我的健康币");
+        setTopTitle("我的余额");
         setSubLeftImgState(true);
 
         if(getIntent()!=null){

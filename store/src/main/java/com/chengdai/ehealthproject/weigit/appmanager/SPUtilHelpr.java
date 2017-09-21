@@ -16,10 +16,10 @@ import com.chengdai.ehealthproject.uitls.OnLoginFailure;
 
 public class SPUtilHelpr {
 
-	private static final String USERTOKEN="user_toke";
-	private static final String USERID="user_id";
-	private static final String LOCATIONINFO="location_info";
-	private static final String ISFIRSTADDADDRESS="isfirstaddaddress";//是否第一次添加地址
+	private static final String USERTOKEN="user_toke_store";
+	private static final String USERID="user_id_store";
+	private static final String LOCATIONINFO="location_info_store";
+	private static final String ISFIRSTADDADDRESS="isfirstaddaddress_store";//是否第一次添加地址
 
 	/**
 	 * 设置用户token
