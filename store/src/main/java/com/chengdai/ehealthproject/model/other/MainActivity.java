@@ -51,7 +51,7 @@ public class MainActivity extends BaseStoreActivity {
 
 
     /**
-     * 打开当前页面
+     * 打开当前页面h
      *
      * @param context
      */

@@ -73,17 +73,18 @@ public class WelcomeAcitivity extends BaseActivity {
         call.enqueue(new BaseResponseModelCallBack<IntroductionInfoModel>(WelcomeAcitivity.this) {
             @Override
             protected void onSuccess(IntroductionInfoModel data, String SucMessage) {
-                if (TextUtils.isEmpty(data.getCvalue())) {
-                    ARouter.getInstance().build(ARouteConfig.StoreMain)
-                            .navigation();
-                    finish();
-                    return;
-                }
-                if (data.getCvalue().equals("0")) {
-                    ARouter.getInstance().build(ARouteConfig.StoreMain).navigation();
-                } else if (data.getCvalue().equals("1")) {
-                    MainActivity.open(WelcomeAcitivity.this);
-                }
+//                if (TextUtils.isEmpty(data.getCvalue())) {
+//                    ARouter.getInstance().build(ARouteConfig.StoreMain)
+//                            .navigation();
+//                    finish();
+//                    return;
+//                }
+//                if (data.getCvalue().equals("0")) {
+//                    ARouter.getInstance().build(ARouteConfig.StoreMain).navigation();
+//                } else if (data.getCvalue().equals("1")) {
+//                    MainActivity.open(WelcomeAcitivity.this);
+//                }
+                MainActivity.open(WelcomeAcitivity.this);
                 finish();
             }
 
