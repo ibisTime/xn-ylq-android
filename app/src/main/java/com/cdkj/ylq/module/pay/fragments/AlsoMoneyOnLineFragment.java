@@ -66,9 +66,9 @@ public class AlsoMoneyOnLineFragment extends BaseFragment {
 
     //
     private void initListener() {
-        mBinding.imgWeixin.setImageResource(R.drawable.pay_select);
-        mBinding.imgZhifubao.setImageResource(R.drawable.un_select);
-        mPayType = 2;
+        mBinding.imgZhifubao.setImageResource(R.drawable.pay_select);
+        mBinding.imgWeixin.setImageResource(R.drawable.un_select);
+        mPayType = 3;
         mBinding.linWeixin.setOnClickListener(v -> {
             mBinding.imgWeixin.setImageResource(R.drawable.pay_select);
             mBinding.imgZhifubao.setImageResource(R.drawable.un_select);

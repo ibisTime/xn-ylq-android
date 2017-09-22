@@ -104,6 +104,7 @@
             android:layout_height="match_parent" />
 
         <EditText
+            android:inputType="number"
             android:id="@+id/edt_cardId"
             android:layout_marginRight="15dp"
             android:hint="银行卡号"
