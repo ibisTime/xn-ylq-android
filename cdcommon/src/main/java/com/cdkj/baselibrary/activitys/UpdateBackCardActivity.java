@@ -116,6 +116,11 @@ public class UpdateBackCardActivity extends AbsBaseActivity {
                     return;
                 }
 
+                if(mBinding.edtCardId.getText().toString().length()<16){
+                    showToast("银行卡号最低为16位数字");
+                    return;
+                }
+
                 updateBank();
             }
         });
@@ -141,6 +146,7 @@ public class UpdateBackCardActivity extends AbsBaseActivity {
             @Override
             protected void onSuccess(IsSuccessModes data, String SucMessage) {
                 if (data.isSuccess()) {
+                    SPUtilHelpr.saveUserIsBindCard(false);
                     showToast("删除成功");
                     finish();
                 }
@@ -180,6 +186,7 @@ public class UpdateBackCardActivity extends AbsBaseActivity {
             protected void onSuccess(IsSuccessModes data, String SucMessage) {
                 if (data.isSuccess()) {
                     showToast("修改成功");
+                    SPUtilHelpr.saveUserIsBindCard(true);
                     finish();
                 }
             }
@@ -207,6 +214,12 @@ public class UpdateBackCardActivity extends AbsBaseActivity {
         mBinding.editName.setText(mBankModel.getRealName());
         mBinding.edtCardId.setText(mBankModel.getBankcardNumber());
         mSelectCardId = mBankModel.getBankCode();
+
+        if(!TextUtils.isEmpty(mBankModel.getRealName())){
+            mBinding.editName.setEnabled(false);
+        }else{
+            mBinding.editName.setEnabled(true);
+        }
 
     }
 

@@ -22,6 +22,7 @@ import com.cdkj.baselibrary.utils.ToastUtil;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivityBasisInfoCertBinding;
 import com.cdkj.ylq.model.CerttificationInfoModel;
+import com.cdkj.ylq.module.certification.AddressBookCertActivity;
 import com.cdkj.ylq.mpresenter.GetUserCertificationInfoListener;
 import com.cdkj.ylq.mpresenter.GetUserCertificationPresenter;
 
@@ -34,7 +35,7 @@ import retrofit2.Call;
  * 基础信息认证
  * Created by 李先俊 on 2017/8/9.
  */
-
+//TODO 银行卡认证没删只是注释
 public class BasisInfoCertificationActivity extends AbsBaseActivity implements GetUserCertificationInfoListener {
 
     private ActivityBasisInfoCertBinding mBinding;
@@ -117,11 +118,8 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements G
             return;
         }
 
-/*TextUtils.equals("1", mCertData.getInfoBasicFlag())
-                && TextUtils.equals("1", mCertData.getInfoOccupationFlag())
-                && TextUtils.equals("1", mCertData.getInfoContactFlag())*/
         //设置按钮状态 已认证变成灰色 禁止点击
-        if ( TextUtils.equals("1",mCertData.getInfoAntifraudFlag())) {
+        if (TextUtils.equals("1", mCertData.getInfoAntifraudFlag())) {
             mBinding.btnSure.setBackgroundResource(R.drawable.btn_no_click_gray);
             mBinding.btnSure.setEnabled(false);
 
@@ -130,18 +128,24 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements G
             mBinding.btnSure.setEnabled(true);
         }
 
-
+        //基本信息
         if (TextUtils.equals("1", mCertData.getInfoBasicFlag())) {
             mBinding.imgBasisInfo.setVisibility(View.VISIBLE);
         }
-
+        //工作信息
         if (TextUtils.equals("1", mCertData.getInfoOccupationFlag())) {
             mBinding.imgJobInfo.setVisibility(View.VISIBLE);
         }
-
+        //联系人
         if (TextUtils.equals("1", mCertData.getInfoContactFlag())) {
             mBinding.imgEmergencyInfo.setVisibility(View.VISIBLE);
         }
+        //通讯录
+        if (TextUtils.equals("1", mCertData.getInfoAddressBookFlag())) {
+            mBinding.imgAddressbookInfo.setVisibility(View.VISIBLE);
+        }
+
+
 //        if (TextUtils.equals("1", mCertData.getInfoBankcardFlag())) {
 //            mBinding.imgBancardInfo.setVisibility(View.VISIBLE);
 //        }
@@ -165,6 +169,10 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements G
         mBinding.layoutEmergencyInfo.setOnClickListener(v -> {
             if (mCertData == null) return;
             EmergencyInfoWriteActivity.open(this, mCertData.getInfoContact(), TextUtils.equals("1", mCertData.getInfoAntifraudFlag()));
+        });
+        //通讯录认证
+        mBinding.layoutAddressbookInfo.setOnClickListener(v -> {
+            AddressBookCertActivity.open(this);
         });
 
         //银行卡信息填写
@@ -191,6 +199,13 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements G
                 showToast("请提交紧急联系人信息");
                 return;
             }
+
+            if (!TextUtils.equals("1", mCertData.getInfoAddressBookFlag())) {
+                showToast("请进行通讯录认证");
+                return;
+            }
+
+
 //            if (!TextUtils.equals("1", mCertData.getInfoBankcardFlag())) {
 //                showToast("请认证银行卡信息信息");
 //                return;
@@ -241,6 +256,7 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements G
         setShowState(userCertInfo);
         showContentView();
     }
+
     @Override
     public void getInfoFailed(String code, String msg) {
         ToastUtil.show(this, msg);

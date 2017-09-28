@@ -7,12 +7,14 @@ import com.cdkj.baselibrary.api.BaseResponseModel;
 import com.cdkj.baselibrary.utils.LogUtil;
 import com.cdkj.baselibrary.utils.ToastUtil;
 
+import java.lang.ref.SoftReference;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.HttpException;
 import retrofit2.Response;
 
 /**
@@ -48,7 +50,8 @@ public abstract class BaseResponseModelCallBack<T> implements Callback<BaseRespo
     private Context context;
 
     public BaseResponseModelCallBack(Context context) {
-        this.context = context;
+        SoftReference<Context> mS = new SoftReference<>(context);
+        this.context = mS.get();
     }
 
     @Override
@@ -58,7 +61,6 @@ public abstract class BaseResponseModelCallBack<T> implements Callback<BaseRespo
 
         if (response == null || response.body() == null) {
             onNull();
-            this.context = null;
             return;
         }
 
@@ -71,7 +73,7 @@ public abstract class BaseResponseModelCallBack<T> implements Callback<BaseRespo
                 if (LogUtil.isDeBug) {
                     onReqFailure(NETERRORCODE4, "未知错误" + e.toString());
                 } else {
-                    onReqFailure(NETERRORCODE4, "未知错误");
+                    onReqFailure(NETERRORCODE4, "程序出现未知错误");
                 }
             }
 
@@ -79,7 +81,7 @@ public abstract class BaseResponseModelCallBack<T> implements Callback<BaseRespo
             onReqFailure(NETERRORCODE4, "网络请求失败");
         }
 
-        this.context = null;
+
     }
 
     @Override
@@ -107,6 +109,9 @@ public abstract class BaseResponseModelCallBack<T> implements Callback<BaseRespo
         } else if (t instanceof ConnectException) {//请求超时
             errorString = "网络请求超时";
             errorCode = NETERRORCODE3;
+        } else if (t instanceof HttpException) {
+            errorString = "网络异常";
+            errorCode = NETERRORCODE1;
         } else {
             errorString = "未知错误";
             errorCode = NETERRORCODE4;
@@ -117,7 +122,7 @@ public abstract class BaseResponseModelCallBack<T> implements Callback<BaseRespo
         }
 
         onReqFailure(errorCode, errorString);
-        this.context = null;
+
     }
 
     /**
@@ -136,7 +141,7 @@ public abstract class BaseResponseModelCallBack<T> implements Callback<BaseRespo
             if (t == null) {
                 onFinish();
                 onNull();
-                this.context = null;
+
                 return;
             }
 
@@ -186,7 +191,7 @@ public abstract class BaseResponseModelCallBack<T> implements Callback<BaseRespo
      * 请求数据为空
      */
     protected void onNull() {
-        LogUtil.E("数据  空");
+        ToastUtil.show(context, "请求失败,数据返回错误");
     }
 
     /**

@@ -11,11 +11,13 @@ import com.cdkj.baselibrary.appmanager.EventTags;
 import com.cdkj.baselibrary.model.pay.PaySucceedInfo;
 import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.baselibrary.utils.payutils.PayUtil;
+import com.cdkj.ylq.appmanager.BusinessSings;
 import com.cdkj.ylq.model.UseMoneyRecordModel;
 import com.cdkj.ylq.module.pay.fragments.AlsoMoneyOffLineFragment;
 import com.cdkj.ylq.module.pay.fragments.AlsoMoneyOnLineFragment;
 import com.cdkj.ylq.module.pay.fragments.RenewalMoneyOffLineFragment;
 import com.cdkj.ylq.module.pay.fragments.RenewalMoneyOnLineFragment;
+import com.cdkj.ylq.module.user.userinfo.usemoneyrecord.UseMoneyRecordActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -90,23 +92,26 @@ public class RenewalMoneyTabActivity extends CommonTablayoutActivity {
         }
 
         if (mo.getCallType() == PayUtil.ALIPAY && mo.isPaySucceed()) { //支付宝支付成功
-            showToast("续期成功");
-            EventBus.getDefault().post(EventTags.AllFINISH);
-            finish();
+            paySucceed();
         } else if (mo.getCallType() == PayUtil.WEIXINPAY && mo.isPaySucceed()) {//微信支付成功
-
+            paySucceed();
         }
     }
 
+    private void paySucceed() {
+        showToast("续期成功");
+        EventBus.getDefault().post(EventTags.AllFINISH);
+        UseMoneyRecordActivity.open(this, BusinessSings.USEMONEYRECORD_3);
+        finish();
+    }
+
     /**
-     * 线下支付
+     * 线下支付 宝付
      */
     @Subscribe
     public void PayState2(String mo) {
-        if (TextUtils.equals(mo, EventTags.ALSOOFFLINE)) {
-            showToast("续期成功");
-            EventBus.getDefault().post(EventTags.AllFINISH);
-            finish();
+        if (TextUtils.equals(mo, EventTags.RENEWALFLAGE)) {
+            paySucceed();
         }
     }
 

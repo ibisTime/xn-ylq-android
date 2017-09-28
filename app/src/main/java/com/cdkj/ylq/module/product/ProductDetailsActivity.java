@@ -126,6 +126,7 @@ public class ProductDetailsActivity extends AbsBaseActivity {
             getCanUseCoupoons();
         });
 
+        //选择优惠券 这里只做优惠券展示 真正使用优惠券是在 签约界面 SigningSureActivity
         mCoupoonsPicker = new OptionsPickerView.Builder(this, (options1, options2, options3, v) -> {
             CanUseCouponsModel cmodel = mCoupoonsModels.get(options1);
             if (cmodel != null) {

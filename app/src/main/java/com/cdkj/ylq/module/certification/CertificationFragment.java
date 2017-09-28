@@ -49,7 +49,7 @@ import retrofit2.Call;
  * 认证
  * Created by 李先俊 on 2017/8/8.
  */
-
+//TODO 通讯录认证移动到个人信息认证  代码、布局只是注释 没删
 public class CertificationFragment extends BaseLazyFragment implements GetUserCertificationInfoListener {
 
     private FragmentCertificationBinding mBinding;
@@ -158,13 +158,12 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
         });
 
         //通讯录认证
-        mBinding.layoutPhoneCert.setOnClickListener(v -> {
-            if (!SPUtilHelpr.isLogin(mActivity, false)) {
-                return;
-            }
-            AddressBookCertActivity.open(mActivity);
-
-        });
+//        mBinding.layoutPhoneCert.setOnClickListener(v -> {
+//            if (!SPUtilHelpr.isLogin(mActivity, false)) {
+//                return;
+//            }
+//            AddressBookCertActivity.open(mActivity);
+//        });
     }
 
     /**
@@ -455,23 +454,23 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
         }
 
 
-        if (TextUtils.equals("1", mCertData.getInfoAddressBookFlag())) { //通讯录认证
-            mBinding.tvAddbookState.setText("已认证");
-            mBinding.tvAddbookState.setTextColor(ContextCompat.getColor(mActivity, R.color.cert_state_ok));
-            mBinding.imgAddbookState.setImageResource(R.drawable.cert_ok);
-            mBinding.imgAddBookStateBig.setImageResource(R.drawable.phone_cert);
-
-        } else if (TextUtils.equals("2", mCertData.getInfoAddressBookFlag())) {
-            mBinding.tvAddbookState.setText("已过期");
-            mBinding.tvAddbookState.setTextColor(ContextCompat.getColor(mActivity, R.color.guoqi));
-            mBinding.imgAddbookState.setImageResource(R.drawable.guoqi);
-            mBinding.imgAddBookStateBig.setImageResource(R.drawable.phone_cert_un);
-        } else {
-            mBinding.tvAddbookState.setText("前往提交");
-            mBinding.tvAddbookState.setTextColor(ContextCompat.getColor(mActivity, R.color.cert_state_edit));
-            mBinding.imgAddbookState.setImageResource(R.drawable.can_submit);
-            mBinding.imgAddBookStateBig.setImageResource(R.drawable.phone_cert_un);
-        }
+//        if (TextUtils.equals("1", mCertData.getInfoAddressBookFlag())) { //通讯录认证
+//            mBinding.tvAddbookState.setText("已认证");
+//            mBinding.tvAddbookState.setTextColor(ContextCompat.getColor(mActivity, R.color.cert_state_ok));
+//            mBinding.imgAddbookState.setImageResource(R.drawable.cert_ok);
+//            mBinding.imgAddBookStateBig.setImageResource(R.drawable.phone_cert);
+//
+//        } else if (TextUtils.equals("2", mCertData.getInfoAddressBookFlag())) {
+//            mBinding.tvAddbookState.setText("已过期");
+//            mBinding.tvAddbookState.setTextColor(ContextCompat.getColor(mActivity, R.color.guoqi));
+//            mBinding.imgAddbookState.setImageResource(R.drawable.guoqi);
+//            mBinding.imgAddBookStateBig.setImageResource(R.drawable.phone_cert_un);
+//        } else {
+//            mBinding.tvAddbookState.setText("前往提交");
+//            mBinding.tvAddbookState.setTextColor(ContextCompat.getColor(mActivity, R.color.cert_state_edit));
+//            mBinding.imgAddbookState.setImageResource(R.drawable.can_submit);
+//            mBinding.imgAddBookStateBig.setImageResource(R.drawable.phone_cert_un);
+//        }
 
     }
 

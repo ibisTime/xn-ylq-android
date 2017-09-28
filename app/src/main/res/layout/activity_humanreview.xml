@@ -104,7 +104,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
-                        android:text="人工审核"
+                        android:text="系统审核"
                         android:textColor="@color/text_color"
                         android:textSize="16sp" />
 

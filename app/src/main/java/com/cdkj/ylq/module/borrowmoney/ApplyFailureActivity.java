@@ -10,6 +10,7 @@ import android.view.View;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.ylq.R;
+import com.cdkj.ylq.appmanager.BusinessSings;
 import com.cdkj.ylq.databinding.ActivityApplyFailureBinding;
 import com.cdkj.ylq.model.PorductListModel;
 import com.cdkj.ylq.module.product.ProductDetailsActivity;
@@ -68,50 +69,9 @@ public class ApplyFailureActivity extends AbsBaseActivity {
         if(mData==null) return;
         mBinding.tvMoney.setText(MoneyUtils.showPrice(mData.getAmount()));
         mBinding.tvMakeDay.setText( mData.getDuration() + "天");
-        mBinding.tvState.setText(  getState(mData.getUserProductStatus()));
+        mBinding.tvState.setText(BusinessSings.getProductState(mData.getUserProductStatus()));
         mBinding.tvLevel.setText("Lv"+mData.getLevel());
-
         mBinding.tvTips.setText(mData.getApproveNote());
-
-    }
-
-    //("0", "可申请"),("1", "认证中"),("2", "人工审核中"),( "3", "已驳回"),("4", "已有额度"),("5", "等待放款中"),( "6", "生效中"),("7", "已逾期")
-    private String getState(String state) {
-
-        if(TextUtils.isEmpty(state)){
-            return "";
-        }
-
-        String stateStr = "";
-        ;
-        switch (state) {
-            case "0":
-                stateStr = "可申请";
-                break;
-            case "1":
-                stateStr = "认证中";
-                break;
-            case "2":
-                stateStr = "人工审核中";
-                break;
-            case "3":
-                stateStr = "已驳回";
-                break;
-            case "4":
-                stateStr = "已有额度";
-                break;
-            case "5":
-                stateStr = "等待放款中";
-                break;
-            case "6":
-                stateStr = "生效中";
-                break;
-            case "7":
-                stateStr = "已逾期";
-                break;
-        }
-
-        return stateStr;
     }
 
     //

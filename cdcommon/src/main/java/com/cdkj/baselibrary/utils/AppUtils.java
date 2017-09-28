@@ -189,6 +189,7 @@ public class AppUtils {
                 ToastUtil.show(context,"没有可用浏览器");
             }
         } catch (Exception e) {
+            ToastUtil.show(context,"打开浏览器出现错误");
             LogUtil.E("startWeb error");
         }
     }

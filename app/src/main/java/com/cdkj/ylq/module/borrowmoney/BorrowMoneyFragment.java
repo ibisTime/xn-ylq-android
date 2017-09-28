@@ -137,7 +137,7 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
             MyMaxMoneyActivity.open(mActivity);
         } else if (TextUtils.equals("5", data.getUserProductStatus())) { //等待放款中
 
-            PutMoneyingActivity.open(mActivity);
+            PutMoneyingActivity.open(mActivity,data.getBorrowCode());
 
         } else if (TextUtils.equals("6", data.getUserProductStatus())) { //生效中
 

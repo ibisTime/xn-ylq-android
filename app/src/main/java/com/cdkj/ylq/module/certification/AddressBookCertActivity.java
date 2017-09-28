@@ -71,10 +71,10 @@ public class AddressBookCertActivity extends AbsBaseActivity {
         mHelper = new PermissionHelper(this);
 
         mBinding.tvRead1.setOnClickListener(v -> {
-            WebViewActivity.openkey(this,"通讯录授权协议","addressBookProtocol");
+            WebViewActivity.openkey(this, "通讯录授权协议", "addressBookProtocol");
         });
         mBinding.tvRead2.setOnClickListener(v -> {
-            WebViewActivity.openkey(this,"信息规则","infoCollectRule");
+            WebViewActivity.openkey(this, "信息规则", "infoCollectRule");
         });
 
         mBinding.btnSure.setOnClickListener(v -> {
@@ -85,38 +85,38 @@ public class AddressBookCertActivity extends AbsBaseActivity {
             }
             LogUtil.E("权限申请");
             mHelper.requestPermissions(new PermissionHelper.PermissionListener() {
-                        @Override
-                        public void doAfterGrand(String... permission) {
-                            showLoadingDialog();
-                            mSubscription.add(Observable.just("0")
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(Schedulers.io())
-                                    .map(s -> AppUtils.getAllContactInfo(AddressBookCertActivity.this))
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(hashMaps -> {
-                                        if(hashMaps!=null && hashMaps.size()>0){
-                                            pushMobileInfo(hashMaps);
-                                        }else{
-                                            disMissLoading();
-                                            CommonDialog commonDialog = new CommonDialog(AddressBookCertActivity.this).builder()
-                                                    .setTitle("没有获取到通讯录数据").setContentMsg("1.请授予读取手机联系人权限\n" +
-                                                            "2.请检查通讯录是否有联系人。")
-                                                    .setPositiveBtn("确定", view -> {
-                                                    });
-                                            commonDialog.show();
+                @Override
+                public void doAfterGrand(String... permission) {
+                    showLoadingDialog();
+                    mSubscription.add(Observable.just("0")
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(Schedulers.io())
+                            .map(s -> AppUtils.getAllContactInfo(AddressBookCertActivity.this))
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(hashMaps -> {
+                                if (hashMaps != null && hashMaps.size() > 0) {
+                                    pushMobileInfo(hashMaps);
+                                } else {
+                                    disMissLoading();
+                                    CommonDialog commonDialog = new CommonDialog(AddressBookCertActivity.this).builder()
+                                            .setTitle("没有获取到通讯录数据").setContentMsg("1.请授予读取手机联系人权限\n" +
+                                                    "2.请检查通讯录是否有联系人。")
+                                            .setPositiveBtn("确定", view -> {
+                                            });
+                                    commonDialog.show();
 
-                                        }
-                                    }, throwable -> {
-                                        disMissLoading();
-                                    }));
-                        }
+                                }
+                            }, throwable -> {
+                                disMissLoading();
+                            }));
+                }
 
-                        @Override
-                        public void doAfterDenied(String... permission) {
-                            disMissLoading();
-                            showToast("请授予读取手机联系人权限");
-                        }
-                    }, Manifest.permission.READ_CONTACTS,Manifest.permission.READ_EXTERNAL_STORAGE);
+                @Override
+                public void doAfterDenied(String... permission) {
+                    disMissLoading();
+                    showToast("请授予读取手机联系人权限");
+                }
+            }, Manifest.permission.READ_CONTACTS, Manifest.permission.READ_EXTERNAL_STORAGE);
 
         });
 
@@ -143,8 +143,9 @@ public class AddressBookCertActivity extends AbsBaseActivity {
             @Override
             protected void onSuccess(IsSuccessModes data, String SucMessage) {
                 if (data.isSuccess()) {
-                    if(hashMaps!=null && hashMaps.size()>0){
+                    if (hashMaps != null && hashMaps.size() > 0) {
                         showToast("通讯录认证成功");
+                        finish();
                     }
                 }
             }

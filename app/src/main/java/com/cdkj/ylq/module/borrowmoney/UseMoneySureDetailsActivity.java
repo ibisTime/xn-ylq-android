@@ -12,6 +12,7 @@ import com.cdkj.baselibrary.appmanager.EventTags;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.nets.BaseResponseListCallBack;
+import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.BigDecimalUtils;
 import com.cdkj.baselibrary.utils.MoneyUtils;
@@ -20,6 +21,7 @@ import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivityProductDetailsBinding;
 import com.cdkj.ylq.model.CanUseCouponsModel;
 import com.cdkj.ylq.model.PorductListModel;
+import com.cdkj.ylq.model.UserInfoModel;
 import com.cdkj.ylq.module.api.MyApiServer;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -84,7 +86,7 @@ public class UseMoneySureDetailsActivity extends AbsBaseActivity {
             mProductData = getIntent().getParcelableExtra("productData");
         }
 
-        mBinding.btnNext.setText("使用额度");
+        mBinding.btnNext.setText("签约");
 
         initListener();
 
@@ -94,11 +96,51 @@ public class UseMoneySureDetailsActivity extends AbsBaseActivity {
 
 
     /**
+     * 获取用户信息 获取下个页面需要的是否添加银行卡标识 和用户姓名
+     */
+    public void getUserInfoRequest() {
+
+        if (!SPUtilHelpr.isLoginNoStart()) {  //没有登录不用请求
+            return;
+        }
+
+        Map<String, String> map = new HashMap<>();
+
+        map.put("userId", SPUtilHelpr.getUserId());
+        map.put("token", SPUtilHelpr.getUserToken());
+
+        Call call = RetrofitUtils.createApi(MyApiServer.class).getUserInfoDetails("805121", StringUtils.getJsonToString(map));
+
+        addCall(call);
+
+       showLoadingDialog();
+
+        call.enqueue(new BaseResponseModelCallBack<UserInfoModel>(this) {
+            @Override
+            protected void onSuccess(UserInfoModel data, String SucMessage) {
+                if (data == null) return;
+
+                SPUtilHelpr.saveUserIsBindCard(TextUtils.equals("1", data.getBankcardFlag()));
+                SPUtilHelpr.saveUserName(data.getRealName());
+
+                SigningSureActivity.open(UseMoneySureDetailsActivity.this, mProductData, mCouponId, mBinding.tvWillGetMoney.getText().toString());
+
+            }
+
+            @Override
+            protected void onFinish() {
+               disMissLoading();
+            }
+        });
+    }
+
+
+    /**
      * 事件
      */
     private void initListener() {
         mBinding.btnNext.setOnClickListener(v -> {
-            SigningSureActivity.open(this, mProductData, mCouponId,  mBinding.tvWillGetMoney.getText().toString());
+            getUserInfoRequest();
         });
 
         mBinding.tvSelectCoupoons.setOnClickListener(v -> {
@@ -109,8 +151,8 @@ public class UseMoneySureDetailsActivity extends AbsBaseActivity {
             CanUseCouponsModel cmodel = mCoupoonsModels.get(options1);
             if (cmodel != null) {
                 if (!cmodel.isDefuit()) {
-                    mBinding.tvSelectCoupoons.setText(MoneyUtils.showPrice(cmodel.getAmount())+"元优惠卷");
-                    mCouponId = cmodel.getId()+"";
+                    mBinding.tvSelectCoupoons.setText(MoneyUtils.showPrice(cmodel.getAmount()) + "元优惠卷");
+                    mCouponId = cmodel.getId() + "";
                     mBinding.tvWillGetMoney.setText(MoneyUtils.showPrice(BigDecimalUtils.add(getWillMoney(mProductData), cmodel.getAmount())) + "元");//实际到账
                 } else {
                     mBinding.tvSelectCoupoons.setText("选择优惠券");
@@ -128,9 +170,9 @@ public class UseMoneySureDetailsActivity extends AbsBaseActivity {
      * 获取可用优惠券
      */
     private void getCanUseCoupoons() {
-        if (mProductData == null || mProductData.getAmount()==null) return;
+        if (mProductData == null || mProductData.getAmount() == null) return;
         Map<String, String> map = new HashMap<>();
-        map.put("amount", mProductData.getAmount().intValue()+"");
+        map.put("amount", mProductData.getAmount().intValue() + "");
         map.put("userId", SPUtilHelpr.getUserId());
 
         Call call = RetrofitUtils.createApi(MyApiServer.class).getCanUseCouponsListData("623148", StringUtils.getJsonToString(map));

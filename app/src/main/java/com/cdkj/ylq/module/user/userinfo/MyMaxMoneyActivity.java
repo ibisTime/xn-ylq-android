@@ -131,7 +131,7 @@ public class MyMaxMoneyActivity extends AbsBaseActivity {
             } else {
                 mBinding.tvRemainingDays.setText("还有" + data.getValidDays() + "天当前额度失效");
             }
-            mBinding.btnUse.setText("使用额度");
+            mBinding.btnUse.setText("签约");
 
         } else if (TextUtils.equals("2", data.getFlag())) {//已经过期
             mBinding.tvRemainingDays.setText("当前额度已失效");

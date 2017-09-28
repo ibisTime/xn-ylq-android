@@ -87,7 +87,7 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
             checkPhoneNumAndSendCode();
         });
         mBinding.tvIRead.setOnClickListener(v -> {
-            WebViewActivity.openkey(this, "注册协议", "regProtocol");
+            WebViewActivity.openkey(this, "借款服务与隐私协议", "regProtocol");
         });
 
 

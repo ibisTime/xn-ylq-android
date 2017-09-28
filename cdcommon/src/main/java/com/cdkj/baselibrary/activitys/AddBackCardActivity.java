@@ -77,8 +77,11 @@ public class AddBackCardActivity extends AbsBaseActivity {
         });
 
 
-        if(!TextUtils.isEmpty(SPUtilHelpr.getUserName())){
+        if (!TextUtils.isEmpty(SPUtilHelpr.getUserName())) {
             mBinding.editName.setText(SPUtilHelpr.getUserName());
+            mBinding.editName.setEnabled(false);
+        } else {
+            mBinding.editName.setEnabled(true);
         }
 
 
@@ -99,6 +102,12 @@ public class AddBackCardActivity extends AbsBaseActivity {
                     showToast("请输入卡号");
                     return;
                 }
+
+                if (mBinding.edtCardId.getText().toString().length() < 16) {
+                    showToast("银行卡号最低为16位数字");
+                    return;
+                }
+
 
                 bindCard();
             }
@@ -170,7 +179,7 @@ public class AddBackCardActivity extends AbsBaseActivity {
                 for (BankModel b : r) {
                     mBankNames[i] = b.getBankName();
                     mBankCodes[i] = b.getBankCode();
-                    LogUtil.E("银行卡code"+b.getBankCode());
+                    LogUtil.E("银行卡code" + b.getBankCode());
                     i++;
                 }
                 if (mBankNames.length != 0 && mBankNames.length == mBankCodes.length) {
@@ -180,10 +189,9 @@ public class AddBackCardActivity extends AbsBaseActivity {
 
             @Override
             protected void onFinish() {
-                  disMissLoading();
+                disMissLoading();
             }
         });
-
 
 
     }
@@ -196,7 +204,7 @@ public class AddBackCardActivity extends AbsBaseActivity {
 //                        txtBankCard.setText(list.get(which).getBankName());
                         mBinding.txtBankName.setText(mBankNames[which]);
                         mSelectCardId = mBankCodes[which];
-                        LogUtil.E("选择银行卡code"+mSelectCardId);
+                        LogUtil.E("选择银行卡code" + mSelectCardId);
                         dialog.dismiss();
                     }
                 }).setNegativeButton("取消", null).show();

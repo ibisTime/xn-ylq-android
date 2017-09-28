@@ -113,7 +113,7 @@ public class RenewalMoneyOffLineFragment extends BaseFragment {
         call.enqueue(new BaseResponseModelCallBack<String>(mActivity) {
             @Override
             protected void onSuccess(String data, String SucMessage) {
-                EventBus.getDefault().post(EventTags.ALSOOFFLINE);
+                EventBus.getDefault().post(EventTags.RENEWALFLAGE);
             }
 
             @Override

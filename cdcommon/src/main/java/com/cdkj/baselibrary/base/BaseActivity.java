@@ -18,6 +18,7 @@ import android.widget.EditText;
 
 import com.cdkj.baselibrary.appmanager.EventTags;
 import com.cdkj.baselibrary.dialog.CommonDialog;
+import com.cdkj.baselibrary.utils.LogUtil;
 import com.cdkj.baselibrary.utils.ToastUtil;
 import com.cdkj.baselibrary.dialog.LoadingDialog;
 
@@ -58,6 +59,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         mCallList.add(call);
     }
 
+    /**
+     * 清除请求对象
+     */
     protected void clearCall() {
 
         for (Call call : mCallList) {
@@ -66,6 +70,8 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
             call.cancel();
         }
+
+        mCallList.clear();
 
     }
 
@@ -145,15 +151,19 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
+    //监听点击事件 实现点击页面上除EditView外的位置隐藏输入法
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            View v = getCurrentFocus();
-            if (isShouldHideKeyboard(v, ev)) {
-                hideKeyboard(v.getWindowToken());
+        try {
+            if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+                View v = getCurrentFocus();
+                if (isShouldHideKeyboard(v, ev)) {
+                    hideKeyboard(v.getWindowToken());
+                }
             }
+        } catch (Exception e) {
+            LogUtil.E("dispatchTouchEvent 输入法错误");
         }
-
         return super.dispatchTouchEvent(ev);
     }
 
@@ -192,20 +202,17 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     private void hideKeyboard(IBinder token) {
         if (token != null) {
+
             InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            im.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS);
+
+            if (im != null) {
+
+                im.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS);
+
+            }
         }
     }
 
-
-    /**
-     * 隐藏键盘
-     */
-    public void hideKeyboard(View v) {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-
-    }
 
     /**
      * 隐藏软键盘
@@ -217,14 +224,23 @@ public abstract class BaseActivity extends AppCompatActivity {
             return;
         }
         View view = activity.getWindow().peekDecorView();
-        if (view != null) {
-            hideKeyboard(view);
+        if (view == null || view.getWindowToken() == null) {
+            return;
         }
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm == null) {
+            return;
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     @Override
     public void finish() {
-        hideKeyboard(this);
+        try {
+            hideKeyboard(this);
+        } catch (Exception e) {
+            LogUtil.E("finish 输入法错误");
+        }
         super.finish();
     }
 
@@ -244,27 +260,5 @@ public abstract class BaseActivity extends AppCompatActivity {
         return true;
     }
 
-    /**
-     * 设置状态栏颜色（5.0以上系统）
-     *
-     * @param stateTitleColor
-     */
-    public void setStateTitleColor(int stateTitleColor) {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//5.0以上系统实现状态栏颜色改变
-            try {
-                Window window = getWindow();
-                //取消设置透明状态栏,使 ContentView 内容不再沉浸到状态栏下
-                if (window != null) {
-                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                    //需要设置这个 flag 才能调用 setStatusBarColor 来设置状态栏颜色
-                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                    //设置状态栏颜色
-                    window.setStatusBarColor(stateTitleColor);
-                }
-            } catch (Exception e) {
-
-            }
-        }
-    }
 }
