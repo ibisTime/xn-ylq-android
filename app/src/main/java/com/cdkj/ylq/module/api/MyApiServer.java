@@ -232,6 +232,14 @@ public interface MyApiServer {
     @FormUrlEncoded
     @POST("api")
     Call<BaseResponseModel<IsBorrowFlagModel>> getIsBorrowFlag(@Field("code") String code, @Field("json") String json);
+   /**
+     * 签约协议
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api")
+    Call<BaseResponseModel<String>> singInfoRequest(@Field("code") String code, @Field("json") String json);
 
 
 

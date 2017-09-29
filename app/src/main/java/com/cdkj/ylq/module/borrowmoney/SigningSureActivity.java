@@ -128,9 +128,11 @@ public class SigningSureActivity extends AbsBaseActivity {
         });
 
         mBinding.tvRead.setOnClickListener(v -> {
-            WebViewActivity.openkey(this, "借款协议", "borrowProtocol");
+
+            SigningTipsWebViewActivity.open(this,mCouponId);
         });
     }
+
 
     private void showSureCardInfoDialog() {
 

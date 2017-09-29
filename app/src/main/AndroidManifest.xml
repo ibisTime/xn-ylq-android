@@ -284,6 +284,11 @@
             android:name=".module.certification.AddressBookCertActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
+        //借款协议
+        <activity
+            android:name=".module.borrowmoney.SigningTipsWebViewActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
 
 
         //魔蝎认证
