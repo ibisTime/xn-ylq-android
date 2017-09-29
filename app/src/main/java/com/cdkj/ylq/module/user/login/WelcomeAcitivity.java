@@ -15,6 +15,7 @@ import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.LogUtil;
 import com.cdkj.baselibrary.utils.StringUtils;
+import com.cdkj.ylq.BuildConfig;
 import com.cdkj.ylq.MainActivity;
 import com.cdkj.ylq.R;
 
@@ -58,11 +59,11 @@ public class WelcomeAcitivity extends BaseActivity {
                 }, Throwable::printStackTrace));
     }
 
-    //获取系统参数 环境配置  0-审核环境 1-生产环境
+    //获取系统参数 环境配置  如果获取的参数和本地相同则说明是审核状态（显示商城） 反之是使用状态（显示九州宝）
     public void getServiceTime() {
 
         Map<String, String> map = new HashMap<>();
-        map.put("ckey", "showFlag");
+        map.put("ckey", "androidShowFlag");
         map.put("systemCode", MyConfig.SYSTEMCODE);
         map.put("companyCode", MyConfig.COMPANYCODE);
 
@@ -73,17 +74,19 @@ public class WelcomeAcitivity extends BaseActivity {
         call.enqueue(new BaseResponseModelCallBack<IntroductionInfoModel>(WelcomeAcitivity.this) {
             @Override
             protected void onSuccess(IntroductionInfoModel data, String SucMessage) {
-//                if (TextUtils.isEmpty(data.getCvalue())) {
-//                    ARouter.getInstance().build(ARouteConfig.StoreMain)
-//                            .navigation();
-//                    finish();
-//                    return;
-//                }
-//                if (data.getCvalue().equals("0")) {
-//                    ARouter.getInstance().build(ARouteConfig.StoreMain).navigation();
-//                } else if (data.getCvalue().equals("1")) {
-//                    MainActivity.open(WelcomeAcitivity.this);
-//                }
+                if (TextUtils.isEmpty(data.getCvalue())) {
+                    ARouter.getInstance().build(ARouteConfig.StoreMain)
+                            .navigation();
+                    finish();
+                    return;
+                }
+
+                LogUtil.E("SHOW_TYPE"+BuildConfig.SHOW_TYPE +" :  "+data.getCvalue());
+
+                if (data.getCvalue().equals(BuildConfig.SHOW_TYPE)) {
+                    ARouter.getInstance().build(ARouteConfig.StoreMain).navigation();
+                    return;
+                }
                 MainActivity.open(WelcomeAcitivity.this);
                 finish();
             }
