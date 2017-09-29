@@ -17,7 +17,6 @@ import com.chengdai.ehealthproject.R;
 public abstract class AbsStoreBaseActivity extends BaseStoreActivity {
     protected ViewGroup mErrorView;
     protected ViewGroup mMainView;
-
     /**
      * 布局文件xml的resId,无需添加标题栏、加载、错误及空页面
      */
