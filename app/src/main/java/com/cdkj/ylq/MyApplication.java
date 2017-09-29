@@ -32,6 +32,7 @@ public class MyApplication extends Application {
 		EventBus.builder().throwSubscriberException(BuildConfig.LOG_DEBUG).installDefaultEventBus();
 	}
 
+
 	public static MyApplication getInstance(){
 		return application;
 	}
