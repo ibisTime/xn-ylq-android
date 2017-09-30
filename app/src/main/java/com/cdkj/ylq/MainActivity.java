@@ -191,7 +191,6 @@ public class MainActivity extends AbsBaseActivity {
             updateManager=null;
         }
     }
-
     @Override
     public void onBackPressed() {
         showDoubleWarnListen("确认退出"+getString(R.string.app_name)+"？",view -> {
