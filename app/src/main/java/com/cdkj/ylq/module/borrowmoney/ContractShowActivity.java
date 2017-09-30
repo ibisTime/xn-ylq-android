@@ -12,14 +12,13 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.cdkj.baselibrary.R;
-import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.databinding.ActivityWebviewBinding;
-import com.cdkj.baselibrary.model.IntroductionInfoModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
+import com.cdkj.ylq.model.ContractMode;
 import com.cdkj.ylq.module.api.MyApiServer;
 
 import java.util.HashMap;
@@ -29,9 +28,9 @@ import retrofit2.Call;
 
 
 /**
- * 签约展示
+ * 合同展示
  */
-public class SigningTipsWebViewActivity extends AbsBaseActivity {
+public class ContractShowActivity extends AbsBaseActivity {
 
     private ActivityWebviewBinding mBinding;
 
@@ -39,15 +38,15 @@ public class SigningTipsWebViewActivity extends AbsBaseActivity {
     /**
      * 加载activity
      *
-     * @param activity 上下文
+     * @param activity 上下文 合同编号
      */
-    public static void open(Activity activity, String mCouponId) {
+    public static void open(Activity activity, String code) {
         if (activity == null) {
             return;
         }
 
-        Intent intent = new Intent(activity, SigningTipsWebViewActivity.class);
-        intent.putExtra("mCouponId", mCouponId);
+        Intent intent = new Intent(activity, ContractShowActivity.class);
+        intent.putExtra("code", code);
         activity.startActivity(intent);
 
     }
@@ -92,9 +91,9 @@ public class SigningTipsWebViewActivity extends AbsBaseActivity {
     }
 
     private void initData() {
-        setTopTitle("借款协议");
+        setTopTitle("借款合同");
 
-        singInfoRequest();
+        contractInfoRequest();
 
     }
 
@@ -110,24 +109,28 @@ public class SigningTipsWebViewActivity extends AbsBaseActivity {
         }
     }
 
+    /**
+     * 合同数据请求
+     */
 
-    private void singInfoRequest() {
+    private void contractInfoRequest() {
+
+        if (getIntent() == null || TextUtils.isEmpty(getIntent().getStringExtra("code"))) {
+            return;
+        }
 
         Map<String, String> map = new HashMap<String, String>();
-        if(getIntent()!=null && !TextUtils.isEmpty(getIntent().getStringExtra("mCouponId"))){
-            map.put("couponId", getIntent().getStringExtra("mCouponId"));
-        }
-        map.put("userId", SPUtilHelpr.getUserId());
-        Call call = RetrofitUtils.createApi(MyApiServer.class).singInfoRequest("623092", StringUtils.getJsonToString(map));
+        map.put("code", getIntent().getStringExtra("code"));
+        Call call = RetrofitUtils.createApi(MyApiServer.class).contractInfoRequest("623093", StringUtils.getJsonToString(map));
 
         addCall(call);
 
         showLoadingDialog();
 
-        call.enqueue(new BaseResponseModelCallBack<String>(this) {
+        call.enqueue(new BaseResponseModelCallBack<ContractMode>(this) {
             @Override
-            protected void onSuccess(String data, String SucMessage) {
-                mBinding.webView.loadData(data, "text/html;charset=UTF-8", "UTF-8");
+            protected void onSuccess(ContractMode data, String SucMessage) {
+                mBinding.webView.loadData(data.getContent(), "text/html;charset=UTF-8", "UTF-8");
             }
 
             @Override

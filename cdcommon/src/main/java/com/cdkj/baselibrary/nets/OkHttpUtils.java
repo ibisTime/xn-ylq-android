@@ -14,12 +14,12 @@ import okhttp3.logging.HttpLoggingInterceptor;
  */
 public class OkHttpUtils {
 
-    private final static int CONNECT_TIMEOUT = 25;//连接超时
-    private final static int READ_TIMEOUT = 25;//数据返回超时
-    private final static int WRITE_TIMEOUT = 25;//请求超时
+    private final static int CONNECT_TIMEOUT = 35;//连接超时
+    private final static int READ_TIMEOUT = 35;//数据返回超时
+    private final static int WRITE_TIMEOUT = 35;//请求超时
 
 
-    public OkHttpUtils() {}
+    private OkHttpUtils() {}
 
     private  static OkHttpClient client;
 

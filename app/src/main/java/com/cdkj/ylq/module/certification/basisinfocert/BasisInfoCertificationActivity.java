@@ -172,7 +172,8 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements G
         });
         //通讯录认证
         mBinding.layoutAddressbookInfo.setOnClickListener(v -> {
-            AddressBookCertActivity.open(this);
+            if (mCertData == null) return;
+            AddressBookCertActivity.open(this, TextUtils.equals("1", mCertData.getInfoAddressBookFlag()));
         });
 
         //银行卡信息填写

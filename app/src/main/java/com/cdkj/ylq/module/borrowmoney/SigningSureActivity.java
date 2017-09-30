@@ -128,7 +128,6 @@ public class SigningSureActivity extends AbsBaseActivity {
         });
 
         mBinding.tvRead.setOnClickListener(v -> {
-
             SigningTipsWebViewActivity.open(this,mCouponId);
         });
     }

@@ -83,9 +83,9 @@ public class UseMoneyRecordActivity extends CommonTablayoutActivity {
         mTitles.add("审核不通过");
         mTitles.add("待放款");
         mTitles.add("打款失败");
-        mTitles.add("待还款");
-        mTitles.add("已还款");
-        mTitles.add("已逾期");
+        mTitles.add("待还款");//
+        mTitles.add("已还款");//
+        mTitles.add("已逾期");//
 
         return mTitles;
     }

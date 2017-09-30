@@ -289,6 +289,11 @@
             android:name=".module.borrowmoney.SigningTipsWebViewActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
+    //合同展示
+        <activity
+            android:name=".module.borrowmoney.ContractShowActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
 
 
         //魔蝎认证

@@ -7,6 +7,7 @@ import com.cdkj.baselibrary.model.UserLoginModel;
 import com.cdkj.ylq.model.CanUseCouponsModel;
 import com.cdkj.ylq.model.CanUseMoneyModel;
 import com.cdkj.ylq.model.CerttificationInfoModel;
+import com.cdkj.ylq.model.ContractMode;
 import com.cdkj.ylq.model.CoupoonsModel;
 import com.cdkj.ylq.model.HuokeListModel;
 import com.cdkj.ylq.model.IsBorrowFlagModel;
@@ -240,6 +241,15 @@ public interface MyApiServer {
     @FormUrlEncoded
     @POST("api")
     Call<BaseResponseModel<String>> singInfoRequest(@Field("code") String code, @Field("json") String json);
+
+    /**
+     * 合同数据
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api")
+    Call<BaseResponseModel<ContractMode>> contractInfoRequest(@Field("code") String code, @Field("json") String json);
 
 
 

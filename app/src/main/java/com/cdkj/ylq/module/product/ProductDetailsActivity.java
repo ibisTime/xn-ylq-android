@@ -280,10 +280,11 @@ public class ProductDetailsActivity extends AbsBaseActivity {
                     EventBusModel eventBusModel = new EventBusModel();
                     eventBusModel.setTag(EventTags.MAINCHANGESHOWINDEX);
                     CommonDialog commonDialog = new CommonDialog(ProductDetailsActivity.this).builder()
-                            .setTitle("提示").setContentMsg("您的信息未认证，请先完成认证")
+                            .setTitle("提示").setContentMsg("您的信息未认证，请先完成认证。")
                             .setPositiveBtn("确定", view -> {
                                 eventBusModel.setEvInt(MainActivity.SHOWCERT); //显示认证界面
                                 EventBus.getDefault().post(eventBusModel);
+                                EventBus.getDefault().post(EventTags.AllFINISH);//结束上一个界面
                                 finish();
                             });
                     commonDialog.show();

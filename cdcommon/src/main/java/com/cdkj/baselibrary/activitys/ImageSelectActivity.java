@@ -71,10 +71,13 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
 
     private static final String CACHDIR = "ylqpicimgcach";
 
-    public final static int CAPTURE_PHOTO_CODE = 111;//相机
-    public final static int CAPTURE_WALBUM_CODE = 222;//相册
-    public final static int CAPTURE_ZOOM_CODE = 333;//裁剪
+    public final static int CAPTURE_PHOTO_CODE = 3;//相机
+    public final static int CAPTURE_WALBUM_CODE = 4;//相册
+    public final static int CAPTURE_ZOOM_CODE = 5;//裁剪
 
+
+    public final static int CAPTURE_PERMISSION_CODE = 6;//相机权限申请
+    public final static int CAPTURE_PERMISSION_CODD_2 =7;//相册权限申请
 
     public static final int SHOWPIC = 1; //显示拍照按钮
     public static final int SHOWALBUM = 2;//显示相册
@@ -163,10 +166,10 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
         try {
             int i = v.getId();
             if (i == R.id.tv_take_capture) {
-                permissionCheck(CAPTURE_PHOTO_CODE); //6.0系统申请相机权限
+                permissionCheck(CAPTURE_PERMISSION_CODE); //6.0系统申请相机权限
 
             } else if (i == R.id.tv_alumb) {
-                permissionCheck(CAPTURE_WALBUM_CODE);
+                permissionCheck(CAPTURE_PERMISSION_CODD_2);
 
             } else if (i == R.id.empty_view || i == R.id.tv_cancle) {
                 finish();
@@ -608,7 +611,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
                 return;
             }
         }
-        if (requestcode == CAPTURE_PHOTO_CODE) {
+        if (requestcode == CAPTURE_PERMISSION_CODE) {
             //判断是否有可用相机
             startCamera();
         } else {
@@ -652,7 +655,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
                     }, false).show();
 
         } else {
-            if (requestCode == CAPTURE_PHOTO_CODE) {
+            if (requestCode == CAPTURE_PERMISSION_CODE) {
                 startCamera();  //启动相机
             } else {
                 getImageFromAlbum(); //启动相册
