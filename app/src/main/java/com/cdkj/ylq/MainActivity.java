@@ -160,7 +160,6 @@ public class MainActivity extends AbsBaseActivity {
         setTabIndex();
     }
 
-
     @Subscribe
     public void MainEventBus(EventBusModel eventBusModel) {
         if (eventBusModel == null) {
