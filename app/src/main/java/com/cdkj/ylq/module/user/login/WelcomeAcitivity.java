@@ -81,10 +81,11 @@ public class WelcomeAcitivity extends BaseActivity {
                     return;
                 }
 
-                LogUtil.E("SHOW_TYPE 本地"+BuildConfig.SHOW_TYPE +" ——————网络:  "+data.getCvalue());
+                LogUtil.E("SHOW_TYPE 本地" + BuildConfig.SHOW_TYPE + " ——————网络:  " + data.getCvalue());
 
                 if (data.getCvalue().equals(BuildConfig.SHOW_TYPE)) {
                     ARouter.getInstance().build(ARouteConfig.StoreMain).navigation();
+                    finish();
                     return;
                 }
                 MainActivity.open(WelcomeAcitivity.this);
