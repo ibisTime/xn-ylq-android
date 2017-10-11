@@ -203,7 +203,6 @@
                                     android:textSize="16sp"
                                     tools:text="2017-09-09" />
 
-
                             </FrameLayout>
 
                             <FrameLayout
