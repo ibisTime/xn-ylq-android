@@ -71,7 +71,7 @@ public class ApplyFailureActivity extends AbsBaseActivity {
         mBinding.tvMakeDay.setText( mData.getDuration() + "天");
         mBinding.tvState.setText(BusinessSings.getProductState(mData.getUserProductStatus()));
         mBinding.tvLevel.setText("Lv"+mData.getLevel());
-        mBinding.tvTips.setText(mData.getApproveNote());
+//        mBinding.tvTips.setText(mData.getApproveNote());
     }
 
     //

@@ -76,18 +76,18 @@ public class UpdateBackCardActivity extends AbsBaseActivity {
 
         setShowData();
 
-        setSubRightTitleAndClick("删除", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        showDoubleWarnListen("您确定要删除该银行卡吗?", new CommonDialog.OnPositiveListener() {
-                            @Override
-                            public void onPositive(View view) {
-                                deleteBank();
-                            }
-                        });
-                    }
-                }
-        );
+//        setSubRightTitleAndClick("删除", new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        showDoubleWarnListen("您确定要删除该银行卡吗?", new CommonDialog.OnPositiveListener() {
+//                            @Override
+//                            public void onPositive(View view) {
+//                                deleteBank();
+//                            }
+//                        });
+//                    }
+//                }
+//        );
 
         setSubLeftImgState(true);
 
@@ -174,7 +174,7 @@ public class UpdateBackCardActivity extends AbsBaseActivity {
         object.put("userId", SPUtilHelpr.getUserId());
         object.put("systemCode", MyConfig.SYSTEMCODE);
 
-        Call call = RetrofitUtils.getBaseAPiService().successRequest("802012", StringUtils.getJsonToString(object));
+        Call call = RetrofitUtils.getBaseAPiService().successRequest("623850", StringUtils.getJsonToString(object));
 
         addCall(call);
 

@@ -69,7 +69,9 @@ public class SigningTipsWebViewActivity extends AbsBaseActivity {
 
     private void initLayout() {
         //输入法
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        if(getWindow()!=null){
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        }
 
         mBinding.webView.getSettings().setJavaScriptEnabled(true);//js
         mBinding.webView.getSettings().setDefaultTextEncodingName("UTF-8");

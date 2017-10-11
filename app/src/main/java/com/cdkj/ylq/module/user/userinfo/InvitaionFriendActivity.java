@@ -87,7 +87,7 @@ public class InvitaionFriendActivity extends AbsBaseActivity {
                     if (TextUtils.isEmpty(data.getCvalue())) {
                         return;
                     }
-                    ShareActivity.open(InvitaionFriendActivity.this, data.getCvalue()+"?kind=f1&mobile="+ SPUtilHelpr.getUserPhoneNum());
+                    ShareActivity.open(InvitaionFriendActivity.this, data.getCvalue()+"?kind=C&mobile="+ SPUtilHelpr.getUserPhoneNum());
                 }
 
                 @Override

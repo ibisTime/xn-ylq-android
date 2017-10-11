@@ -7,14 +7,16 @@ android {
         applicationId "com.cdkj.ylq"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 5
-        versionName "1.2.1"
+        versionCode 6
+        versionName "1.2.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [ moduleName : project.getName() ]
             }
         }
+
     }
     buildTypes {
         release {

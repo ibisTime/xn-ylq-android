@@ -76,8 +76,7 @@ public class BorrowMoneyProductAdapter extends BaseQuickAdapter<PorductListModel
      * @return
      */
     private boolean canUseCancle(String state) {
-        return TextUtils.equals(state, "1") || TextUtils.equals(state, "2")
-                || TextUtils.equals(state, "3");
+        return TextUtils.equals(state, "1") || TextUtils.equals(state, "2");
     }
 
 }
