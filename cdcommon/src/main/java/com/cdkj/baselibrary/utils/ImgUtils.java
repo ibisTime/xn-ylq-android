@@ -171,7 +171,7 @@ public class ImgUtils {
             return;
         }
         try {
-            Glide.with(context).load(imgid).error(R.drawable.back_default).into(img);
+            Glide.with(context).load(imgid).placeholder(R.drawable.back_default).error(R.drawable.back_default).into(img);
         } catch (Exception e) {
 
         }
@@ -184,7 +184,7 @@ public class ImgUtils {
             return;
         }
         try {
-            Glide.with(context).load(imgid).error(R.drawable.back_logo_defalut).into(img);
+            Glide.with(context).load(imgid).placeholder(R.drawable.back_logo_defalut).error(R.drawable.back_logo_defalut).into(img);
         } catch (Exception e) {
 
         }

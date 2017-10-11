@@ -32,7 +32,7 @@ import retrofit2.Call;
  * 银行卡列表
  * Created by 李先俊 on 2017/6/29.
  */
-//TODO 新增
+//TODO 签约界面也使用了获取银行卡列表接口 SigningSureActivity
 public class BackCardListActivity extends BaseRefreshActivity {
 
     private boolean mIsselect;//用户打开类型是否是选择银行卡
@@ -81,7 +81,7 @@ public class BackCardListActivity extends BaseRefreshActivity {
         object.put("start", "1");
         object.put("limit", "10");
 
-        Call call = RetrofitUtils.getBaseAPiService().getCardListData("802015", StringUtils.getJsonToString(object));
+        Call call = RetrofitUtils.getBaseAPiService().getCardListData("802015", StringUtils.getJsonToString(object));  //签约界面也使用了获取银行卡列表接口 SigningSureActivity
 
         addCall(call);
 

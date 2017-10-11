@@ -1,4 +1,4 @@
-package com.cdkj.baselibrary.activitys;
+package com.cdkj.ylq.module.borrowmoney;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,14 +11,15 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.R;
+import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.databinding.ActivityWebviewBinding;
-import com.cdkj.baselibrary.model.IntroductionInfoModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
+import com.cdkj.ylq.model.ContractMode;
+import com.cdkj.ylq.module.api.MyApiServer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,9 +28,9 @@ import retrofit2.Call;
 
 
 /**
- * 介绍类webview
+ * 合同展示
  */
-public class WebViewActivity extends AbsBaseActivity {
+public class ContractShowActivity extends AbsBaseActivity {
 
     private ActivityWebviewBinding mBinding;
 
@@ -37,33 +38,15 @@ public class WebViewActivity extends AbsBaseActivity {
     /**
      * 加载activity
      *
-     * @param activity 上下文
+     * @param activity 上下文 合同编号
      */
-    public static void openkey(Activity activity, String title, String code) {
+    public static void open(Activity activity, String code) {
         if (activity == null) {
             return;
         }
 
-        Intent intent = new Intent(activity, WebViewActivity.class);
+        Intent intent = new Intent(activity, ContractShowActivity.class);
         intent.putExtra("code", code);
-        intent.putExtra("title", title);
-        activity.startActivity(intent);
-
-    }
-
-    /**
-     * 加载activity
-     *
-     * @param activity 上下文
-     */
-    public static void openURL(Activity activity, String title, String url) {
-        if (activity == null) {
-            return;
-        }
-
-        Intent intent = new Intent(activity, WebViewActivity.class);
-        intent.putExtra("url", url);
-        intent.putExtra("title", title);
         activity.startActivity(intent);
 
     }
@@ -85,7 +68,7 @@ public class WebViewActivity extends AbsBaseActivity {
 
     private void initLayout() {
         //输入法
-        if(getWindow()!=null){
+        if (getWindow() != null) {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         }
 
@@ -110,52 +93,9 @@ public class WebViewActivity extends AbsBaseActivity {
     }
 
     private void initData() {
-        if (getIntent() == null) {
-            return;
-        }
+        setTopTitle("借款合同");
 
-        setTopTitle(getIntent().getStringExtra("title"));
-
-        if (TextUtils.isEmpty(getIntent().getStringExtra("url"))) {
-            getKeyUrl(getIntent().getStringExtra("code"));
-        } else {
-            mBinding.webView.loadUrl(getIntent().getStringExtra("url"));
-        }
-    }
-
-
-    public void getKeyUrl(String key) {
-
-        if (TextUtils.isEmpty(key)) {
-            return;
-        }
-
-        Map<String, String> map = new HashMap<>();
-        map.put("ckey", key);
-        map.put("systemCode", MyConfig.SYSTEMCODE);
-        map.put("companyCode", MyConfig.COMPANYCODE);
-
-        Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("805917", StringUtils.getJsonToString(map));
-        ;
-
-        addCall(call);
-
-        showLoadingDialog();
-
-        call.enqueue(new BaseResponseModelCallBack<IntroductionInfoModel>(this) {
-            @Override
-            protected void onSuccess(IntroductionInfoModel data, String SucMessage) {
-                if (TextUtils.isEmpty(data.getCvalue())) {
-                    return;
-                }
-                mBinding.webView.loadData(data.getCvalue(), "text/html;charset=UTF-8", "UTF-8");
-            }
-
-            @Override
-            protected void onFinish() {
-                disMissLoading();
-            }
-        });
+        contractInfoRequest();
 
     }
 
@@ -169,6 +109,38 @@ public class WebViewActivity extends AbsBaseActivity {
             }
             super.onProgressChanged(view, newProgress);
         }
+    }
+
+    /**
+     * 合同数据请求
+     */
+
+    private void contractInfoRequest() {
+
+        if (getIntent() == null || TextUtils.isEmpty(getIntent().getStringExtra("code"))) {
+            return;
+        }
+
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("code", getIntent().getStringExtra("code"));
+        Call call = RetrofitUtils.createApi(MyApiServer.class).contractInfoRequest("623093", StringUtils.getJsonToString(map));
+
+        addCall(call);
+
+        showLoadingDialog();
+
+        call.enqueue(new BaseResponseModelCallBack<ContractMode>(this) {
+            @Override
+            protected void onSuccess(ContractMode data, String SucMessage) {
+                mBinding.webView.loadData(data.getContent(), "text/html;charset=UTF-8", "UTF-8");
+            }
+
+            @Override
+            protected void onFinish() {
+                disMissLoading();
+            }
+        });
+
     }
 
 

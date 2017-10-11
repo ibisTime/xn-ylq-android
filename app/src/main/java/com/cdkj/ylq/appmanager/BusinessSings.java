@@ -25,6 +25,7 @@ public class BusinessSings {
     //   public static final String USEMONEYRECORD_6="6";
     public static final String USEMONEYRECORD_7 = "7";
 
+    //借款记录状态
     public static String getStateRecordString(String status) {
         String str = "";
         if (TextUtils.isEmpty(status)) {
@@ -57,6 +58,52 @@ public class BusinessSings {
 
         return str;
     }
+
+
+    //获取产品状态
+    //("0", "可申请"),("1", "认证中"),("2", "人工审核中"),( "3", "已驳回"),("4", "已有额度"),("5", "等待放款中"),( "6", "生效中"),("7", "已逾期")
+    public static String getProductState(String state) {
+
+        if (TextUtils.isEmpty(state)) {
+            return "";
+        }
+
+        String stateStr = "";
+        ;
+        switch (state) {
+            case "0":
+                stateStr = "立即申请";
+                break;
+            case "1":
+                stateStr = "认证中";
+                break;
+            case "2":
+                stateStr = "系统审核中";
+                break;
+            case "3":
+                stateStr = "已驳回";
+                break;
+            case "4":
+                stateStr = "审核通过 签约";
+                break;
+            case "5":
+                stateStr = "款项正在路上";
+                break;
+            case "6":
+                stateStr = "待还款";
+                break;
+            case "7":
+                stateStr = "已逾期";
+                break;
+            case "11":
+                stateStr = "打款失败";
+                break;
+        }
+
+        return stateStr;
+    }
+
+
 
     /**
      * 根据订单状态跳转相应界面

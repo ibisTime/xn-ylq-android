@@ -17,6 +17,8 @@ import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivityUsedMoneyBinding;
 import com.cdkj.ylq.model.UseMoneyRecordModel;
 import com.cdkj.ylq.module.api.MyApiServer;
+import com.cdkj.ylq.module.borrowmoney.ContractShowActivity;
+import com.cdkj.ylq.module.borrowmoney.SigningTipsWebViewActivity;
 import com.cdkj.ylq.module.pay.AlsoMoneyTabActivity;
 import com.cdkj.ylq.module.pay.RenewalMoneyTabActivity;
 import com.cdkj.ylq.module.renewal.RenewalListActivity;
@@ -111,10 +113,10 @@ public class UsedMoneyDetailsActivity extends AbsBaseActivity {
         mBinding.tvJianmian.setText(MoneyUtils.showPrice(mData.getYhAmount()) + "元");
         mBinding.tvDaoqi.setText(MoneyUtils.showPrice(mData.getTotalAmount()) + "元");
         mBinding.tvYuqi.setText(mData.getYqDays() + "天");
-        mBinding.tvFuwu.setText(MoneyUtils.showPrice(mData.getFwAmount())+"元");
-        mBinding.tvYqMoney.setText(MoneyUtils.showPrice(mData.getYqlxAmount())+"元");
+        mBinding.tvFuwu.setText(MoneyUtils.showPrice(mData.getFwAmount()) + "元");
+        mBinding.tvYqMoney.setText(MoneyUtils.showPrice(mData.getYqlxAmount()) + "元");
 
-        mBinding.tvXuqiNum.setText(mData.getRenewalCount()+"");
+        mBinding.tvXuqiNum.setText(mData.getRenewalCount() + "");
     }
 
 
@@ -149,17 +151,25 @@ public class UsedMoneyDetailsActivity extends AbsBaseActivity {
 
         //还款
         mBinding.btnPayMoney.setOnClickListener(v -> {
-            if(mData==null) return;
-            AlsoMoneyTabActivity.open(this,mData.getCode(),MoneyUtils.showPrice(mData.getAmount()));
+            if (mData == null) return;
+            AlsoMoneyTabActivity.open(this, mData.getCode(), MoneyUtils.showPrice(mData.getAmount()));
         });
         //续期
         mBinding.btnRenewal.setOnClickListener(v -> {
-            if(mData==null) return;
-            RenewalMoneyTabActivity.open(this,mData);
+            if (mData == null) return;
+            RenewalMoneyTabActivity.open(this, mData);
         });
+        //续期次数
         mBinding.fraXuqi.setOnClickListener(v -> {
-            if(mData==null) return;
-            RenewalListActivity.open(this,mData.getCode());
+            if (mData == null) return;
+            RenewalListActivity.open(this, mData.getCode());
+        });
+        //借款编号
+        mBinding.layoutCode.setOnClickListener(v -> {
+            if (TextUtils.isEmpty(mBinding.tvCode.getText().toString())) {
+                return;
+            }
+            ContractShowActivity.open(this, mBinding.tvCode.getText().toString());
         });
 
     }

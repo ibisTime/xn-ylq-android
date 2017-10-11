@@ -25,7 +25,6 @@ public class BaseApplication extends Application {
 		RetrofitUtils.urlType=urlType;
         sContext = context;
     }
-
 	public static Context getContext() {
 		return sContext;
 	}

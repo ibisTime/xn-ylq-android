@@ -268,15 +268,14 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
 
         switch (status) {
             case BusinessSings.USEMONEYRECORD_0: //待审核
-                return "放款中详情";
+                return "待审核详情";
             case BusinessSings.USEMONEYRECORD_2://审核不通过
                 return "审核失败";
             case BusinessSings.USEMONEYRECORD_1://待放款
-                return "放款中详情";
+                return "待放款详情";
             case BusinessSings.USEMONEYRECORD_7://打款失败
                 return "打款失败";
             default:
-
                 return "借款详情";
         }
     }

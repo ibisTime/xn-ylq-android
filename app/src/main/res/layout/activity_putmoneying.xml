@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <ScrollView
-        android:background="@color/bg_gray"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/bg_gray">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,7 +30,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
-                    android:text="借款放款中"
+                    android:text="款项正在路上"
                     android:textColor="@color/money_yellow"
                     android:textSize="16sp" />
 

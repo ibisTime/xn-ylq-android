@@ -48,7 +48,7 @@ public class HumanReviewActivity extends AbsBaseActivity {
 
         setSubLeftImgState(true);
 
-        setTopTitle("人工审核");
+        setTopTitle("系统审核");
 
         initListener();
     }

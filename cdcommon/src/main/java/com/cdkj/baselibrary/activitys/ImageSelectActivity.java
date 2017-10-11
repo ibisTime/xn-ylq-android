@@ -19,20 +19,16 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.cdkj.baselibrary.R;
 import com.cdkj.baselibrary.dialog.CommonDialog;
 import com.cdkj.baselibrary.utils.AppUtils;
-import com.cdkj.baselibrary.utils.CapturePhotoHelper;
 import com.cdkj.baselibrary.utils.FileProviderHelper;
 import com.cdkj.baselibrary.utils.LogUtil;
-import com.cdkj.baselibrary.utils.PermissionHelper;
 import com.cdkj.baselibrary.utils.SystemUtils;
 import com.cdkj.baselibrary.utils.ToastUtil;
 
@@ -47,6 +43,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
+
 /**
  * 打开相机 相册 图片裁剪 功能
  */
@@ -57,27 +61,39 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
     private TextView tv_alumb;// 相册选取
     private TextView tv_cancle;// 取消
     private View empty_view;// 取消
-    private Uri imageUrl;
+
+
     public final static String staticPath = "imgSelect";
-    private boolean isSplit = false;//是否裁剪
+
+    private boolean isSplit = false;//执行相机或拍照后是否需要裁剪 默认不需要
 
     private String photoPath;//拍照图片路径
 
     private static final String CACHDIR = "ylqpicimgcach";
-    //private final static int RUNTIME_PERMISSION_REQUEST_CODE = 0x1;
+
+    public final static int CAPTURE_PHOTO_CODE = 3;//相机
+    public final static int CAPTURE_WALBUM_CODE = 4;//相册
+    public final static int CAPTURE_ZOOM_CODE = 5;//裁剪
+
+
+    public final static int CAPTURE_PERMISSION_CODE = 6;//相机权限申请
+    public final static int CAPTURE_PERMISSION_CODD_2 =7;//相册权限申请
 
     public static final int SHOWPIC = 1; //显示拍照按钮
-    public static final int SHOWALBUM = 2;//显示相册按钮
+    public static final int SHOWALBUM = 2;//显示相册
 
-    private CapturePhotoHelper mCapturePhotoHelper;
 
-    public static void launch(Activity activity, int photoid, int showType,boolean isSplit) {
+    private Uri imageUrl;
+
+    protected CompositeDisposable mSubscription;
+
+    public static void launch(Activity activity, int photoid, int showType, boolean isSplit) {
         if (activity == null) {
             return;
         }
         Intent intent = new Intent(activity, ImageSelectActivity.class);
         intent.putExtra("showType", showType);
-        intent.putExtra("isSplit",isSplit);
+        intent.putExtra("isSplit", isSplit);
         activity.startActivityForResult(intent, photoid);
     }
 
@@ -90,7 +106,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
     }
 
     public static void launchFragment(Fragment fragment, int photoid) {
-        if (fragment == null || fragment.getActivity()==null) {
+        if (fragment == null || fragment.getActivity() == null) {
             return;
         }
         Intent intent = new Intent(fragment.getActivity(), ImageSelectActivity.class);
@@ -106,7 +122,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
     }
 
     protected void init() {
-
+        mSubscription = new CompositeDisposable();
 
         tv_take_capture = (TextView) findViewById(R.id.tv_take_capture);
         tv_alumb = (TextView) findViewById(R.id.tv_alumb);
@@ -120,9 +136,10 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
         empty_view.setOnClickListener(this);
 
         if (getIntent() != null) {
-            isSplit = getIntent().getBooleanExtra("isSplit", isSplit);
 
-            switch (getIntent().getIntExtra("showType", 0)) {
+            isSplit = getIntent().getBooleanExtra("isSplit", isSplit); //获取是否裁剪
+
+            switch (getIntent().getIntExtra("showType", 0)) {      //根据参数显示相册按钮还是显示拍照按钮 默认两个都显示
                 case SHOWPIC:
                     tv_take_capture.setVisibility(View.VISIBLE);
                     tv_alumb.setVisibility(View.GONE);
@@ -136,7 +153,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
                     tv_alumb.setVisibility(View.VISIBLE);
                     break;
             }
-        }else{
+        } else {
             tv_take_capture.setVisibility(View.VISIBLE);
             tv_alumb.setVisibility(View.VISIBLE);
         }
@@ -149,10 +166,10 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
         try {
             int i = v.getId();
             if (i == R.id.tv_take_capture) {
-                PermissionCheck(0); //6.0系统申请相机权限
+                permissionCheck(CAPTURE_PERMISSION_CODE); //6.0系统申请相机权限
 
             } else if (i == R.id.tv_alumb) {
-                PermissionCheck(1);
+                permissionCheck(CAPTURE_PERMISSION_CODD_2);
 
             } else if (i == R.id.empty_view || i == R.id.tv_cancle) {
                 finish();
@@ -165,39 +182,29 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
     }
 
     /**
-     * 启动相机
+     * 判断是否存在可用相机并启动相机
      *
      * @return
      */
-    private boolean startCamera() {
+    private void startCamera() {
         if (hasCamera())  //判读有没有可用相机
         {
             getImageFromCamera();
         } else {
             if (isFinishing()) {
-                return true;
+                return;
             }
             new CommonDialog(this).builder()
                     .setTitle("提示").setContentMsg("没有可用相机")
                     .setNegativeBtn("确定", new CommonDialog.OnNegativeListener() {
                         @Override
                         public void onNegative(View view) {
-                            ImageSelectActivity.this.finish();
+                            finish();
                         }
                     }, false).show();
         }
-        return false;
     }
 
-    /**
-     * 开启相机
-     */
-    private void turnOnCamera() {
-        if (mCapturePhotoHelper == null) {
-            mCapturePhotoHelper = new CapturePhotoHelper(this, getCacheDir());
-        }
-        mCapturePhotoHelper.capture();
-    }
 
     /**
      * 裁剪图片方法实现
@@ -224,7 +231,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
         intent.putExtra("outputY", 200);
         intent.putExtra("return-data", true);
 
-        startActivityForResult(intent, 3);
+        startActivityForResult(intent, CAPTURE_ZOOM_CODE);
 
     }
 
@@ -274,7 +281,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
         intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 "image/jpeg");
 
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, CAPTURE_WALBUM_CODE);
     }
 
 
@@ -291,7 +298,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
             photoPath = file.getAbsolutePath();
             intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUrl);
             intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
-            startActivityForResult(intent, CapturePhotoHelper.CAPTURE_PHOTO_REQUEST_CODE);
+            startActivityForResult(intent, CAPTURE_PHOTO_CODE);
         } else {
             ToastUtil.show(this, "内存卡不存在");
         }
@@ -304,103 +311,152 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
         super.onActivityResult(requestCode, resultCode, data);
 
         try {
-            /**
-             * 1.选择图片 2.拍照 3.选择完前两项后进行剪切
-             */
             if (resultCode != Activity.RESULT_OK) {
                 return;
-            } else {
-                switch (requestCode) {
-                    case 1:// 相册
-                        Uri imageUri = data.getData();
+            }
 
-                        if ("Xiaomi".equals(Build.MANUFACTURER) || SystemUtils.isMIUI())   //小米相册兼容代码
-                        {
-                            String imgP = setPhotoForMiuiSystem(data);
+            switch (requestCode) {
+                case CAPTURE_WALBUM_CODE:// 相册
+                    Uri imageUri = data.getData();
 
-                            if (imageUri == null) {
-                                Toast.makeText(ImageSelectActivity.this, "图片获取失败", Toast.LENGTH_SHORT);
-                                finish();
-                                return;
-                            }
-                            if (isSplit) {
-                                startPhotoZoom(new File(imgP));
-                                return;
-                            }
+                    if ("Xiaomi".equals(Build.MANUFACTURER) || SystemUtils.isMIUI())   //小米相册兼容代码
+                    {
+                        String imgP = setPhotoForMiuiSystem(data);
 
-                            if (!TextUtils.isEmpty(imgP)) {
-                                setResult(Activity.RESULT_OK, new Intent().putExtra(staticPath, imgP));
-                                finish();
-                            }
-                            return;
-                        }
                         if (imageUri == null) {
                             Toast.makeText(ImageSelectActivity.this, "图片获取失败", Toast.LENGTH_SHORT);
                             finish();
                             return;
                         }
-
                         if (isSplit) {
-                            startPhotoZoom(new File(imageUri.getPath()));
-                        } else {
-                            Uri selectedImage = data.getData();
-                            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                            startPhotoZoom(new File(imgP));
+                            return;
+                        }
 
-                            Cursor cursor = getContentResolver().query(selectedImage,
-                                    filePathColumn, null, null, null);
-                            cursor.moveToFirst();
-
-                            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                            String picturePath = cursor.getString(columnIndex);
-                            cursor.close();
-                            setResult(Activity.RESULT_OK, new Intent().putExtra(staticPath, picturePath));
+                        if (!TextUtils.isEmpty(imgP)) {
+                            setResult(Activity.RESULT_OK, new Intent().putExtra(staticPath, imgP));
                             finish();
                         }
-                        break;
-                    case CapturePhotoHelper.CAPTURE_PHOTO_REQUEST_CODE:// 拍照
-
-
-                        if (isSplit) {
-                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                                startPhotoZoom(new File(imageUrl.getPath()));
-                            } else {
-                                startPhotoZoom(new File(photoPath));
-                            }
-
-                        } else {
-                            Bitmap bitmap;
-                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                                bitmap = decodeBitmapFromFile(imageUrl.getPath(), 400, 400);
-                            } else {
-                                bitmap = decodeBitmapFromFile(photoPath, 400, 400);
-                            }
-                            String path = saveFile(bitmap, "camera");
-                            setResult(Activity.RESULT_OK, new Intent().putExtra(staticPath, path));
-                            finish();
-                        }
-                        break;
-                    case 3:  //图片裁剪
-                        Bundle extras = data.getExtras();
-                        Bitmap photo = extras.getParcelable("data");
-                        String path = saveFile(photo, "split");  //图片名称
-
-                        setResult(Activity.RESULT_OK, new Intent().putExtra(staticPath, path));
+                        return;
+                    }
+                    if (imageUri == null) {
+                        Toast.makeText(ImageSelectActivity.this, "图片获取失败", Toast.LENGTH_SHORT);
                         finish();
-                        break;
-                    default:
-                        break;
-                }
+                        return;
+                    }
+
+                    if (isSplit) {
+                        startPhotoZoom(new File(imageUri.getPath()));
+                    } else {
+                        Uri selectedImage = data.getData();
+                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+                        Cursor cursor = getContentResolver().query(selectedImage,
+                                filePathColumn, null, null, null);
+                        cursor.moveToFirst();
+
+                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                        String picturePath = cursor.getString(columnIndex);
+                        cursor.close();
+                        setResult(Activity.RESULT_OK, new Intent().putExtra(staticPath, picturePath));
+                        finish();
+                    }
+                    break;
+                case CAPTURE_PHOTO_CODE:// 拍照
+
+                    if (isSplit) {
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                            startPhotoZoom(new File(imageUrl.getPath()));
+                        } else {
+                            startPhotoZoom(new File(photoPath));
+                        }
+
+                    } else {
+                        mSubscription.add(Observable.just("")
+                                .subscribeOn(AndroidSchedulers.mainThread())
+                                .observeOn(Schedulers.io())
+                                .map(new Function<String, Bitmap>() {
+                                    @Override
+                                    public Bitmap apply(@NonNull String s) throws Exception {
+                                        Bitmap bitmap;
+                                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                                            bitmap = decodeBitmapFromFile(imageUrl.getPath(), 400, 400);
+                                        } else {
+                                            bitmap = decodeBitmapFromFile(photoPath, 400, 400);
+                                        }
+                                        LogUtil.E("poto1");
+                                        return bitmap;
+                                    }
+                                })
+                                .observeOn(Schedulers.io())
+                                .map(new Function<Bitmap, String>() {
+                                    @Override
+                                    public String apply(@NonNull Bitmap bitmap) throws Exception {
+                                        String path = saveBitmapFile(bitmap, "camera");
+                                        LogUtil.E("poto2");
+                                        return path;
+                                    }
+                                })
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Consumer<String>() {
+                                    @Override
+                                    public void accept(String s) throws Exception {
+                                        LogUtil.E("poto3");
+                                        setResult(Activity.RESULT_OK, new Intent().putExtra(staticPath, s));
+                                        finish();
+                                    }
+                                }, new Consumer<Throwable>() {
+                                    @Override
+                                    public void accept(Throwable throwable) throws Exception {
+                                        Toast.makeText(ImageSelectActivity.this, "图片获取失败", Toast.LENGTH_SHORT);
+                                        finish();
+                                    }
+                                }));
+                    }
+                    break;
+                case CAPTURE_ZOOM_CODE:  //图片裁剪
+                    Bundle extras = data.getExtras();
+                    Bitmap photo = extras.getParcelable("data");
+
+                    mSubscription.add(Observable.just(photo)
+                            .subscribeOn(AndroidSchedulers.mainThread())
+                            .observeOn(Schedulers.io())
+                            .map(new Function<Bitmap, String>() {
+                                @Override
+                                public String apply(@NonNull Bitmap bitmap) throws Exception {
+                                    String path = saveBitmapFile(bitmap, "split");  //图片名称
+                                    return path;
+                                }
+                            })
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Consumer<String>() {
+                                @Override
+                                public void accept(String path) throws Exception {
+                                    setResult(Activity.RESULT_OK, new Intent().putExtra(staticPath, path));
+                                    finish();
+                                }
+                            }, new Consumer<Throwable>() {
+                                @Override
+                                public void accept(Throwable throwable) throws Exception {
+                                    Toast.makeText(ImageSelectActivity.this, "图片获取失败", Toast.LENGTH_SHORT);
+                                    finish();
+                                }
+                            }));
+
+                    break;
+                default:
+                    break;
             }
         } catch (Exception e) {
             Toast.makeText(ImageSelectActivity.this, "图片获取失败", Toast.LENGTH_SHORT);
             finish();
         }
     }
+
     /**
      * 读取图片的旋转的角度
      *
-     * @param path
-     *            图片绝对路径
+     * @param path 图片绝对路径
      * @return 图片的旋转角度
      */
     private int getBitmapDegree(String path) {
@@ -423,9 +479,9 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
                     break;
             }
         } catch (IOException e) {
-            LogUtil.E("图片旋转角度异常"+e);
+            LogUtil.E("图片旋转角度异常" + e);
         }
-        LogUtil.E("图片旋转角度"+degree);
+        LogUtil.E("图片旋转角度" + degree);
         return degree;
     }
 
@@ -435,36 +491,20 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
    * @param bitmap
    * @return Bitmap
    */
-    public  Bitmap rotaingImageView(int angle , Bitmap bitmap) {
+    public Bitmap rotaingImageView(int angle, Bitmap bitmap) {
         try {
             //旋转图片 动作
-            Matrix matrix = new Matrix();;
+            Matrix matrix = new Matrix();
+            ;
             matrix.postRotate(angle);
             // 创建新的图片
             Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
                     bitmap.getWidth(), bitmap.getHeight(), matrix, true);
             return resizedBitmap;
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         return bitmap;
-    }
-
-    public void saveMyBitmap(Bitmap mBitmap, String bitName) {
-        if (Environment.getExternalStorageState() != Environment.MEDIA_MOUNTED) {
-            return;
-        }
-        File f = new File(Environment.getExternalStorageDirectory() + "/"
-                + bitName + ".jpg");
-        FileOutputStream fOut = null;
-        try {
-            fOut = new FileOutputStream(f);
-            fOut.flush();
-            fOut.close();
-        } catch (FileNotFoundException e) {
-        } catch (IOException e) {
-        }
-//		mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
     }
 
     /**
@@ -513,12 +553,12 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
 
             options.inJustDecodeBounds = false;
 
-            int degree =getBitmapDegree(imagePath);//获取旋转角度
+            int degree = getBitmapDegree(imagePath);//获取旋转角度
 
-            if(degree==0){
+            if (degree == 0) {
                 return BitmapFactory.decodeFile(imagePath, options);
-            }else{
-                return rotaingImageView(degree,BitmapFactory.decodeFile(imagePath, options));
+            } else {
+                return rotaingImageView(degree, BitmapFactory.decodeFile(imagePath, options));
             }
 
         } else {
@@ -558,7 +598,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
 */
 
     @TargetApi(Build.VERSION_CODES.M)
-    private void PermissionCheck(int requestcode) {
+    private void permissionCheck(int requestcode) {
         if (AppUtils.getAndroidVersion(Build.VERSION_CODES.M))  //如果运行环境是6.0
         {
             //判断是否有相机权限
@@ -571,14 +611,14 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
                 return;
             }
         }
-        if (requestcode == 0) {
+        if (requestcode == CAPTURE_PERMISSION_CODE) {
             //判断是否有可用相机
             startCamera();
         } else {
             getImageFromAlbum();
         }
-
     }
+
 
     //权限申请回调函数
     @Override
@@ -615,7 +655,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
                     }, false).show();
 
         } else {
-            if (requestCode == 0) {
+            if (requestCode == CAPTURE_PERMISSION_CODE) {
                 startCamera();  //启动相机
             } else {
                 getImageFromAlbum(); //启动相册
@@ -644,14 +684,19 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
         return bitmap;
     }
 
-
-    public static String saveFile(Bitmap bitmap, String imageName) {
+    /**
+     * 保存bitmap 图片
+     *
+     * @param bitmap
+     * @param imageName
+     * @return
+     */
+    public String saveBitmapFile(Bitmap bitmap, String imageName) {
 
         File file1 = new File(getDirectory());
         if (!file1.exists()) {
             file1.mkdirs();
         }
-
         String filename = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA)
                 .format(new Date());
         String imagename = filename + imageName + ".jpg";
@@ -677,7 +722,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
     /**
      * 获得缓存目录
      **/
-    public static String getDirectory() {
+    public String getDirectory() {
         String dir = getSDPath() + "/" + CACHDIR;
         LogUtil.E("拍照图片路径" + dir);
         return dir;
@@ -686,7 +731,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
     /**
      * 取SD卡路径
      **/
-    private static String getSDPath() {
+    private String getSDPath() {
         File sdDir = null;
         boolean sdCardExist = Environment.getExternalStorageState().equals(
                 Environment.MEDIA_MOUNTED); // 判断sd卡是否存在
@@ -722,4 +767,12 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
         return imagePath;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mSubscription != null) {
+            mSubscription.dispose();
+            mSubscription.clear();
+        }
+    }
 }

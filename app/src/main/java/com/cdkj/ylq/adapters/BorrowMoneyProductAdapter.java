@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.ylq.R;
+import com.cdkj.ylq.appmanager.BusinessSings;
 import com.cdkj.ylq.model.PorductListModel;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -45,12 +46,12 @@ public class BorrowMoneyProductAdapter extends BaseQuickAdapter<PorductListModel
             cardView.setAlpha(1);
             helper.setVisible(R.id.img_state, false);
             helper.setVisible(R.id.tv_state, true);
-            helper.setText(R.id.tv_level_satate, "急速放贷");
+            helper.setText(R.id.tv_level_satate, "极速放款");
         }
 
         helper.setText(R.id.tv_money, MoneyUtils.showPrice(item.getAmount()) + "");
         helper.setText(R.id.tv_make_day, item.getDuration() + "天");
-        helper.setText(R.id.tv_state, getState(item.getUserProductStatus()));
+        helper.setText(R.id.tv_state, BusinessSings.getProductState(item.getUserProductStatus()));
         helper.setText(R.id.tv_level, "Lv" + item.getLevel());
 
 
@@ -75,50 +76,7 @@ public class BorrowMoneyProductAdapter extends BaseQuickAdapter<PorductListModel
      * @return
      */
     private boolean canUseCancle(String state) {
-        return TextUtils.equals(state, "1") || TextUtils.equals(state, "2")
-                || TextUtils.equals(state, "3");
+        return TextUtils.equals(state, "1") || TextUtils.equals(state, "2");
     }
 
-
-    //("0", "可申请"),("1", "认证中"),("2", "人工审核中"),( "3", "已驳回"),("4", "已有额度"),("5", "等待放款中"),( "6", "生效中"),("7", "已逾期")
-    private String getState(String state) {
-
-        if (TextUtils.isEmpty(state)) {
-            return "";
-        }
-
-        String stateStr = "";
-        ;
-        switch (state) {
-            case "0":
-                stateStr = "可申请";
-                break;
-            case "1":
-                stateStr = "认证中";
-                break;
-            case "2":
-                stateStr = "人工审核中";
-                break;
-            case "3":
-                stateStr = "已驳回";
-                break;
-            case "4":
-                stateStr = "已有额度";
-                break;
-            case "5":
-                stateStr = "等待放款中";
-                break;
-            case "6":
-                stateStr = "生效中";
-                break;
-            case "7":
-                stateStr = "已逾期";
-                break;
-            case "11":
-                stateStr = "打款失败";
-                break;
-        }
-
-        return stateStr;
-    }
 }

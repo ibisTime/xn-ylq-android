@@ -65,6 +65,7 @@ public class MainActivity extends AbsBaseActivity {
     }
 
 
+
     @Override
     public View addMainView() {
         mBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.activity_main, null, false);
@@ -115,15 +116,12 @@ public class MainActivity extends AbsBaseActivity {
 
         switch (mShowIndex) {
             case 0:
-//                setStateTitleColor(ContextCompat.getColor(this,R.color.white));
                 mBinding.layoutMainButtom.radioMainTabMoney.setChecked(true);
                 break;
             case 1:
-//                setStateTitleColor(ContextCompat.getColor(this,R.color.activity_bg));
                 mBinding.layoutMainButtom.radioMainTabCertification.setChecked(true);
                 break;
             case 2:
-//                setStateTitleColor(ContextCompat.getColor(this,R.color.activity_bg));
                 mBinding.layoutMainButtom.radioMainTabMy.setChecked(true);
                 break;
         }
@@ -162,7 +160,6 @@ public class MainActivity extends AbsBaseActivity {
         setTabIndex();
     }
 
-
     @Subscribe
     public void MainEventBus(EventBusModel eventBusModel) {
         if (eventBusModel == null) {
@@ -193,7 +190,6 @@ public class MainActivity extends AbsBaseActivity {
             updateManager=null;
         }
     }
-
     @Override
     public void onBackPressed() {
         showDoubleWarnListen("确认退出"+getString(R.string.app_name)+"？",view -> {

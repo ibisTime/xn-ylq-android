@@ -74,7 +74,7 @@
             android:layout_marginRight="15dp"
             android:layout_marginTop="45dp"
             android:background="@drawable/selector_login_btn"
-            tools:text="使用额度"
+            tools:text="签约"
             android:textColor="@color/white"
             android:textSize="16sp" />
 

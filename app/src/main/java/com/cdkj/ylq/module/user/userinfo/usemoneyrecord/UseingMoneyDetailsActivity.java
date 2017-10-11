@@ -17,6 +17,7 @@ import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivityUseingMoneyBinding;
 import com.cdkj.ylq.model.UseMoneyRecordModel;
 import com.cdkj.ylq.module.api.MyApiServer;
+import com.cdkj.ylq.module.borrowmoney.ContractShowActivity;
 import com.cdkj.ylq.module.pay.AlsoMoneyTabActivity;
 import com.cdkj.ylq.module.pay.RenewalMoneyTabActivity;
 import com.cdkj.ylq.module.renewal.RenewalListActivity;
@@ -33,6 +34,7 @@ import static com.cdkj.baselibrary.utils.DateUtil.DATE_YMD;
  * Created by 李先俊 on 2017/8/9.
  */
 //TODO 借款记录详情 生效中已还款是否需要分开
+    //TODO 状态图标由生效中改为待还款 名字record_3
 public class UseingMoneyDetailsActivity extends AbsBaseActivity {
 
     private ActivityUseingMoneyBinding mBinding;
@@ -96,7 +98,7 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
         if (mData == null) return;
 
         if (mState) { //生效中
-            setTopTitle("生效中详情");
+            setTopTitle("待还款详情");
 
             mBinding.fraStateNote.setVisibility(View.GONE);
             mBinding.imgState.setImageResource(R.drawable.record_3);
@@ -147,6 +149,14 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
         mBinding.fraXuqi.setOnClickListener(v -> {
             if(mData==null) return;
             RenewalListActivity.open(this,mData.getCode());
+        });
+
+        //借款编号
+        mBinding.layoutCode.setOnClickListener(v -> {
+            if (TextUtils.isEmpty(mBinding.tvCode.getText().toString())) {
+                return;
+            }
+            ContractShowActivity.open(this, mBinding.tvCode.getText().toString());
         });
 
     }

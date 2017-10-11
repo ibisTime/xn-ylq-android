@@ -7,15 +7,18 @@ android {
         applicationId "com.cdkj.ylq"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 3
-        versionName "1.1.1"
+
+        versionCode 6
+        versionName "1.2.2"
 
         multiDexEnabled true
+
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [ moduleName : project.getName() ]
             }
         }
+
     }
     buildTypes {
         release {
@@ -24,7 +27,7 @@ android {
             //url类型
             buildConfigField "String", "URL_TYPE", "\"release\""
             //切换商城标识 用于欢迎页面 如果获取的参数和本地相同则说明是审核状态（显示商城） 反之是使用状态（显示九州宝）
-            buildConfigField "String", "SHOW_TYPE", "\"-1\""
+            buildConfigField "String", "SHOW_TYPE", "\"0\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             applicationVariants.all { variant ->
@@ -65,7 +68,7 @@ android {
             // 显示Log 是否DEBUG模式
             buildConfigField "String", "URL_TYPE", "\"debugDev\""
             buildConfigField "boolean", "LOG_DEBUG", "true"
-            buildConfigField "String", "SHOW_TYPE", "\"-1\""
+            buildConfigField "String", "SHOW_TYPE", "\"0\""
         }
     }
     compileOptions {

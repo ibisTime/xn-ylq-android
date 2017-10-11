@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.cdkj.baselibrary.appmanager.MyConfig;
+import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.model.IntroductionInfoModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
@@ -86,7 +87,7 @@ public class InvitaionFriendActivity extends AbsBaseActivity {
                     if (TextUtils.isEmpty(data.getCvalue())) {
                         return;
                     }
-                    ShareActivity.open(InvitaionFriendActivity.this, data.getCvalue());
+                    ShareActivity.open(InvitaionFriendActivity.this, data.getCvalue()+"?kind=C&mobile="+ SPUtilHelpr.getUserPhoneNum());
                 }
 
                 @Override

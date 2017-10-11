@@ -19,6 +19,7 @@ import com.cdkj.baselibrary.utils.LogUtil;
 import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.baselibrary.utils.QiNiuUtil;
 import com.cdkj.baselibrary.utils.ToastUtil;
+import com.cdkj.ylq.appmanager.BusinessSings;
 import com.cdkj.ylq.model.CanUseMoneyModel;
 import com.cdkj.ylq.model.CoupoonsModel;
 import com.cdkj.ylq.model.UserInfoModel;
@@ -53,6 +54,7 @@ public class MyFragment extends BaseLazyFragment {
     private UserInfoModel mUserInfoMode;
 
     public static final int PHOTOFLAG = 123;
+
     /**
      * 获得fragment实例
      *
@@ -70,6 +72,8 @@ public class MyFragment extends BaseLazyFragment {
 
         initListtener();
 
+        getUserInfoRequest(false);
+
         return mBinding.getRoot();
     }
 
@@ -81,7 +85,7 @@ public class MyFragment extends BaseLazyFragment {
         mBinding.fralayoutMaxMoney.setOnClickListener(v -> MyMaxMoneyActivity.open(mActivity));
 
         mBinding.layoutRecord.setOnClickListener(v -> {
-            UseMoneyRecordActivity.open(mActivity);
+            UseMoneyRecordActivity.open(mActivity, BusinessSings.USEMONEYRECORD_0);
         });
         mBinding.fralayoutCoupons.setOnClickListener(v -> {
             MyCouponsActivity.open(mActivity);
@@ -107,6 +111,7 @@ public class MyFragment extends BaseLazyFragment {
     private void setShowData(UserInfoModel data) {
         if (data == null) return;
 
+        SPUtilHelpr.saveUserIsBindCard(TextUtils.equals("1", data.getBankcardFlag()));
         SPUtilHelpr.saveUserPhoneNum(data.getMobile());
         SPUtilHelpr.saveUserName(data.getRealName());
 
@@ -120,7 +125,12 @@ public class MyFragment extends BaseLazyFragment {
     /**
      * 获取用户信息
      */
-    public void getUserInfoRequest() {
+    public void getUserInfoRequest(boolean isShowdialog) {
+
+        if(!SPUtilHelpr.isLoginNoStart()){  //没有登录不用请求
+            return;
+        }
+
         Map<String, String> map = new HashMap<>();
 
         map.put("userId", SPUtilHelpr.getUserId());
@@ -130,19 +140,18 @@ public class MyFragment extends BaseLazyFragment {
 
         addCall(call);
 
-        showLoadingDialog();
+        if (isShowdialog) showLoadingDialog();
 
         call.enqueue(new BaseResponseModelCallBack<UserInfoModel>(mActivity) {
             @Override
             protected void onSuccess(UserInfoModel data, String SucMessage) {
                 mUserInfoMode = data;
-                SPUtilHelpr.saveUserIsBindCard(TextUtils.equals("1", data.getBankcardFlag()));
                 setShowData(mUserInfoMode);
             }
 
             @Override
             protected void onFinish() {
-                disMissLoading();
+                if (isShowdialog) disMissLoading();
             }
         });
     }
@@ -273,7 +282,7 @@ public class MyFragment extends BaseLazyFragment {
     private void getAllData() {
         getCouponNums();
         getCanUseMoneyData();
-        getUserInfoRequest();
+        getUserInfoRequest(true);
         getServiceTelephone();
         getServiceTime();
     }
@@ -288,7 +297,7 @@ public class MyFragment extends BaseLazyFragment {
         }
         if (requestCode == PHOTOFLAG) {
             String path = data.getStringExtra(ImageSelectActivity.staticPath);
-            LogUtil.E("拍照获取路径"+path);
+            LogUtil.E("拍照获取路径" + path);
             new QiNiuUtil(mActivity).getQiniuURL(new QiNiuUtil.QiNiuCallBack() {
                 @Override
                 public void onSuccess(String key, ResponseInfo info, JSONObject res) {
@@ -297,7 +306,7 @@ public class MyFragment extends BaseLazyFragment {
 
                 @Override
                 public void onFal(String info) {
-                    ToastUtil.show(mActivity,info);
+                    ToastUtil.show(mActivity, info);
                 }
             }, path);
             LogUtil.E("拍照获取路径3");
@@ -323,8 +332,8 @@ public class MyFragment extends BaseLazyFragment {
             @Override
             protected void onSuccess(IsSuccessModes data, String SucMessage) {
                 if (data.isSuccess()) {
-                    ToastUtil.show(mActivity,"头像上传成功");
-                    if(mUserInfoMode!=null){
+                    ToastUtil.show(mActivity, "头像上传成功");
+                    if (mUserInfoMode != null) {
                         mUserInfoMode.setPhoto(key);
                     }
                     ImgUtils.loadActLogo(mActivity, MyConfig.IMGURL + key, mBinding.imtUserLogo);

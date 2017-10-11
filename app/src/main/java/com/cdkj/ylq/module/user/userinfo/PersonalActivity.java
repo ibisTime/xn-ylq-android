@@ -173,6 +173,10 @@ public class PersonalActivity extends AbsBaseActivity {
         });
 
         mBinding.layoutBank.setOnClickListener(v -> {
+            if (TextUtils.isEmpty(SPUtilHelpr.getUserName())) {
+                showToast("您还未进行身份认证，不能添加银行卡。");
+                return;
+            }
             BackCardListActivity.open(this, false);
         });
 

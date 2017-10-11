@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cdkj.baselibrary.appmanager.EventTags;
 import com.cdkj.baselibrary.base.BaseFragment;
+import com.cdkj.baselibrary.model.IsSuccessModes;
 import com.cdkj.baselibrary.model.pay.AliPayRequestMode;
 import com.cdkj.baselibrary.model.pay.WxPayRequestModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
@@ -23,6 +25,8 @@ import com.cdkj.ylq.databinding.ActivityPayBinding;
 import com.cdkj.ylq.databinding.FragmentRenewalPayOnlineBinding;
 import com.cdkj.ylq.model.UseMoneyRecordModel;
 import com.cdkj.ylq.module.pay.AlsoMoneyTabActivity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -91,32 +95,77 @@ public class RenewalMoneyOnLineFragment extends BaseFragment {
 
     //
     private void initListener() {
-        mBinding.imgWeixin.setImageResource(R.drawable.pay_select);
-        mBinding.imgZhifubao.setImageResource(R.drawable.un_select);
-        mPayType = 2;
-        mBinding.linWeixin.setOnClickListener(v -> {
-            mBinding.imgWeixin.setImageResource(R.drawable.pay_select);
-            mBinding.imgZhifubao.setImageResource(R.drawable.un_select);
-            mPayType = 2;
-        });
+        mBinding.imgWeixin.setImageResource(R.drawable.un_select);
+        mBinding.imgZhifubao.setImageResource(R.drawable.pay_select);
+        mPayType = 3;
+//        mBinding.linWeixin.setOnClickListener(v -> {
+//            mBinding.imgWeixin.setImageResource(R.drawable.pay_select);
+//            mBinding.imgZhifubao.setImageResource(R.drawable.un_select);
+//            mPayType = 2;
+//        });
 
         mBinding.linZhifubao.setOnClickListener(v -> {
             mBinding.imgZhifubao.setImageResource(R.drawable.pay_select);
-            mBinding.imgWeixin.setImageResource(R.drawable.un_select);
+            mBinding.imgBaofu.setImageResource(R.drawable.un_select);
             mPayType = 3;
+        });
+
+        mBinding.linBaofu.setOnClickListener(v -> {
+            mBinding.imgZhifubao.setImageResource(R.drawable.un_select);
+            mBinding.imgBaofu.setImageResource(R.drawable.pay_select);
+            mPayType = 5;
         });
 
         mBinding.btnSure.setOnClickListener(v -> {
 
-            if (mPayType == 2) {
-                wxPayRequest();
-            } else if (mPayType == 3) {
+
+            if (mPayType == 2) {  //微信支付
+                //    wxPayRequest();
+            } else if (mPayType == 3) {  //支付宝支付
+
                 AliPayRequest();
+            } else if (mPayType == 5) {//宝付
+                baoFuPayRequest();
             }
 
         });
 
     }
+
+
+    /**
+     * 宝付请求
+     */
+    private void baoFuPayRequest() {
+        if (mData == null) {
+            return;
+        }
+        Map<String, String> map = new HashMap<>();
+        map.put("code", mData.getCode());
+        map.put("payType", "5");
+
+        Call call = RetrofitUtils.getBaseAPiService().successRequest("623078", StringUtils.getJsonToString(map));
+        addCall(call);
+        showLoadingDialog();
+        call.enqueue(new BaseResponseModelCallBack<IsSuccessModes>(mActivity) {
+            @Override
+            protected void onSuccess(IsSuccessModes data, String SucMessage) {
+                if(data.isSuccess()){
+                    EventBus.getDefault().post(EventTags.RENEWALFLAGE);
+                }
+
+            }
+
+            @Override
+            protected void onFinish() {
+                disMissLoading();
+            }
+        });
+
+
+    }
+
+
 
     private void wxPayRequest() {
         if (mData == null) {

@@ -92,7 +92,7 @@ public class SPUtilHelpr {
      * 获取用户是否保存银行卡
      */
     public static boolean getUserIsBindCard() {
-        return SPUtils.getBoolean(BaseApplication.getContext(), "user_is_bind_bankcard", true);
+        return SPUtils.getBoolean(BaseApplication.getContext(), "user_is_bind_bankcard", false);
     }
 
 
@@ -147,7 +147,7 @@ public class SPUtilHelpr {
         saveUserId("");
         saveUserPhoneNum("");
         saveUserName("");
-        saveUserIsBindCard(true);
+        saveUserIsBindCard(false);
     }
 
 }

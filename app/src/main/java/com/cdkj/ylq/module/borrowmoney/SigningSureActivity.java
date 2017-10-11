@@ -5,14 +5,21 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 
 import com.cdkj.baselibrary.activitys.AddBackCardActivity;
+import com.cdkj.baselibrary.activitys.BackCardListActivity;
+import com.cdkj.baselibrary.activitys.UpdateBackCardActivity;
 import com.cdkj.baselibrary.activitys.WebViewActivity;
 import com.cdkj.baselibrary.appmanager.EventTags;
+import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
+import com.cdkj.baselibrary.dialog.CommonDialog;
+import com.cdkj.baselibrary.model.BankCardModel;
 import com.cdkj.baselibrary.model.CodeModel;
+import com.cdkj.baselibrary.model.MyBankCardListMode;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.BigDecimalUtils;
@@ -22,6 +29,9 @@ import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivitySigningBinding;
 import com.cdkj.ylq.model.PorductListModel;
+import com.cdkj.ylq.model.UserInfoModel;
+import com.cdkj.ylq.module.api.MyApiServer;
+import com.cdkj.ylq.module.certification.AddressBookCertActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -43,6 +53,8 @@ public class SigningSureActivity extends AbsBaseActivity {
 
     private String mCouponId;//优惠券ID
     private String mWillgetMondy;//实到金额
+    private BankCardModel mBankCardModel = null;
+    private CommonDialog mCommonDialog;
 
     /**
      * 打开当前页面
@@ -81,12 +93,21 @@ public class SigningSureActivity extends AbsBaseActivity {
             mCouponId = getIntent().getStringExtra("couponId");
             mWillgetMondy = getIntent().getStringExtra("willgetMondy");
         }
-
         setShowData();
-
         initListener();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!SPUtilHelpr.getUserIsBindCard()) {  //如果没有添加过银行卡 直接提示添加银行卡
+            showBindCardSureDialog(view -> {
+                AddBackCardActivity.open(SigningSureActivity.this);
+            });
+            return;
+        }
+        getBankCardDataRequest(true);
+    }
 
     //
     private void initListener() {
@@ -96,20 +117,100 @@ public class SigningSureActivity extends AbsBaseActivity {
                 return;
             }
 
-            if(!SPUtilHelpr.getUserIsBindCard()){
-                showDoubleWarnListen("您还没有添加银行卡，请先添加银行卡。",view -> {
+            if (!SPUtilHelpr.getUserIsBindCard() || mBankCardModel == null) {
+                showBindCardSureDialog(view -> {
                     AddBackCardActivity.open(this);
                 });
                 return;
             }
 
-            signingRequest();
+            showSureCardInfoDialog();
         });
 
         mBinding.tvRead.setOnClickListener(v -> {
-            WebViewActivity.openkey(this, "借款协议", "borrowProtocol");
+            SigningTipsWebViewActivity.open(this,mCouponId);
         });
     }
+
+
+    private void showSureCardInfoDialog() {
+
+        if (mBankCardModel == null) return;
+
+        CommonDialog commonDialog = new CommonDialog(this).builder()
+                .setTitle("请确认银行卡信息是否正确").setContentMsg("户名: " + mBankCardModel.getRealName() + "\n\n" +
+                        "开户行: " + mBankCardModel.getBankName() + "\n\n" +
+                        "银行卡号: " + mBankCardModel.getBankcardNumber())
+                .setPositiveBtn("确认", view -> {
+                    signingRequest();
+                }).setNegativeBtn("修改", view -> {
+                    UpdateBackCardActivity.open(this, mBankCardModel);
+                }, false);
+        commonDialog.show();
+    }
+
+
+    /**
+     * 获取银行卡信息
+     */
+    private void getBankCardDataRequest(boolean isShowDialog) {
+
+        Map<String, String> object = new HashMap<>();
+
+        object.put("systemCode", MyConfig.SYSTEMCODE);
+        object.put("token", SPUtilHelpr.getUserToken());
+        object.put("userId", SPUtilHelpr.getUserId());
+        object.put("start", "1");
+        object.put("limit", "10");
+
+        Call call = RetrofitUtils.getBaseAPiService().getCardListData("802015", StringUtils.getJsonToString(object));
+
+        addCall(call);
+
+        if (isShowDialog) showLoadingDialog();
+
+
+        call.enqueue(new BaseResponseModelCallBack<MyBankCardListMode>(this) {
+            @Override
+            protected void onSuccess(MyBankCardListMode data, String SucMessage) {
+
+                if (data != null && data.getList() != null && data.getList().size() > 0) {
+                    mBankCardModel = data.getList().get(0);
+                    return;
+                }
+                mBankCardModel = null;
+                showBindCardSureDialog(view -> {
+                    AddBackCardActivity.open(SigningSureActivity.this);
+                });
+            }
+
+            @Override
+            protected void onNull() {
+                mBankCardModel = null;
+            }
+
+            @Override
+            protected void onFinish() {
+                if (isShowDialog) disMissLoading();
+            }
+        });
+    }
+
+
+    protected void showBindCardSureDialog(CommonDialog.OnPositiveListener onPositiveListener) {
+
+        if (isFinishing()) {
+            return;
+        }
+
+        if (mCommonDialog == null) {
+            mCommonDialog = new CommonDialog(this).builder()
+                    .setTitle("提示").setContentMsg("您还没有添加银行卡，请先添加银行卡。")
+                    .setPositiveBtn("确定", onPositiveListener);
+        }
+        mCommonDialog.show();
+    }
+
 
     /**
      * 签约请求
@@ -133,7 +234,7 @@ public class SigningSureActivity extends AbsBaseActivity {
             protected void onSuccess(CodeModel data, String SucMessage) {
                 if (!TextUtils.isEmpty(data.getCode())) {
                     EventBus.getDefault().post(EventTags.USEMONEYSUREFINISH);//关闭上一个界面
-                    PutMoneyingActivity.open(SigningSureActivity.this);
+                    PutMoneyingActivity.open(SigningSureActivity.this,data.getCode());
                     finish();
                 }
             }
@@ -162,6 +263,16 @@ public class SigningSureActivity extends AbsBaseActivity {
         mBinding.tvUsed.setText("7天内逾期，每天" + MoneyUtils.showPrice(BigDecimalUtils.multiply(mProductData.getYqRate1(), mProductData.getAmount())) + "元\n"
                 + "7天外逾期，每天" + MoneyUtils.showPrice(BigDecimalUtils.multiply(mProductData.getYqRate2(), mProductData.getAmount())) + "元");
 
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mCommonDialog != null) {
+            mCommonDialog.closeDialog();
+            mCommonDialog = null;
+        }
     }
 
     /**

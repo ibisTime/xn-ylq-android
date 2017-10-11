@@ -18,7 +18,7 @@ import com.cdkj.baselibrary.R;
 public class CommonDialog {
     private Context mContext;
     private Dialog mDialog;
-//    private LinearLayout mLayout;
+    //    private LinearLayout mLayout;
     private TextView mTitle;
     private TextView mContentMsg;
     private View mDividerLeftLine;
@@ -215,6 +215,7 @@ public class CommonDialog {
         }
     }
 
+
     /**
      * 设置取消按钮
      *
@@ -357,8 +358,10 @@ public class CommonDialog {
     }
 
     public void show() {
-        setLayout();
-        mDialog.show();
+        if (this.mDialog != null && !mDialog.isShowing()) {
+            setLayout();
+            mDialog.show();
+        }
     }
 
     /**
@@ -588,14 +591,14 @@ public class CommonDialog {
 
 
     public interface OnPositiveListener {
-         void onPositive(View view);
+        void onPositive(View view);
     }
 
     public interface OnMiddleListener {
-         void onMiddle(View view);
+        void onMiddle(View view);
     }
 
     public interface OnNegativeListener {
-         void onNegative(View view);
+        void onNegative(View view);
     }
 }

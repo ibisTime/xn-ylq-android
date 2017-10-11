@@ -7,6 +7,7 @@ import com.cdkj.baselibrary.api.BaseResponseListModel;
 import com.cdkj.baselibrary.utils.LogUtil;
 import com.cdkj.baselibrary.utils.ToastUtil;
 
+import java.lang.ref.SoftReference;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.HttpException;
 import retrofit2.Response;
 
 /**
@@ -49,7 +51,8 @@ public abstract class BaseResponseListCallBack<T> implements Callback<BaseRespon
     private Context context;
 
     public BaseResponseListCallBack(Context context) {
-        this.context = context;
+        SoftReference<Context> mS= new SoftReference<>(context);
+        this.context = mS.get();
     }
 
     @Override
@@ -59,7 +62,6 @@ public abstract class BaseResponseListCallBack<T> implements Callback<BaseRespon
 
         if (response == null || response.body() == null) {
             onNull();
-            this.context = null;
             return;
         }
 
@@ -72,7 +74,7 @@ public abstract class BaseResponseListCallBack<T> implements Callback<BaseRespon
                 if (LogUtil.isDeBug) {
                     onReqFailure(NETERRORCODE4, "未知错误" + e.toString());
                 }else{
-                    onReqFailure(NETERRORCODE4, "未知错误");
+                    onReqFailure(NETERRORCODE4, "程序出现未知错误");
                 }
             }
 
@@ -80,7 +82,6 @@ public abstract class BaseResponseListCallBack<T> implements Callback<BaseRespon
             onReqFailure(NETERRORCODE4, "网络请求失败");
         }
 
-        this.context = null;
     }
 
     @Override
@@ -108,7 +109,10 @@ public abstract class BaseResponseListCallBack<T> implements Callback<BaseRespon
         } else if (t instanceof ConnectException) {//请求超时
             errorString = "网络请求超时";
             errorCode = NETERRORCODE3;
-        } else {
+        } else if(t instanceof HttpException){
+            errorString = "网络异常";
+            errorCode = NETERRORCODE1;
+        }else{
             errorString = "未知错误";
             errorCode = NETERRORCODE4;
         }
@@ -118,7 +122,7 @@ public abstract class BaseResponseListCallBack<T> implements Callback<BaseRespon
         }
 
         onReqFailure(errorCode, errorString);
-        this.context = null;
+
     }
 
     /**
@@ -137,7 +141,6 @@ public abstract class BaseResponseListCallBack<T> implements Callback<BaseRespon
             if (t == null) {
                 onFinish();
                 onNull();
-                this.context = null;
                 return;
             }
 
@@ -150,8 +153,8 @@ public abstract class BaseResponseListCallBack<T> implements Callback<BaseRespon
         } else {
             onBuinessFailure(state, baseModelNew.getErrorInfo());
         }
-
     }
+
 
 
     /**

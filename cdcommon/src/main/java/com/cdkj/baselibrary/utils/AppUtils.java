@@ -182,12 +182,14 @@ public class AppUtils {
             if (!hasPreferredApplication(context, intent)) {
                 intent.setClassName("com.android.browser", "com.android.browser.BrowserActivity");
             }
+
             if (intent.resolveActivity(context.getPackageManager()) != null) {
                 context.startActivity(Intent.createChooser(intent, "请选择浏览器"));
             }else{
                 ToastUtil.show(context,"没有可用浏览器");
             }
         } catch (Exception e) {
+            ToastUtil.show(context,"打开浏览器出现错误");
             LogUtil.E("startWeb error");
         }
     }
