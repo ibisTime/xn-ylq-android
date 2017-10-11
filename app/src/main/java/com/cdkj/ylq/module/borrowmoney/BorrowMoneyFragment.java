@@ -49,6 +49,9 @@ import static com.cdkj.baselibrary.appmanager.EventTags.LOGINREFRESH;
  */
 
 public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.ListBean> {
+
+    private boolean isFirstCreate;//是否第一次进入
+
     /**
      * 获得fragment实例
      *
@@ -76,7 +79,7 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
             MsgListActivity.open(mActivity);
         });
         getListData(pageIndex, limit, true);
-
+        isFirstCreate = true;
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -85,6 +88,7 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
                 productItemClick(data);
             }
         });
+
     }
 
     /**
@@ -137,7 +141,7 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
             MyMaxMoneyActivity.open(mActivity);
         } else if (TextUtils.equals("5", data.getUserProductStatus())) { //等待放款中
 
-            PutMoneyingActivity.open(mActivity,data.getBorrowCode());
+            PutMoneyingActivity.open(mActivity, data.getBorrowCode());
 
         } else if (TextUtils.equals("6", data.getUserProductStatus())) { //生效中
 
@@ -147,8 +151,8 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
 
             UsedMoneyDetailsActivity.open(mActivity, null, data.getBorrowCode());
 
-        } else if(TextUtils.equals("11", data.getUserProductStatus())){//打款失败
-            WaiteMoneyDetailsActivity.open(mActivity,null,data.getBorrowCode());
+        } else if (TextUtils.equals("11", data.getUserProductStatus())) {//打款失败
+            WaiteMoneyDetailsActivity.open(mActivity, null, data.getBorrowCode());
         }
     }
 
@@ -227,18 +231,28 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
     @Override
     protected void lazyLoad() {
         if (mBinding != null) {
-            onMRefresh(1,mLimit,false);
+            onMRefresh(1, mLimit, false);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getUserVisibleHint() && mBinding != null && !isFirstCreate) {
+            getListData(1, 10, false);
+        }
+        isFirstCreate = false;
     }
 
     @Subscribe
     public void BorrowMoneyEventBus(String tag) {
         if (TextUtils.equals(tag, LOGINREFRESH)) {//登录成功刷新数据
-            onMRefresh(1,mLimit,false);
+            onMRefresh(1, mLimit, false);
         } else if (TextUtils.equals(tag, BORROWMONEYFRAGMENTREFRESH)) {//刷新数据
-            onMRefresh(1,mLimit,false);
+            onMRefresh(1, mLimit, false);
         }
     }
+
 
     /**
      * 取消
@@ -283,7 +297,7 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
         call.enqueue(new BaseResponseModelCallBack<IsSuccessModes>(mActivity) {
             @Override
             protected void onSuccess(IsSuccessModes data, String SucMessage) {
-                onMRefresh(1,mLimit,false);
+                onMRefresh(1, mLimit, false);
             }
 
             @Override

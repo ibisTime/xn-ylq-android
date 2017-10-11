@@ -50,7 +50,7 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
      *
      * @param context
      */
-    public static void open(Context context, UseMoneyRecordModel.ListBean state,String code) {
+    public static void open(Context context, UseMoneyRecordModel.ListBean state, String code) {
         if (context == null) {
             return;
         }
@@ -76,7 +76,6 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
         setSubLeftImgState(true);
 
 
-
         if (getIntent() != null) {
             mCode = getIntent().getStringExtra("code");
 
@@ -89,9 +88,9 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
 
         }
 
-        if(mData!=null){
+        if (mData != null) {
             setTopTitle(getStateTitie(mData.getStatus()));
-        }else{
+        } else {
             setTopTitle("借款详情");
         }
 
@@ -125,7 +124,6 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
         });
 
     }
-
 
 
     private void initListener() {
@@ -166,7 +164,7 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
 
             @Override
             protected void onFinish() {
-               disMissLoading();
+                disMissLoading();
             }
         });
 
@@ -176,7 +174,7 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
      * 刷新待放款状态
      */
     private void refreshState1() {
-        EventBusModel eventBusModel=new EventBusModel();
+        EventBusModel eventBusModel = new EventBusModel();
         eventBusModel.setTag(EventTags.USEMONEYRECORDFRAGMENTREFRESH);
         eventBusModel.setEvInfo(BusinessSings.USEMONEYRECORD_1);
         EventBus.getDefault().post(eventBusModel);
@@ -186,7 +184,7 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
      * 刷新打款失败状态状态
      */
     private void refreshState7() {
-        EventBusModel eventBusModel=new EventBusModel();
+        EventBusModel eventBusModel = new EventBusModel();
         eventBusModel.setTag(EventTags.USEMONEYRECORDFRAGMENTREFRESH);
         eventBusModel.setEvInfo(BusinessSings.USEMONEYRECORD_7);
         EventBus.getDefault().post(eventBusModel);
@@ -207,17 +205,17 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
         mBinding.imgState.setImageResource(getStateImg(mData.getStatus()));
 
 
-        if(TextUtils.equals(mData.getStatus(),BusinessSings.USEMONEYRECORD_2)){
+        if (TextUtils.equals(mData.getStatus(), BusinessSings.USEMONEYRECORD_2)) {
             mBinding.tvState2.setText(mData.getApproveNote());
-        }else{
+        } else {
             mBinding.tvState2.setText(mData.getRemark());
         }
 
         if (TextUtils.equals(mData.getStatus(), BusinessSings.USEMONEYRECORD_7)) { //打款失败时显示按钮 显示弹框
             mBinding.btnSure.setVisibility(View.VISIBLE);
 
-            showDoubleWarnListen("打款失败,请核对银行卡信息",view -> {
-                BackCardListActivity.open(this,false);
+            showDoubleWarnListen("打款失败,请核对银行卡信息", view -> {
+                BackCardListActivity.open(this, false);
             });
 
         } else {
@@ -252,6 +250,8 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
                 return R.drawable.record_1;
             case BusinessSings.USEMONEYRECORD_7://打款失败
                 return R.drawable.record_7;
+            case BusinessSings.USEMONEYRECORD_8://代扣中
+                return R.drawable.record_1;
             default:
                 mBinding.imgState.setVisibility(View.GONE);
                 return R.drawable.default_pic;

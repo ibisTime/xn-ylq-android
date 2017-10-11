@@ -69,17 +69,17 @@ public class ApplyFailureActivity extends AbsBaseActivity {
         if(mData==null) return;
         mBinding.tvMoney.setText(MoneyUtils.showPrice(mData.getAmount()));
         mBinding.tvMakeDay.setText( mData.getDuration() + "天");
-        mBinding.tvState.setText(BusinessSings.getProductState(mData.getUserProductStatus()));
+        mBinding.tvState.setText(BusinessSings.getProductState(this,mData.getUserProductStatus()));
         mBinding.tvLevel.setText("Lv"+mData.getLevel());
 //        mBinding.tvTips.setText(mData.getApproveNote());
     }
 
     //
     private void initListener() {
-      mBinding.btnRepet.setOnClickListener(v -> {
-          if(mData==null)return;
-          ProductDetailsActivity.open(this,mData.getCode());
-      });
+        mBinding.btnRepet.setOnClickListener(v -> {
+            if(mData==null)return;
+            ProductDetailsActivity.open(this,mData.getCode());
+        });
 
     }
 
