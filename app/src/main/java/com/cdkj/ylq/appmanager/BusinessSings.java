@@ -14,7 +14,6 @@ import com.cdkj.ylq.module.user.userinfo.usemoneyrecord.WaiteMoneyDetailsActivit
  * 一些业务代码标记 逻辑判断
  * Created by 李先俊 on 2017/9/6.
  */
-
 public class BusinessSings {
 
     //借款记录 //0 待审核 1待放款 2 审核不通过 3生效中 4已还款 5已逾期 6确认还账 7 打款失败 8代付转账中
