@@ -51,7 +51,7 @@ public class BorrowMoneyProductAdapter extends BaseQuickAdapter<PorductListModel
 
         helper.setText(R.id.tv_money, MoneyUtils.showPrice(item.getAmount()) + "");
         helper.setText(R.id.tv_make_day, item.getDuration() + "天");
-        helper.setText(R.id.tv_state, BusinessSings.getProductState(item.getUserProductStatus()));
+        helper.setText(R.id.tv_state, BusinessSings.getProductState(mContext,item.getUserProductStatus()));
         helper.setText(R.id.tv_level, "Lv" + item.getLevel());
 
 

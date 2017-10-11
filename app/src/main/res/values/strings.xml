@@ -1,7 +1,45 @@
 <resources>
     <string name="app_name">九州宝</string>
+
     <string name="main_tab_borrow_money">借款</string>
+
     <string name="main_tab_cert">认证</string>
+
     <string name="tab_my">我的</string>
+
     <string name="go_submit">前往提交</string>
+
+    <string name="product_state_0">立即申请</string>
+
+    <string name="product_state_1">认证中</string>
+
+    <string name="product_state_2">系统审核中</string>
+
+    <string name="product_state_3">已驳回</string>
+
+    <string name="product_state_4">审核通过 签约</string>
+
+    <string name="product_state_5">款项正在路上</string>
+
+    <string name="product_state_6">待还款</string>
+
+    <string name="product_state_7">已逾期</string>
+
+    <string name="product_state_11">打款失败</string>
+
+    <string name="record_state_0">审核中</string>
+
+    <string name="record_state_1">审核通过</string>
+
+    <string name="record_state_2">审核不通过</string>
+
+    <string name="record_state_3">已放款</string>
+
+    <string name="record_state_4">已还款</string>
+
+    <string name="record_state_5">已逾期</string>
+
+    <string name="record_state_7">打款失败</string>
+
+    <string name="record_state_8">代付转账中</string>
 </resources>

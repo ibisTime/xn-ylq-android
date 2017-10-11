@@ -75,7 +75,7 @@ public class UseMoneyRecordFragment extends BaseRefreshFragment<UseMoneyRecordMo
 
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             UseMoneyRecordModel.ListBean state = (UseMoneyRecordModel.ListBean) mAdapter.getItem(position);
-            BusinessSings.startRecordActivity(mActivity,state);
+            BusinessSings.startRecordActivity(mActivity, state);
         });
     }
 
@@ -141,7 +141,7 @@ public class UseMoneyRecordFragment extends BaseRefreshFragment<UseMoneyRecordMo
 
                 helper.setText(R.id.tv_money, MoneyUtils.showPrice(item.getAmount()));
                 helper.setText(R.id.tv_days, item.getDuration() + "天");
-                helper.setText(R.id.tv_state, BusinessSings.getStateRecordString(item.getStatus()));
+                helper.setText(R.id.tv_state, BusinessSings.getStateRecordString(mActivity, item.getStatus()));
                 helper.setText(R.id.tv_code, "订单编号 " + item.getCode());
 
             }
@@ -169,17 +169,18 @@ public class UseMoneyRecordFragment extends BaseRefreshFragment<UseMoneyRecordMo
 
     /**
      * evenbus 刷新当前界面
+     *
      * @param eventBusModel
      */
     @Subscribe
-    public void refresh(EventBusModel eventBusModel){
-        if(eventBusModel == null || !TextUtils.equals(eventBusModel.getTag(), EventTags.USEMONEYRECORDFRAGMENTREFRESH)){
+    public void refresh(EventBusModel eventBusModel) {
+        if (eventBusModel == null || !TextUtils.equals(eventBusModel.getTag(), EventTags.USEMONEYRECORDFRAGMENTREFRESH)) {
             return;
         }
-        if(!TextUtils.equals(requestState,eventBusModel.getEvInfo())){//判断要刷新的code
+        if (!TextUtils.equals(requestState, eventBusModel.getEvInfo())) {//判断要刷新的code
             return;
         }
-        onMRefresh(1,mLimit,false);
+        onMRefresh(1, mLimit, false);
     }
 
 }

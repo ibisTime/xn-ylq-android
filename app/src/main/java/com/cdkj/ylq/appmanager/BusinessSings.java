@@ -1,8 +1,10 @@
 package com.cdkj.ylq.appmanager;
 
 import android.app.Activity;
+import android.content.Context;
 import android.text.TextUtils;
 
+import com.cdkj.ylq.R;
 import com.cdkj.ylq.model.UseMoneyRecordModel;
 import com.cdkj.ylq.module.user.userinfo.usemoneyrecord.UsedMoneyDetailsActivity;
 import com.cdkj.ylq.module.user.userinfo.usemoneyrecord.UseingMoneyDetailsActivity;
@@ -15,7 +17,7 @@ import com.cdkj.ylq.module.user.userinfo.usemoneyrecord.WaiteMoneyDetailsActivit
 
 public class BusinessSings {
 
-    //借款记录 //0 待审核 1待放款 2 审核不通过 3生效中 4已还款 5已逾期 6确认还账 7 打款失败
+    //借款记录 //0 待审核 1待放款 2 审核不通过 3生效中 4已还款 5已逾期 6确认还账 7 打款失败 8代付转账中
     public static final String USEMONEYRECORD_0 = "0";
     public static final String USEMONEYRECORD_1 = "1";
     public static final String USEMONEYRECORD_2 = "2";
@@ -25,34 +27,39 @@ public class BusinessSings {
     //   public static final String USEMONEYRECORD_6="6";
     public static final String USEMONEYRECORD_7 = "7";
 
+    public static final String USEMONEYRECORD_8 = "8";
+
     //借款记录状态
-    public static String getStateRecordString(String status) {
+    public static String getStateRecordString(Context context, String status) {
         String str = "";
-        if (TextUtils.isEmpty(status)) {
+        if (TextUtils.isEmpty(status) || context == null) {
             return str;
         }
 
         switch (status) {
             case USEMONEYRECORD_0:
-                str = "审核中";
+                str = context.getString(R.string.record_state_0);
                 break;
             case USEMONEYRECORD_1:
-                str = "审核通过";
+                str = context.getString(R.string.record_state_1);
                 break;
             case USEMONEYRECORD_2:
-                str = "审核不通过";
+                str = context.getString(R.string.record_state_2);
                 break;
             case USEMONEYRECORD_3:
-                str = "已放款";
+                str = context.getString(R.string.record_state_3);
                 break;
             case USEMONEYRECORD_4:
-                str = "已还款";
+                str = context.getString(R.string.record_state_4);
                 break;
             case USEMONEYRECORD_5:
-                str = "已逾期";
+                str = context.getString(R.string.record_state_5);
                 break;
             case USEMONEYRECORD_7:
-                str = "打款失败";
+                str = context.getString(R.string.record_state_7);
+                break;
+            case USEMONEYRECORD_8:
+                str = context.getString(R.string.record_state_8);
                 break;
         }
 
@@ -62,9 +69,9 @@ public class BusinessSings {
 
     //获取产品状态
     //("0", "可申请"),("1", "认证中"),("2", "人工审核中"),( "3", "已驳回"),("4", "已有额度"),("5", "等待放款中"),( "6", "生效中"),("7", "已逾期")
-    public static String getProductState(String state) {
+    public static String getProductState(Context context, String state) {
 
-        if (TextUtils.isEmpty(state)) {
+        if (TextUtils.isEmpty(state) || context == null) {
             return "";
         }
 
@@ -72,37 +79,36 @@ public class BusinessSings {
         ;
         switch (state) {
             case "0":
-                stateStr = "立即申请";
+                stateStr = context.getString(R.string.product_state_0);
                 break;
             case "1":
-                stateStr = "认证中";
+                stateStr = context.getString(R.string.product_state_1);
                 break;
             case "2":
-                stateStr = "系统审核中";
+                stateStr = context.getString(R.string.product_state_2);
                 break;
             case "3":
-                stateStr = "已驳回";
+                stateStr = context.getString(R.string.product_state_3);
                 break;
             case "4":
-                stateStr = "审核通过 签约";
+                stateStr = context.getString(R.string.product_state_4);
                 break;
             case "5":
-                stateStr = "款项正在路上";
+                stateStr = context.getString(R.string.product_state_5);
                 break;
             case "6":
-                stateStr = "待还款";
+                stateStr = context.getString(R.string.product_state_6);
                 break;
             case "7":
-                stateStr = "已逾期";
+                stateStr = context.getString(R.string.product_state_7);
                 break;
             case "11":
-                stateStr = "打款失败";
+                stateStr = context.getString(R.string.product_state_11);
                 break;
         }
 
         return stateStr;
     }
-
 
 
     /**
@@ -118,7 +124,8 @@ public class BusinessSings {
         if (TextUtils.equals(state.getStatus(), USEMONEYRECORD_0)//待审核
                 || TextUtils.equals(state.getStatus(), USEMONEYRECORD_2)//审核不通过
                 || TextUtils.equals(state.getStatus(), USEMONEYRECORD_1)//待放款
-                || TextUtils.equals(state.getStatus(), USEMONEYRECORD_7)) {//打款失败
+                || TextUtils.equals(state.getStatus(), USEMONEYRECORD_7)//打款失败
+                || TextUtils.equals(state.getStatus(), USEMONEYRECORD_8)) {
             WaiteMoneyDetailsActivity.open(activity, state, "");
 
         } else if (TextUtils.equals(state.getStatus(), USEMONEYRECORD_3)) {//生效中
@@ -129,9 +136,9 @@ public class BusinessSings {
             UseingMoneyDetailsActivity.open(activity, state, false, "");//
 
         } else if (TextUtils.equals(state.getStatus(), USEMONEYRECORD_5)) {//已逾期
-
             UsedMoneyDetailsActivity.open(activity, state, ""); //
-
+        } else if (TextUtils.equals(state.getStatus(), USEMONEYRECORD_5)) {//已逾期
+            UsedMoneyDetailsActivity.open(activity, state, ""); //
         }
     }
 
