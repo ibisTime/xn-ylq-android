@@ -102,7 +102,7 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
                 showToast("请输入验证码");
                 return;
             }
-            if (TextUtils.isEmpty(mBinding.editPhoneCode.getText().toString())) {
+            if (TextUtils.isEmpty(mBinding.editPassword.getText().toString())) {
                 showToast("请输入密码");
                 return;
             }
@@ -146,7 +146,7 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
             protected void onSuccess(IsSuccessModes data, String SucMessage) {
                 if (data.isSuccess()) {
                     mSendCOdePresenter.sendCodeRequest(mBinding.editUsername.getText().toString(), "805041", MyConfig.USERTYPE, RegisterActivity.this);
-                }else{
+                } else {
                     showToast("手机号已经存在");
                 }
             }
@@ -220,7 +220,7 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
             if (!TextUtils.isEmpty(mapLocation.getStreetNum())) {
                 sbaddress.append(mapLocation.getStreet());
             }
-            if(!TextUtils.isEmpty(sbaddress.toString())){
+            if (!TextUtils.isEmpty(sbaddress.toString())) {
                 hashMap.put("address", sbaddress.toString());
             }
         }
