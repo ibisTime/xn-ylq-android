@@ -91,9 +91,6 @@ public class AddressBookCertActivity extends AbsBaseActivity {
         mBinding.tvRead1.setOnClickListener(v -> {
             WebViewActivity.openkey(this, "通讯录授权协议", "addressBookProtocol");
         });
-        mBinding.tvRead2.setOnClickListener(v -> {
-            WebViewActivity.openkey(this, "信息规则", "infoCollectRule");
-        });
 
         mBinding.btnSure.setOnClickListener(v -> {
             if (!mBinding.checkboxSure.isChecked()) {

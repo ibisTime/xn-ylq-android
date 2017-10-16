@@ -89,7 +89,9 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
         mBinding.tvIRead.setOnClickListener(v -> {
             WebViewActivity.openkey(this, "借款服务与隐私协议", "regProtocol");
         });
-
+        mBinding.tvRead2.setOnClickListener(v -> {
+            WebViewActivity.openkey(this, "信息收集使用规则", "infoCollectRule");
+        });
 
         //注册
         mBinding.btnRegister.setOnClickListener(v -> {
@@ -102,7 +104,7 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
                 showToast("请输入验证码");
                 return;
             }
-            if (TextUtils.isEmpty(mBinding.editPhoneCode.getText().toString())) {
+            if (TextUtils.isEmpty(mBinding.editPassword.getText().toString())) {
                 showToast("请输入密码");
                 return;
             }
