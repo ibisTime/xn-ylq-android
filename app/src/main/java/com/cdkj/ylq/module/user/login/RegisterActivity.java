@@ -8,28 +8,28 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.amap.api.location.AMapLocation;
-import com.cdkj.baselibrary.appmanager.MyConfig;
-import com.cdkj.baselibrary.base.BaseLocationActivity;
 import com.cdkj.baselibrary.activitys.WebViewActivity;
 import com.cdkj.baselibrary.appmanager.EventTags;
+import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
-import com.cdkj.baselibrary.dialog.CommonDialog;
+import com.cdkj.baselibrary.base.AbsBaseActivity;
+import com.cdkj.baselibrary.interfaces.LocationCallBackListener;
 import com.cdkj.baselibrary.interfaces.SendCodeInterface;
 import com.cdkj.baselibrary.interfaces.SendPhoneCoodePresenter;
 import com.cdkj.baselibrary.model.IsSuccessModes;
+import com.cdkj.baselibrary.model.LocationModel;
 import com.cdkj.baselibrary.model.UserLoginModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.AppUtils;
-import com.cdkj.baselibrary.utils.LogUtil;
+import com.cdkj.baselibrary.utils.GaoDeLocation;
+import com.cdkj.baselibrary.utils.LocationHelper;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.baselibrary.utils.ToastUtil;
 import com.cdkj.ylq.MainActivity;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivityRegisterBinding;
 import com.cdkj.ylq.module.api.MyApiServer;
-import com.cdkj.ylq.module.certification.basisinfocert.JobInfoCertificationWriteActivity;
 import com.lljjcoder.citypickerview.widget.CityPicker;
 
 import org.greenrobot.eventbus.EventBus;
@@ -42,7 +42,7 @@ import retrofit2.Call;
 /**
  * Created by 李先俊 on 2017/8/8.
  */
-public class RegisterActivity extends BaseLocationActivity implements SendCodeInterface {
+public class RegisterActivity extends AbsBaseActivity implements SendCodeInterface {
 
     private ActivityRegisterBinding mBinding;
 
@@ -50,7 +50,9 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
 
     private CityPicker mCityPicker;//城市选择
 
-    private AMapLocation mapLocation;
+    private LocationHelper mapLocation;//定位工具类
+
+    private LocationModel mLocationModel;//定位获取的数据
 
 
     /**
@@ -79,7 +81,32 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
         mSendCOdePresenter = new SendPhoneCoodePresenter(this);
 //        initCityPicker();
         initListener();
-        startLocation();//开始定位
+
+        initLocation();
+    }
+
+    private void initLocation() {
+
+        showLoadingDialog();
+
+        mapLocation = new LocationHelper(this, new GaoDeLocation(), new LocationCallBackListener() {
+            @Override
+            public void locationSuccessful(LocationModel locationModel) {
+                disMissLoading();
+                mLocationModel = locationModel;
+            }
+
+            @Override
+            public void locationFailure(String msg) {
+                disMissLoading();
+            }
+
+            @Override
+            public void noPermissions() {
+                disMissLoading();
+            }
+        });
+        mapLocation.startLocation();//开始定位
     }
 
     private void initListener() {
@@ -209,16 +236,16 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
         hashMap.put("loginPwd", mBinding.editPassword.getText().toString());
         hashMap.put("kind", MyConfig.USERTYPE);
 
-        if (mapLocation != null) {
-            hashMap.put("province", mapLocation.getProvince());
-            hashMap.put("city", mapLocation.getCity());
-            hashMap.put("area", mapLocation.getDistrict());
+        if (mLocationModel != null) {
+            hashMap.put("province", mLocationModel.getProvince());
+            hashMap.put("city", mLocationModel.getCity());
+            hashMap.put("area", mLocationModel.getDistrict());
             StringBuffer sbaddress = new StringBuffer();
-            if (!TextUtils.isEmpty(mapLocation.getStreet())) {
-                sbaddress.append(mapLocation.getStreet());
+            if (!TextUtils.isEmpty(mLocationModel.getStreet())) {
+                sbaddress.append(mLocationModel.getStreet());
             }
-            if (!TextUtils.isEmpty(mapLocation.getStreetNum())) {
-                sbaddress.append(mapLocation.getStreet());
+            if (!TextUtils.isEmpty(mLocationModel.getStreetNum())) {
+                sbaddress.append(mLocationModel.getStreet());
             }
             if (!TextUtils.isEmpty(sbaddress.toString())) {
                 hashMap.put("address", sbaddress.toString());
@@ -283,28 +310,6 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
         disMissLoading();
     }
 
-    //定位相关
-    @Override
-    protected boolean canShowTipsDialog() {
-        return false;
-    }
-
-    @Override
-    protected void locationSuccessful(AMapLocation aMapLocation) {
-        mapLocation = aMapLocation;
-//        mBinding.tvLocation.setText(aMapLocation.getProvince() + " " + aMapLocation.getCity() + " " + aMapLocation.getDistrict());
-        LogUtil.E("地址 " + aMapLocation.getAddress());
-    }
-
-    @Override
-    protected void locationFailure(AMapLocation aMapLocation) {
-
-    }
-
-    @Override
-    protected void onNegativeButton() {
-
-    }
 
     @Override
     protected void onDestroy() {
@@ -312,6 +317,9 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
         if (mSendCOdePresenter != null) {
             mSendCOdePresenter.clear();
             mSendCOdePresenter = null;
+        }
+        if (mapLocation != null) {
+            mapLocation.destroyLocation();
         }
     }
 }

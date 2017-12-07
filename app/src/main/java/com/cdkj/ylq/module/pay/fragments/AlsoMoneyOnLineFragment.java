@@ -1,5 +1,6 @@
 package com.cdkj.ylq.module.pay.fragments;
 
+import android.annotation.SuppressLint;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -54,7 +55,6 @@ public class AlsoMoneyOnLineFragment extends BaseFragment {
         fragment.setArguments(bundle);
         return fragment;
     }
-
 
     @Nullable
     @Override

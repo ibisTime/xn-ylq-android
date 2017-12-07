@@ -1,5 +1,6 @@
 package com.cdkj.ylq.module.user.userinfo;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -60,7 +61,6 @@ public class MyFragment extends BaseLazyFragment {
         MyFragment fragment = new MyFragment();
         return fragment;
     }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
