@@ -10,31 +10,27 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cdkj.baselibrary.activitys.ImageSelectActivity;
-import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.activitys.WebViewActivity;
+import com.cdkj.baselibrary.appmanager.MyConfig;
+import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.BaseLazyFragment;
 import com.cdkj.baselibrary.model.IntroductionInfoModel;
 import com.cdkj.baselibrary.model.IsSuccessModes;
-import com.cdkj.baselibrary.utils.LogUtil;
-import com.cdkj.baselibrary.utils.MoneyUtils;
-import com.cdkj.baselibrary.utils.QiNiuUtil;
-import com.cdkj.baselibrary.utils.ToastUtil;
-import com.cdkj.ylq.appmanager.BusinessSings;
-import com.cdkj.ylq.model.CanUseMoneyModel;
-import com.cdkj.ylq.model.CoupoonsModel;
-import com.cdkj.ylq.model.UserInfoModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.ImgUtils;
+import com.cdkj.baselibrary.utils.MoneyUtils;
+import com.cdkj.baselibrary.utils.QiNiuHelper;
 import com.cdkj.baselibrary.utils.StringUtils;
+import com.cdkj.baselibrary.utils.ToastUtil;
 import com.cdkj.ylq.R;
+import com.cdkj.ylq.appmanager.BusinessSings;
 import com.cdkj.ylq.databinding.FragmentMyBinding;
-import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
+import com.cdkj.ylq.model.CanUseMoneyModel;
+import com.cdkj.ylq.model.CoupoonsModel;
+import com.cdkj.ylq.model.UserInfoModel;
 import com.cdkj.ylq.module.api.MyApiServer;
 import com.cdkj.ylq.module.user.userinfo.usemoneyrecord.UseMoneyRecordActivity;
-import com.qiniu.android.http.ResponseInfo;
-
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -127,7 +123,7 @@ public class MyFragment extends BaseLazyFragment {
      */
     public void getUserInfoRequest(boolean isShowdialog) {
 
-        if(!SPUtilHelpr.isLoginNoStart()){  //没有登录不用请求
+        if (!SPUtilHelpr.isLoginNoStart()) {  //没有登录不用请求
             return;
         }
 
@@ -290,28 +286,30 @@ public class MyFragment extends BaseLazyFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        LogUtil.E("拍照获取路径1");
+
         if (resultCode != mActivity.RESULT_OK || data == null) {
-            LogUtil.E("拍照获取路径2");
             return;
         }
         if (requestCode == PHOTOFLAG) {
             String path = data.getStringExtra(ImageSelectActivity.staticPath);
-            LogUtil.E("拍照获取路径" + path);
-            new QiNiuUtil(mActivity).getQiniuURL(new QiNiuUtil.QiNiuCallBack() {
+
+            showLoadingDialog();
+
+            QiNiuHelper qiNiuHelper = new QiNiuHelper(mActivity);
+
+            qiNiuHelper.uploadSinglePic(new QiNiuHelper.QiNiuCallBack() {
                 @Override
-                public void onSuccess(String key, ResponseInfo info, JSONObject res) {
+                public void onSuccess(String key) {
                     updateUserPhoto(key);
                 }
 
                 @Override
                 public void onFal(String info) {
-                    ToastUtil.show(mActivity, info);
+                    disMissLoading();
                 }
+
             }, path);
-            LogUtil.E("拍照获取路径3");
         }
-        LogUtil.E("拍照获取路径4");
     }
 
     /**

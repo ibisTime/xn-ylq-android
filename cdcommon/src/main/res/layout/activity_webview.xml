@@ -16,11 +16,6 @@
         android:max="100"
         android:progressDrawable="@drawable/shape_progress"/>
 
-    <WebView
-        android:id="@+id/webView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        />
 
 </LinearLayout>
 </layout>

@@ -30,7 +30,7 @@ import java.util.List;
  * 有定位需求页面的Activity都可继承此Activity 实现定位权限申请
  * Created by Administrator on 2017-02-13.
  */
-
+// TODO 定位工具类抽取 LocationHelper 详见我淘网项目
 public abstract class BaseLocationActivity extends AbsBaseActivity {
 
     protected static final int PERMISSION__LOCATION_REQUESTCODE = 13;//定位权限检测请求码
@@ -260,7 +260,7 @@ public abstract class BaseLocationActivity extends AbsBaseActivity {
             startActivityForResult(intent, APPLICATION_DETAIL_REQUESTCODE);
             finish();
         } catch (Exception e) {
-          LogUtil.E("startSettingError");
+            LogUtil.E("startSettingError");
         }
 
     }

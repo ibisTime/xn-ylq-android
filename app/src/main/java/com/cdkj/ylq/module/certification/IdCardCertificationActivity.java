@@ -8,26 +8,23 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.activitys.ImageSelectActivity;
+import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.model.IsSuccessModes;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.ImgUtils;
-import com.cdkj.baselibrary.utils.LogUtil;
-import com.cdkj.baselibrary.utils.QiNiuUtil;
+import com.cdkj.baselibrary.utils.QiNiuHelper;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivityIdCertBinding;
 import com.cdkj.ylq.model.CerttificationInfoModel;
 import com.cdkj.ylq.mpresenter.GetUserCertificationInfoListener;
 import com.cdkj.ylq.mpresenter.GetUserCertificationPresenter;
-import com.qiniu.android.http.ResponseInfo;
 
 import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -93,8 +90,8 @@ public class IdCardCertificationActivity extends AbsBaseActivity implements GetU
         //相片
         mBinding.fralayoutIdCard.setOnClickListener(v -> {
 //            ImageSelectActivity.launch(this, PHOTOFLAG,ImageSelectActivity.SHOWPIC);
-            if(mCertData==null) return;
-            IdInfoUpLoadCertActivity.open(this,mCertData.getInfoIdentifyPic(), TextUtils.equals("1", mCertData.getInfoIdentifyFlag()));
+            if (mCertData == null) return;
+            IdInfoUpLoadCertActivity.open(this, mCertData.getInfoIdentifyPic(), TextUtils.equals("1", mCertData.getInfoIdentifyFlag()));
         });
 
         //zm认证
@@ -158,18 +155,24 @@ public class IdCardCertificationActivity extends AbsBaseActivity implements GetU
         }
         if (requestCode == PHOTOFLAG) {
             String path = data.getStringExtra(ImageSelectActivity.staticPath);
-            LogUtil.E("图片" + path);
-            new QiNiuUtil(IdCardCertificationActivity.this).getQiniuURL(new QiNiuUtil.QiNiuCallBack() {
+
+            showLoadingDialog();
+
+            QiNiuHelper qiNiuHelper = new QiNiuHelper(IdCardCertificationActivity.this);
+
+            qiNiuHelper.uploadSinglePic(new QiNiuHelper.QiNiuCallBack() {
                 @Override
-                public void onSuccess(String key, ResponseInfo info, JSONObject res) {
+                public void onSuccess(String key) {
                     upLoadIdCard(key);
                 }
 
                 @Override
                 public void onFal(String info) {
-                    showToast(info);
+                    disMissLoading();
                 }
+
             }, path);
+
 
         }
     }

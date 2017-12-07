@@ -7,36 +7,32 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.cdkj.baselibrary.activitys.AddBackCardActivity;
 import com.cdkj.baselibrary.activitys.BackCardListActivity;
-import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.activitys.FindPwdActivity;
 import com.cdkj.baselibrary.activitys.ImageSelectActivity;
 import com.cdkj.baselibrary.activitys.PayPwdModifyActivity;
 import com.cdkj.baselibrary.activitys.UpdatePhoneActivity;
 import com.cdkj.baselibrary.activitys.WebViewActivity;
 import com.cdkj.baselibrary.appmanager.EventTags;
+import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
-import com.cdkj.baselibrary.utils.LogUtil;
-import com.cdkj.ylq.model.IsBorrowModel;
-import com.cdkj.ylq.model.UserInfoModel;
 import com.cdkj.baselibrary.model.EventBusModel;
 import com.cdkj.baselibrary.model.IsSuccessModes;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.ImgUtils;
-import com.cdkj.baselibrary.utils.QiNiuUtil;
+import com.cdkj.baselibrary.utils.QiNiuHelper;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivityPersonalBinding;
+import com.cdkj.ylq.model.IsBorrowModel;
+import com.cdkj.ylq.model.UserInfoModel;
 import com.cdkj.ylq.module.api.MyApiServer;
 import com.cdkj.ylq.module.user.login.LoginActivity;
-import com.qiniu.android.http.ResponseInfo;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -200,19 +196,20 @@ public class PersonalActivity extends AbsBaseActivity {
         }
         if (requestCode == PHOTOFLAG) {
             String path = data.getStringExtra(ImageSelectActivity.staticPath);
-            LogUtil.E("拍照获取路径" + path);
-            new QiNiuUtil(PersonalActivity.this).getQiniuURL(new QiNiuUtil.QiNiuCallBack() {
+            showLoadingDialog();
+            QiNiuHelper qiNiuHelper = new QiNiuHelper(this);
+            qiNiuHelper.uploadSinglePic(new QiNiuHelper.QiNiuCallBack() {
                 @Override
-                public void onSuccess(String key, ResponseInfo info, JSONObject res) {
+                public void onSuccess(String key) {
                     updateUserPhoto(key);
                 }
 
                 @Override
                 public void onFal(String info) {
-                    showToast(info);
+                    disMissLoading();
                 }
-            }, path);
 
+            }, path);
         }
     }
 

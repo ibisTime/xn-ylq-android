@@ -54,7 +54,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * 打开相机 相册 图片裁剪 功能
  */
-
+//TODO 拍照工具类 抽取 详见我淘网 CameraHelper
 public class ImageSelectActivity extends Activity implements View.OnClickListener {
 
     private TextView tv_take_capture;// 拍照
@@ -77,7 +77,7 @@ public class ImageSelectActivity extends Activity implements View.OnClickListene
 
 
     public final static int CAPTURE_PERMISSION_CODE = 6;//相机权限申请
-    public final static int CAPTURE_PERMISSION_CODD_2 =7;//相册权限申请
+    public final static int CAPTURE_PERMISSION_CODD_2 = 7;//相册权限申请
 
     public static final int SHOWPIC = 1; //显示拍照按钮
     public static final int SHOWALBUM = 2;//显示相册

@@ -3,17 +3,11 @@ package com.cdkj.ylq.module.certification;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.media.ExifInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.cdkj.baselibrary.activitys.ImageSelectActivity;
-import com.cdkj.baselibrary.api.BaseResponseModel;
 import com.cdkj.baselibrary.appmanager.EventTags;
 import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
@@ -24,25 +18,18 @@ import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.ImgUtils;
 import com.cdkj.baselibrary.utils.LogUtil;
-import com.cdkj.baselibrary.utils.QiNiuUtil;
+import com.cdkj.baselibrary.utils.QiNiuHelper;
 import com.cdkj.baselibrary.utils.StringUtils;
-import com.cdkj.baselibrary.utils.ToastUtil;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivityIdPicPutBinding;
 import com.cdkj.ylq.model.CerttificationInfoModel;
-import com.qiniu.android.http.ResponseInfo;
 
 import org.greenrobot.eventbus.EventBus;
-import org.json.JSONObject;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
-import retrofit2.Response;
 
 /**
  * 身份证上传
@@ -62,7 +49,7 @@ public class IdInfoUpLoadCertActivity extends AbsBaseActivity {
     public String mPicQiURL2;
     public String mPicQiURL3;
 
-    private QiNiuUtil qiNiuUtil;
+    private QiNiuHelper qiNiuHelper;
 
     private String mQiNiuToken;//七牛token
 
@@ -89,7 +76,7 @@ public class IdInfoUpLoadCertActivity extends AbsBaseActivity {
     public void afterCreate(Bundle savedInstanceState) {
 
         setTopTitle("身份认证");
-        qiNiuUtil = new QiNiuUtil(this);
+        qiNiuHelper = new QiNiuHelper(this);
         if (getIntent() != null) {
 
             mData = getIntent().getParcelableExtra("data");
@@ -163,9 +150,10 @@ public class IdInfoUpLoadCertActivity extends AbsBaseActivity {
     public void getPicUrl(int type, String path) {
         //TODO 身份证图片上传是否需要压缩
         showLoadingDialog();
-        qiNiuUtil.uploadSingle(new QiNiuUtil.QiNiuCallBack() {
+
+        qiNiuHelper.uploadSinglePic(new QiNiuHelper.QiNiuCallBack() {
             @Override
-            public void onSuccess(String key, ResponseInfo info, JSONObject res) {
+            public void onSuccess(String key) {
                 disMissLoading();
                 switch (type) {
                     case PHOTOFLAG1:
@@ -197,11 +185,8 @@ public class IdInfoUpLoadCertActivity extends AbsBaseActivity {
                         showToast("身份证手持照上传错误,请重试");
                         break;
                 }
-
             }
-
-        }, path, mQiNiuToken);
-
+        },path);
     }
 
 
@@ -217,7 +202,7 @@ public class IdInfoUpLoadCertActivity extends AbsBaseActivity {
             return;
         }
 
-        Call call = qiNiuUtil.getQiniuToeknRequest();
+        Call call = qiNiuHelper.getQiniuToeknRequest();
         addCall(call);
         showLoadingDialog();
         call.enqueue(new BaseResponseModelCallBack<QiniuGetTokenModel>(this) {

@@ -6,9 +6,7 @@ import android.text.TextUtils;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.cdkj.baselibrary.BaseApplication;
-import com.cdkj.baselibrary.nets.OnOkFailure;
 import com.cdkj.baselibrary.utils.SPUtils;
-import com.cdkj.baselibrary.utils.ToastUtil;
 
 /**
  * SPUtils 工具辅助类
@@ -117,9 +115,7 @@ public class SPUtilHelpr {
             SPUtilHelpr.logOutClear();
 //			ToastUtil.show(context,"请先登录");
             // 路由跳转登录页面
-            ARouter.getInstance().build("/user/login")
-                    .withBoolean("canOpenMain", canopenmain)
-                    .navigation();
+            RouteHelper.openLogin(canopenmain);
             return false;
         }
 

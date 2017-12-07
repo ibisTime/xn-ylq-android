@@ -31,8 +31,6 @@ import com.cdkj.ylq.module.certification.basisinfocert.BasisInfoCertificationAct
 import com.cdkj.ylq.module.certification.review.HumanReviewActivity;
 import com.cdkj.ylq.mpresenter.GetUserCertificationInfoListener;
 import com.cdkj.ylq.mpresenter.GetUserCertificationPresenter;
-import com.jakewharton.rxbinding2.view.RxView;
-import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.moxie.client.manager.MoxieSDK;
 import com.moxie.client.model.MxParam;
 import com.moxie.client.model.TitleParams;
@@ -46,9 +44,6 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
 import retrofit2.Call;
 
 /**
@@ -413,7 +408,7 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
 
         if (TextUtils.equals("1", mCertData.getInfoCarrierFlag())) { //魔蝎认证
 
-            mMoxieSubscription.dispose();//认证成功停止结果查询轮询
+            mMoxieSubscription.clear();//认证成功停止结果查询轮询
 
             mBinding.tvMoxieState.setText("已认证");
             mBinding.tvMoxieState.setTextColor(ContextCompat.getColor(mActivity, R.color.cert_state_ok));
@@ -436,7 +431,7 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
 
         } else if (TextUtils.equals("2", mCertData.getInfoCarrierFlag())) {
 
-            mMoxieSubscription.dispose();//认证已过期停止结果查询轮询
+            mMoxieSubscription.clear();//认证已过期停止结果查询轮询
 
             mBinding.tvMoxieState.setText("已过期");
             mBinding.tvMoxieState.setTextColor(ContextCompat.getColor(mActivity, R.color.guoqi));
@@ -452,8 +447,8 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
                 isResumeShow = false;
             }
 
-            mMoxieSubscription.dispose();//结果查询轮询
-            mMoxieSubscription = new CompositeDisposable();
+            mMoxieSubscription.clear();//结果查询轮询
+
             mMoxieSubscription.add(Observable.interval(5, TimeUnit.SECONDS)    // 轮询
                     .subscribeOn(AndroidSchedulers.mainThread())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -541,7 +536,7 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(getLayoutInflater(savedInstanceState), R.layout.fragment_certification, null, false);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_certification, null, false);
         initListener();
         mCertInfoPresenter = new GetUserCertificationPresenter(this);
         mMoxieSubscription = new CompositeDisposable();
