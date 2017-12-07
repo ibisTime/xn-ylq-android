@@ -51,7 +51,6 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
     private CityPicker mCityPicker;//城市选择
 
     private AMapLocation mapLocation;
-
     /**
      * 打开当前页面
      *
