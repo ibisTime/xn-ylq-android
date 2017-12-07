@@ -52,7 +52,6 @@ public class RegisterActivity extends BaseLocationActivity implements SendCodeIn
 
     private AMapLocation mapLocation;
 
-
     /**
      * 打开当前页面
      *
