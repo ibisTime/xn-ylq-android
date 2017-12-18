@@ -59,12 +59,6 @@
                         android:text="《通讯录授权协议》"
                         android:textColor="@color/activity_title_bg" />
 
-                    <TextView
-                        android:id="@+id/tv_read_2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="《信息收集使用规则》"
-                        android:textColor="@color/activity_title_bg" />
 
                 </LinearLayout>
 

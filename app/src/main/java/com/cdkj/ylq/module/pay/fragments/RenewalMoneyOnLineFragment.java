@@ -3,7 +3,6 @@ package com.cdkj.ylq.module.pay.fragments;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +20,8 @@ import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.baselibrary.utils.payutils.PayUtil;
 import com.cdkj.ylq.R;
-import com.cdkj.ylq.databinding.ActivityPayBinding;
 import com.cdkj.ylq.databinding.FragmentRenewalPayOnlineBinding;
 import com.cdkj.ylq.model.UseMoneyRecordModel;
-import com.cdkj.ylq.module.pay.AlsoMoneyTabActivity;
 
 import org.greenrobot.eventbus.EventBus;
 

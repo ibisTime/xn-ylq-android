@@ -117,6 +117,9 @@ public class RegisterActivity extends AbsBaseActivity implements SendCodeInterfa
             WebViewActivity.openkey(this, "借款服务与隐私协议", "regProtocol");
         });
 
+        mBinding.tvRead2.setOnClickListener(v -> {
+            WebViewActivity.openkey(this, "信息规则", "infoCollectRule");
+        });
 
         //注册
         mBinding.btnRegister.setOnClickListener(v -> {

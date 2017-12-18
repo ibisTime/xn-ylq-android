@@ -249,7 +249,7 @@ public class SystemUtils {
                     }
                 }
             }
-        } catch (SocketException e) {
+        } catch (Exception e) {
         }
         return "";
     }

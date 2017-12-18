@@ -41,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:text="起点日期"
+                    android:text="原到期还款日"
                     android:textColor="@color/text_color"
                     android:textSize="16sp" />
 

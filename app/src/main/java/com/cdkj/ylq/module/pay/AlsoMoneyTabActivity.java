@@ -69,7 +69,7 @@ public class AlsoMoneyTabActivity extends CommonTablayoutActivity {
     public List<Fragment> getFragments() {
         List<Fragment> mFragments = new ArrayList<>();
         mFragments.add(AlsoMoneyOnLineFragment.getInstanse(mCode, mMoney));//实时还款
-        mFragments.add(AlsoMoneyOffLineFragment.getInstanse(mCode, mMoney));//线下还款
+//        mFragments.add(AlsoMoneyOffLineFragment.getInstanse(mCode, mMoney));//线下还款 //线下还款和线下续期在130需求中去除
         return mFragments;
     }
 
@@ -77,7 +77,7 @@ public class AlsoMoneyTabActivity extends CommonTablayoutActivity {
     public List<String> getFragmentTitles() {
         List<String> titles = new ArrayList<>();
         titles.add("实时还款");
-        titles.add("线下还款");
+//        titles.add("线下还款");
         return titles;
     }
 

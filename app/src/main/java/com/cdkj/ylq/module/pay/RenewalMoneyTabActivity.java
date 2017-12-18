@@ -64,7 +64,7 @@ public class RenewalMoneyTabActivity extends CommonTablayoutActivity {
     public List<Fragment> getFragments() {
         List<Fragment> mFragments = new ArrayList<>();
         mFragments.add(RenewalMoneyOnLineFragment.getInstanse(mData));//实时
-        mFragments.add(RenewalMoneyOffLineFragment.getInstanse(mData));//线下
+//        mFragments.add(RenewalMoneyOffLineFragment.getInstanse(mData));//线下 //线下还款和线下续期在130需求中去除
         return mFragments;
     }
 
@@ -72,7 +72,7 @@ public class RenewalMoneyTabActivity extends CommonTablayoutActivity {
     public List<String> getFragmentTitles() {
         List<String> titles = new ArrayList<>();
         titles.add("实时续期");
-        titles.add("线下续期");
+//        titles.add("线下续期");
         return titles;
     }
 
