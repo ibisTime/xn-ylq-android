@@ -72,6 +72,12 @@ public abstract class CommonZMPermissionsCheckActivity extends AbsBaseActivity i
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        creditApp.destroy();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // 回调事件相应
         creditApp.onActivityResult(requestCode, resultCode, data);

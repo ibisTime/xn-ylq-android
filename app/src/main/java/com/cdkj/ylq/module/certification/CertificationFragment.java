@@ -62,8 +62,6 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
     private boolean isMoxieCallback;//是否执行过魔蝎回调 用户魔蝎回调成功弹框提醒
     private boolean isResumeShow;//用户魔蝎回调认证中弹框提醒
 
-    private CompositeDisposable mMoxieSubscription;//用于魔蝎认证结果轮询 viewPage切换、页面进入后台时停止魔蝎认证结果轮询
-
     /**
      * 获得fragment实例
      *
@@ -408,8 +406,6 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
 
         if (TextUtils.equals("1", mCertData.getInfoCarrierFlag())) { //魔蝎认证
 
-            mMoxieSubscription.clear();//认证成功停止结果查询轮询
-
             mBinding.tvMoxieState.setText("已认证");
             mBinding.tvMoxieState.setTextColor(ContextCompat.getColor(mActivity, R.color.cert_state_ok));
             mBinding.imgMoxieState.setImageResource(R.drawable.cert_ok);
@@ -430,9 +426,6 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
             }
 
         } else if (TextUtils.equals("2", mCertData.getInfoCarrierFlag())) {
-
-            mMoxieSubscription.clear();//认证已过期停止结果查询轮询
-
             mBinding.tvMoxieState.setText("已过期");
             mBinding.tvMoxieState.setTextColor(ContextCompat.getColor(mActivity, R.color.guoqi));
             mBinding.imgMoxieState.setImageResource(R.drawable.guoqi);
@@ -446,16 +439,13 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
                 ToastUtil.show(mActivity, "运营商数据正在认证，请稍后");
                 isResumeShow = false;
             }
-
-            mMoxieSubscription.clear();//结果查询轮询
-
-            mMoxieSubscription.add(Observable.interval(5, TimeUnit.SECONDS)    // 轮询
+            mSubscription.add(Observable.timer(5, TimeUnit.SECONDS)    // 定时器 5秒查询一次
                     .subscribeOn(AndroidSchedulers.mainThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(aLong -> {
                         isMoxieCallback = true;
                         mCertInfoPresenter.getCertInfo(false);
-                        LogUtil.E("魔蝎认证结果轮询");
+
                     }, Throwable::printStackTrace));
 
         } else {
@@ -539,7 +529,6 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_certification, null, false);
         initListener();
         mCertInfoPresenter = new GetUserCertificationPresenter(this);
-        mMoxieSubscription = new CompositeDisposable();
         return mBinding.getRoot();
     }
 
@@ -556,9 +545,6 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
     @Override
     protected void onInvisible() {
         isResumeShow = false;
-        if (mMoxieSubscription != null) {
-            mMoxieSubscription.dispose();
-        }
     }
 
     @Override
@@ -569,14 +555,6 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
             mCertInfoPresenter.getCertInfo(false);
         }
 
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (mMoxieSubscription != null) {
-            mMoxieSubscription.dispose();
-        }
     }
 
     @Override

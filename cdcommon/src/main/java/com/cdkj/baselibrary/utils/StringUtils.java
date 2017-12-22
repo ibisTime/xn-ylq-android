@@ -33,6 +33,12 @@ public class StringUtils {
         return jsonString;
     }
 
+    public static String subStringEnd(String s, int start) {
+        if (TextUtils.isEmpty(s)) {
+            return "";
+        }
+        return subString(s, start, s.length());
+    }
 
 
     public static List<String> splitAsList(String s, String sp){

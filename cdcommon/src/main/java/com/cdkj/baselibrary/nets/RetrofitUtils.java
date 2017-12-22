@@ -2,7 +2,12 @@ package com.cdkj.baselibrary.nets;
 
 
 import com.cdkj.baselibrary.api.BaseApiServer;
+import com.cdkj.baselibrary.appmanager.MyConfig;
+import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.utils.LogUtil;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.Retrofit;
 
@@ -70,5 +75,20 @@ public class RetrofitUtils {
 //                return "http://116.62.193.233:3701/forward-service/";//正式环境
 //        }
     }
+
+
+    /**
+     * 添加公共请求参数
+     *
+     * @return
+     */
+    public static Map getRequestMap() {
+        Map map = new HashMap();
+        map.put("systemCode", MyConfig.SYSTEMCODE);
+        map.put("companyCode", MyConfig.COMPANYCODE);
+        map.put("token", SPUtilHelpr.getUserToken());
+        return map;
+    }
+
 
 }

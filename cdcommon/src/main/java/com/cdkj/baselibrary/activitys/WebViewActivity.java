@@ -6,10 +6,12 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 
 import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.R;
@@ -88,7 +90,9 @@ public class WebViewActivity extends AbsBaseActivity {
         if (getWindow() != null) {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         }
-        webView = new WebView(this);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        webView = new WebView(getApplicationContext());
+        webView.setLayoutParams(params);
         webView.getSettings().setJavaScriptEnabled(true);//js
         webView.getSettings().setDefaultTextEncodingName("UTF-8");
 //       webView.getSettings().setSupportZoom(true);   //// 支持缩放
