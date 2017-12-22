@@ -6,10 +6,12 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 
 import com.cdkj.baselibrary.R;
 import com.cdkj.baselibrary.appmanager.MyConfig;
@@ -74,14 +76,14 @@ public class SigningTipsWebViewActivity extends AbsBaseActivity {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         }
         webView = new WebView(this);
-        webView.getSettings().setJavaScriptEnabled(true);//js
-        webView.getSettings().setDefaultTextEncodingName("UTF-8");
-//       webView.getSettings().setSupportZoom(true);   //// 支持缩放
-//       webView.getSettings().setBuiltInZoomControls(true);//// 支持缩放
-//       webView.getSettings().setDomStorageEnabled(true);//开启DOM
-//       webView.getSettings().setLoadWithOverviewMode(false);//// 缩放至屏幕的大小
-//       webView.getSettings().setUseWideViewPort(true);//将图片调整到适合webview的大小
-//       webView.getSettings().setLoadsImagesAutomatically(true);//支持自动加载图片
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        webView.setLayoutParams(params);
+
+        if(webView.getSettings()!=null){
+            webView.getSettings().setJavaScriptEnabled(true);//js
+            webView.getSettings().setDefaultTextEncodingName("UTF-8");
+        }
+
         webView.setWebChromeClient(new MyWebViewClient1());
 //        webView.setWebViewClient(new MyWebViewClient());
         webView.setWebViewClient(new WebViewClient() {

@@ -34,20 +34,36 @@ public class DateUtil {
      * @param specifiedDay
      * @return
      */
-    public static String getSpecifiedDayAfter(String specifiedDay) {
+    public static String getSpecifiedDayAfter(String specifiedDay, String format) {
         Calendar c = Calendar.getInstance();
-        Date date = new Date();
         try {
-            date = new SimpleDateFormat("yyyy-MM-dd").parse(specifiedDay);
-        } catch (ParseException e) {
+            Date date = new Date(specifiedDay);
+            c.setTime(date);
+            c.add(Calendar.DATE, +1);
+            return format(c.getTime(), format);
+        } catch (Exception e) {
+            LogUtil.E("get after error" + e);
         }
-        c.setTime(date);
-        int day = c.get(Calendar.DATE);
-        c.set(Calendar.DATE, day + 1);
+        return "";
+    }
 
-        String dayAfter = new SimpleDateFormat("yyyy-MM-dd")
-                .format(c.getTime());
-        return dayAfter;
+    /**
+     * 获得指定日期的前一天
+     *
+     * @param specifiedDay
+     * @return
+     */
+    public static String getSpecifiedBefore(String specifiedDay, String format) {
+        Calendar c = Calendar.getInstance();
+        try {
+            Date date = new Date(specifiedDay);
+            c.setTime(date);
+            c.add(Calendar.DATE, -1);
+            return format(c.getTime(), format);
+        } catch (Exception e) {
+            LogUtil.E("get before error" + e);
+        }
+        return "";
     }
 
     /**

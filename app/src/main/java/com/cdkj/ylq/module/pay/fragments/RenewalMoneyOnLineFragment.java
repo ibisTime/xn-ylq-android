@@ -76,17 +76,18 @@ public class RenewalMoneyOnLineFragment extends BaseFragment {
 
     private void setShowData() {
         if (mData == null) {
-         return;
+            return;
         }
 
         mBinding.tvMoney.setText(MoneyUtils.showPrice(mData.getRenewalAmount()));
 
-        mBinding.tvRenewalStart.setText(DateUtil.formatStringData(mData.getRenewalStartDate(),DateUtil.DATE_YMD));
-        mBinding.tvRenewalEnd.setText(DateUtil.formatStringData(mData.getRenewalEndDate(),DateUtil.DATE_YMD));
+//        mBinding.tvRenewalStart.setText(DateUtil.formatStringData(mData.getRenewalStartDate(),DateUtil.DATE_YMD)); //  没有提前一天
+        mBinding.tvRenewalStart.setText(DateUtil.getSpecifiedBefore(mData.getRenewalStartDate(), DateUtil.DATE_YMD)); //130 需求 原到期还款日比起点日期提前一天;
+        mBinding.tvRenewalEnd.setText(DateUtil.formatStringData(mData.getRenewalEndDate(), DateUtil.DATE_YMD));
 
         //续期利息 =逾期总额-逾期利息
-        mBinding.tvMoneyTips.setText("续期金额=逾期利息("+MoneyUtils.showPrice(mData.getYqlxAmount())+"元)+续期利息("+
-                MoneyUtils.showPrice(BigDecimalUtils.subtract(mData.getRenewalAmount(),mData.getYqlxAmount()))+"元)");
+        mBinding.tvMoneyTips.setText("续期金额=逾期利息(" + MoneyUtils.showPrice(mData.getYqlxAmount()) + "元)+续期利息(" +
+                MoneyUtils.showPrice(BigDecimalUtils.subtract(mData.getRenewalAmount(), mData.getYqlxAmount())) + "元)");
 
     }
 
@@ -145,7 +146,7 @@ public class RenewalMoneyOnLineFragment extends BaseFragment {
         call.enqueue(new BaseResponseModelCallBack<IsSuccessModes>(mActivity) {
             @Override
             protected void onSuccess(IsSuccessModes data, String SucMessage) {
-                if(data.isSuccess()){
+                if (data.isSuccess()) {
                     EventBus.getDefault().post(EventTags.RENEWALFLAGE);
                 }
 
@@ -159,7 +160,6 @@ public class RenewalMoneyOnLineFragment extends BaseFragment {
 
 
     }
-
 
 
     private void wxPayRequest() {
