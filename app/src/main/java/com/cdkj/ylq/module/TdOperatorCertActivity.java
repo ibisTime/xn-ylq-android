@@ -1,12 +1,12 @@
 package com.cdkj.ylq.module;
 
+import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -44,6 +44,14 @@ public class TdOperatorCertActivity extends AbsBaseActivity implements GetUserCe
     private static final String nextUrl = "https://me/do/next";//用户验证完成后的要打开的url
 
     private GetUserCertificationPresenter mCertInfoPresenter;//获取认证结果接口
+
+    public static void open(Context context) {
+        if (context == null) {
+            return;
+        }
+        Intent intent = new Intent(context, TdOperatorCertActivity.class);
+        context.startActivity(intent);
+    }
 
 
     @Override
@@ -115,7 +123,6 @@ public class TdOperatorCertActivity extends AbsBaseActivity implements GetUserCe
         WebViewClient webViewClient = new WebViewClient() {
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                Log.e("lxj", error.toString() + "");
                 handler.proceed(); // 接受网站证书
             }
 
@@ -216,6 +223,10 @@ public class TdOperatorCertActivity extends AbsBaseActivity implements GetUserCe
             webView.setWebViewClient(null);
             webView.destroy();
             webView = null;
+        }
+
+        if (mCertInfoPresenter != null) {
+            mCertInfoPresenter.clear();
         }
 
         super.onDestroy();

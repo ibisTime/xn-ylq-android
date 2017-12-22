@@ -23,7 +23,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         application = this;
-        BaseApplication.initialize(this, BuildConfig.LOG_DEBUG, "");
+        BaseApplication.initialize(this, BuildConfig.LOG_DEBUG);
     }
 
     public static MyApplication getInstance() {

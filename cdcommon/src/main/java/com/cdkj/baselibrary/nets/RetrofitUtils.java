@@ -19,7 +19,10 @@ public class RetrofitUtils {
 
     private static Retrofit retrofitInstance = null;
 
-    public static String urlType;
+    //url类型
+    public static final int RELEASE = 0; //正式环境
+    public static final int DEBUG = 1;//研发环境
+    public static final int TEST = 2;//测试环境
 
     private RetrofitUtils() {
     }
@@ -32,7 +35,7 @@ public class RetrofitUtils {
     private static Retrofit getInstance() {
         if (retrofitInstance == null) {
             retrofitInstance = new Retrofit.Builder()
-                    .baseUrl(getBaseURL())
+                    .baseUrl(getBaseURL(DEBUG))
                     .client(OkHttpUtils.getInstance())
                     .addConverterFactory(FastJsonConVerter.create())
                     .build();
@@ -59,21 +62,14 @@ public class RetrofitUtils {
      *
      * @return
      */
-    public static String getBaseURL() {
-
-//        switch (urlType){
-//            case "release":
-//                return "http://116.62.193.233:3701/forward-service/";//正式环境
-//
-//            case "releaseDev":
-//                return "http://118.178.124.16:3701/forward-service/";//测试环境
-//
-//            case "debugDev":
-        return "http://121.43.101.148:3701/forward-service/";//研发环境
-//
-//            default:
-//                return "http://116.62.193.233:3701/forward-service/";//正式环境
-//        }
+    public static String getBaseURL(int urlType) {
+        switch (urlType) {
+            case TEST:
+                return "http://118.178.124.16:3701/forward-service/";//测试环境
+            case DEBUG:
+                return "http://121.43.101.148:3701/forward-service/";//研发环境
+        }
+        return "http://116.62.193.233:3701/forward-service/";//正式环境
     }
 
 
