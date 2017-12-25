@@ -6,7 +6,8 @@ import android.os.Parcelable;
 import java.math.BigDecimal;
 import java.util.List;
 
-/**产品列表
+/**
+ * 产品列表
  * Created by 李先俊 on 2017/8/11.
  */
 
@@ -112,6 +113,16 @@ public class PorductListModel implements Parcelable {
         private BigDecimal lxAmount;
         private BigDecimal xsAmount;
         private int duration;
+
+        private int hkDays;//还款时间（0表示当天还款）
+
+        public int getHkDays() {
+            return hkDays;
+        }
+
+        public void setHkDays(int hkDays) {
+            this.hkDays = hkDays;
+        }
 
         public BigDecimal getFwAmount() {
             return fwAmount;
@@ -369,6 +380,7 @@ public class PorductListModel implements Parcelable {
             dest.writeSerializable(this.lxAmount);
             dest.writeSerializable(this.xsAmount);
             dest.writeInt(this.duration);
+            dest.writeInt(this.hkDays);
             dest.writeSerializable(this.yqRate1);
             dest.writeSerializable(this.yqRate2);
             dest.writeSerializable(this.lxRate);
@@ -399,6 +411,7 @@ public class PorductListModel implements Parcelable {
             this.lxAmount = (BigDecimal) in.readSerializable();
             this.xsAmount = (BigDecimal) in.readSerializable();
             this.duration = in.readInt();
+            this.hkDays = in.readInt();
             this.yqRate1 = (BigDecimal) in.readSerializable();
             this.yqRate2 = (BigDecimal) in.readSerializable();
             this.lxRate = (BigDecimal) in.readSerializable();

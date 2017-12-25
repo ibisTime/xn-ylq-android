@@ -67,6 +67,23 @@ public class BusinessSings {
     }
 
 
+
+    //产品状态
+    //("0", "可申请"),("1", "认证中"),("2", "人工审核中"),( "3", "已驳回"),("4", "已有额度"),("5", "等待放款中"),( "6", "生效中"),("7", "已逾期")
+    public static final String PRODUCTSTATE_0 = "0";
+    public static final String PRODUCTSTATE_1 = "1";
+    public static final String PRODUCTSTATE_2 = "2";
+    public static final String PRODUCTSTATE_3 = "3";
+    public static final String PRODUCTSTATE_4 = "4";
+    public static final String PRODUCTSTATE_5 = "5";
+    public static final String PRODUCTSTATE_6 = "6";
+    public static final String PRODUCTSTATE_7= "7";
+    public static final String PRODUCTSTATE_11 = "11";
+
+
+
+
+
     //获取产品状态
     //("0", "可申请"),("1", "认证中"),("2", "人工审核中"),( "3", "已驳回"),("4", "已有额度"),("5", "等待放款中"),( "6", "生效中"),("7", "已逾期")
     public static String getProductState(Context context, String state) {
@@ -78,31 +95,31 @@ public class BusinessSings {
         String stateStr = "";
         ;
         switch (state) {
-            case "0":
+            case PRODUCTSTATE_0:
                 stateStr = context.getString(R.string.product_state_0);
                 break;
-            case "1":
+            case PRODUCTSTATE_1:
                 stateStr = context.getString(R.string.product_state_1);
                 break;
-            case "2":
+            case PRODUCTSTATE_2:
                 stateStr = context.getString(R.string.product_state_2);
                 break;
-            case "3":
+            case PRODUCTSTATE_3:
                 stateStr = context.getString(R.string.product_state_3);
                 break;
-            case "4":
+            case PRODUCTSTATE_4:
                 stateStr = context.getString(R.string.product_state_4);
                 break;
-            case "5":
+            case PRODUCTSTATE_5:
                 stateStr = context.getString(R.string.product_state_5);
                 break;
-            case "6":
+            case PRODUCTSTATE_6:
                 stateStr = context.getString(R.string.product_state_6);
                 break;
-            case "7":
+            case PRODUCTSTATE_7:
                 stateStr = context.getString(R.string.product_state_7);
                 break;
-            case "11":
+            case PRODUCTSTATE_11:
                 stateStr = context.getString(R.string.product_state_11);
                 break;
         }

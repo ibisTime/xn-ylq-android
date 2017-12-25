@@ -213,7 +213,6 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
             mBinding.imgMoxieState.setImageResource(R.drawable.cert_ok);
             mBinding.imgMoxieStateBig.setImageResource(R.drawable.yuying);
 
-
         } else if (TextUtils.equals("2", mCertData.getInfoCarrierFlag())) {
             mBinding.tvMoxieState.setText("已过期");
             mBinding.tvMoxieState.setTextColor(ContextCompat.getColor(mActivity, R.color.guoqi));
@@ -224,7 +223,6 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
             mBinding.tvMoxieState.setTextColor(ContextCompat.getColor(mActivity, R.color.cert_state_edit));
             mBinding.imgMoxieState.setImageResource(R.drawable.can_submit);
             mBinding.imgMoxieStateBig.setImageResource(R.drawable.yunying_un);
-
 
         } else {
             mBinding.tvMoxieState.setText("前往提交");
@@ -255,29 +253,7 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
     }
 
 
-    public void getIsBorrowFlag() {
-        if (!SPUtilHelpr.isLoginNoStart()) {
-            return;
-        }
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("userId", SPUtilHelpr.getUserId());
-        Call call = RetrofitUtils.createApi(MyApiServer.class).getIsBorrowFlag("623091", StringUtils.getJsonToString(map));
-        addCall(call);
-        showLoadingDialog();
-        call.enqueue(new BaseResponseModelCallBack<IsBorrowFlagModel>(mActivity) {
-            @Override
-            protected void onSuccess(IsBorrowFlagModel data, String SucMessage) {
-                if (TextUtils.equals("1", data.getIsBorrowFlag())) {
-                    HumanReviewActivity.open(mActivity);
-                }
-            }
 
-            @Override
-            protected void onFinish() {
-                disMissLoading();
-            }
-        });
-    }
 
 
     @Override

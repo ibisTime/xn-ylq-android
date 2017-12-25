@@ -16,6 +16,9 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
+import static com.cdkj.ylq.appmanager.BusinessSings.PRODUCTSTATE_6;
+import static com.cdkj.ylq.appmanager.BusinessSings.PRODUCTSTATE_7;
+
 /**
  * 借贷产品列表
  * Created by 李先俊 on 2017/8/12.
@@ -51,7 +54,20 @@ public class BorrowMoneyProductAdapter extends BaseQuickAdapter<PorductListModel
 
         helper.setText(R.id.tv_money, MoneyUtils.showPrice(item.getAmount()) + "");
         helper.setText(R.id.tv_make_day, item.getDuration() + "天");
-        helper.setText(R.id.tv_state, BusinessSings.getProductState(mContext,item.getUserProductStatus()));
+
+        if (TextUtils.equals(PRODUCTSTATE_6, item.getUserProductStatus())) {//生效中
+            if (item.getHkDays() > 0) {
+                helper.setText(R.id.tv_state, "还有" + item.getHkDays() + "天");
+            } else if (item.getHkDays() == 0) {
+                helper.setText(R.id.tv_state, "今日还款");
+            }
+
+        } else if (TextUtils.equals(PRODUCTSTATE_7, item.getUserProductStatus())) {//已逾期
+            helper.setText(R.id.tv_state, "已逾期" + item.getHkDays() + "天");
+        } else {
+            helper.setText(R.id.tv_state, BusinessSings.getProductState(mContext, item.getUserProductStatus()));
+        }
+
         helper.setText(R.id.tv_level, "Lv" + item.getLevel());
 
 

@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.SystemClock;
+import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -53,7 +54,7 @@ public class AppUtils {
             return false;
         }
 
-        if(activity.isFinishing()){
+        if (activity.isFinishing()) {
             return false;
         }
 
@@ -77,6 +78,7 @@ public class AppUtils {
             return false;
         }
     }
+
     /**
      * 根据包名跳转到系统自带的应用程序信息界面
      *
@@ -87,7 +89,7 @@ public class AppUtils {
             Uri packageURI = Uri.parse("package:" + getPackgeName(activity));
             Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, packageURI);
             activity.startActivity(intent);
-        }catch (Exception e){
+        } catch (Exception e) {
         }
     }
 
@@ -168,7 +170,7 @@ public class AppUtils {
 
     public static void startWeb(Context context, String url) {
 
-        LogUtil.E("downloadUrl___"+url);
+        LogUtil.E("downloadUrl___" + url);
 
         if (context == null || TextUtils.isEmpty(url)) {
             return;
@@ -185,11 +187,11 @@ public class AppUtils {
 
             if (intent.resolveActivity(context.getPackageManager()) != null) {
                 context.startActivity(Intent.createChooser(intent, "请选择浏览器"));
-            }else{
-                ToastUtil.show(context,"没有可用浏览器");
+            } else {
+                ToastUtil.show(context, "没有可用浏览器");
             }
         } catch (Exception e) {
-            ToastUtil.show(context,"打开浏览器出现错误");
+            ToastUtil.show(context, "打开浏览器出现错误");
             LogUtil.E("startWeb error");
         }
     }
@@ -203,82 +205,136 @@ public class AppUtils {
     }
 
 
+//    /**
+//     * 获取手机联系人
+//     * <p>需添加权限 {@code <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>}</p>
+//     * <p>需添加权限 {@code <uses-permission android:name="android.permission.READ_CONTACTS"/>}</p>
+//     *
+//     * @return 联系人链表
+//     */
+//    public static List<HashMap<String, String>> getAllContactInfo(Context context) {
+//        LogUtil.E("调用");
+////        SystemClock.sleep(3000);
+//        ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+//        // 1.获取内容解析者
+//        ContentResolver resolver = context.getContentResolver();
+//        // 2.获取内容提供者的地址:com.android.contacts
+//        // raw_contacts表的地址 :raw_contacts
+//        // view_data表的地址 : data
+//        // 3.生成查询地址
+//        Uri raw_uri = Uri.parse("content://com.android.contacts/raw_contacts");
+//        Uri date_uri = Uri.parse("content://com.android.contacts/data");
+//        // 4.查询操作,先查询raw_contacts,查询contact_id
+//        // projection : 查询的字段
+//        Cursor cursor = resolver.query(raw_uri, new String[]{"contact_id"}, null, null, null);
+//        try {
+//            // 5.解析cursor
+//            if (cursor != null) {
+//                while (cursor.moveToNext()) {
+//                    // 6.获取查询的数据
+//                    String contact_id = cursor.getString(0);
+//                    // cursor.getString(cursor.getColumnIndex("contact_id"));//getColumnIndex
+//                    // : 查询字段在cursor中索引值,一般都是用在查询字段比较多的时候
+//                    // 判断contact_id是否为空
+//                    if (!TextUtils.isEmpty(contact_id)) {//null   ""
+//                        // 7.根据contact_id查询view_data表中的数据
+//                        // selection : 查询条件
+//                        // selectionArgs :查询条件的参数
+//                        // sortOrder : 排序
+//                        // 空指针: 1.null.方法 2.参数为null
+//                        Cursor c = resolver.query(date_uri, new String[]{"data1",
+//                                        "mimetype"}, "raw_contact_id=?",
+//                                new String[]{contact_id}, null);
+//                        HashMap<String, String> map = new HashMap<String, String>();
+//                        // 8.解析c
+//                        if (c != null) {
+//                            while (c.moveToNext()) {
+//                                // 9.获取数据
+//                                String data1 = c.getString(0);
+//                                String mimetype = c.getString(1);
+//                                // 10.根据类型去判断获取的data1数据并保存
+//                                if (mimetype.equals("vnd.android.cursor.item/phone_v2")) {
+//                                    // 电话
+//                                    map.put("mobile", data1);
+//                                } else if (mimetype.equals("vnd.android.cursor.item/name")) {
+//                                    // 姓名
+//                                    map.put("name", data1);
+//                                }
+//                            }
+//                        }
+//                        // 11.添加到集合中数据
+//                        list.add(map);
+//                        // 12.关闭cursor
+//                        if (c != null) {
+//                            c.close();
+//                        }
+//                    }
+//                }
+//            }
+//        } finally {
+//            // 12.关闭cursor
+//            if (cursor != null) {
+//                cursor.close();
+//            }
+//        }
+//        return list;
+//    }
+
     /**
-     * 获取手机联系人
-     * <p>需添加权限 {@code <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>}</p>
+     * 获取所有拥有手机号的联系人
+     * * <p>需添加权限 {@code <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>}</p>
      * <p>需添加权限 {@code <uses-permission android:name="android.permission.READ_CONTACTS"/>}</p>
      *
-     * @return 联系人链表
+     * @param context
+     * @return
      */
-    public static List<HashMap<String, String>> getAllContactInfo(Context context) {
-        LogUtil.E("调用");
-//        SystemClock.sleep(3000);
-        ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
-        // 1.获取内容解析者
-        ContentResolver resolver = context.getContentResolver();
-        // 2.获取内容提供者的地址:com.android.contacts
-        // raw_contacts表的地址 :raw_contacts
-        // view_data表的地址 : data
-        // 3.生成查询地址
-        Uri raw_uri = Uri.parse("content://com.android.contacts/raw_contacts");
-        Uri date_uri = Uri.parse("content://com.android.contacts/data");
-        // 4.查询操作,先查询raw_contacts,查询contact_id
-        // projection : 查询的字段
-        Cursor cursor = resolver.query(raw_uri, new String[]{"contact_id"}, null, null, null);
+    public static List<HashMap<String, String>> getAllPhoneContacts(Context context) {
+        List<HashMap<String, String>> listContacts = new ArrayList<HashMap<String, String>>();
+
+        ContentResolver cr = context.getContentResolver();
+
+        String[] mContactsProjection = new String[]{
+            /*    ContactsContract.CommonDataKinds.Phone.CONTACT_ID,*/ //id
+                ContactsContract.CommonDataKinds.Phone.NUMBER,   //电话号码
+                ContactsContract.Contacts.DISPLAY_NAME,      //姓名
+        };
+
+        //查询contacts表中的所有数据
+        Cursor cursor = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, mContactsProjection, null, null, null);
+
         try {
-            // 5.解析cursor
-            if (cursor != null) {
+            if (cursor != null && cursor.getCount() > 0) {
+                int phoneIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                int nameIndex = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+
                 while (cursor.moveToNext()) {
-                    // 6.获取查询的数据
-                    String contact_id = cursor.getString(0);
-                    // cursor.getString(cursor.getColumnIndex("contact_id"));//getColumnIndex
-                    // : 查询字段在cursor中索引值,一般都是用在查询字段比较多的时候
-                    // 判断contact_id是否为空
-                    if (!TextUtils.isEmpty(contact_id)) {//null   ""
-                        // 7.根据contact_id查询view_data表中的数据
-                        // selection : 查询条件
-                        // selectionArgs :查询条件的参数
-                        // sortOrder : 排序
-                        // 空指针: 1.null.方法 2.参数为null
-                        Cursor c = resolver.query(date_uri, new String[]{"data1",
-                                        "mimetype"}, "raw_contact_id=?",
-                                new String[]{contact_id}, null);
-                        HashMap<String, String> map = new HashMap<String, String>();
-                        // 8.解析c
-                        if (c != null) {
-                            while (c.moveToNext()) {
-                                // 9.获取数据
-                                String data1 = c.getString(0);
-                                String mimetype = c.getString(1);
-                                // 10.根据类型去判断获取的data1数据并保存
-                                if (mimetype.equals("vnd.android.cursor.item/phone_v2")) {
-                                    // 电话
-                                    map.put("mobile", data1);
-                                } else if (mimetype.equals("vnd.android.cursor.item/name")) {
-                                    // 姓名
-                                    map.put("name", data1);
-                                }
-                            }
-                        }
-                        // 11.添加到集合中数据
-                        list.add(map);
-                        // 12.关闭cursor
-                        if (c != null) {
-                            c.close();
-                        }
+                    String phoneNum = cursor.getString(phoneIndex);
+                    String name = cursor.getString(nameIndex);
+
+                    if (TextUtils.isEmpty(phoneNum) || TextUtils.isEmpty(name)) {
+                        continue;
                     }
+                    HashMap<String, String> map = new HashMap<String, String>();
+
+                    //格式化手机号
+                    phoneNum = phoneNum.replace("-", "");
+                    phoneNum = phoneNum.replace(" ", "");
+
+                    map.put("name", name);
+                    map.put("mobile", phoneNum);
+                    listContacts.add(map);
                 }
             }
+        } catch (Exception e) {
+            LogUtil.E("通讯录获取失败" + e);
         } finally {
-            // 12.关闭cursor
             if (cursor != null) {
                 cursor.close();
             }
         }
-        return list;
+
+        return listContacts;
     }
-
-
 
 
 }

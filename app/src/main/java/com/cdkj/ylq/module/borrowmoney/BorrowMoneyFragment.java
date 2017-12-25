@@ -18,6 +18,7 @@ import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.ylq.MainActivity;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.adapters.BorrowMoneyProductAdapter;
+import com.cdkj.ylq.appmanager.BusinessSings;
 import com.cdkj.ylq.databinding.LayoutProductFooterviewBinding;
 import com.cdkj.ylq.model.PorductListModel;
 import com.cdkj.ylq.model.UseMoneyRecordModel;
@@ -113,7 +114,7 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
             return;
         }
 
-        if (TextUtils.equals("0", data.getUserProductStatus())) {      //产品详情
+        if (TextUtils.equals(BusinessSings.PRODUCTSTATE_0, data.getUserProductStatus())) {      //产品详情
             ProductDetailsActivity.open(mActivity, data.getCode());
             return;
         }
@@ -123,35 +124,35 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
             return;
         }
 
-        if (TextUtils.equals("1", data.getUserProductStatus())) {//认证中显示认证界面
+        if (TextUtils.equals(BusinessSings.PRODUCTSTATE_1, data.getUserProductStatus())) {//认证中显示认证界面
 
             EventBusModel eventBusModel = new EventBusModel();
             eventBusModel.setTag(EventTags.MAINCHANGESHOWINDEX);
             eventBusModel.setEvInt(MainActivity.SHOWCERT);
             EventBus.getDefault().post(eventBusModel);
 
-        } else if (TextUtils.equals("2", data.getUserProductStatus())) {//人工审核中
+        } else if (TextUtils.equals(BusinessSings.PRODUCTSTATE_2, data.getUserProductStatus())) {//人工审核中
             HumanReviewActivity.open(mActivity);
 
-        } else if (TextUtils.equals("3", data.getUserProductStatus())) {//已驳回
+        } else if (TextUtils.equals(BusinessSings.PRODUCTSTATE_3, data.getUserProductStatus())) {//已驳回
             ApplyFailureActivity.open(mActivity, data);
 
-        } else if (TextUtils.equals("4", data.getUserProductStatus())) {//已有额度
+        } else if (TextUtils.equals(BusinessSings.PRODUCTSTATE_4, data.getUserProductStatus())) {//已有额度
 
             MyMaxMoneyActivity.open(mActivity);
-        } else if (TextUtils.equals("5", data.getUserProductStatus())) { //等待放款中
+        } else if (TextUtils.equals(BusinessSings.PRODUCTSTATE_5, data.getUserProductStatus())) { //等待放款中
 
             PutMoneyingActivity.open(mActivity, data.getBorrowCode());
 
-        } else if (TextUtils.equals("6", data.getUserProductStatus())) { //生效中
+        } else if (TextUtils.equals(BusinessSings.PRODUCTSTATE_6, data.getUserProductStatus())) { //生效中
 
             UseingMoneyDetailsActivity.open(mActivity, null, true, data.getBorrowCode());
 
-        } else if (TextUtils.equals("7", data.getUserProductStatus())) { //逾期
+        } else if (TextUtils.equals(BusinessSings.PRODUCTSTATE_7, data.getUserProductStatus())) { //逾期
 
             UsedMoneyDetailsActivity.open(mActivity, null, data.getBorrowCode());
 
-        } else if (TextUtils.equals("11", data.getUserProductStatus())) {//打款失败
+        } else if (TextUtils.equals(BusinessSings.PRODUCTSTATE_11, data.getUserProductStatus())) {//打款失败
             WaiteMoneyDetailsActivity.open(mActivity, null, data.getBorrowCode());
         }
     }
@@ -176,12 +177,7 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
             @Override
             protected void onSuccess(PorductListModel data, String SucMessage) {
                 setData(data.getList());
-                if (mAdapter.getData().size() > 0 && mAdapter.getFooterLayoutCount() == 0 && mActivity != null) {
-                    LayoutProductFooterviewBinding mFooterView = DataBindingUtil.inflate(mActivity.getLayoutInflater(), R.layout.layout_product_footerview, null, false);
-                    mAdapter.addFooterView(mFooterView.getRoot());
-                } else if (mAdapter.getData().size() == 0) {
-                    mAdapter.removeAllFooterView();
-                }
+                setFooterView();
             }
 
             @Override
@@ -210,6 +206,20 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
             }
         });
 
+    }
+
+    private void setFooterView() {
+
+        if (mAdapter == null || mAdapter.getData() == null) {
+            return;
+        }
+
+        if (mAdapter.getData().size() > 0 && mAdapter.getFooterLayoutCount() == 0 && mActivity != null) {
+            LayoutProductFooterviewBinding mFooterView = DataBindingUtil.inflate(mActivity.getLayoutInflater(), R.layout.layout_product_footerview, null, false);
+            mAdapter.addFooterView(mFooterView.getRoot());
+        } else if (mAdapter.getData().size() == 0) {
+            mAdapter.removeAllFooterView();
+        }
     }
 
     @Override

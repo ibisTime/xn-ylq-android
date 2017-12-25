@@ -115,7 +115,7 @@ public class AddressBookCertActivity extends AbsBaseActivity {
                 mSubscription.add(Observable.just("0")
                         .subscribeOn(Schedulers.io())
                         .observeOn(Schedulers.io())
-                        .map(s -> AppUtils.getAllContactInfo(AddressBookCertActivity.this))
+                        .map(s -> AppUtils.getAllPhoneContacts(AddressBookCertActivity.this))
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(hashMaps -> {
                             if (hashMaps != null && hashMaps.size() > 0) {
