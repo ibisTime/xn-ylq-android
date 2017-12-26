@@ -100,10 +100,12 @@ public abstract class BaseRefreshFragment<T> extends BaseLazyFragment {
 
         mBinding.refreshLayout.setEnableLoadmoreWhenContentNotFull(true);
 
+        mBinding.refreshLayout.setEnableAutoLoadmore(false);//禁用惯性
+
         mBinding.refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                onMRefresh(1,mLimit,false);
+                onMRefresh(1, mLimit, false);
             }
 
             @Override
@@ -124,7 +126,7 @@ public abstract class BaseRefreshFragment<T> extends BaseLazyFragment {
     protected abstract void getListData(int pageIndex, int limit, boolean canShowDialog);
 
     //刷新
-    protected void onMRefresh(int pageindex,int limit,boolean isShowDialog) {
+    protected void onMRefresh(int pageindex, int limit, boolean isShowDialog) {
         mPageIndex = pageindex;
         getListData(pageindex, limit, isShowDialog);
     }
@@ -138,7 +140,8 @@ public abstract class BaseRefreshFragment<T> extends BaseLazyFragment {
 
     public abstract String getEmptyInfo();
 
-    public abstract @DrawableRes int getEmptyImg();
+    public abstract @DrawableRes
+    int getEmptyImg();
 
 
     public void loadError(String str) {
@@ -200,9 +203,9 @@ public abstract class BaseRefreshFragment<T> extends BaseLazyFragment {
 
         if (mDataList.size() == 0 && canLoadEmptyView() && mEmptyBinding != null) {
             mEmptyBinding.tv.setText(getEmptyInfo());
-            if(getEmptyImg()<=0){
+            if (getEmptyImg() <= 0) {
                 mEmptyBinding.img.setVisibility(View.GONE);
-            }else{
+            } else {
                 mEmptyBinding.img.setImageResource(getEmptyImg());
                 mEmptyBinding.img.setVisibility(View.VISIBLE);
             }
@@ -262,10 +265,10 @@ public abstract class BaseRefreshFragment<T> extends BaseLazyFragment {
     }
 
     public void setTopTitleViewColor(int color) {
-            if (mTopTitleView != null) {
-                TextView tvTitle = (TextView) mTopTitleView.findViewById(R.id.tv_top_title_abs);
-                tvTitle.setTextColor(ContextCompat.getColor(mActivity,color));
-            }
+        if (mTopTitleView != null) {
+            TextView tvTitle = (TextView) mTopTitleView.findViewById(R.id.tv_top_title_abs);
+            tvTitle.setTextColor(ContextCompat.getColor(mActivity, color));
+        }
     }
 
 

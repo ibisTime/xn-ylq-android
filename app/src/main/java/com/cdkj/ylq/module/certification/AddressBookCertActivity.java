@@ -184,8 +184,9 @@ public class AddressBookCertActivity extends AbsBaseActivity {
     //权限处理
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        mHelper.handleRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (mHelper != null) {
+            mHelper.handleRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
-
 
 }

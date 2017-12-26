@@ -7,7 +7,6 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -21,26 +20,23 @@ import android.widget.LinearLayout;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.databinding.ActivityWebviewBinding;
-import com.cdkj.baselibrary.dialog.CommonDialog;
-import com.cdkj.baselibrary.dialog.UITipDialog;
+import com.cdkj.baselibrary.model.IsSuccessModes;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.LogUtil;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.ylq.model.CerttificationInfoModel;
-import com.cdkj.ylq.model.IsBorrowFlagModel;
-import com.cdkj.ylq.module.api.MyApiServer;
-import com.cdkj.ylq.module.certification.review.HumanReviewActivity;
 import com.cdkj.ylq.mpresenter.GetUserCertificationInfoListener;
 import com.cdkj.ylq.mpresenter.GetUserCertificationPresenter;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import retrofit2.Call;
+
+import static com.cdkj.baselibrary.appmanager.EventTags.ISTDOPERATORCERTBACK;
 
 /**
  * 同盾运营商认证
@@ -57,14 +53,9 @@ public class TdOperatorCertActivity extends AbsBaseActivity implements GetUserCe
     //TODO  同盾boxToken 替换
     private static final String boxToken = "5613A6F334DC4E12944AF748EE11FDEA";
 
-    private static final String nextUrl = "https://me/do/next";//用户验证完成后的要打开的url
+    private static final String nextUrl = "https://do/next";//用户验证完成后的要打开的url
 
     private GetUserCertificationPresenter mCertInfoPresenter;//获取认证结果接口
-
-    private boolean isFirst = true;//是否第一次请求
-
-    private UITipDialog tipDialog;
-
 
     public static void open(Context context) {
         if (context == null) {
@@ -119,7 +110,9 @@ public class TdOperatorCertActivity extends AbsBaseActivity implements GetUserCe
 
         LogUtil.E("同盾" + stringBuffer.toString());
 
-        webView.loadUrl(stringBuffer.toString());
+        webView.post(() -> {
+            webView.loadUrl(stringBuffer.toString());
+        });
 
     }
 
@@ -173,6 +166,8 @@ public class TdOperatorCertActivity extends AbsBaseActivity implements GetUserCe
     private void callBackgroundRequest() {
 
         if (!SPUtilHelpr.isLoginNoStart()) { //如果用户没有登录
+            showToast("运营商认证失败,请重试");
+            finish();
             return;
         }
 
@@ -181,34 +176,24 @@ public class TdOperatorCertActivity extends AbsBaseActivity implements GetUserCe
 
         showLoadingDialog();
 
-        Call call = RetrofitUtils.getBaseAPiService().stringRequest("623056", StringUtils.getJsonToString(map));
+        Call call = RetrofitUtils.getBaseAPiService().successRequest("623056", StringUtils.getJsonToString(map));
 
-        call.enqueue(new BaseResponseModelCallBack(this) {
+        call.enqueue(new BaseResponseModelCallBack<IsSuccessModes>(this) {
             @Override
-            protected void onSuccess(Object data, String SucMessage) {
-
+            protected void onSuccess(IsSuccessModes data, String SucMessage) {
+                EventBus.getDefault().post(ISTDOPERATORCERTBACK);  //已经通知上一页已经进行过通讯录认证
+                showToast("运营商数据正在认证，请稍后");
+                finish();
             }
 
             @Override
             protected void onFinish() {
                 disMissLoading();
-                startTime();
             }
         });
 
     }
 
-    public void startTime() {
-        showWaiteDialog();
-        mSubscription.add(Observable.timer(5, TimeUnit.SECONDS)    // 定时器 5秒查询一次
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
-                    mCertInfoPresenter.getCertInfo(false);
-                }, throwable -> {
-                    dismissWaiteDialog();
-                }));
-    }
 
     /**
      * 获取url里的TaskId
@@ -230,20 +215,7 @@ public class TdOperatorCertActivity extends AbsBaseActivity implements GetUserCe
 
     @Override
     public void getInfoSuccess(CerttificationInfoModel mCertData, String msg) {
-        if (isFirst) {
-            isFirst = false;
-            startLoadUrl(mCertData);
-        } else {
-            if (TextUtils.equals("1", mCertData.getInfoCarrierFlag())) { //已认证 //已过期
-                dismissWaiteDialog();
-                showSureDialog("运营商认证成功。", view -> getIsBorrowFlag());
-            } else if (TextUtils.equals("3", mCertData.getInfoCarrierFlag())) {//认证中
-                startTime();//重新开始定时请求
-            } else {
-                dismissWaiteDialog();
-                showSureDialog("运营商认证失败,请重试。", view -> finish());
-            }
-        }
+        startLoadUrl(mCertData);
 
     }
 
@@ -254,43 +226,17 @@ public class TdOperatorCertActivity extends AbsBaseActivity implements GetUserCe
 
     @Override
     public void startGetInfo(boolean showDialog) {
-        showLoadingDialog();
+        if (showDialog) {
+            showLoadingDialog();
+        }
     }
 
     @Override
     public void endGetInfo(boolean showDialog) {
-        disMissLoading();
-    }
-
-
-    /**
-     * 获取认证标识
-     */
-    public void getIsBorrowFlag() {
-        if (!SPUtilHelpr.isLoginNoStart()) {
-            return;
+        if (showDialog) {
+            disMissLoading();
         }
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("userId", SPUtilHelpr.getUserId());
-        Call call = RetrofitUtils.createApi(MyApiServer.class).getIsBorrowFlag("623091", StringUtils.getJsonToString(map));
-        addCall(call);
-        showLoadingDialog();
-        call.enqueue(new BaseResponseModelCallBack<IsBorrowFlagModel>(this) {
-            @Override
-            protected void onSuccess(IsBorrowFlagModel data, String SucMessage) {
-                if (TextUtils.equals("1", data.getIsBorrowFlag())) {
-                    HumanReviewActivity.open(TdOperatorCertActivity.this);
-                }
-                finish();
-            }
-
-            @Override
-            protected void onFinish() {
-                disMissLoading();
-            }
-        });
     }
-
 
     private class MyWebViewClient1 extends WebChromeClient {
         @Override
@@ -331,10 +277,6 @@ public class TdOperatorCertActivity extends AbsBaseActivity implements GetUserCe
             mCertInfoPresenter.clear();
         }
 
-        if (tipDialog != null) {
-            tipDialog.dismiss();
-            tipDialog = null;
-        }
 
         super.onDestroy();
     }
@@ -347,23 +289,5 @@ public class TdOperatorCertActivity extends AbsBaseActivity implements GetUserCe
         }
     }
 
-
-    public void showWaiteDialog() {
-        if (tipDialog == null) {
-            tipDialog = new UITipDialog.Builder(this)
-                    .setIconType(UITipDialog.Builder.ICON_TYPE_LOADING)
-                    .setTipWord("认证中...")
-                    .create();
-        }
-        if (!tipDialog.isShowing()) {
-            tipDialog.show();
-        }
-    }
-
-    public void dismissWaiteDialog() {
-        if (tipDialog != null && tipDialog.isShowing()) {
-            tipDialog.dismiss();
-        }
-    }
 
 }

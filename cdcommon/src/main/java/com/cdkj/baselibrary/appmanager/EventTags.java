@@ -33,4 +33,7 @@ public class EventTags {
     public final static String USEMONEYRECORDFRAGMENTREFRESH = "11";
 
 
+    public final static String ISTDOPERATORCERTBACK="12";//是否同盾运营商认证返回
+
+
 }

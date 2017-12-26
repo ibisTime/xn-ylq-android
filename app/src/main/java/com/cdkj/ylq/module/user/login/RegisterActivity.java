@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -109,6 +110,14 @@ public class RegisterActivity extends AbsBaseActivity implements SendCodeInterfa
         mapLocation.startLocation();//开始定位
     }
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (mapLocation != null) {
+            mapLocation.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
     private void initListener() {
         mBinding.btnSendCode.setOnClickListener(v -> { //发送验证码
             checkPhoneNumAndSendCode();
@@ -118,7 +127,7 @@ public class RegisterActivity extends AbsBaseActivity implements SendCodeInterfa
         });
 
         mBinding.tvRead2.setOnClickListener(v -> {
-            WebViewActivity.openkey(this, "信息规则", "infoCollectRule");
+            WebViewActivity.openkey(this, "信息收集使用规则", "infoCollectRule");
         });
 
         //注册
@@ -140,9 +149,7 @@ public class RegisterActivity extends AbsBaseActivity implements SendCodeInterfa
                 showToast("请阅读并同意注册协议");
                 return;
             }
-
             registeRequest();
-
 
         });
 
@@ -243,15 +250,11 @@ public class RegisterActivity extends AbsBaseActivity implements SendCodeInterfa
             hashMap.put("province", mLocationModel.getProvince());
             hashMap.put("city", mLocationModel.getCity());
             hashMap.put("area", mLocationModel.getDistrict());
-            StringBuffer sbaddress = new StringBuffer();
-            if (!TextUtils.isEmpty(mLocationModel.getStreet())) {
-                sbaddress.append(mLocationModel.getStreet());
-            }
-            if (!TextUtils.isEmpty(mLocationModel.getStreetNum())) {
-                sbaddress.append(mLocationModel.getStreet());
-            }
-            if (!TextUtils.isEmpty(sbaddress.toString())) {
-                hashMap.put("address", sbaddress.toString());
+
+            String sbaddress = getLocationAddress();
+
+            if (!TextUtils.isEmpty(sbaddress)) {
+                hashMap.put("address", sbaddress);
             }
         }
         hashMap.put("smsCaptcha", mBinding.editPhoneCode.getText().toString());
@@ -291,6 +294,23 @@ public class RegisterActivity extends AbsBaseActivity implements SendCodeInterfa
 
     }
 
+    /**
+     * 获取定位数据
+     *
+     * @return
+     */
+    @NonNull
+    private String getLocationAddress() {
+        StringBuffer sbaddress = new StringBuffer();
+        if (!TextUtils.isEmpty(mLocationModel.getStreet())) {
+            sbaddress.append(mLocationModel.getStreet());
+        }
+        if (!TextUtils.isEmpty(mLocationModel.getStreetNum())) {
+            sbaddress.append(mLocationModel.getStreetNum());
+        }
+        return sbaddress.toString();
+    }
+
     //获取验证码相关
     @Override
     public void CodeSuccess(String msg) {
@@ -324,5 +344,6 @@ public class RegisterActivity extends AbsBaseActivity implements SendCodeInterfa
         if (mapLocation != null) {
             mapLocation.destroyLocation();
         }
+
     }
 }

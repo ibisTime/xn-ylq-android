@@ -109,7 +109,7 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
             CommonDialog commonDialog = new CommonDialog(mActivity).builder()
                     .setTitle("提示").setContentMsg("尊敬的用户,该款产品您还不能申请。")
                     .setPositiveBtn("确定", null);
-            commonDialog.getContentView().setGravity(Gravity.CENTER_HORIZONTAL);
+
             commonDialog.show();
             return;
         }

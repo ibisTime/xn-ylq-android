@@ -322,6 +322,7 @@ public class AppUtils {
 
                     map.put("name", name);
                     map.put("mobile", phoneNum);
+
                     listContacts.add(map);
                 }
             }

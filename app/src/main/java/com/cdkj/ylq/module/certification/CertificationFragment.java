@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.BaseLazyFragment;
+import com.cdkj.baselibrary.dialog.CommonDialog;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
@@ -26,10 +28,17 @@ import com.cdkj.ylq.module.certification.review.HumanReviewActivity;
 import com.cdkj.ylq.mpresenter.GetUserCertificationInfoListener;
 import com.cdkj.ylq.mpresenter.GetUserCertificationPresenter;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import retrofit2.Call;
+
+import static com.cdkj.baselibrary.appmanager.EventTags.ISTDOPERATORCERTBACK;
 
 /**
  * 认证
@@ -43,6 +52,8 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
     private CerttificationInfoModel mCertData;//认证结果数据
 
     private GetUserCertificationPresenter mCertInfoPresenter;//获取认证结果接口
+
+    private boolean isTdCertBack = false;//是否进行了同盾运营商认证而返回
 
 
     /**
@@ -206,23 +217,30 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
             mBinding.imgZmStateBig.setImageResource(R.drawable.zm_cert_un);
         }
 
-        if (TextUtils.equals("1", mCertData.getInfoCarrierFlag())) { //魔蝎认证
+        if (TextUtils.equals("1", mCertData.getInfoCarrierFlag())) { //运营商认证
 
             mBinding.tvMoxieState.setText("已认证");
             mBinding.tvMoxieState.setTextColor(ContextCompat.getColor(mActivity, R.color.cert_state_ok));
             mBinding.imgMoxieState.setImageResource(R.drawable.cert_ok);
             mBinding.imgMoxieStateBig.setImageResource(R.drawable.yuying);
 
+            showTdCertDialog();
+
         } else if (TextUtils.equals("2", mCertData.getInfoCarrierFlag())) {
+
             mBinding.tvMoxieState.setText("已过期");
             mBinding.tvMoxieState.setTextColor(ContextCompat.getColor(mActivity, R.color.guoqi));
             mBinding.imgMoxieState.setImageResource(R.drawable.guoqi);
             mBinding.imgMoxieStateBig.setImageResource(R.drawable.yunying_un);
+
         } else if (TextUtils.equals("3", mCertData.getInfoCarrierFlag())) {
+
             mBinding.tvMoxieState.setText("认证中");
             mBinding.tvMoxieState.setTextColor(ContextCompat.getColor(mActivity, R.color.cert_state_edit));
             mBinding.imgMoxieState.setImageResource(R.drawable.can_submit);
             mBinding.imgMoxieStateBig.setImageResource(R.drawable.yunying_un);
+
+            startTdTime();//开始定时器
 
         } else {
             mBinding.tvMoxieState.setText("前往提交");
@@ -231,29 +249,26 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
             mBinding.imgMoxieStateBig.setImageResource(R.drawable.yunying_un);
         }
 
-
-//        if (TextUtils.equals("1", mCertData.getInfoAddressBookFlag())) { //通讯录认证
-//            mBinding.tvAddbookState.setText("已认证");
-//            mBinding.tvAddbookState.setTextColor(ContextCompat.getColor(mActivity, R.color.cert_state_ok));
-//            mBinding.imgAddbookState.setImageResource(R.drawable.cert_ok);
-//            mBinding.imgAddBookStateBig.setImageResource(R.drawable.phone_cert);
-//
-//        } else if (TextUtils.equals("2", mCertData.getInfoAddressBookFlag())) {
-//            mBinding.tvAddbookState.setText("已过期");
-//            mBinding.tvAddbookState.setTextColor(ContextCompat.getColor(mActivity, R.color.guoqi));
-//            mBinding.imgAddbookState.setImageResource(R.drawable.guoqi);
-//            mBinding.imgAddBookStateBig.setImageResource(R.drawable.phone_cert_un);
-//        } else {
-//            mBinding.tvAddbookState.setText("前往提交");
-//            mBinding.tvAddbookState.setTextColor(ContextCompat.getColor(mActivity, R.color.cert_state_edit));
-//            mBinding.imgAddbookState.setImageResource(R.drawable.can_submit);
-//            mBinding.imgAddBookStateBig.setImageResource(R.drawable.phone_cert_un);
-//        }
-
     }
 
-
-
+    /**
+     * 显示同盾认证状态
+     */
+    private void showTdCertDialog() {
+        if (isTdCertBack) {
+            isTdCertBack = false;
+            if (mActivity == null || mActivity.isFinishing()) {
+                return;
+            }
+            CommonDialog commonDialog = new CommonDialog(mActivity).builder()
+                    .setTitle("提示").setContentMsg("运营商认证成功")
+                    .setPositiveBtn("确定", view -> {
+                        getIsBorrowFlag();
+                    });
+            commonDialog.getContentView().setGravity(Gravity.CENTER);
+            commonDialog.show();
+        }
+    }
 
 
     @Override
@@ -304,7 +319,7 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
     public void onResume() {
         super.onResume();
         if (getUserVisibleHint() && mCertInfoPresenter != null && mBinding != null) {
-            mCertInfoPresenter.getCertInfo(false);
+            mCertInfoPresenter.getCertInfo(true);
         }
 
     }
@@ -317,4 +332,58 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
             mCertInfoPresenter.clear();
         }
     }
+
+    /**
+     * 同盾轮询
+     */
+    public void startTdTime() {
+
+        mSubscription.add(Observable.timer(5, TimeUnit.SECONDS)    // 定时器 5秒查询一次
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> {
+                    isTdCertBack = true;                             //认证成功后显示弹框
+                    mCertInfoPresenter.getCertInfo(false);
+                }, throwable -> {
+
+                }));
+    }
+
+    @Subscribe
+    public void eventag(String tag) {
+
+        if (TextUtils.equals(tag, ISTDOPERATORCERTBACK)) {
+            isTdCertBack = true;
+        }
+    }
+
+
+    /**
+     * 获取认证标识
+     */
+    public void getIsBorrowFlag() {
+        if (!SPUtilHelpr.isLoginNoStart()) {
+            return;
+        }
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("userId", SPUtilHelpr.getUserId());
+        Call call = RetrofitUtils.createApi(MyApiServer.class).getIsBorrowFlag("623091", StringUtils.getJsonToString(map));
+        addCall(call);
+        showLoadingDialog();
+        call.enqueue(new BaseResponseModelCallBack<IsBorrowFlagModel>(mActivity) {
+            @Override
+            protected void onSuccess(IsBorrowFlagModel data, String SucMessage) {
+                if (TextUtils.equals("1", data.getIsBorrowFlag())) {
+                    HumanReviewActivity.open(mActivity);
+                }
+            }
+
+            @Override
+            protected void onFinish() {
+                disMissLoading();
+            }
+        });
+    }
+
+
 }
