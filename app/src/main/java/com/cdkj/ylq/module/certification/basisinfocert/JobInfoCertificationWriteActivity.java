@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.bigkoo.pickerview.OptionsPickerView;
+import com.cdkj.baselibrary.api.BaseResponseListModel;
 import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
@@ -29,6 +30,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 
 /**
@@ -55,7 +59,7 @@ public class JobInfoCertificationWriteActivity extends AbsBaseActivity {
      *
      * @param context
      */
-    public static void open(Context context, CerttificationInfoModel.InfoOccupationBean data,boolean isCheckCert) {
+    public static void open(Context context, CerttificationInfoModel.InfoOccupationBean data, boolean isCheckCert) {
         if (context == null) {
             return;
         }
@@ -83,13 +87,60 @@ public class JobInfoCertificationWriteActivity extends AbsBaseActivity {
             mJobdata = getIntent().getParcelableExtra("data");
         }
 
-        getInMoneyData();
-        getJobData();
-        setShowData(mJobdata);
         initPrikerView();
         initCityPicker();
         initListener();
+
+        setShowData(mJobdata);
+        getAllData();
+
     }
+
+
+    /**
+     * 获取所有数据字典
+     */
+    private void getAllData() {
+        showLoadingDialog();
+        mSubscription.add(Observable.just("")
+                .observeOn(Schedulers.io())
+                .map(s -> {
+                    mInMoneys = getKeyDataValue("income");
+                    mJobs = getKeyDataValue("occupation");
+                    return "";
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .doFinally(() -> disMissLoading())
+                .subscribe(s -> {
+                    checkInmoneys();
+                    checkJobs();
+                }, Throwable::printStackTrace));
+    }
+
+
+    /**
+     * 获取数据字典数据
+     */
+    public List<KeyDataModel> getKeyDataValue(String key) {
+        Map<String, String> map = new HashMap<>();
+        map.put("companyCode", MyConfig.COMPANYCODE);
+        map.put("systemCode", MyConfig.SYSTEMCODE);
+        map.put("parentKey", key);
+        Call call = RetrofitUtils.createApi(MyApiServer.class).getKeyData("623907", StringUtils.getJsonToString(map));
+        addCall(call);
+
+        try {
+            BaseResponseListModel<KeyDataModel> de = (BaseResponseListModel<KeyDataModel>) call.execute().body();
+
+            return de.getData();
+
+        } catch (Exception e) {
+
+        }
+
+        return new ArrayList<>();
+    }
+
 
     /**
      *
@@ -176,11 +227,11 @@ public class JobInfoCertificationWriteActivity extends AbsBaseActivity {
     private void setShowData(CerttificationInfoModel.InfoOccupationBean mJobdata) {
         if (mJobdata == null) return;
 
-        if(getIntent()!=null){
-            if(getIntent().getBooleanExtra("isCheckCert",false)){
+        if (getIntent() != null) {
+            if (getIntent().getBooleanExtra("isCheckCert", false)) {
                 mBinding.btnSubmit.setBackgroundResource(R.drawable.btn_no_click_gray);
                 mBinding.btnSubmit.setEnabled(false);
-            }else{
+            } else {
                 mBinding.btnSubmit.setBackgroundResource(R.drawable.selector_login_btn);
                 mBinding.btnSubmit.setEnabled(true);
             }
@@ -255,31 +306,6 @@ public class JobInfoCertificationWriteActivity extends AbsBaseActivity {
         }).setContentTextSize(16).setLineSpacingMultiplier(4).build();
     }
 
-    /**
-     * 获取工作数据
-     */
-    public void getJobData() {
-        Map<String, String> map = new HashMap<>();
-        map.put("companyCode", MyConfig.COMPANYCODE);
-        map.put("systemCode", MyConfig.SYSTEMCODE);
-        map.put("parentKey", "occupation");
-        Call call = RetrofitUtils.createApi(MyApiServer.class).getKeyData("623907", StringUtils.getJsonToString(map));
-        addCall(call);
-        call.enqueue(new BaseResponseListCallBack<KeyDataModel>(this) {
-
-            @Override
-            protected void onSuccess(List<KeyDataModel> data, String SucMessage) {
-                mJobs = data;
-                checkJobs();
-            }
-
-            @Override
-            protected void onFinish() {
-
-            }
-        });
-    }
-
     public void checkJobs() {
         if (mJobs == null) return;
         for (KeyDataModel kmodel : mJobs) {
@@ -291,31 +317,6 @@ public class JobInfoCertificationWriteActivity extends AbsBaseActivity {
             }
 
         }
-    }
-
-    /**
-     * 获取工作数据
-     */
-    public void getInMoneyData() {
-        Map<String, String> map = new HashMap<>();
-        map.put("companyCode", MyConfig.COMPANYCODE);
-        map.put("systemCode", MyConfig.SYSTEMCODE);
-        map.put("parentKey", "income");
-        Call call = RetrofitUtils.createApi(MyApiServer.class).getKeyData("623907", StringUtils.getJsonToString(map));
-        addCall(call);
-        call.enqueue(new BaseResponseListCallBack<KeyDataModel>(this) {
-
-            @Override
-            protected void onSuccess(List<KeyDataModel> data, String SucMessage) {
-                mInMoneys = data;
-                checkInmoneys();
-            }
-
-            @Override
-            protected void onFinish() {
-
-            }
-        });
     }
 
     public void checkInmoneys() {

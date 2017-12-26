@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.bigkoo.pickerview.OptionsPickerView;
+import com.cdkj.baselibrary.api.BaseResponseListModel;
 import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
@@ -27,6 +28,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 
 /**
@@ -54,7 +58,7 @@ public class EmergencyInfoWriteActivity extends AbsBaseActivity {
      *
      * @param context
      */
-    public static void open(Context context, CerttificationInfoModel.InfoContactBean data,boolean isCheckCert) {
+    public static void open(Context context, CerttificationInfoModel.InfoContactBean data, boolean isCheckCert) {
         if (context == null) {
             return;
         }
@@ -84,13 +88,58 @@ public class EmergencyInfoWriteActivity extends AbsBaseActivity {
             mData = getIntent().getParcelableExtra("data");
         }
 
-        getFamilyData();
-        getSocietysData();
-        setShowData(mData);
         initPrikerView();
         initListener();
 
+        setShowData(mData);
+        getAllData();
     }
+
+
+    /**
+     * 获取所有数据字典
+     */
+    private void getAllData() {
+        showLoadingDialog();
+        mSubscription.add(Observable.just("")
+                .observeOn(Schedulers.io())
+                .map(s -> {
+                    mFamilys = getKeyDataValue("family_relation");
+                    mSocietys = getKeyDataValue("society_relation");
+                    return "";
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .doFinally(() -> disMissLoading())
+                .subscribe(s -> {
+                    checkFamilys();
+                    checkSocietys();
+                }, Throwable::printStackTrace));
+    }
+
+
+    /**
+     * 获取数据字典数据
+     */
+    public List<KeyDataModel> getKeyDataValue(String key) {
+        Map<String, String> map = new HashMap<>();
+        map.put("companyCode", MyConfig.COMPANYCODE);
+        map.put("systemCode", MyConfig.SYSTEMCODE);
+        map.put("parentKey", key);
+        Call call = RetrofitUtils.createApi(MyApiServer.class).getKeyData("623907", StringUtils.getJsonToString(map));
+        addCall(call);
+
+        try {
+            BaseResponseListModel<KeyDataModel> de = (BaseResponseListModel<KeyDataModel>) call.execute().body();
+
+            return de.getData();
+
+        } catch (Exception e) {
+
+        }
+
+        return new ArrayList<>();
+    }
+
 
     private void initListener() {
         mBinding.layoutFamilyRelation.setOnClickListener(v -> { //
@@ -197,11 +246,11 @@ public class EmergencyInfoWriteActivity extends AbsBaseActivity {
     private void setShowData(CerttificationInfoModel.InfoContactBean data) {
         if (data == null) return;
 
-        if(getIntent()!=null){
-            if(getIntent().getBooleanExtra("isCheckCert",false)){
+        if (getIntent() != null) {
+            if (getIntent().getBooleanExtra("isCheckCert", false)) {
                 mBinding.btnSubmit.setBackgroundResource(R.drawable.btn_no_click_gray);
                 mBinding.btnSubmit.setEnabled(false);
-            }else{
+            } else {
                 mBinding.btnSubmit.setBackgroundResource(R.drawable.selector_login_btn);
                 mBinding.btnSubmit.setEnabled(true);
             }
@@ -217,31 +266,6 @@ public class EmergencyInfoWriteActivity extends AbsBaseActivity {
 
     }
 
-    /**
-     * 亲属关系数据
-     */
-    public void getFamilyData() {
-        Map<String, String> map = new HashMap<>();
-        map.put("companyCode", MyConfig.COMPANYCODE);
-        map.put("systemCode", MyConfig.SYSTEMCODE);
-        map.put("parentKey", "family_relation");
-        Call call = RetrofitUtils.createApi(MyApiServer.class).getKeyData("623907", StringUtils.getJsonToString(map));
-        addCall(call);
-        call.enqueue(new BaseResponseListCallBack<KeyDataModel>(this) {
-
-            @Override
-            protected void onSuccess(List<KeyDataModel> data, String SucMessage) {
-                mFamilys = data;
-                checkFamilys();
-            }
-
-            @Override
-            protected void onFinish() {
-
-            }
-        });
-    }
-
     public void checkFamilys() {
         if (mFamilys == null) return;
         for (KeyDataModel kmodel : mFamilys) {
@@ -255,30 +279,6 @@ public class EmergencyInfoWriteActivity extends AbsBaseActivity {
         }
     }
 
-    /**
-     * 亲属关系数据
-     */
-    public void getSocietysData() {
-        Map<String, String> map = new HashMap<>();
-        map.put("companyCode", MyConfig.COMPANYCODE);
-        map.put("systemCode", MyConfig.SYSTEMCODE);
-        map.put("parentKey", "society_relation");
-        Call call = RetrofitUtils.createApi(MyApiServer.class).getKeyData("623907", StringUtils.getJsonToString(map));
-        addCall(call);
-        call.enqueue(new BaseResponseListCallBack<KeyDataModel>(this) {
-
-            @Override
-            protected void onSuccess(List<KeyDataModel> data, String SucMessage) {
-                mSocietys = data;
-                checkSocietys();
-            }
-
-            @Override
-            protected void onFinish() {
-
-            }
-        });
-    }
 
     public void checkSocietys() {
         if (mSocietys == null) return;

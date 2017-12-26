@@ -98,14 +98,14 @@ public class BasisInfoCertificationWriteActivity extends AbsBaseActivity {
             mInfoData = getIntent().getParcelableExtra("data");
         }
 
-        showData(mInfoData);
-
-
-        getAllData();
-
         initPrikerView();
         initCityPicker();
         initListener();
+
+        showData(mInfoData);
+
+        getAllData();
+
     }
 
     /**
