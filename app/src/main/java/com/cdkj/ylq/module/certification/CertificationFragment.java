@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.BaseLazyFragment;
 import com.cdkj.baselibrary.dialog.CommonDialog;
+import com.cdkj.baselibrary.dialog.UITipDialog;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
@@ -54,7 +55,9 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
     private GetUserCertificationPresenter mCertInfoPresenter;//获取认证结果接口
 
     private boolean isTdCertBack = false;//是否进行了同盾运营商认证而返回
+    private boolean isShowWaiteDialog = false;//是否显示过了等待弹框
 
+    private UITipDialog tipDialog;
 
     /**
      * 获得fragment实例
@@ -219,6 +222,7 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
 
         if (TextUtils.equals("1", mCertData.getInfoCarrierFlag())) { //运营商认证
 
+
             mBinding.tvMoxieState.setText("已认证");
             mBinding.tvMoxieState.setTextColor(ContextCompat.getColor(mActivity, R.color.cert_state_ok));
             mBinding.imgMoxieState.setImageResource(R.drawable.cert_ok);
@@ -273,12 +277,14 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
 
     @Override
     public void getInfoSuccess(CerttificationInfoModel userCertInfo, String msg) {
+        dismissWaiteDialog();
         mCertData = userCertInfo;
         setShowDataState();
     }
 
     @Override
     public void getInfoFailed(String code, String msg) {
+        dismissWaiteDialog();
         ToastUtil.show(mActivity, msg);
     }
 
@@ -306,13 +312,16 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
     protected void lazyLoad() {
         if (mBinding != null) {
             if (mCertInfoPresenter != null) {
-                mCertInfoPresenter.getCertInfo(false);
+                mCertInfoPresenter.getCertInfo(true);
             }
         }
     }
 
     @Override
     protected void onInvisible() {
+        if (mSubscription != null) {
+            mSubscription.dispose(); //清除定时器
+        }
     }
 
     @Override
@@ -325,11 +334,21 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        mSubscription.dispose(); //清除定时器
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         //用来清理数据或解除引用
         if (mCertInfoPresenter != null) {
             mCertInfoPresenter.clear();
+        }
+        if (tipDialog != null) {
+            tipDialog.dismiss();
+            tipDialog = null;
         }
     }
 
@@ -338,20 +357,30 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
      */
     public void startTdTime() {
 
-        mSubscription.add(Observable.timer(5, TimeUnit.SECONDS)    // 定时器 5秒查询一次
+        if (!isShowWaiteDialog && isTdCertBack) {
+            showWaiteDialog();        //开启等待5秒弹框  使用请求了才会消失
+            isShowWaiteDialog = true;//改变状态
+        }
+
+        mSubscription.add(Observable.timer(5, TimeUnit.SECONDS)    // 定时器 5秒查询一次 页面切换或隐藏的时候停止
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
-                    isTdCertBack = true;                             //认证成功后显示弹框
+                    isTdCertBack = true;                             //认证成功后显示确认弹框
                     mCertInfoPresenter.getCertInfo(false);
                 }, throwable -> {
-
+                    dismissWaiteDialog();
                 }));
     }
 
-    @Subscribe
-    public void eventag(String tag) {
 
+    /**
+     * 接受同盾运营商认证回调
+     *
+     * @param tag
+     */
+    @Subscribe
+    public void tdCallBack(String tag) {
         if (TextUtils.equals(tag, ISTDOPERATORCERTBACK)) {
             isTdCertBack = true;
         }
@@ -383,6 +412,31 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
                 disMissLoading();
             }
         });
+    }
+
+
+    /**
+     * 显示等待弹框
+     */
+    public void showWaiteDialog() {
+        if (tipDialog == null) {
+            tipDialog = new UITipDialog.Builder(mActivity)
+                    .setIconType(UITipDialog.Builder.ICON_TYPE_LOADING)
+                    .setTipWord("认证中...")
+                    .create();
+        }
+        if (!tipDialog.isShowing()) {
+            tipDialog.show();
+        }
+    }
+
+    /**
+     * 隐藏显示弹框
+     */
+    public void dismissWaiteDialog() {
+        if (tipDialog != null && tipDialog.isShowing()) {
+            tipDialog.dismiss();
+        }
     }
 
 

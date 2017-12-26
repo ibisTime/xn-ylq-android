@@ -30,37 +30,40 @@ public class GetUserCertificationPresenter {
 
     public void getCertInfo(boolean showDialog) {
 
-        if(!SPUtilHelpr.isLoginNoStart()){
+        if (!SPUtilHelpr.isLoginNoStart()) {
             return;
         }
         Map<String, String> map = new HashMap<>();
         map.put("userId", SPUtilHelpr.getUserId());
         call = RetrofitUtils.createApi(MyApiServer.class).getCerttificationInfo("623050", StringUtils.getJsonToString(map));
+        if (mListener == null) {
+            return;
+        }
         mListener.startGetInfo(showDialog);
         call.enqueue(new BaseResponseModelCallBack<CerttificationInfoModel>(mContext) {
             @Override
             protected void onSuccess(CerttificationInfoModel data, String SucMessage) {
-                mListener.getInfoSuccess(data,SucMessage);
+                mListener.getInfoSuccess(data, SucMessage);
             }
 
             @Override
             protected void onReqFailure(int errorCode, String errorMessage) {
-                mListener.getInfoFailed(errorCode+"",errorMessage);
+                mListener.getInfoFailed(errorCode + "", errorMessage);
             }
 
             @Override
             protected void onBuinessFailure(String code, String error) {
-                mListener.getInfoFailed(code,error);
+                mListener.getInfoFailed(code, error);
             }
 
             @Override
             protected void onNull() {
-                mListener.getInfoFailed("","网络请求失败");
+                mListener.getInfoFailed("", "网络请求失败");
             }
 
             @Override
             protected void onNoNet(String msg) {
-                mListener.getInfoFailed("",msg);
+                mListener.getInfoFailed("", msg);
             }
 
             @Override
@@ -73,11 +76,10 @@ public class GetUserCertificationPresenter {
 
     //处理持有对象
     public void clear() {
-        if(this.call!=null){
+        if (this.call != null) {
             this.call.cancel();
             this.call = null;
         }
-        this.mListener = null;
         this.mContext = null;
     }
 

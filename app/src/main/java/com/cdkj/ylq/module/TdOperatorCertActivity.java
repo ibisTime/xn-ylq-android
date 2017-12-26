@@ -140,7 +140,7 @@ public class TdOperatorCertActivity extends AbsBaseActivity implements GetUserCe
                 //url拦截 nextUrl?all_submit=1&task_id=TASKYYS00000xxxxxxxxxxxxxxxxxx
                 LogUtil.E("同盾" + url);
                 if (url.startsWith(nextUrl)) {             //获取taks_id  用于查询认证结果
-                    callBackgroundRequest();
+                    callBackgroundRequest(getTaskIdByUrl(url));
                     return true;
                 }
 
@@ -163,9 +163,9 @@ public class TdOperatorCertActivity extends AbsBaseActivity implements GetUserCe
     /**
      * 告诉后台用户已经进行过运营商认证
      */
-    private void callBackgroundRequest() {
+    private void callBackgroundRequest(String taskId) {
 
-        if (!SPUtilHelpr.isLoginNoStart()) { //如果用户没有登录
+        if (!SPUtilHelpr.isLoginNoStart() || TextUtils.isEmpty(taskId)) { //如果用户没有登录
             showToast("运营商认证失败,请重试");
             finish();
             return;
@@ -173,6 +173,7 @@ public class TdOperatorCertActivity extends AbsBaseActivity implements GetUserCe
 
         Map<String, String> map = new HashMap<>();
         map.put("userId", SPUtilHelpr.getUserId());
+        map.put("taskId", taskId);
 
         showLoadingDialog();
 
