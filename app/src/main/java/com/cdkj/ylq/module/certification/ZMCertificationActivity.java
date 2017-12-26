@@ -132,7 +132,7 @@ public class ZMCertificationActivity extends AbsBaseActivity {
         map.put("idNo", mBinding.editCardNumber.getText().toString());
         map.put("realName", mBinding.editName.getText().toString());
         map.put("userId", SPUtilHelpr.getUserId());
-        map.put("returnUrl", "ylq://certi.back");
+        map.put("returnUrl", "ylq://cert.back");//认证后返回标识 在intent-filter里配置
 
         Call call = RetrofitUtils.createApi(MyApiServer.class).ZmCertFirstStep("623045", StringUtils.getJsonToString(map));
 

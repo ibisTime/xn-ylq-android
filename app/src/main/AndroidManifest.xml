@@ -102,9 +102,9 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <!--cddata://certi.back-->
+                <!--ylq://cert.back  认证后返回标识-->
                 <data
-                    android:host="certi.back"
+                    android:host="cert.back"
                     android:scheme="ylq" />
             </intent-filter>
         </activity>
