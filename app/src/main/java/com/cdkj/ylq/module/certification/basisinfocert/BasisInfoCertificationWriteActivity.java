@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.bigkoo.pickerview.OptionsPickerView;
+import com.cdkj.baselibrary.api.BaseResponseListModel;
 import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
@@ -24,11 +25,15 @@ import com.cdkj.ylq.model.KeyDataModel;
 import com.cdkj.ylq.module.api.MyApiServer;
 import com.lljjcoder.citypickerview.widget.CityPicker;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 
 /**
@@ -61,7 +66,7 @@ public class BasisInfoCertificationWriteActivity extends AbsBaseActivity {
      *
      * @param context 认证数据 是否已经认证过
      */
-    public static void open(Context context, CerttificationInfoModel.InfoBasicBean data,boolean isCheckCert) {
+    public static void open(Context context, CerttificationInfoModel.InfoBasicBean data, boolean isCheckCert) {
         if (context == null) {
             return;
         }
@@ -94,12 +99,35 @@ public class BasisInfoCertificationWriteActivity extends AbsBaseActivity {
         }
 
         showData(mInfoData);
-        getEducationData();
-        getMarriagesData();
-        getLivesData();
+
+
+        getAllData();
+
         initPrikerView();
         initCityPicker();
         initListener();
+    }
+
+    /**
+     * 获取所有数据字典
+     */
+    private void getAllData() {
+        showLoadingDialog();
+        mSubscription.add(Observable.just("")
+                .observeOn(Schedulers.io())
+                .map(s -> {
+                    mEducations = getKeyDataValue("education");
+                    mMarriages = getKeyDataValue("marriage");
+                    mLiveDays = getKeyDataValue("live_time");
+                    return "";
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .doFinally(() -> disMissLoading())
+                .subscribe(s -> {
+                    checkEducation();
+                    checkLives();
+                    checkMarriage();
+                }, Throwable::printStackTrace));
     }
 
     private void initListener() {
@@ -259,7 +287,7 @@ public class BasisInfoCertificationWriteActivity extends AbsBaseActivity {
         mCityPicker.setOnCityItemClickListener(new CityPicker.OnCityItemClickListener() {
             @Override
             public void onSelected(String... citySelected) {
-                mBinding.tvCity.setText(citySelected[0] +" "+ citySelected[1] +" "+ citySelected[2]);
+                mBinding.tvCity.setText(citySelected[0] + " " + citySelected[1] + " " + citySelected[2]);
             }
 
             @Override
@@ -278,11 +306,11 @@ public class BasisInfoCertificationWriteActivity extends AbsBaseActivity {
 
         if (mInfoData == null) return;
 
-        if(getIntent()!=null){
-            if(getIntent().getBooleanExtra("isCheckCert",false)){
+        if (getIntent() != null) {
+            if (getIntent().getBooleanExtra("isCheckCert", false)) {
                 mBinding.btnSubmit.setBackgroundResource(R.drawable.btn_no_click_gray);
                 mBinding.btnSubmit.setEnabled(false);
-            }else{
+            } else {
                 mBinding.btnSubmit.setBackgroundResource(R.drawable.selector_login_btn);
                 mBinding.btnSubmit.setEnabled(true);
             }
@@ -300,30 +328,30 @@ public class BasisInfoCertificationWriteActivity extends AbsBaseActivity {
         mBinding.editEmail.setText(mInfoData.getEmail());
     }
 
+
     /**
-     * 获取学历数据
+     * 获取数据字典数据
      */
-    public void getEducationData() {
+    public List<KeyDataModel> getKeyDataValue(String key) {
         Map<String, String> map = new HashMap<>();
         map.put("companyCode", MyConfig.COMPANYCODE);
         map.put("systemCode", MyConfig.SYSTEMCODE);
-        map.put("parentKey", "education");
+        map.put("parentKey", key);
         Call call = RetrofitUtils.createApi(MyApiServer.class).getKeyData("623907", StringUtils.getJsonToString(map));
         addCall(call);
-        call.enqueue(new BaseResponseListCallBack<KeyDataModel>(this) {
 
-            @Override
-            protected void onSuccess(List<KeyDataModel> data, String SucMessage) {
-                mEducations = data;
-                checkEducation();
-            }
+        try {
+            BaseResponseListModel<KeyDataModel> de = (BaseResponseListModel<KeyDataModel>) call.execute().body();
 
-            @Override
-            protected void onFinish() {
+            return de.getData();
 
-            }
-        });
+        } catch (Exception e) {
+
+        }
+
+        return new ArrayList<>();
     }
+
 
     //获取
     public void checkEducation() {
@@ -339,30 +367,6 @@ public class BasisInfoCertificationWriteActivity extends AbsBaseActivity {
         }
     }
 
-    /**
-     * 获取婚姻数据
-     */
-    public void getMarriagesData() {
-        Map<String, String> map = new HashMap<>();
-        map.put("companyCode", MyConfig.COMPANYCODE);
-        map.put("systemCode", MyConfig.SYSTEMCODE);
-        map.put("parentKey", "marriage");
-        Call call = RetrofitUtils.createApi(MyApiServer.class).getKeyData("623907", StringUtils.getJsonToString(map));
-        addCall(call);
-        call.enqueue(new BaseResponseListCallBack<KeyDataModel>(this) {
-
-            @Override
-            protected void onSuccess(List<KeyDataModel> data, String SucMessage) {
-                mMarriages = data;
-                checkMarriage();
-            }
-
-            @Override
-            protected void onFinish() {
-
-            }
-        });
-    }
 
     public void checkMarriage() {
         if (mMarriages == null) return;
@@ -375,31 +379,6 @@ public class BasisInfoCertificationWriteActivity extends AbsBaseActivity {
             }
 
         }
-    }
-
-    /**
-     * 居住时长数据
-     */
-    public void getLivesData() {
-        Map<String, String> map = new HashMap<>();
-        map.put("companyCode", MyConfig.COMPANYCODE);
-        map.put("systemCode", MyConfig.SYSTEMCODE);
-        map.put("parentKey", "live_time");
-        Call call = RetrofitUtils.createApi(MyApiServer.class).getKeyData("623907", StringUtils.getJsonToString(map));
-        addCall(call);
-        call.enqueue(new BaseResponseListCallBack<KeyDataModel>(this) {
-
-            @Override
-            protected void onSuccess(List<KeyDataModel> data, String SucMessage) {
-                mLiveDays = data;
-                checkLives();
-            }
-
-            @Override
-            protected void onFinish() {
-
-            }
-        });
     }
 
     public void checkLives() {
