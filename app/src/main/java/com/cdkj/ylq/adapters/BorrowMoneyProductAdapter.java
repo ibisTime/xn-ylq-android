@@ -42,13 +42,13 @@ public class BorrowMoneyProductAdapter extends BaseQuickAdapter<PorductListModel
 
         if (TextUtils.equals("1", item.getIsLocked())) { //锁中状态
             cardView.setAlpha((float) 0.5);
-            helper.setVisible(R.id.img_state, true);
-            helper.setVisible(R.id.tv_state, false);
+            helper.setGone(R.id.img_state, true);
+            helper.setGone(R.id.tv_state, false);
             helper.setText(R.id.tv_level_satate, item.getSlogan());
         } else {
             cardView.setAlpha(1);
-            helper.setVisible(R.id.img_state, false);
-            helper.setVisible(R.id.tv_state, true);
+            helper.setGone(R.id.img_state, false);
+            helper.setGone(R.id.tv_state, true);
             helper.setText(R.id.tv_level_satate, "极速放款");
         }
 
@@ -57,9 +57,11 @@ public class BorrowMoneyProductAdapter extends BaseQuickAdapter<PorductListModel
 
         if (TextUtils.equals(PRODUCTSTATE_6, item.getUserProductStatus())) {//生效中
             if (item.getHkDays() > 0) {
-                helper.setText(R.id.tv_state, "还有" + item.getHkDays() + "天");
+                helper.setText(R.id.tv_state, "还有" + item.getHkDays() + "天还款");
             } else if (item.getHkDays() == 0) {
                 helper.setText(R.id.tv_state, "今日还款");
+            } else {
+                helper.setText(R.id.tv_state, BusinessSings.getProductState(mContext, item.getUserProductStatus()));
             }
 
         } else if (TextUtils.equals(PRODUCTSTATE_7, item.getUserProductStatus())) {//已逾期
@@ -72,14 +74,14 @@ public class BorrowMoneyProductAdapter extends BaseQuickAdapter<PorductListModel
 
 
         if (canUseCancle(item.getUserProductStatus()) && TextUtils.equals("0", item.getIsLocked())) {  //没有锁中
-            helper.setVisible(R.id.tv_cancle, true);
-            helper.setVisible(R.id.tv_level_satate, false);
+            helper.setGone(R.id.tv_cancle, true);
+            helper.setGone(R.id.tv_level_satate, false);
             helper.setOnClickListener(R.id.tv_cancle, v -> {
                 EventBus.getDefault().post(item);
             });
         } else {
-            helper.setVisible(R.id.tv_cancle, false);
-            helper.setVisible(R.id.tv_level_satate, true);
+            helper.setGone(R.id.tv_cancle, false);
+            helper.setGone(R.id.tv_level_satate, true);
             helper.setOnClickListener(R.id.tv_cancle, null);
         }
     }

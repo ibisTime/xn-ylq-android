@@ -55,9 +55,8 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
     private GetUserCertificationPresenter mCertInfoPresenter;//获取认证结果接口
 
     private boolean isTdCertBack = false;//是否进行了同盾运营商认证而返回
-    private boolean isShowWaiteDialog = false;//是否显示过了等待弹框
 
-    private UITipDialog tipDialog;
+//    private UITipDialog tipDialog;
 
     /**
      * 获得fragment实例
@@ -277,14 +276,12 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
 
     @Override
     public void getInfoSuccess(CerttificationInfoModel userCertInfo, String msg) {
-        dismissWaiteDialog();
         mCertData = userCertInfo;
         setShowDataState();
     }
 
     @Override
     public void getInfoFailed(String code, String msg) {
-        dismissWaiteDialog();
         ToastUtil.show(mActivity, msg);
     }
 
@@ -346,21 +343,16 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
         if (mCertInfoPresenter != null) {
             mCertInfoPresenter.clear();
         }
-        if (tipDialog != null) {
-            tipDialog.dismiss();
-            tipDialog = null;
-        }
+//        if (tipDialog != null) {
+//            tipDialog.dismiss();
+//            tipDialog = null;
+//        }
     }
 
     /**
      * 同盾轮询
      */
     public void startTdTime() {
-
-        if (!isShowWaiteDialog && isTdCertBack) {
-            showWaiteDialog();        //开启等待5秒弹框  使用请求了才会消失
-            isShowWaiteDialog = true;//改变状态
-        }
 
         mSubscription.add(Observable.timer(5, TimeUnit.SECONDS)    // 定时器 5秒查询一次 页面切换或隐藏的时候停止
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -369,7 +361,6 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
                     isTdCertBack = true;                             //认证成功后显示确认弹框
                     mCertInfoPresenter.getCertInfo(false);
                 }, throwable -> {
-                    dismissWaiteDialog();
                 }));
     }
 
@@ -415,29 +406,29 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
     }
 
 
-    /**
-     * 显示等待弹框
-     */
-    public void showWaiteDialog() {
-        if (tipDialog == null) {
-            tipDialog = new UITipDialog.Builder(mActivity)
-                    .setIconType(UITipDialog.Builder.ICON_TYPE_LOADING)
-                    .setTipWord("认证中...")
-                    .create();
-        }
-        if (!tipDialog.isShowing()) {
-            tipDialog.show();
-        }
-    }
-
-    /**
-     * 隐藏显示弹框
-     */
-    public void dismissWaiteDialog() {
-        if (tipDialog != null && tipDialog.isShowing()) {
-            tipDialog.dismiss();
-        }
-    }
+//    /**
+//     * 显示等待弹框
+//     */
+//    public void showWaiteDialog() {
+//        if (tipDialog == null) {
+//            tipDialog = new UITipDialog.Builder(mActivity)
+//                    .setIconType(UITipDialog.Builder.ICON_TYPE_LOADING)
+//                    .setTipWord("认证中...")
+//                    .create();
+//        }
+//        if (!tipDialog.isShowing()) {
+//            tipDialog.show();
+//        }
+//    }
+//
+//    /**
+//     * 隐藏显示弹框
+//     */
+//    public void dismissWaiteDialog() {
+//        if (tipDialog != null && tipDialog.isShowing()) {
+//            tipDialog.dismiss();
+//        }
+//    }
 
 
 }

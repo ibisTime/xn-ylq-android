@@ -75,6 +75,7 @@ public class TdOperatorCertActivity extends AbsBaseActivity implements GetUserCe
     @Override
     public void afterCreate(Bundle savedInstanceState) {
         setTopTitle("运营商认证");
+        setSubLeftImgState(true);
         initLayout();
         mCertInfoPresenter = new GetUserCertificationPresenter(this);
         mCertInfoPresenter.getCertInfo(true);
@@ -110,10 +111,11 @@ public class TdOperatorCertActivity extends AbsBaseActivity implements GetUserCe
 
         LogUtil.E("同盾" + stringBuffer.toString());
 
-        webView.post(() -> {
-            webView.loadUrl(stringBuffer.toString());
-        });
-
+        if(webView!=null){
+            webView.post(() -> {
+                webView.loadUrl(stringBuffer.toString());
+            });
+        }
     }
 
     private void initLayout() {
@@ -140,7 +142,10 @@ public class TdOperatorCertActivity extends AbsBaseActivity implements GetUserCe
                 //url拦截 nextUrl?all_submit=1&task_id=TASKYYS00000xxxxxxxxxxxxxxxxxx
                 LogUtil.E("同盾" + url);
                 if (url.startsWith(nextUrl)) {             //获取taks_id  用于查询认证结果
-                    callBackgroundRequest(getTaskIdByUrl(url));
+                    EventBus.getDefault().post(ISTDOPERATORCERTBACK);  //已经通知上一页已经进行过通讯录认证
+//                    showToast("运营商数据正在认证，请稍后");
+                    finish();
+//                    callBackgroundRequest(getTaskIdByUrl(url));
                     return true;
                 }
 
@@ -151,7 +156,7 @@ public class TdOperatorCertActivity extends AbsBaseActivity implements GetUserCe
 
         if (webView.getSettings() != null) {
             webView.getSettings().setJavaScriptEnabled(true);//js
-            webView.getSettings().setDefaultTextEncodingName("UTF-8");
+            webView.getSettings().setDefaultTextEncodingName("utf-8");
         }
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
