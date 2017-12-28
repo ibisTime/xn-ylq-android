@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.view.View;
 
 import com.cdkj.baselibrary.activitys.CommonTablayoutActivity;
 import com.cdkj.baselibrary.appmanager.EventTags;
@@ -29,7 +30,7 @@ import java.util.List;
 public class RenewalMoneyTabActivity extends CommonTablayoutActivity {
 
 
-    private  UseMoneyRecordModel.ListBean mData;
+    private UseMoneyRecordModel.ListBean mData;
 
 
     public static final String RENEMONEYCALLPAYTAG = "RenewalMoneyTabActivity";
@@ -56,6 +57,8 @@ public class RenewalMoneyTabActivity extends CommonTablayoutActivity {
         setTopTitle("续期");
 
         setSubLeftImgState(true);
+
+        mbinding.tablayout.setVisibility(View.GONE);
 
         super.afterCreate(savedInstanceState);
     }

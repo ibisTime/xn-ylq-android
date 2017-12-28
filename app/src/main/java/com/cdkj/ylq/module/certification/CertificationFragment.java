@@ -56,6 +56,8 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
 
     private boolean isTdCertBack = false;//是否进行了同盾运营商认证而返回
 
+    private boolean isFirstRequest;//是否第一次请求 第一次请求显示弹框
+
 //    private UITipDialog tipDialog;
 
     /**
@@ -301,6 +303,7 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_certification, null, false);
         initListener();
         mCertInfoPresenter = new GetUserCertificationPresenter(this);
+        isFirstRequest = true;
         return mBinding.getRoot();
     }
 
@@ -309,7 +312,8 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
     protected void lazyLoad() {
         if (mBinding != null) {
             if (mCertInfoPresenter != null) {
-                mCertInfoPresenter.getCertInfo(true);
+                mCertInfoPresenter.getCertInfo(isFirstRequest);
+                isFirstRequest = false;
             }
         }
     }
