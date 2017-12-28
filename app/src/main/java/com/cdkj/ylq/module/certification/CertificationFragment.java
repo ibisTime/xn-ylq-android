@@ -353,7 +353,7 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
      * 同盾轮询
      */
     public void startTdTime() {
-
+        mSubscription.clear();
         mSubscription.add(Observable.timer(5, TimeUnit.SECONDS)    // 定时器 5秒查询一次 页面切换或隐藏的时候停止
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
