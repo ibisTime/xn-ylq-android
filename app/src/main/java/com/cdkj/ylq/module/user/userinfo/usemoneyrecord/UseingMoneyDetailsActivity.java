@@ -138,7 +138,7 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
         //还款
         mBinding.btnPayMoney.setOnClickListener(v -> {
             if(mData==null) return;
-            AlsoMoneyTabActivity.open(this,mData.getCode(),MoneyUtils.showPrice(mData.getAmount()));
+            AlsoMoneyTabActivity.open(this,mData.getCode(),MoneyUtils.showPrice(mData.getTotalAmount()));
         });
         //续期
         mBinding.btnRenewal.setOnClickListener(v -> {

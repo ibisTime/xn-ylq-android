@@ -111,7 +111,7 @@ public class TdOperatorCertActivity extends AbsBaseActivity implements GetUserCe
 
         LogUtil.E("同盾" + stringBuffer.toString());
 
-        if(webView!=null){
+        if (webView != null) {
             webView.post(() -> {
                 webView.loadUrl(stringBuffer.toString());
             });
@@ -142,10 +142,7 @@ public class TdOperatorCertActivity extends AbsBaseActivity implements GetUserCe
                 //url拦截 nextUrl?all_submit=1&task_id=TASKYYS00000xxxxxxxxxxxxxxxxxx
                 LogUtil.E("同盾" + url);
                 if (url.startsWith(nextUrl)) {             //获取taks_id  用于查询认证结果
-                    EventBus.getDefault().post(ISTDOPERATORCERTBACK);  //已经通知上一页已经进行过通讯录认证
-//                    showToast("运营商数据正在认证，请稍后");
-                    finish();
-//                    callBackgroundRequest(getTaskIdByUrl(url));
+                    callBackgroundRequest(getTaskIdByUrl(url));
                     return true;
                 }
 

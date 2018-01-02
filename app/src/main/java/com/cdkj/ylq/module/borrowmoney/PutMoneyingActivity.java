@@ -93,7 +93,7 @@ public class PutMoneyingActivity extends AbsBaseActivity {
         call.enqueue(new BaseResponseModelCallBack<UseMoneyRecordModel>(this) {
             @Override
             protected void onSuccess(UseMoneyRecordModel data, String SucMessage) {
-                if (data.getList() != null && data.getList().size() > 0) {
+                if (data.getList() != null && data.getList().size() > 0 && data.getList().get(0) != null) {
                     mBinding.tvMoney.setText(MoneyUtils.getShowPriceSign(data.getList().get(0).getAmount()));
                 }
             }
