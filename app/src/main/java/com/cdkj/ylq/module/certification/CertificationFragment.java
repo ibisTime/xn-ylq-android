@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.BaseLazyFragment;
 import com.cdkj.baselibrary.dialog.CommonDialog;
-import com.cdkj.baselibrary.dialog.UITipDialog;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
@@ -54,7 +53,7 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
 
     private GetUserCertificationPresenter mCertInfoPresenter;//获取认证结果接口
 
-    private boolean isTdCertBack = false;//是否进行了同盾运营商认证而返回
+    private boolean isTdCertIng = false;//是否同盾运营商 代表认证中状态
 
     private boolean isFirstRequest;//是否第一次请求 第一次请求显示弹框
 
@@ -222,8 +221,6 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
         }
 
         if (TextUtils.equals("1", mCertData.getInfoCarrierFlag())) { //运营商认证
-
-
             mBinding.tvMoxieState.setText("已认证");
             mBinding.tvMoxieState.setTextColor(ContextCompat.getColor(mActivity, R.color.cert_state_ok));
             mBinding.imgMoxieState.setImageResource(R.drawable.cert_ok);
@@ -245,6 +242,8 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
             mBinding.imgMoxieState.setImageResource(R.drawable.can_submit);
             mBinding.imgMoxieStateBig.setImageResource(R.drawable.yunying_un);
 
+            isTdCertIng = true;
+
             startTdTime();//开始定时器
 
         } else {
@@ -260,8 +259,8 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
      * 显示同盾认证状态
      */
     private void showTdCertDialog() {
-        if (isTdCertBack) {
-            isTdCertBack = false;
+        if (isTdCertIng) {
+            isTdCertIng = false;
             if (mActivity == null || mActivity.isFinishing()) {
                 return;
             }
@@ -362,7 +361,7 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
-                    isTdCertBack = true;                             //认证成功后显示确认弹框
+                    isTdCertIng = true;                             //认证成功后显示确认弹框
                     mCertInfoPresenter.getCertInfo(false);
                 }, throwable -> {
                 }));
@@ -377,7 +376,7 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
     @Subscribe
     public void tdCallBack(String tag) {
         if (TextUtils.equals(tag, ISTDOPERATORCERTBACK)) {
-            isTdCertBack = true;
+            isTdCertIng = true;
         }
     }
 
@@ -391,13 +390,14 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
         }
         Map<String, String> map = new HashMap<String, String>();
         map.put("userId", SPUtilHelpr.getUserId());
-        Call call = RetrofitUtils.createApi(MyApiServer.class).getIsBorrowFlag("623091", StringUtils.getJsonToString(map));
+//        Call call = RetrofitUtils.createApi(MyApiServer.class).getIsBorrowFlag("623091", StringUtils.getJsonToString(map));
+        Call call = RetrofitUtils.createApi(MyApiServer.class).getIsBorrowFlag("623032", StringUtils.getJsonToString(map));
         addCall(call);
         showLoadingDialog();
         call.enqueue(new BaseResponseModelCallBack<IsBorrowFlagModel>(mActivity) {
             @Override
             protected void onSuccess(IsBorrowFlagModel data, String SucMessage) {
-                if (TextUtils.equals("1", data.getIsBorrowFlag())) {
+                if (TextUtils.equals("1", data.getToApproveFlag())) {
                     HumanReviewActivity.open(mActivity);
                 }
             }

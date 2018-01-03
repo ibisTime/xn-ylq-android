@@ -5,7 +5,17 @@ package com.cdkj.ylq.model;
  */
 
 public class IsBorrowFlagModel {
-    private String isBorrowFlag; // 0=没有 1=有
+    private String isBorrowFlag; //获取当前用户是否有借款 0=没有 1=有 接口623091 使用
+
+    private String toApproveFlag; // 获取用户当前正在进行的申请记录 0=没有 1=有 是否正在审核中 接口623032使用
+
+    public String getToApproveFlag() {
+        return toApproveFlag;
+    }
+
+    public void setToApproveFlag(String toApproveFlag) {
+        this.toApproveFlag = toApproveFlag;
+    }
 
     public String getIsBorrowFlag() {
         return isBorrowFlag;
