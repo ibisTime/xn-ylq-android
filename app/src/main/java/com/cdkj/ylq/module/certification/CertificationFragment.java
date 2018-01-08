@@ -320,7 +320,7 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
     @Override
     protected void onInvisible() {
         if (mSubscription != null) {
-            mSubscription.dispose(); //清除定时器
+            mSubscription.clear(); //清除定时器
         }
     }
 
@@ -336,7 +336,9 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
     @Override
     public void onPause() {
         super.onPause();
-        mSubscription.dispose(); //清除定时器
+        if (mSubscription != null) {
+            mSubscription.clear(); //清除定时器
+        }
     }
 
     @Override

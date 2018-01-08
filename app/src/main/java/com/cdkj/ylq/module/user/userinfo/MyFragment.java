@@ -61,7 +61,7 @@ public class MyFragment extends BaseLazyFragment {
         MyFragment fragment = new MyFragment();
         return fragment;
     }
-    @SuppressLint("RestrictedApi")
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
