@@ -279,5 +279,4 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
                 return "借款详情";
         }
     }
-
 }

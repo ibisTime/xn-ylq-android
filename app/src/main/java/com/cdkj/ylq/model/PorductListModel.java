@@ -166,12 +166,21 @@ public class PorductListModel implements Parcelable {
         private String uiLocation;
         private int uiOrder;
         private String uiColor;
+        private String color;
         private String updater;
         private String updateDatetime;
         private String remark;
         private String userProductStatus;
         private String isLocked;
         private String borrowCode;
+
+        public String getColor() {
+            return color;
+        }
+
+        public void setColor(String color) {
+            this.color = color;
+        }
 
         public String getBorrowCode() {
             return borrowCode;

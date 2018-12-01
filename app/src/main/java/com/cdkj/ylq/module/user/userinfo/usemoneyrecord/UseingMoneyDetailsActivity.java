@@ -17,11 +17,12 @@ import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivityUseingMoneyBinding;
 import com.cdkj.ylq.model.UseMoneyRecordModel;
 import com.cdkj.ylq.module.api.MyApiServer;
-import com.cdkj.ylq.module.borrowmoney.ContractShowActivity;
 import com.cdkj.ylq.module.pay.AlsoMoneyTabActivity;
 import com.cdkj.ylq.module.pay.RenewalMoneyTabActivity;
 import com.cdkj.ylq.module.renewal.RenewalListActivity;
+import com.cdkj.ylq.module.stages.StagesActivity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +35,7 @@ import static com.cdkj.baselibrary.utils.DateUtil.DATE_YMD;
  * Created by 李先俊 on 2017/8/9.
  */
 //TODO 借款记录详情 生效中已还款是否需要分开
-    //TODO 状态图标由生效中改为待还款 名字record_3
+//TODO 状态图标由生效中改为待还款 名字record_3
 public class UseingMoneyDetailsActivity extends AbsBaseActivity {
 
     private ActivityUseingMoneyBinding mBinding;
@@ -51,13 +52,13 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
      *
      * @param context
      */
-    public static void open(Context context, UseMoneyRecordModel.ListBean state, boolean isUseing, String code) {
+    public static void open(Context context, UseMoneyRecordModel.ListBean data, boolean isUseing, String code) {
         if (context == null) {
             return;
         }
 
         Intent i = new Intent(context, UseingMoneyDetailsActivity.class);
-        i.putExtra("data", state);
+        i.putExtra("data", data);
         i.putExtra("code", code);
         i.putExtra("state", isUseing);
         context.startActivity(i);
@@ -77,15 +78,14 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
 
         setSubLeftImgState(true);
 
-
         if (getIntent() != null) {
             mCode = getIntent().getStringExtra("code");
             mState = getIntent().getBooleanExtra("state", false);
 
-            if (TextUtils.isEmpty(mCode)) {                                     //如果code为空的话获取传递过来的数据
-                mData = getIntent().getParcelableExtra("data");
+            if (TextUtils.isEmpty(mCode)) { //如果code为空的话获取传递过来的数据
+                mData = (UseMoneyRecordModel.ListBean) getIntent().getSerializableExtra("data");
                 setShowData();
-            } else {                                                             //如果code不为空的话用code获取详情数据
+            } else { //如果code不为空的话用code获取详情数据
                 getDataRequest();
             }
         }
@@ -111,7 +111,6 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
             setTopTitle("已还款详情");
         }
 
-
         mBinding.tvMoney.setText(MoneyUtils.showPrice(mData.getAmount()));
         mBinding.tvMoney2.setText(MoneyUtils.showPrice(mData.getAmount()) + "元");
         mBinding.tvCode.setText(mData.getCode());
@@ -125,10 +124,28 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
         mBinding.tvLixi.setText(MoneyUtils.showPrice(mData.getLxAmount()) + "元");
         mBinding.tvJianmian.setText(MoneyUtils.showPrice(mData.getYhAmount()) + "元");
         mBinding.tvDaoqi.setText(MoneyUtils.showPrice(mData.getTotalAmount()) + "元");
-
         mBinding.tvService.setText(MoneyUtils.showPrice(mData.getFwAmount()) + "元");
+        mBinding.tvXuqiNum.setText(mData.getRenewalCount() + "");
 
-        mBinding.tvXuqiNum.setText(mData.getRenewalCount()+"");
+        if (TextUtils.equals("0", mData.getIsStage())) {
+            //不是分期
+            mBinding.llFenqi.setVisibility(View.GONE);
+        } else {
+            //分期
+            mBinding.llFenqi.setVisibility(View.VISIBLE);
+            UseMoneyRecordModel.ListBean.Info info = mData.getInfo();
+
+            mBinding.tvFenqi.setText(info.getStageCount() + "/" + mData.getStageCount());//设置当前是第几期
+            mBinding.tvStartTime.setText(DateUtil.formatStringData(info.getStartTime(), DateUtil.DATE_YMD));
+            mBinding.tvEndTime.setText(DateUtil.formatStringData(info.getEndTime(), DateUtil.DATE_YMD));
+            mBinding.tvTodayMoney.setText(MoneyUtils.showPrice(info.getAmount()));
+
+            mBinding.fraFenqi.setOnClickListener(v -> {
+                //跳转到分期列表
+                ArrayList<UseMoneyRecordModel.ListBean.StageListBean> stageList = mData.getStageList();
+                StagesActivity.open(this, stageList);
+            });
+        }
 
     }
 
@@ -137,27 +154,34 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
 
         //还款
         mBinding.btnPayMoney.setOnClickListener(v -> {
-            if(mData==null) return;
-            AlsoMoneyTabActivity.open(this,mData.getCode(),MoneyUtils.showPrice(mData.getTotalAmount()));
+            if (mData == null) return;
+
+            if (TextUtils.equals("1", mData.getIsStage())) {
+                //分期还款
+                AlsoMoneyTabActivity.open(this, mData.getInfo());
+
+            } else {
+                AlsoMoneyTabActivity.open(this, mData.getCode(), MoneyUtils.showPrice(mData.getTotalAmount()));
+            }
         });
         //续期
         mBinding.btnRenewal.setOnClickListener(v -> {
-            if(mData==null) return;
-            RenewalMoneyTabActivity.open(this,mData);
+            if (mData == null) return;
+            RenewalMoneyTabActivity.open(this, mData);
         });
 
         mBinding.fraXuqi.setOnClickListener(v -> {
-            if(mData==null) return;
-            RenewalListActivity.open(this,mData.getCode());
+            if (mData == null) return;
+            RenewalListActivity.open(this, mData.getCode());
         });
 
-        //借款编号
-        mBinding.layoutCode.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(mBinding.tvCode.getText().toString())) {
-                return;
-            }
-            ContractShowActivity.open(this, mBinding.tvCode.getText().toString());
-        });
+        //借款编号  不需要借款合同了去掉点击事件
+//        mBinding.layoutCode.setOnClickListener(v -> {
+//            if (TextUtils.isEmpty(mBinding.tvCode.getText().toString())) {
+//                return;
+//            }
+//            ContractShowActivity.open(this, mBinding.tvCode.getText().toString());
+//        });
 
     }
 
@@ -185,6 +209,5 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
                 disMissLoading();
             }
         });
-
     }
 }

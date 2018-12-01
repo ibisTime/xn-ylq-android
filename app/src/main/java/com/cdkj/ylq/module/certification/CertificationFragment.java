@@ -300,6 +300,8 @@ public class CertificationFragment extends BaseLazyFragment implements GetUserCe
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_certification, null, false);
+
+        mCertData = new CerttificationInfoModel();
         initListener();
         mCertInfoPresenter = new GetUserCertificationPresenter(this);
         isFirstRequest = true;

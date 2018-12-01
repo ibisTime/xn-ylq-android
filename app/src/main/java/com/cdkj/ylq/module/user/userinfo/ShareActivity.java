@@ -7,7 +7,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.cdkj.baselibrary.utils.ToastUtil;
+import com.cdkj.baselibrary.utils.LogUtil;
 import com.cdkj.baselibrary.utils.WxUtil;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivityShareBinding;
@@ -63,6 +63,7 @@ public class ShareActivity extends Activity {
                 WxUtil.shareToPYQ(ShareActivity.this, mShareUrl,
                         "邀请好友", "邀请好友送优惠券，多邀多得。", R.mipmap.logo);
             }catch (Exception e){
+                LogUtil.E(e.getMessage());
             }
         });
 
@@ -71,6 +72,7 @@ public class ShareActivity extends Activity {
                 WxUtil.shareToWX(ShareActivity.this, mShareUrl,
                         "邀请好友", "邀请好友送优惠券，多邀多得", R.mipmap.logo);
             }catch (Exception e){
+                LogUtil.E(e.getMessage());
             }
         });
 

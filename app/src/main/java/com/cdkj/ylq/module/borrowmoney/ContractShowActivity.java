@@ -12,7 +12,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.cdkj.baselibrary.R;
-import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.databinding.ActivityWebviewBinding;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
@@ -127,6 +126,7 @@ public class ContractShowActivity extends AbsBaseActivity {
         Map<String, String> map = new HashMap<String, String>();
         map.put("code", getIntent().getStringExtra("code"));
         Call call = RetrofitUtils.createApi(MyApiServer.class).contractInfoRequest("623093", StringUtils.getJsonToString(map));
+//        Call call = RetrofitUtils.createApi(MyApiServer.class).contractInfoRequest("623086", StringUtils.getJsonToString(map));
 
         addCall(call);
 
@@ -170,7 +170,4 @@ public class ContractShowActivity extends AbsBaseActivity {
             finish();
         }
     }
-
-
-
 }

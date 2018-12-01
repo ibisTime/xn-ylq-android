@@ -3,7 +3,9 @@ package com.cdkj.ylq.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -176,6 +178,50 @@ public class UseMoneyRecordModel implements Parcelable {
         private String signDatetime;
         private String status;
         private BigDecimal totalAmount;
+        private String isStage;
+        private int stageBatch;
+        private int stageCount;
+        private ArrayList<StageListBean> stageList;
+        private Info info;
+
+        public Info getInfo() {
+            return info;
+        }
+
+        public void setInfo(Info info) {
+            this.info = info;
+        }
+
+        public int getStageBatch() {
+            return stageBatch;
+        }
+
+        public void setStageBatch(int stageBatch) {
+            this.stageBatch = stageBatch;
+        }
+
+        public int getStageCount() {
+            return stageCount;
+        }
+
+        public void setStageCount(int stageCount) {
+            this.stageCount = stageCount;
+        }
+
+        public ArrayList<StageListBean> getStageList() {
+            return stageList;
+        }
+        public void setStageList(ArrayList<StageListBean> stageList) {
+            this.stageList = stageList;
+        }
+
+        public String getIsStage() {
+            return isStage;
+        }
+
+        public void setIsStage(String isStage) {
+            this.isStage = isStage;
+        }
 
         public BigDecimal getRenewalAmount() {
             return renewalAmount;
@@ -422,6 +468,177 @@ public class UseMoneyRecordModel implements Parcelable {
                 return new ListBean[size];
             }
         };
+
+        public static class Info implements Serializable{
+
+
+            /**
+             * stageCode : ST2018112716424606731081
+             * date : 2018-12-05
+             * lxAmount : 30000
+             * mainAmount : 250000
+             * amount : 280000
+             * stageCount : 1
+             * remark : 第1期第1天还款情况
+             */
+
+            private String stageCode;
+            private String date;
+            private BigDecimal lxAmount;
+            private BigDecimal mainAmount;
+            private BigDecimal amount;
+            private int stageCount;
+            private String remark;
+            private String startTime;
+            private String endTime;
+
+            public String getStartTime() {
+                return startTime;
+            }
+
+            public void setStartTime(String startTime) {
+                this.startTime = startTime;
+            }
+
+            public String getEndTime() {
+                return endTime;
+            }
+
+            public void setEndTime(String endTime) {
+                this.endTime = endTime;
+            }
+
+            public String getStageCode() {
+                return stageCode;
+            }
+
+            public void setStageCode(String stageCode) {
+                this.stageCode = stageCode;
+            }
+
+            public String getDate() {
+                return date;
+            }
+
+            public void setDate(String date) {
+                this.date = date;
+            }
+
+            public BigDecimal getLxAmount() {
+                return lxAmount;
+            }
+
+            public void setLxAmount(BigDecimal lxAmount) {
+                this.lxAmount = lxAmount;
+            }
+
+            public BigDecimal getMainAmount() {
+                return mainAmount;
+            }
+
+            public void setMainAmount(BigDecimal mainAmount) {
+                this.mainAmount = mainAmount;
+            }
+
+            public BigDecimal getAmount() {
+                return amount;
+            }
+
+            public void setAmount(BigDecimal amount) {
+                this.amount = amount;
+            }
+
+            public int getStageCount() {
+                return stageCount;
+            }
+
+            public void setStageCount(int stageCount) {
+                this.stageCount = stageCount;
+            }
+
+            public String getRemark() {
+                return remark;
+            }
+
+            public void setRemark(String remark) {
+                this.remark = remark;
+            }
+        }
+        public static class StageListBean implements Serializable{
+            /**
+             * stageCode : ST2018112716424606731081
+             * date : 2018-12-05
+             * lxAmount : 30000
+             * mainAmount : 250000
+             * amount : 280000
+             * status : 0
+             * remark : 第1期，第1天
+             */
+
+            private String stageCode;
+            private String date;
+            private BigDecimal lxAmount;
+            private BigDecimal mainAmount;
+            private BigDecimal amount;
+            private String status;
+            private String remark;
+
+            public String getStageCode() {
+                return stageCode;
+            }
+
+            public void setStageCode(String stageCode) {
+                this.stageCode = stageCode;
+            }
+
+            public String getDate() {
+                return date;
+            }
+
+            public void setDate(String date) {
+                this.date = date;
+            }
+
+            public BigDecimal getLxAmount() {
+                return lxAmount;
+            }
+
+            public void setLxAmount(BigDecimal lxAmount) {
+                this.lxAmount = lxAmount;
+            }
+
+            public BigDecimal getMainAmount() {
+                return mainAmount;
+            }
+
+            public void setMainAmount(BigDecimal mainAmount) {
+                this.mainAmount = mainAmount;
+            }
+
+            public BigDecimal getAmount() {
+                return amount;
+            }
+
+            public void setAmount(BigDecimal amount) {
+                this.amount = amount;
+            }
+
+            public String getStatus() {
+                return status;
+            }
+
+            public void setStatus(String status) {
+                this.status = status;
+            }
+
+            public String getRemark() {
+                return remark;
+            }
+
+            public void setRemark(String remark) {
+                this.remark = remark;
+            }
+        }
     }
 
     @Override

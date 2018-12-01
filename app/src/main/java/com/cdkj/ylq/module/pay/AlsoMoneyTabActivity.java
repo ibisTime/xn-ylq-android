@@ -12,8 +12,8 @@ import com.cdkj.baselibrary.appmanager.EventTags;
 import com.cdkj.baselibrary.model.pay.PaySucceedInfo;
 import com.cdkj.baselibrary.utils.payutils.PayUtil;
 import com.cdkj.ylq.appmanager.BusinessSings;
+import com.cdkj.ylq.model.UseMoneyRecordModel;
 import com.cdkj.ylq.module.pay.fragments.AlsoMoneyOffLineFragment;
-import com.cdkj.ylq.module.pay.fragments.AlsoMoneyOnLineFragment;
 import com.cdkj.ylq.module.user.userinfo.usemoneyrecord.UseMoneyRecordActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -34,6 +34,7 @@ public class AlsoMoneyTabActivity extends CommonTablayoutActivity {
     private String mMoney;
 
     public static final String ALSOMONEYCALLPAYTAG = "AlsoMoneyTabActivity";
+    private UseMoneyRecordModel.ListBean.Info info;
 
     /**
      * @param context
@@ -50,6 +51,18 @@ public class AlsoMoneyTabActivity extends CommonTablayoutActivity {
         context.startActivity(intent);
     }
 
+    /**
+     * @param context
+     */
+    public static void open(Context context, UseMoneyRecordModel.ListBean.Info info) {
+        if (context == null) {
+            return;
+        }
+        Intent intent = new Intent(context, AlsoMoneyTabActivity.class);
+        intent.putExtra("info", info);
+        context.startActivity(intent);
+    }
+
 
     @Override
     public void afterCreate(Bundle savedInstanceState) {
@@ -57,6 +70,7 @@ public class AlsoMoneyTabActivity extends CommonTablayoutActivity {
         if (getIntent() != null) {
             mCode = getIntent().getStringExtra("code");
             mMoney = getIntent().getStringExtra("money");
+            info = (UseMoneyRecordModel.ListBean.Info) getIntent().getSerializableExtra("info");
         }
 
         setTopTitle("还款");
@@ -71,8 +85,12 @@ public class AlsoMoneyTabActivity extends CommonTablayoutActivity {
     @Override
     public List<Fragment> getFragments() {
         List<Fragment> mFragments = new ArrayList<>();
-        mFragments.add(AlsoMoneyOnLineFragment.getInstanse(mCode, mMoney));//实时还款
-//        mFragments.add(AlsoMoneyOffLineFragment.getInstanse(mCode, mMoney));//线下还款 //线下还款和线下续期在130需求中去除
+//        mFragments.add(AlsoMoneyOnLineFragment.getInstanse(mCode, mMoney));//实时还款
+        if (info != null) {
+            mFragments.add(AlsoMoneyOffLineFragment.getInstanse(info));
+        } else {
+            mFragments.add(AlsoMoneyOffLineFragment.getInstanse(mCode, mMoney));//线下还款 //线下还款和线下续期在130需求中去除
+        }
         return mFragments;
     }
 
@@ -112,13 +130,16 @@ public class AlsoMoneyTabActivity extends CommonTablayoutActivity {
 
     /**
      * 线下支付
+     * AlsoMoneyOffLineFragment  界面发送的消息
      */
     @Subscribe
     public void PayState2(String mo) {
         if (TextUtils.equals(mo, EventTags.ALSOOFFLINE)) {
-            paySucceed();
+            showToast("申请还款成功");
+            EventBus.getDefault().post(EventTags.AllFINISH);
+            //不用跳转到  已还款界面
+//            UseMoneyRecordActivity.open(this, BusinessSings.USEMONEYRECORD_4);
+            finish();
         }
     }
-
-
 }

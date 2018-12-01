@@ -9,6 +9,7 @@ import com.cdkj.ylq.model.CanUseMoneyModel;
 import com.cdkj.ylq.model.CerttificationInfoModel;
 import com.cdkj.ylq.model.ContractMode;
 import com.cdkj.ylq.model.CoupoonsModel;
+import com.cdkj.ylq.model.CreditTypeBean;
 import com.cdkj.ylq.model.HuokeListModel;
 import com.cdkj.ylq.model.IsBorrowFlagModel;
 import com.cdkj.ylq.model.IsBorrowModel;
@@ -17,13 +18,14 @@ import com.cdkj.ylq.model.MsgListModel;
 import com.cdkj.ylq.model.PorductListModel;
 import com.cdkj.ylq.model.ProductSingModel;
 import com.cdkj.ylq.model.RenewalListModel;
+import com.cdkj.ylq.model.SelectZxBean;
+import com.cdkj.ylq.model.SuccessModel;
 import com.cdkj.ylq.model.UseMoneyRecordModel;
 import com.cdkj.ylq.model.UserInfoModel;
 import com.cdkj.ylq.model.ZMCertFirstStepModel;
 import com.cdkj.ylq.model.ZMCertSecStepModel;
 import com.cdkj.ylq.model.ZmScoreGetModel;
 
-import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -251,6 +253,33 @@ public interface MyApiServer {
     @POST("api")
     Call<BaseResponseModel<ContractMode>> contractInfoRequest(@Field("code") String code, @Field("json") String json);
 
+    /**
+     * 查询信用分审核状态
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api")
+    Call<BaseResponseModel<SelectZxBean>> selectZX(@Field("code") String code, @Field("json") String json);
+
+
+    /**
+     * 申请信用分
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api")
+    Call<BaseResponseModel<SuccessModel>> requestXYF(@Field("code") String code, @Field("json") String json);
+
+    /**
+     * 获取信用分状态
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api")
+    Call<BaseResponseModel<CreditTypeBean>> getCreditType(@Field("code") String code, @Field("json") String json);
 
 
 

@@ -20,15 +20,12 @@ import com.cdkj.baselibrary.model.IsSuccessModes;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.ImgUtils;
-import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.baselibrary.utils.QiNiuHelper;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.baselibrary.utils.ToastUtil;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.appmanager.BusinessSings;
 import com.cdkj.ylq.databinding.FragmentMyBinding;
-import com.cdkj.ylq.model.CanUseMoneyModel;
-import com.cdkj.ylq.model.CoupoonsModel;
 import com.cdkj.ylq.model.UserInfoModel;
 import com.cdkj.ylq.module.api.MyApiServer;
 import com.cdkj.ylq.module.user.userinfo.usemoneyrecord.UseMoneyRecordActivity;
@@ -62,6 +59,7 @@ public class MyFragment extends BaseLazyFragment {
         return fragment;
     }
 
+    @SuppressLint("RestrictedApi")
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -75,11 +73,16 @@ public class MyFragment extends BaseLazyFragment {
     }
 
     private void initListtener() {
+        mBinding.linMyInfo.setOnClickListener(v -> {
+            PersonalActivity.open(mActivity, mUserInfoMode);
+        });
         mBinding.linSetting.setOnClickListener(v -> {
             PersonalActivity.open(mActivity, mUserInfoMode);
         });
 
-        mBinding.fralayoutMaxMoney.setOnClickListener(v -> MyMaxMoneyActivity.open(mActivity));
+        mBinding.fralayoutMaxMoney.setOnClickListener(v -> {
+            HuokeListActivity.open(mActivity);
+        });
 
         mBinding.layoutRecord.setOnClickListener(v -> {
             UseMoneyRecordActivity.open(mActivity, BusinessSings.USEMONEYRECORD_0);
@@ -97,6 +100,7 @@ public class MyFragment extends BaseLazyFragment {
 
         mBinding.layoutKefu.setOnClickListener(v -> {
             WebViewActivity.openkey(mActivity, "联系客服", "customerService ");
+//            KeFuActivity.open(mActivity);
         });
 
         mBinding.imtUserLogo.setOnClickListener(v -> {
@@ -112,10 +116,10 @@ public class MyFragment extends BaseLazyFragment {
         SPUtilHelpr.saveUserPhoneNum(data.getMobile());
         SPUtilHelpr.saveUserName(data.getRealName());
 
-        ImgUtils.loadActLogo(mActivity, MyConfig.IMGURL + data.getPhoto(), mBinding.imtUserLogo);
+        ImgUtils.loadActLogo(mActivity, SPUtilHelpr.getQiNiuUrl() + data.getPhoto(), mBinding.imtUserLogo);
 
-        mBinding.tvUserName.setText(data.getMobile());
-
+//        mBinding.tvUserName.setText(data.getNickname());
+        mBinding.tvUserPhone.setText(data.getMobile());
 
     }
 
@@ -153,60 +157,60 @@ public class MyFragment extends BaseLazyFragment {
         });
     }
 
-    //获取额度
-    public void getCanUseMoneyData() {
-        Map<String, String> map = new HashMap<>();
-        map.put("userId", SPUtilHelpr.getUserId());
-        Call call = RetrofitUtils.createApi(MyApiServer.class).getCanUseMoney("623051", StringUtils.getJsonToString(map));
-        addCall(call);
-        call.enqueue(new BaseResponseModelCallBack<CanUseMoneyModel>(mActivity) {
-
-            @Override
-            protected void onSuccess(CanUseMoneyModel data, String SucMessage) {
-                mBinding.tvMoney.setText(MoneyUtils.showPrice(data.getSxAmount()));
-            }
-
-            @Override
-            protected void onFinish() {
-            }
-        });
-    }
+//    //获取额度
+//    public void getCanUseMoneyData() {
+//        Map<String, String> map = new HashMap<>();
+//        map.put("userId", SPUtilHelpr.getUserId());
+//        Call call = RetrofitUtils.createApi(MyApiServer.class).getCanUseMoney("623051", StringUtils.getJsonToString(map));
+//        addCall(call);
+//        call.enqueue(new BaseResponseModelCallBack<CanUseMoneyModel>(mActivity) {
+//
+//            @Override
+//            protected void onSuccess(CanUseMoneyModel data, String SucMessage) {
+//                mBinding.tvMoney.setText(MoneyUtils.showPrice(data.getSxAmount()));
+//            }
+//
+//            @Override
+//            protected void onFinish() {
+//            }
+//        });
+//    }
 
     //获取优惠券数量
-    public void getCouponNums() {
-
-//        /0=可使用 1=已使用 2=已过期 12=已使用或已过期
-        Map<String, String> map = new HashMap<>();
-        map.put("limit", "1");
-        map.put("start", "1");
-        map.put("userId", SPUtilHelpr.getUserId());
-        map.put("status", "0");
-
-        Call call = RetrofitUtils.createApi(MyApiServer.class).getCouponsListData("623147", StringUtils.getJsonToString(map));
-
-        addCall(call);
-
-        call.enqueue(new BaseResponseModelCallBack<CoupoonsModel>(mActivity) {
-            @Override
-            protected void onSuccess(CoupoonsModel data, String SucMessage) {
-                mBinding.tvCouponnsNum.setText(data.getTotalCount() + "");
-            }
-
-            @Override
-            protected void onFinish() {
-            }
-        });
-    }
+//    public void getCouponNums() {
+//
+////        /0=可使用 1=已使用 2=已过期 12=已使用或已过期
+//        Map<String, String> map = new HashMap<>();
+//        map.put("limit", "10000");
+//        map.put("start", "1");
+//        map.put("userId", SPUtilHelpr.getUserId());
+//        map.put("status", "0");
+//
+//        Call call = RetrofitUtils.createApi(MyApiServer.class).getCouponsListData("623147", StringUtils.getJsonToString(map));
+//
+//        addCall(call);
+//
+//        call.enqueue(new BaseResponseModelCallBack<CoupoonsModel>(mActivity) {
+//            @Override
+//            protected void onSuccess(CoupoonsModel data, String SucMessage) {
+//                mBinding.tvCouponnsNum.setText(data.getTotalCount() + "");
+//            }
+//
+//            @Override
+//            protected void onFinish() {
+//            }
+//        });
+//    }
 
     //获取系统参数 服务时间
     public void getServiceTime() {
 
         Map<String, String> map = new HashMap<>();
-        map.put("ckey", "time");
+        map.put("key", "time");
         map.put("systemCode", MyConfig.SYSTEMCODE);
         map.put("companyCode", MyConfig.COMPANYCODE);
 
-        Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("805917", StringUtils.getJsonToString(map));
+        Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("623917", StringUtils.getJsonToString(map));
 
         addCall(call);
 
@@ -227,16 +231,17 @@ public class MyFragment extends BaseLazyFragment {
             }
         });
 
-    }    //获取系统参数 服务电话
+    }
 
+    //获取系统参数 服务电话
     public void getServiceTelephone() {
 
         Map<String, String> map = new HashMap<>();
-        map.put("ckey", "telephone");
+        map.put("key", "telephone");
         map.put("systemCode", MyConfig.SYSTEMCODE);
         map.put("companyCode", MyConfig.COMPANYCODE);
 
-        Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("805917", StringUtils.getJsonToString(map));
+        Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("623917", StringUtils.getJsonToString(map));
 
         addCall(call);
 
@@ -258,6 +263,7 @@ public class MyFragment extends BaseLazyFragment {
             }
         });
 
+
     }
 
 
@@ -265,7 +271,7 @@ public class MyFragment extends BaseLazyFragment {
     public void onResume() {
         super.onResume();
         if (getUserVisibleHint() && mBinding != null) {
-            getAllData();
+//            getAllData();
         }
     }
 
@@ -277,8 +283,8 @@ public class MyFragment extends BaseLazyFragment {
     }
 
     private void getAllData() {
-        getCouponNums();
-        getCanUseMoneyData();
+//        getCouponNums();
+//        getCanUseMoneyData();
         getUserInfoRequest(true);
         getServiceTelephone();
         getServiceTime();
@@ -335,7 +341,7 @@ public class MyFragment extends BaseLazyFragment {
                     if (mUserInfoMode != null) {
                         mUserInfoMode.setPhoto(key);
                     }
-                    ImgUtils.loadActLogo(mActivity, MyConfig.IMGURL + key, mBinding.imtUserLogo);
+                    ImgUtils.loadActLogo(mActivity, SPUtilHelpr.getQiNiuUrl() + key, mBinding.imtUserLogo);
                 }
             }
 

@@ -5,13 +5,10 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 
 import com.cdkj.baselibrary.activitys.AddBackCardActivity;
-import com.cdkj.baselibrary.activitys.BackCardListActivity;
 import com.cdkj.baselibrary.activitys.UpdateBackCardActivity;
-import com.cdkj.baselibrary.activitys.WebViewActivity;
 import com.cdkj.baselibrary.appmanager.EventTags;
 import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
@@ -23,15 +20,11 @@ import com.cdkj.baselibrary.model.MyBankCardListMode;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.BigDecimalUtils;
-import com.cdkj.baselibrary.utils.DateUtil;
 import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivitySigningBinding;
 import com.cdkj.ylq.model.PorductListModel;
-import com.cdkj.ylq.model.UserInfoModel;
-import com.cdkj.ylq.module.api.MyApiServer;
-import com.cdkj.ylq.module.certification.AddressBookCertActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -116,19 +109,19 @@ public class SigningSureActivity extends AbsBaseActivity {
                 showToast("请阅读并同意借款协议");
                 return;
             }
-
+//            signingRequest();
+//删除  打开打开
             if (!SPUtilHelpr.getUserIsBindCard() || mBankCardModel == null) {
                 showBindCardSureDialog(view -> {
                     AddBackCardActivity.open(this);
                 });
                 return;
             }
-
             showSureCardInfoDialog();
         });
 
         mBinding.tvRead.setOnClickListener(v -> {
-            SigningTipsWebViewActivity.open(this,mCouponId);
+            SigningTipsWebViewActivity.open(this, mCouponId);
         });
     }
 
@@ -163,7 +156,8 @@ public class SigningSureActivity extends AbsBaseActivity {
         object.put("start", "1");
         object.put("limit", "10");
 
-        Call call = RetrofitUtils.getBaseAPiService().getCardListData("802015", StringUtils.getJsonToString(object));
+//        Call call = RetrofitUtils.getBaseAPiService().getCardListData("802015", StringUtils.getJsonToString(object));
+        Call call = RetrofitUtils.getBaseAPiService().getCardListData("802025", StringUtils.getJsonToString(object));
 
         addCall(call);
 
@@ -178,10 +172,13 @@ public class SigningSureActivity extends AbsBaseActivity {
                     mBankCardModel = data.getList().get(0);
                     return;
                 }
-                mBankCardModel = null;
-                showBindCardSureDialog(view -> {
-                    AddBackCardActivity.open(SigningSureActivity.this);
-                });
+
+                if (mBankCardModel == null) {
+                    showBindCardSureDialog(view -> {
+                        AddBackCardActivity.open(SigningSureActivity.this);
+                    });
+                }
+
             }
 
             @Override
@@ -206,7 +203,7 @@ public class SigningSureActivity extends AbsBaseActivity {
         if (mCommonDialog == null) {
             mCommonDialog = new CommonDialog(this).builder()
                     .setTitle("提示").setContentMsg("您还没有添加银行卡，请先添加银行卡。")
-                    .setPositiveBtn("确定", onPositiveListener);
+                    .setPositiveBtn("确定", onPositiveListener).setCancelable(true);
         }
         mCommonDialog.show();
     }
@@ -221,6 +218,7 @@ public class SigningSureActivity extends AbsBaseActivity {
             map.put("couponId", mCouponId);
         }
         map.put("userId", SPUtilHelpr.getUserId());
+        map.put("productCode", mProductData.getCode());
 
         Call call = RetrofitUtils.getBaseAPiService().codeRequest("623070", StringUtils.getJsonToString(map));
 
@@ -234,7 +232,7 @@ public class SigningSureActivity extends AbsBaseActivity {
             protected void onSuccess(CodeModel data, String SucMessage) {
                 if (!TextUtils.isEmpty(data.getCode())) {
                     EventBus.getDefault().post(EventTags.USEMONEYSUREFINISH);//关闭上一个界面
-                    PutMoneyingActivity.open(SigningSureActivity.this,data.getCode());
+                    PutMoneyingActivity.open(SigningSureActivity.this, data.getCode());
                     finish();
                 }
             }

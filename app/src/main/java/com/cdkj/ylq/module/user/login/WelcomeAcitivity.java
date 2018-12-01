@@ -3,9 +3,10 @@ package com.cdkj.ylq.module.user.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.ImageView;
 
-import com.cdkj.baselibrary.appmanager.MyConfig;
+import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.BaseActivity;
 import com.cdkj.baselibrary.model.IntroductionInfoModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
@@ -20,7 +21,6 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 
 /**
@@ -45,8 +45,13 @@ public class WelcomeAcitivity extends BaseActivity {
         } catch (Exception e) {
         }
         setContentView(R.layout.activity_welcom);
-        ImageView img=(ImageView)findViewById(R.id.img_start);
+        ImageView img = (ImageView) findViewById(R.id.img_start);
         img.setImageResource(R.drawable.start);
+
+        //判断有没有七牛地址
+//        if (TextUtils.isEmpty(SPUtilHelpr.getQiNiuUrl())) {
+//            getQiNiuUrl();
+//        }
         mSubscription.add(Observable.timer(2, TimeUnit.SECONDS)
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -54,7 +59,53 @@ public class WelcomeAcitivity extends BaseActivity {
                     MainActivity.open(this);
                     finish();
                 }, Throwable::printStackTrace));
+
     }
 
+    //    //获取七牛地址
+//    private void getQiNiuUrl() {
+//        NetUtils.getSystemParameter(this, "qiniu_domain", false, new NetUtils.OnSuccessSystemInterface() {
+//            @Override
+//            public void onSuccessSystem(IntroductionInfoModel data) {
+//                SPUtilHelpr.saveQiNiuUrl(WelcomeAcitivity.this, data.getCvalue());
+//            }
+//
+//
+//            @Override
+//            public void onError(String errorMessage) {
+//                showToast("图片地址获取失败");
+//            }
+//        });
+//    }
+    public void getQiNiuUrl() {
+        Map<String, String> map = new HashMap<>();
+        map.put("key", "qiniu_domain");
+        map.put("systemCode", "CD-YLQ000014");
+        map.put("companyCode", "CD-YLQ000014");
+
+        Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("623917", StringUtils.getJsonToString(map));
+
+        call.enqueue(new BaseResponseModelCallBack<IntroductionInfoModel>(WelcomeAcitivity.this) {
+            @Override
+            protected void onSuccess(IntroductionInfoModel data, String SucMessage) {
+                Log.e("pppppp", "onSuccess: 图片地址" + data.getCvalue());
+                if (!TextUtils.isEmpty(data.getCvalue())) {
+                    SPUtilHelpr.saveQiNiuUrl("http://" + data.getCvalue());
+                }
+            }
+
+            @Override
+            protected void onReqFailure(int errorCode, String errorMessage) {
+                super.onReqFailure(errorCode, errorMessage);
+                showToast("图片地址获取失败");
+            }
+
+            @Override
+            protected void onFinish() {
+
+            }
+        });
+
+    }
 
 }

@@ -20,7 +20,6 @@ import com.cdkj.baselibrary.utils.DateUtil;
 import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.ylq.R;
-import com.cdkj.ylq.databinding.FragmentOfflineAlsomoneyBinding;
 import com.cdkj.ylq.databinding.FragmentRenewalPayOfflineBinding;
 import com.cdkj.ylq.model.UseMoneyRecordModel;
 
@@ -130,11 +129,11 @@ public class RenewalMoneyOffLineFragment extends BaseFragment {
     public void getKeyData() {
 
         Map<String, String> map = new HashMap<>();
-        map.put("ckey", "repayOfflineAccount");
+        map.put("key", "repayOfflineAccount");
         map.put("systemCode", MyConfig.SYSTEMCODE);
         map.put("companyCode", MyConfig.COMPANYCODE);
 
-        Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("805917", StringUtils.getJsonToString(map));
+        Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("623917", StringUtils.getJsonToString(map));
         ;
 
         addCall(call);

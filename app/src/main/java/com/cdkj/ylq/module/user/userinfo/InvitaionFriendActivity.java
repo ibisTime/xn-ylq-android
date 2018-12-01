@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.cdkj.baselibrary.appmanager.MyConfig;
-import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.model.IntroductionInfoModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
@@ -59,55 +58,52 @@ public class InvitaionFriendActivity extends AbsBaseActivity {
 
         setTopTitle("邀请好友");
 
-        setSubRightTitleAndClick("推荐历史", v -> {
-            HuokeListActivity.open(this);
-        });
+//        setSubRightTitleAndClick("推荐历史", v -> {
+//            HuokeListActivity.open(this);
+//        });
         initListener();
         getKeyUrl();
     }
 
     private void initListener() {
         mBinding.btnInvitation.setOnClickListener(v -> {
-
-            Map<String, String> map = new HashMap<>();
-            map.put("ckey", "domainUrl");
-            map.put("systemCode", MyConfig.SYSTEMCODE);
-            map.put("companyCode", MyConfig.COMPANYCODE);
-
-            Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("805917", StringUtils.getJsonToString(map));
-            ;
-
-            addCall(call);
-
-            showLoadingDialog();
-
-            call.enqueue(new BaseResponseModelCallBack<IntroductionInfoModel>(this) {
-                @Override
-                protected void onSuccess(IntroductionInfoModel data, String SucMessage) {
-                    if (TextUtils.isEmpty(data.getCvalue())) {
-                        return;
-                    }
-                    ShareActivity.open(InvitaionFriendActivity.this, data.getCvalue()+"?kind=C&mobile="+ SPUtilHelpr.getUserPhoneNum());
-                }
-
-                @Override
-                protected void onFinish() {
-                    disMissLoading();
-                }
-            });
-
-
+            ShellActivity.open(this);
         });
+//            Map<String, String> map = new HashMap<>();
+//            map.put("key", "domainUrl");
+//            map.put("systemCode", MyConfig.SYSTEMCODE);
+//            map.put("companyCode", MyConfig.COMPANYCODE);
+//
+//            Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("623917", StringUtils.getJsonToString(map));
+//            addCall(call);
+//            showLoadingDialog();
+//            call.enqueue(new BaseResponseModelCallBack<IntroductionInfoModel>(this) {
+//                @Override
+//                protected void onSuccess(IntroductionInfoModel data, String SucMessage) {
+//                    if (TextUtils.isEmpty(data.getCvalue())) {
+//                        return;
+//                    }
+//                    ShareActivity.open(InvitaionFriendActivity.this, data.getCvalue() + "?kind=C&mobile=" + SPUtilHelpr.getUserPhoneNum());
+//                }
+//
+//                @Override
+//                protected void onFinish() {
+//                    disMissLoading();
+//                }
+//            });
+//
+//
+//        });
     }
 
 
     public void getKeyUrl() {
         Map<String, String> map = new HashMap<>();
-        map.put("ckey", "activityRule");
+        map.put("key", "activityRule");
         map.put("systemCode", MyConfig.SYSTEMCODE);
         map.put("companyCode", MyConfig.COMPANYCODE);
 
-        Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("805917", StringUtils.getJsonToString(map));
+        Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("623917", StringUtils.getJsonToString(map));
 
         addCall(call);
 

@@ -13,7 +13,6 @@ import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.model.EventBusModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
-import com.cdkj.baselibrary.utils.DateUtil;
 import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.ylq.R;
@@ -22,19 +21,16 @@ import com.cdkj.ylq.model.CanUseMoneyModel;
 import com.cdkj.ylq.model.PorductListModel;
 import com.cdkj.ylq.module.api.MyApiServer;
 import com.cdkj.ylq.module.borrowmoney.UseMoneySureDetailsActivity;
-import com.cdkj.ylq.module.product.ProductDetailsActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import retrofit2.Call;
 
 import static com.cdkj.baselibrary.appmanager.EventTags.MAINCHANGESHOWINDEX;
-import static com.cdkj.ylq.MainActivity.SHOWCERT;
 import static com.cdkj.ylq.MainActivity.SHOWMONEYPRODUCT;
 
 /**
@@ -168,5 +164,4 @@ public class MyMaxMoneyActivity extends AbsBaseActivity {
             finish();
         }
     }
-
 }

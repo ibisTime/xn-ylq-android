@@ -53,6 +53,33 @@ public class CerttificationInfoModel  {
     private String infoCarrierFlag;
     private InfoIdentifyBean infoIdentify;
     private InfoIdentifyBean infoIdentifyFace;
+    private String infoZfbFlag;
+    private String infoZqznFlag;
+    private String infoPersonalFlag;
+
+    public String getInfoPersonalFlag() {
+        return infoPersonalFlag;
+    }
+
+    public void setInfoPersonalFlag(String infoPersonalFlag) {
+        this.infoPersonalFlag = infoPersonalFlag;
+    }
+
+    public String getInfoZqznFlag() {
+        return infoZqznFlag;
+    }
+
+    public void setInfoZqznFlag(String infoZqznFlag) {
+        this.infoZqznFlag = infoZqznFlag;
+    }
+
+    public String getInfoZfbFlag() {
+        return infoZfbFlag;
+    }
+
+    public void setInfoZfbFlag(String infoZfbFlag) {
+        this.infoZfbFlag = infoZfbFlag;
+    }
 
     public InfoIdentifyBean getInfoIdentifyFace() {
         return infoIdentifyFace;

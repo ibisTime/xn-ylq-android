@@ -5,26 +5,23 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import com.cdkj.baselibrary.adapters.ViewPagerAdapter;
 import com.cdkj.baselibrary.appmanager.EventTags;
-import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.model.EventBusModel;
 import com.cdkj.baselibrary.model.IntroductionInfoModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
-import com.cdkj.baselibrary.utils.DateUtil;
-import com.cdkj.baselibrary.utils.LogUtil;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.baselibrary.utils.update.UpdateManager;
 import com.cdkj.ylq.databinding.ActivityMainBinding;
 import com.cdkj.ylq.module.borrowmoney.BorrowMoneyFragment;
-import com.cdkj.ylq.module.certification.CertificationFragment;
+import com.cdkj.ylq.module.credit.CreditFragment;
 import com.cdkj.ylq.module.user.userinfo.MyFragment;
 
 import org.greenrobot.eventbus.EventBus;
@@ -40,7 +37,7 @@ import retrofit2.Call;
 import static com.cdkj.baselibrary.appmanager.EventTags.MAINCHANGESHOWINDEX;
 import static com.cdkj.baselibrary.appmanager.EventTags.MAINFINISH;
 
-public class MainActivity extends AbsBaseActivity {
+public class MainActivity extends AbsBaseActivity{
 
     private ActivityMainBinding mBinding;
 
@@ -64,8 +61,6 @@ public class MainActivity extends AbsBaseActivity {
         context.startActivity(new Intent(context, MainActivity.class));
     }
 
-
-
     @Override
     public View addMainView() {
         mBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.activity_main, null, false);
@@ -85,7 +80,10 @@ public class MainActivity extends AbsBaseActivity {
         initListener();
 
         updateManager = new UpdateManager(getString(R.string.app_name));
-        updateManager.checkNewApp(this);
+//        updateManager.checkNewApp(this);//这个检查更新的接口还会报错
+        if (TextUtils.isEmpty(SPUtilHelpr.getQiNiuUrl())) {
+            getQiNiuUrl();
+        }
     }
 
     /**
@@ -98,6 +96,10 @@ public class MainActivity extends AbsBaseActivity {
         });
         //认证
         mBinding.layoutMainButtom.radioMainTabCertification.setOnClickListener(v -> {
+            if (!SPUtilHelpr.isLogin(this, false)) {
+                setTabIndex();
+                return;
+            }
             setShowIndex(1);
         });
         //我的
@@ -109,7 +111,6 @@ public class MainActivity extends AbsBaseActivity {
             setShowIndex(2);
         });
     }
-
 
 
     public void setTabIndex() {
@@ -138,9 +139,9 @@ public class MainActivity extends AbsBaseActivity {
         fragments = new ArrayList<>();
 
         fragments.add(BorrowMoneyFragment.getInstanse());
-        fragments.add(CertificationFragment.getInstanse());
+//        fragments.add(CertificationFragment.getInstanse());
+        fragments.add(CreditFragment.getInstanse());
         fragments.add(MyFragment.getInstanse());
-
         mBinding.pagerMain.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), fragments));
         mBinding.pagerMain.setOffscreenPageLimit(fragments.size());
     }
@@ -177,6 +178,7 @@ public class MainActivity extends AbsBaseActivity {
             finish();
         }
     }
+
     @Override
     protected boolean canEvenFinish() {
         return false;
@@ -185,16 +187,63 @@ public class MainActivity extends AbsBaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(updateManager!=null){
+        if (updateManager != null) {
             updateManager.clear();
-            updateManager=null;
+            updateManager = null;
         }
     }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        if (TextUtils.isEmpty(SPUtilHelpr.getUserId())) {
+//            UITipDialog.showSuccess(this, "请先登陆", dialog -> {
+//                setTabIndex();
+//                SPUtilHelpr.isLogin(this, false);
+//            });
+//        }
+//    }
+
+
+    //获取七牛地址
+    public void getQiNiuUrl() {
+        Map<String, String> map = new HashMap<>();
+        map.put("key", "qiniu_domain");
+        map.put("systemCode", "CD-YLQ000014");
+        map.put("companyCode", "CD-YLQ000014");
+
+        Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("623917", StringUtils.getJsonToString(map));
+
+        call.enqueue(new BaseResponseModelCallBack<IntroductionInfoModel>(MainActivity.this) {
+            @Override
+            protected void onSuccess(IntroductionInfoModel data, String SucMessage) {
+                Log.e("pppppp", "onSuccess: 图片地址" + data.getCvalue());
+                if (!TextUtils.isEmpty(data.getCvalue())) {
+                    SPUtilHelpr.saveQiNiuUrl("http://" + data.getCvalue() + "/");
+                }
+            }
+
+            @Override
+            protected void onReqFailure(int errorCode, String errorMessage) {
+                super.onReqFailure(errorCode, errorMessage);
+                showToast("图片地址获取失败");
+            }
+
+            @Override
+            protected void onFinish() {
+
+            }
+        });
+
+    }
+
     @Override
     public void onBackPressed() {
-        showDoubleWarnListen("确认退出"+getString(R.string.app_name)+"？",view -> {
+        showDoubleWarnListen("确认退出" + getString(R.string.app_name) + "？", view -> {
             EventBus.getDefault().post(EventTags.AllFINISH);
             finish();
         });
     }
+
+
 }

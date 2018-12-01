@@ -67,7 +67,6 @@ public class BusinessSings {
     }
 
 
-
     //产品状态
     //("0", "可申请"),("1", "认证中"),("2", "人工审核中"),( "3", "已驳回"),("4", "已有额度"),("5", "等待放款中"),( "6", "生效中"),("7", "已逾期")
     public static final String PRODUCTSTATE_0 = "0";
@@ -77,11 +76,8 @@ public class BusinessSings {
     public static final String PRODUCTSTATE_4 = "4";
     public static final String PRODUCTSTATE_5 = "5";
     public static final String PRODUCTSTATE_6 = "6";
-    public static final String PRODUCTSTATE_7= "7";
+    public static final String PRODUCTSTATE_7 = "7";
     public static final String PRODUCTSTATE_11 = "11";
-
-
-
 
 
     //获取产品状态
@@ -146,11 +142,11 @@ public class BusinessSings {
             WaiteMoneyDetailsActivity.open(activity, state, "");
 
         } else if (TextUtils.equals(state.getStatus(), USEMONEYRECORD_3)) {//生效中
-
-            UseingMoneyDetailsActivity.open(activity, state, true, "");//
+                //生效中的操作就是  还款,还款其实是还款申请,成功后要审批,不用跳转
+            UseingMoneyDetailsActivity.open(activity, null, true, state.getCode());//
 
         } else if (TextUtils.equals(state.getStatus(), USEMONEYRECORD_4)) {//已还款
-            UseingMoneyDetailsActivity.open(activity, state, false, "");//
+            UseingMoneyDetailsActivity.open(activity, state, false, state.getCode());//
 
         } else if (TextUtils.equals(state.getStatus(), USEMONEYRECORD_5)) {//已逾期
             UsedMoneyDetailsActivity.open(activity, state, ""); //
@@ -158,6 +154,4 @@ public class BusinessSings {
             UsedMoneyDetailsActivity.open(activity, state, ""); //
         }
     }
-
-
 }

@@ -94,7 +94,7 @@ public class HuokeListActivity extends BaseRefreshActivity<HuokeListModel.ListBe
             protected void convert(BaseViewHolder helper, HuokeListModel.ListBean item) {
                 if (item == null) return;
 
-                ImgUtils.loadActLogo(HuokeListActivity.this, MyConfig.IMGURL + item.getPhoto(), helper.getView(R.id.img_photo));
+                ImgUtils.loadActLogo(HuokeListActivity.this, SPUtilHelpr.getQiNiuUrl() + item.getPhoto(), helper.getView(R.id.img_photo));
 
                 helper.setText(R.id.tv_name, item.getMobile());
                 helper.setText(R.id.tv_time, DateUtil.formatStringData(item.getCreateDatetime(), DateUtil.DATE_YMD));

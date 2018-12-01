@@ -13,15 +13,12 @@ import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.dialog.CommonDialog;
 import com.cdkj.baselibrary.model.EventBusModel;
-import com.cdkj.baselibrary.model.IsSuccessModes;
 import com.cdkj.baselibrary.nets.BaseResponseListCallBack;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.BigDecimalUtils;
-import com.cdkj.baselibrary.utils.LogUtil;
 import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
-import com.cdkj.baselibrary.utils.ToastUtil;
 import com.cdkj.ylq.MainActivity;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivityProductDetailsBinding;
@@ -29,7 +26,7 @@ import com.cdkj.ylq.model.CanUseCouponsModel;
 import com.cdkj.ylq.model.PorductListModel;
 import com.cdkj.ylq.model.ProductSingModel;
 import com.cdkj.ylq.module.api.MyApiServer;
-import com.cdkj.ylq.module.borrowmoney.PutMoneyingActivity;
+import com.cdkj.ylq.module.borrowmoney.SigningSureActivity;
 import com.cdkj.ylq.module.certification.review.HumanReviewActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -60,6 +57,7 @@ public class ProductDetailsActivity extends AbsBaseActivity {
     private List<CanUseCouponsModel> mCoupoonsModels = new ArrayList<>();
 
     private String mCode;
+    private String couponsID;
 
     /**
      * 打开当前页面
@@ -116,7 +114,9 @@ public class ProductDetailsActivity extends AbsBaseActivity {
             if (!SPUtilHelpr.isLogin(this, false)) {
                 return;
             }
-            applyRequest();
+            SigningSureActivity.open(this, mProductData, couponsID, mBinding.tvWillGetMoney.getText().toString());
+
+//            applyRequest();
         });
 
         mBinding.tvSelectCoupoons.setOnClickListener(v -> {
@@ -129,6 +129,12 @@ public class ProductDetailsActivity extends AbsBaseActivity {
         //选择优惠券 这里只做优惠券展示 真正使用优惠券是在 签约界面 SigningSureActivity
         mCoupoonsPicker = new OptionsPickerView.Builder(this, (options1, options2, options3, v) -> {
             CanUseCouponsModel cmodel = mCoupoonsModels.get(options1);
+            //优惠券 id  没有0  如果取到0  说明是 整形的  默认值  就说明没有优惠券
+            if (cmodel.getId() == 0) {
+                couponsID = null;
+            } else {
+                couponsID = cmodel.getId() + "";
+            }
             if (cmodel != null) {
                 if (!cmodel.isDefuit()) {
                     mBinding.tvSelectCoupoons.setText(MoneyUtils.showPrice(cmodel.getAmount()) + "元优惠卷");
@@ -253,7 +259,6 @@ public class ProductDetailsActivity extends AbsBaseActivity {
         BigDecimal money4 = BigDecimalUtils.subtract(mData.getAmount(), deductMoneyAll);    //总额 - 扣除费用 = 实际到账费用
 
         return money4;
-
     }
 
 
@@ -271,7 +276,7 @@ public class ProductDetailsActivity extends AbsBaseActivity {
         addCall(call);
 
         showLoadingDialog();
-//1 认证中 2待审核
+        //1 认证中 2待审核
         call.enqueue(new BaseResponseModelCallBack<ProductSingModel>(this) {
             @Override
             protected void onSuccess(ProductSingModel data, String SucMessage) {
@@ -292,6 +297,9 @@ public class ProductDetailsActivity extends AbsBaseActivity {
                 } else if (TextUtils.equals(data.getStatus(), "2")) {
                     HumanReviewActivity.open(ProductDetailsActivity.this);
                     finish();
+                } else {
+                    //去借款
+
                 }
 
             }

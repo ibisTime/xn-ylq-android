@@ -88,7 +88,7 @@ public class PersonalActivity extends AbsBaseActivity {
             return;
         }
 
-        ImgUtils.loadActLogo(PersonalActivity.this, MyConfig.IMGURL + mUserInfoData.getPhoto(), mBinding.imgPhoto);
+        ImgUtils.loadActLogo(PersonalActivity.this, SPUtilHelpr.getQiNiuUrl() + mUserInfoData.getPhoto(), mBinding.imgPhoto);
 
         mBinding.txtPhone.setText(mUserInfoData.getMobile());
 
@@ -169,10 +169,11 @@ public class PersonalActivity extends AbsBaseActivity {
         });
 
         mBinding.layoutBank.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(SPUtilHelpr.getUserName())) {
-                showToast("您还未进行身份认证，不能添加银行卡。");
-                return;
-            }
+            //删除删除  下面的代码 放开
+//            if (TextUtils.isEmpty(SPUtilHelpr.getUserName())) {
+//                showToast("您还未进行身份认证，不能添加银行卡。");
+//                return;
+//            }
             BackCardListActivity.open(this, false);
         });
 
@@ -232,7 +233,7 @@ public class PersonalActivity extends AbsBaseActivity {
             protected void onSuccess(IsSuccessModes data, String SucMessage) {
                 if (data.isSuccess()) {
                     showToast("头像上传成功");
-                    ImgUtils.loadActLogo(PersonalActivity.this, MyConfig.IMGURL + key, mBinding.imgPhoto);
+                    ImgUtils.loadActLogo(PersonalActivity.this, SPUtilHelpr.getQiNiuUrl() + key, mBinding.imgPhoto);
                 }
             }
 

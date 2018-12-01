@@ -46,6 +46,7 @@ public class AddressBookCertActivity extends AbsBaseActivity {
      * 打开当前页面
      *
      * @param context
+     * @param isCheckCert 是否授权过了
      */
     public static void open(Context context, boolean isCheckCert) {
         if (context == null) {
@@ -123,7 +124,8 @@ public class AddressBookCertActivity extends AbsBaseActivity {
                             } else {
                                 disMissLoading();
                                 CommonDialog commonDialog = new CommonDialog(AddressBookCertActivity.this).builder()
-                                        .setTitle("没有获取到通讯录数据").setContentMsg("1.请授予读取手机联系人权限\n" +
+                                        .setTitle("没有获取到通讯录数据")
+                                        .setContentMsg("1.请授予读取手机联系人权限\n" +
                                                 "2.请检查通讯录是否有联系人。")
                                         .setPositiveBtn("确定", view -> {
                                         });

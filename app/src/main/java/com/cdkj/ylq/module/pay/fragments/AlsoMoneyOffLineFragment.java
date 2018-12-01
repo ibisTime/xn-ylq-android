@@ -16,9 +16,11 @@ import com.cdkj.baselibrary.dialog.CommonDialog;
 import com.cdkj.baselibrary.model.IntroductionInfoModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
+import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.FragmentOfflineAlsomoneyBinding;
+import com.cdkj.ylq.model.UseMoneyRecordModel;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -36,6 +38,7 @@ public class AlsoMoneyOffLineFragment extends BaseFragment {
 
     private FragmentOfflineAlsomoneyBinding mBinding;
     private String mCode;
+    private UseMoneyRecordModel.ListBean.Info info;
 
     /**
      * @param code  还款编号
@@ -51,14 +54,32 @@ public class AlsoMoneyOffLineFragment extends BaseFragment {
         return fragment;
     }
 
+    public static AlsoMoneyOffLineFragment getInstanse(UseMoneyRecordModel.ListBean.Info info) {
+        AlsoMoneyOffLineFragment fragment = new AlsoMoneyOffLineFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("info", info);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    @SuppressLint("RestrictedApi")
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(getLayoutInflater(savedInstanceState), R.layout.fragment_offline_alsomoney, null, false);
         getKeyData();
+
         if (getArguments() != null) {
-            mCode = getArguments().getString("code");
-            mBinding.tvMoney.setText(getArguments().getString("money"));
+            info = (UseMoneyRecordModel.ListBean.Info) getArguments().getSerializable("info");
+            if (info != null) {
+                mBinding.llQs.setVisibility(View.VISIBLE);
+                mBinding.tvQs.setText(info.getRemark());
+                mBinding.tvMoney.setText(MoneyUtils.showPrice(info.getAmount()));
+            } else {
+                mCode = getArguments().getString("code");
+                mBinding.tvMoney.setText(getArguments().getString("money"));
+            }
+
         }
         initListener();
         return mBinding.getRoot();
@@ -80,17 +101,23 @@ public class AlsoMoneyOffLineFragment extends BaseFragment {
     }
 
     /**
-     * 支付请求
+     * 线下还款   (意思就是  私底下转给放款人,这个app就是调用一下接口,申请一下)
+     *
+     * 分为  分期和不分期  调用接口不同  根据是否有分期的对象来判断是否该进行分期
      */
     private void payRequest() {
-        if (TextUtils.isEmpty(mCode)) {
+        Map<String, String> map = new HashMap<>();
+        String code;
+        if (!TextUtils.isEmpty(mCode)) {
+            code = "623180";
+            map.put("orderCode", mCode);
+        } else if (info != null) {
+            code = "623182";
+            map.put("stagingCode", info.getStageCode());
+        } else {
             return;
         }
-        Map<String, String> map = new HashMap<>();
-        map.put("code", mCode);
-        map.put("payType", "4");
-
-        Call call = RetrofitUtils.getBaseAPiService().stringRequest("623072", StringUtils.getJsonToString(map));
+        Call call = RetrofitUtils.getBaseAPiService().stringRequest(code, StringUtils.getJsonToString(map));
         addCall(call);
         showLoadingDialog();
         call.enqueue(new BaseResponseModelCallBack<String>(mActivity) {
@@ -113,11 +140,11 @@ public class AlsoMoneyOffLineFragment extends BaseFragment {
     public void getKeyData() {
 
         Map<String, String> map = new HashMap<>();
-        map.put("ckey", "repayOfflineAccount");
+        map.put("key", "repayOfflineAccount");
         map.put("systemCode", MyConfig.SYSTEMCODE);
         map.put("companyCode", MyConfig.COMPANYCODE);
 
-        Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("805917", StringUtils.getJsonToString(map));
+        Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("623917", StringUtils.getJsonToString(map));
         ;
 
         addCall(call);
@@ -136,9 +163,5 @@ public class AlsoMoneyOffLineFragment extends BaseFragment {
 
             }
         });
-
     }
-
-
-
 }

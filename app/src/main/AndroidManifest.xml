@@ -2,33 +2,33 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cdkj.ylq">
 
-    <!--用于访问网络，网络定位需要上网-->
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <!-- 用于访问网络，网络定位需要上网 -->
+    <uses-permission android:name="android.permission.INTERNET" />
     //相机
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-
     //阅读手机权限
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
-    <!--用于写入缓存数据到扩展存储卡-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <!-- 用于写入缓存数据到扩展存储卡 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <!--用于进行网络定位-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
-    <!--用于访问GPS定位-->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
-    <!--用于访问wifi网络信息，wifi信息会用于进行网络定位-->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
-    <!--用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>
-    <!--用于申请获取蓝牙信息进行室内定位-->
-    <uses-permission android:name="android.permission.BLUETOOTH"></uses-permission>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"></uses-permission>
-    <!--用于读取手机联系人-->
+    <!-- 用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- 用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <!-- 用于申请获取蓝牙信息进行室内定位 -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <!-- 用于读取手机联系人 -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -43,7 +43,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         //注册
         <activity
             android:name=".module.user.login.RegisterActivity"
@@ -102,7 +101,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <!--ylq://cert.back  认证后返回标识-->
+                <!-- ylq://cert.back  认证后返回标识 -->
                 <data
                     android:host="cert.back"
                     android:scheme="ylq" />
@@ -123,13 +122,11 @@
             android:name=".module.user.userinfo.MsgDetailsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         //芝麻分数获取
         <activity
             android:name=".module.certification.ZMScoreGetActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         //基本信息认证填写
         <activity
             android:name=".module.certification.basisinfocert.BasisInfoCertificationWriteActivity"
@@ -170,7 +167,6 @@
             android:name=".module.user.userinfo.MyMaxMoneyActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         //借款记录
         <activity
             android:name=".module.user.userinfo.usemoneyrecord.UseMoneyRecordActivity"
@@ -186,7 +182,6 @@
             android:name=".module.user.userinfo.InvitaionFriendActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         //邀请
         <activity
             android:name=".module.borrowmoney.UseMoneySureDetailsActivity"
@@ -197,7 +192,6 @@
             android:name=".module.borrowmoney.SigningSureActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         //放款中
         <activity
             android:name=".module.borrowmoney.PutMoneyingActivity"
@@ -243,7 +237,6 @@
             android:name="com.cdkj.baselibrary.activitys.WebViewActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         //添加银行卡
         <activity
             android:name="com.cdkj.baselibrary.activitys.AddBackCardActivity"
@@ -254,7 +247,6 @@
             android:name="com.cdkj.baselibrary.activitys.BackCardListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         //删除修改银行卡
         <activity
             android:name="com.cdkj.baselibrary.activitys.UpdateBackCardActivity"
@@ -265,14 +257,11 @@
             android:name=".module.user.userinfo.MsgListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         //推荐历史
         <activity
             android:name=".module.user.userinfo.HuokeListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
-
         //分享
         <activity
             android:name=".module.user.userinfo.ShareActivity"
@@ -294,18 +283,15 @@
             android:name=".module.borrowmoney.ContractShowActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
-
         //魔蝎认证
-        <activity android:name="com.moxie.client.MainActivity"></activity>
+        <!-- <activity android:name="com.moxie.client.MainActivity" /> -->
 
 
-        <!--芝麻信用-->
+        <!-- 芝麻信用 -->
         <activity
             android:name="com.android.moblie.zmxy.antgroup.creditsdk.app.SDKActivity"
             android:label="芝麻信用"
             android:screenOrientation="portrait" />
-
 
         <!-- 微信支付entry -->
         <activity
@@ -328,28 +314,39 @@
             android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-
         //高德定位
-        <service android:name="com.amap.api.location.APSService"></service>
+        <service android:name="com.amap.api.location.APSService" />
+
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="7df4fcd424e36ceaad62d64f1c11de60">//开发者申请的key
+            android:value="33a24b8158dd88ca2ce15cdb5248db90">
 
+            <!-- android:value="7df4fcd424e36ceaad62d64f1c11de60"> -->
+            //开发者申请的key
         </meta-data>
-
         //支付宝
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind"></activity>
+            android:screenOrientation="behind" />
         <activity
             android:name="com.alipay.sdk.auth.AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind"></activity>
+            android:screenOrientation="behind" />
+        <activity android:name=".module.certification.all.AllCertificationListActivity" />
+        <activity android:name=".module.certification.all.IdCardActivity" />
+        <activity android:name=".module.user.userinfo.KeFuActivity" />
+        <activity android:name=".module.certification.all.AliActivity" />
+        <activity android:name=".module.stages.StagesActivity" />
+        <activity android:name=".module.stages.StagesDetailsActivity" />
+        <!-- 人脸识别 -->
+        <meta-data
+            android:name="BMOB_CHANNEL"
+            android:value="Channel ID" />
 
-
+        <activity android:name=".module.user.userinfo.ShellActivity"></activity>
     </application>
 
 </manifest>

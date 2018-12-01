@@ -2,9 +2,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ScrollView
-        android:background="@color/bg_gray"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/bg_gray">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,6 +40,36 @@
                     android:text="1000"
                     android:textSize="16sp" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/ll_qs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:paddingBottom="15dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="还款期数"
+                    android:textColor="@color/text_color"
+                    android:textSize="16sp" />
+
+
+                <TextView
+                    android:id="@+id/tv_qs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center"
+                    android:text="第一期第一天"
+                    android:textSize="16sp" />
 
             </LinearLayout>
 

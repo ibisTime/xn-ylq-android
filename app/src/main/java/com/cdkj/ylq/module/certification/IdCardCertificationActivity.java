@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.cdkj.baselibrary.activitys.ImageSelectActivity;
-import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.model.IsSuccessModes;
@@ -198,7 +197,7 @@ public class IdCardCertificationActivity extends AbsBaseActivity implements GetU
             protected void onSuccess(IsSuccessModes data, String SucMessage) {
                 if (data.isSuccess()) {
                     showToast("身份证上传成功");
-                    ImgUtils.loadActImg(IdCardCertificationActivity.this, MyConfig.IMGURL + key, mBinding.imgIdCard);
+                    ImgUtils.loadActImg(IdCardCertificationActivity.this, SPUtilHelpr.getQiNiuUrl() + key, mBinding.imgIdCard);
                     if (mCertInfoGetPersenter != null) {
                         mCertInfoGetPersenter.getCertInfo(true);
                     }
@@ -217,7 +216,7 @@ public class IdCardCertificationActivity extends AbsBaseActivity implements GetU
         if (mCertData == null) return;
 
         if (mCertData.getInfoIdentifyPic() != null) {
-//            ImgUtils.loadActImg(IdCardCertificationActivity.this, MyConfig.IMGURL + mCertData.getInfoIdentifyPic().getIdentifyPic(), mBinding.imgIdCard);
+//            ImgUtils.loadActImg(IdCardCertificationActivity.this, SPUtilHelpr.getQiNiuUrl() + mCertData.getInfoIdentifyPic().getIdentifyPic(), mBinding.imgIdCard);
         }
 /*TextUtils.equals("1", mCertData.getInfoIdentifyPicFlag())
                 && TextUtils.equals("1", mCertData.getInfoIdentifyFaceFlag())

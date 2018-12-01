@@ -76,11 +76,11 @@ public class CouponsListFragment extends BaseRefreshFragment<CoupoonsModel.ListB
 
     public void getKeyUrl() {
         Map<String, String> map = new HashMap<>();
-        map.put("ckey", "couponRule");
+        map.put("key", "couponRule");
         map.put("systemCode", MyConfig.SYSTEMCODE);
         map.put("companyCode", MyConfig.COMPANYCODE);
 
-        Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("805917", StringUtils.getJsonToString(map));
+        Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("623917", StringUtils.getJsonToString(map));
 
         addCall(call);
 

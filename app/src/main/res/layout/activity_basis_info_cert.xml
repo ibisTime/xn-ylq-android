@@ -148,7 +148,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingLeft="25dp"
-                android:paddingRight="25dp">
+                android:paddingRight="25dp"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/imageView"
@@ -184,7 +185,9 @@
 
             </LinearLayout>
 
-            <View style="@style/style_split_line" />
+            <View
+                style="@style/style_split_line"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:id="@+id/layout_bank_card_info"

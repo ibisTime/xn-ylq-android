@@ -75,7 +75,8 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements G
         setSubLeftImgState(true);
 
         setTopTitle("基本信息");
-        hideAllNoTitle();
+        //删除删除  这里打开
+//        hideAllNoTitle();
         mPresenter = new GetUserCertificationPresenter(this);
 
         initListeneer();
@@ -261,7 +262,7 @@ public class BasisInfoCertificationActivity extends AbsBaseActivity implements G
     @Override
     public void getInfoFailed(String code, String msg) {
         ToastUtil.show(this, msg);
-        showErrorView(msg);
+//        showErrorView(msg);
     }
 
     @Override

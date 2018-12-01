@@ -9,7 +9,6 @@ import android.view.View;
 
 import com.cdkj.baselibrary.activitys.ImageSelectActivity;
 import com.cdkj.baselibrary.appmanager.EventTags;
-import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.model.IsSuccessModes;
@@ -104,9 +103,9 @@ public class IdInfoUpLoadCertActivity extends AbsBaseActivity {
         mPicQiURL2 = mData.getIdentifyPicReverse();
         mPicQiURL3 = mData.getIdentifyPicHand();
 
-        ImgUtils.loadActImg(this, MyConfig.IMGURL + mData.getIdentifyPic(), mBinding.imgIdcard);
-        ImgUtils.loadActImg(this, MyConfig.IMGURL + mData.getIdentifyPicReverse(), mBinding.imgIdcardBack);
-        ImgUtils.loadActImg(this, MyConfig.IMGURL + mData.getIdentifyPicHand(), mBinding.imgIdcardPeople);
+        ImgUtils.loadActImg(this, SPUtilHelpr.getQiNiuUrl() + mData.getIdentifyPic(), mBinding.imgIdcard);
+        ImgUtils.loadActImg(this, SPUtilHelpr.getQiNiuUrl() + mData.getIdentifyPicReverse(), mBinding.imgIdcardBack);
+        ImgUtils.loadActImg(this, SPUtilHelpr.getQiNiuUrl() + mData.getIdentifyPicHand(), mBinding.imgIdcardPeople);
     }
 
 
@@ -158,15 +157,15 @@ public class IdInfoUpLoadCertActivity extends AbsBaseActivity {
                 switch (type) {
                     case PHOTOFLAG1:
                         mPicQiURL1 = key;
-                        ImgUtils.loadActImg(IdInfoUpLoadCertActivity.this, MyConfig.IMGURL + key, mBinding.imgIdcard);
+                        ImgUtils.loadActImg(IdInfoUpLoadCertActivity.this, SPUtilHelpr.getQiNiuUrl() + key, mBinding.imgIdcard);
                         break;
                     case PHOTOFLAG2:
                         mPicQiURL2 = key;
-                        ImgUtils.loadActImg(IdInfoUpLoadCertActivity.this, MyConfig.IMGURL + key, mBinding.imgIdcardBack);
+                        ImgUtils.loadActImg(IdInfoUpLoadCertActivity.this, SPUtilHelpr.getQiNiuUrl() + key, mBinding.imgIdcardBack);
                         break;
                     case PHOTOFLAG3:
                         mPicQiURL3 = key;
-                        ImgUtils.loadActImg(IdInfoUpLoadCertActivity.this, MyConfig.IMGURL + key, mBinding.imgIdcardPeople);
+                        ImgUtils.loadActImg(IdInfoUpLoadCertActivity.this, SPUtilHelpr.getQiNiuUrl() + key, mBinding.imgIdcardPeople);
                         break;
                 }
             }
@@ -257,28 +256,28 @@ public class IdInfoUpLoadCertActivity extends AbsBaseActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_OK || data == null) {
-            return;
-        }
-
-        String path = data.getStringExtra(ImageSelectActivity.staticPath);
-
-        if (TextUtils.isEmpty(path)) {
-            switch (requestCode) {
-                case PHOTOFLAG1:
-                    showToast("身份证正面照上传错误,请重新拍摄");
-                    break;
-                case PHOTOFLAG2:
-                    showToast("身份证反面照上传错误,请重新拍摄");
-                    break;
-                case PHOTOFLAG3:
-                    showToast("身份证手持照上传错误,请重新拍摄");
-                    break;
+        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
+            if (resultCode != RESULT_OK || data == null) {
+                return;
             }
-            return;
-        }
+
+            String path = data.getStringExtra(ImageSelectActivity.staticPath);
+
+            if (TextUtils.isEmpty(path)) {
+                switch (requestCode) {
+                    case PHOTOFLAG1:
+                        showToast("身份证正面照上传错误,请重新拍摄");
+                        break;
+                    case PHOTOFLAG2:
+                        showToast("身份证反面照上传错误,请重新拍摄");
+                        break;
+                    case PHOTOFLAG3:
+                        showToast("身份证手持照上传错误,请重新拍摄");
+                        break;
+                }
+                return;
+            }
         getQiniuToken(requestCode, path);
     }
 }

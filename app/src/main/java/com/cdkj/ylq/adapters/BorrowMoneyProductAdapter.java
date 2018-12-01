@@ -35,7 +35,7 @@ public class BorrowMoneyProductAdapter extends BaseQuickAdapter<PorductListModel
         if (item == null) return;
         CardView cardView = helper.getView(R.id.cardview);
         try {
-            cardView.setCardBackgroundColor(Color.parseColor(item.getUiColor()));
+            cardView.setCardBackgroundColor(Color.parseColor(item.getColor()));
         } catch (Exception e) {
             cardView.setCardBackgroundColor(Color.parseColor("#0cb8ae"));//颜色解析失败时设置默认颜色
         }
@@ -49,7 +49,8 @@ public class BorrowMoneyProductAdapter extends BaseQuickAdapter<PorductListModel
             cardView.setAlpha(1);
             helper.setGone(R.id.img_state, false);
             helper.setGone(R.id.tv_state, true);
-            helper.setText(R.id.tv_level_satate, "极速放款");
+            helper.setText(R.id.tv_level_satate, item.getSlogan());
+//            helper.setText(R.id.tv_level_satate, "极速放款");
         }
 
         helper.setText(R.id.tv_money, MoneyUtils.showPrice(item.getAmount()) + "");

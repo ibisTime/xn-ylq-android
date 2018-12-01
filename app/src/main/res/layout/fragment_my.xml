@@ -63,6 +63,7 @@
                         android:paddingLeft="15dp"
                         android:textColor="@color/white"
                         android:textSize="16sp"
+                        android:visibility="gone"
                         tools:text="sdfsf" />
 
                     <TextView
@@ -74,8 +75,7 @@
                         android:paddingLeft="15dp"
                         android:textColor="@color/white"
                         android:textSize="14sp"
-                        android:visibility="gone"
-                        tools:text="sdfsf" />
+                        tools:text="1333333333" />
 
                 </LinearLayout>
 
@@ -175,7 +175,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="元"
+                                android:text=""
                                 android:textColor="@color/item_lv1_open"
                                 android:textSize="12sp" />
 
@@ -186,7 +186,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="我的额度"
+                            android:text="我的推荐"
                             android:textColor="@color/text_color"
                             android:textSize="13sp" />
 
@@ -207,7 +207,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingLeft="25dp"
-                android:paddingRight="25dp">
+                android:paddingRight="25dp"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="18dp"
@@ -304,7 +305,8 @@
 
             <View
                 style="@style/style_split_line"
-                android:layout_height="10dp" />
+                android:layout_height="10dp"
+                android:visibility="gone" />
 
 
             <LinearLayout
@@ -341,6 +343,7 @@
             </LinearLayout>
 
             <View style="@style/style_split_line" />
+
             <LinearLayout
                 android:id="@+id/layout_kefu"
                 android:layout_width="match_parent"
@@ -406,7 +409,9 @@
 
             </LinearLayout>
 
-            <View style="@style/style_split_line" />
+            <View
+                style="@style/style_split_line"
+                android:layout_height="10dp" />
 
             <LinearLayout
                 android:id="@+id/lin_setting"
@@ -429,7 +434,7 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:paddingLeft="15dp"
-                    android:text="设置"
+                    android:text="个人设置"
                     android:textColor="@color/black_2"
                     android:textSize="16sp" />
 
@@ -452,12 +457,12 @@
                 android:paddingTop="50dp">
 
                 <ImageView
-                    android:visibility="gone"
                     android:id="@+id/img_phone"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/phone_black" />
+                    android:src="@drawable/phone_black"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tv_service_phone"
