@@ -64,6 +64,7 @@ public class UseMoneyRecordActivity extends CommonTablayoutActivity {
 
         List<Fragment> mFragments = new ArrayList<>();
 
+        mFragments.add(UseMoneyRecordFragment.getInstanse(BusinessSings.USEMONEYRECORD_all));
         mFragments.add(UseMoneyRecordFragment.getInstanse(BusinessSings.USEMONEYRECORD_0));
         mFragments.add(UseMoneyRecordFragment.getInstanse(BusinessSings.USEMONEYRECORD_2));
         mFragments.add(UseMoneyRecordFragment.getInstanse(BusinessSings.USEMONEYRECORD_1));
@@ -79,6 +80,7 @@ public class UseMoneyRecordActivity extends CommonTablayoutActivity {
     public List<String> getFragmentTitles() {
         List<String> mTitles = new ArrayList<>();
 
+        mTitles.add("全部");
         mTitles.add("待审核");
         mTitles.add("审核不通过");
         mTitles.add("待放款");

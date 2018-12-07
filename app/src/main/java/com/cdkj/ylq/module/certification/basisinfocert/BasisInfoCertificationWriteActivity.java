@@ -14,7 +14,6 @@ import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.model.IsSuccessModes;
-import com.cdkj.baselibrary.nets.BaseResponseListCallBack;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
@@ -25,7 +24,6 @@ import com.cdkj.ylq.model.KeyDataModel;
 import com.cdkj.ylq.module.api.MyApiServer;
 import com.lljjcoder.citypickerview.widget.CityPicker;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -201,7 +199,7 @@ public class BasisInfoCertificationWriteActivity extends AbsBaseActivity {
         map.put("liveTime", mLiveDaysCode);
         map.put("marriage", mMarriagesCode);
         map.put("provinceCity", mBinding.tvCity.getText().toString());
-        map.put("qq", mBinding.editQq.getText().toString());
+        map.put("wechat", mBinding.editQq.getText().toString());
         map.put("userId", SPUtilHelpr.getUserId());
 
         Call call = RetrofitUtils.getBaseAPiService().successRequest("623040", StringUtils.getJsonToString(map));
@@ -324,7 +322,7 @@ public class BasisInfoCertificationWriteActivity extends AbsBaseActivity {
         mBinding.editChildNum.setText(mInfoData.getChildrenNum() + "");
         mBinding.tvCity.setText(mInfoData.getProvinceCity());
         mBinding.editAddress.setText(mInfoData.getAddress());
-        mBinding.editQq.setText(mInfoData.getQq());
+        mBinding.editQq.setText(mInfoData.getWechat());
         mBinding.editEmail.setText(mInfoData.getEmail());
     }
 

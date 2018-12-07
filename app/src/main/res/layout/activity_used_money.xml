@@ -112,7 +112,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="8dp"
                                         android:layout_marginTop="18dp"
-                                        android:text="合同编号"
+                                        android:text="借款单号"
                                         android:textColor="@color/text_hint_color"
                                         android:textSize="16sp" />
 
@@ -132,6 +132,7 @@
                                 </FrameLayout>
 
                                 <ImageView
+                                    android:visibility="gone"
                                     android:layout_width="15dp"
                                     android:layout_height="15dp"
                                     android:layout_gravity="bottom"
@@ -551,7 +552,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="8dp"
                                     android:layout_marginTop="18dp"
-                                    android:text="续期次数"
+                                    android:text="分期次数"
                                     android:textColor="@color/text_hint_color"
                                     android:textSize="16sp" />
 
@@ -574,6 +575,7 @@
                                         android:textSize="16sp" />
 
                                     <ImageView
+                                        android:visibility="gone"
                                         android:layout_width="15dp"
                                         android:layout_height="15dp"
                                         android:src="@drawable/more_right" />
@@ -628,6 +630,7 @@
                 android:textSize="16sp" />
 
             <Button
+                android:visibility="gone"
                 android:id="@+id/btn_renewal"
                 android:layout_width="0dp"
                 android:layout_height="45dp"

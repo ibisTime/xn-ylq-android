@@ -31,6 +31,8 @@ import java.util.Map;
 
 import retrofit2.Call;
 
+import static com.cdkj.ylq.appmanager.BusinessSings.USEMONEYRECORD_all;
+
 /**
  * 借款记录列表
  * Created by 李先俊 on 2017/8/8.
@@ -88,7 +90,18 @@ public class UseMoneyRecordFragment extends BaseRefreshFragment<UseMoneyRecordMo
         map.put("applyUser", SPUtilHelpr.getUserId());
 
         List<String> status = new ArrayList<>();
-        status.add(requestState);
+        if (TextUtils.equals(requestState, USEMONEYRECORD_all)) {
+            status.add("0");
+            status.add("1");
+            status.add("2");
+            status.add("3");
+            status.add("4");
+            status.add("5");
+            status.add("7");
+        } else {
+            status.add(requestState);
+        }
+
         map.put("statusList", status);
 
         Call call = RetrofitUtils.createApi(MyApiServer.class).getRecordList("623087", StringUtils.getJsonToString(map));

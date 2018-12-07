@@ -14,8 +14,8 @@
             android:orientation="horizontal"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
-            android:weightSum="3">
-
+            >
+<!--//android:weightSum="3"-->
             <RadioButton
                 android:id="@+id/radio_main_tab_money"
                 android:layout_width="0dp"

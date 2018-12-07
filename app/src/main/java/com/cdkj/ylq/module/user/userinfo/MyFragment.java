@@ -20,12 +20,14 @@ import com.cdkj.baselibrary.model.IsSuccessModes;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.ImgUtils;
+import com.cdkj.baselibrary.utils.MoneyUtils;
 import com.cdkj.baselibrary.utils.QiNiuHelper;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.baselibrary.utils.ToastUtil;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.appmanager.BusinessSings;
 import com.cdkj.ylq.databinding.FragmentMyBinding;
+import com.cdkj.ylq.model.CanUseMoneyModel;
 import com.cdkj.ylq.model.UserInfoModel;
 import com.cdkj.ylq.module.api.MyApiServer;
 import com.cdkj.ylq.module.user.userinfo.usemoneyrecord.UseMoneyRecordActivity;
@@ -120,6 +122,8 @@ public class MyFragment extends BaseLazyFragment {
 
 //        mBinding.tvUserName.setText(data.getNickname());
         mBinding.tvUserPhone.setText(data.getMobile());
+        mBinding.tvCouponnsNum.setText(data.getCouponCount() + "");
+        mBinding.tvMoney.setText(data.getStageCount() + "");
 
     }
 
@@ -157,24 +161,24 @@ public class MyFragment extends BaseLazyFragment {
         });
     }
 
-//    //获取额度
-//    public void getCanUseMoneyData() {
-//        Map<String, String> map = new HashMap<>();
-//        map.put("userId", SPUtilHelpr.getUserId());
-//        Call call = RetrofitUtils.createApi(MyApiServer.class).getCanUseMoney("623051", StringUtils.getJsonToString(map));
-//        addCall(call);
-//        call.enqueue(new BaseResponseModelCallBack<CanUseMoneyModel>(mActivity) {
-//
-//            @Override
-//            protected void onSuccess(CanUseMoneyModel data, String SucMessage) {
-//                mBinding.tvMoney.setText(MoneyUtils.showPrice(data.getSxAmount()));
-//            }
-//
-//            @Override
-//            protected void onFinish() {
-//            }
-//        });
-//    }
+    //    //获取额度
+    public void getCanUseMoneyData() {
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", SPUtilHelpr.getUserId());
+        Call call = RetrofitUtils.createApi(MyApiServer.class).getCanUseMoney("623051", StringUtils.getJsonToString(map));
+        addCall(call);
+        call.enqueue(new BaseResponseModelCallBack<CanUseMoneyModel>(mActivity) {
+
+            @Override
+            protected void onSuccess(CanUseMoneyModel data, String SucMessage) {
+                mBinding.tvUserCreditScore.setText("信用分：" + MoneyUtils.showPriceInt(data.getSxAmount()));
+            }
+
+            @Override
+            protected void onFinish() {
+            }
+        });
+    }
 
     //获取优惠券数量
 //    public void getCouponNums() {
@@ -271,7 +275,7 @@ public class MyFragment extends BaseLazyFragment {
     public void onResume() {
         super.onResume();
         if (getUserVisibleHint() && mBinding != null) {
-//            getAllData();
+            getAllData();
         }
     }
 
@@ -284,7 +288,7 @@ public class MyFragment extends BaseLazyFragment {
 
     private void getAllData() {
 //        getCouponNums();
-//        getCanUseMoneyData();
+        getCanUseMoneyData();
         getUserInfoRequest(true);
         getServiceTelephone();
         getServiceTime();

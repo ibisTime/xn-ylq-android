@@ -17,11 +17,8 @@ import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivityUsedMoneyBinding;
 import com.cdkj.ylq.model.UseMoneyRecordModel;
 import com.cdkj.ylq.module.api.MyApiServer;
-import com.cdkj.ylq.module.borrowmoney.ContractShowActivity;
-import com.cdkj.ylq.module.borrowmoney.SigningTipsWebViewActivity;
 import com.cdkj.ylq.module.pay.AlsoMoneyTabActivity;
 import com.cdkj.ylq.module.pay.RenewalMoneyTabActivity;
-import com.cdkj.ylq.module.renewal.RenewalListActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -116,7 +113,7 @@ public class UsedMoneyDetailsActivity extends AbsBaseActivity {
         mBinding.tvFuwu.setText(MoneyUtils.showPrice(mData.getFwAmount()) + "元");
         mBinding.tvYqMoney.setText(MoneyUtils.showPrice(mData.getYqlxAmount()) + "元");
 
-        mBinding.tvXuqiNum.setText(mData.getRenewalCount() + "");
+        mBinding.tvXuqiNum.setText(mData.getStageBatch() + "");
     }
 
 
@@ -159,18 +156,18 @@ public class UsedMoneyDetailsActivity extends AbsBaseActivity {
             if (mData == null) return;
             RenewalMoneyTabActivity.open(this, mData);
         });
-        //续期次数
-        mBinding.fraXuqi.setOnClickListener(v -> {
-            if (mData == null) return;
-            RenewalListActivity.open(this, mData.getCode());
-        });
+//        //续期次数
+//        mBinding.fraXuqi.setOnClickListener(v -> {
+//            if (mData == null) return;
+//            RenewalListActivity.open(this, mData.getCode());
+//        });
         //借款编号
-        mBinding.layoutCode.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(mBinding.tvCode.getText().toString())) {
-                return;
-            }
-            ContractShowActivity.open(this, mBinding.tvCode.getText().toString());
-        });
+//        mBinding.layoutCode.setOnClickListener(v -> {
+//            if (TextUtils.isEmpty(mBinding.tvCode.getText().toString())) {
+//                return;
+//            }
+//            ContractShowActivity.open(this, mBinding.tvCode.getText().toString());
+//        });
 
     }
 

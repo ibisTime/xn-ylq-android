@@ -77,7 +77,20 @@
                         android:textSize="14sp"
                         tools:text="1333333333" />
 
+
+                    <TextView
+                        android:id="@+id/tv_user_credit_score"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="15dp"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:text="信用分：0" />
                 </LinearLayout>
+
 
             </LinearLayout>
 

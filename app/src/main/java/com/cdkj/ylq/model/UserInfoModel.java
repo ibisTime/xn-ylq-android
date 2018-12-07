@@ -51,6 +51,24 @@ public class UserInfoModel implements Parcelable {
     private String photo;
     private String blacklistFlag;
     private String bankcardFlag;
+    private int stageCount;//推荐个数
+    private int couponCount;//优惠券
+
+    public int getStageCount() {
+        return stageCount;
+    }
+
+    public void setStageCount(int stageCount) {
+        this.stageCount = stageCount;
+    }
+
+    public int getCouponCount() {
+        return couponCount;
+    }
+
+    public void setCouponCount(int couponCount) {
+        this.couponCount = couponCount;
+    }
 
     public String getBlacklistFlag() {
         return blacklistFlag;

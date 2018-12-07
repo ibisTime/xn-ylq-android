@@ -128,6 +128,7 @@ public class AddressBookCertActivity extends AbsBaseActivity {
                                         .setContentMsg("1.请授予读取手机联系人权限\n" +
                                                 "2.请检查通讯录是否有联系人。")
                                         .setPositiveBtn("确定", view -> {
+
                                         });
                                 commonDialog.show();
 
@@ -142,7 +143,7 @@ public class AddressBookCertActivity extends AbsBaseActivity {
                 disMissLoading();
                 showToast("请授予读取手机联系人权限");
             }
-        }, Manifest.permission.READ_CONTACTS, Manifest.permission.READ_EXTERNAL_STORAGE);
+        }, Manifest.permission.READ_CONTACTS, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.ACCESS_COARSE_LOCATION);
     }
 
 

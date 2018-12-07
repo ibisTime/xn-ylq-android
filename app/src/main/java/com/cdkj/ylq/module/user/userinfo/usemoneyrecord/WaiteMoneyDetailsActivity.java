@@ -142,7 +142,7 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
 
         Map<String, String> map = new HashMap<String, String>();
         map.put("code", mData.getCode());
-        Call call = RetrofitUtils.getBaseAPiService().successRequest("623079", StringUtils.getJsonToString(map));
+        Call call = RetrofitUtils.getBaseAPiService().successRequest("623073", StringUtils.getJsonToString(map));
 
         addCall(call);
 

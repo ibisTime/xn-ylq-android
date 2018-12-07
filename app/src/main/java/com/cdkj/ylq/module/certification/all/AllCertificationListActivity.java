@@ -27,6 +27,9 @@ import com.cdkj.ylq.module.certification.AddressBookCertActivity;
 import com.cdkj.ylq.module.certification.basisinfocert.BasisInfoCertificationActivity;
 import com.cdkj.ylq.mpresenter.GetUserCertificationInfoListener;
 import com.cdkj.ylq.mpresenter.GetUserCertificationPresenter;
+import com.moxie.client.manager.MoxieSDK;
+import com.moxie.client.model.MxLoginCustom;
+import com.moxie.client.model.MxParam;
 import com.zqzn.idauth.sdk.DetectEngine;
 import com.zqzn.idauth.sdk.ErrorCode;
 import com.zqzn.idauth.sdk.FaceResultCallback;
@@ -49,8 +52,9 @@ public class AllCertificationListActivity extends AbsBaseActivity implements Get
     private GetUserCertificationPresenter mCertInfoPresenter;
     private CerttificationInfoModel mCertData;
 
-    String app_key = "nJXnQp568zYcnBdPQxC7TANqakUUCjRZqZK8TrwGt7";
-    String secret_key = "887DE27B914988C9CF7B2DEE15E3EDF8";
+    private final String app_key = "nJXnQp568zYcnBdPQxC7TANqakUUCjRZqZK8TrwGt7";
+    private final String secret_key = "887DE27B914988C9CF7B2DEE15E3EDF8";
+    private final String moxieApiKey = "079bae4e7fd041b9a1d986e16e75e3e5";
     private DetectEngine detectEngine;
     private String faceImage;
     private String backImage;
@@ -98,7 +102,9 @@ public class AllCertificationListActivity extends AbsBaseActivity implements Get
         tv.setText(text);
         if (TextUtils.equals("1", type)) {
             tv.setTextColor(ContextCompat.getColor(this, R.color.cert_state_ok));
-        } else if (TextUtils.equals("2", "type")) {
+        } else if (TextUtils.equals("2", type)) {
+            tv.setTextColor(ContextCompat.getColor(this, R.color.guoqi));
+        } else if (TextUtils.equals("3", type)) {
             tv.setTextColor(ContextCompat.getColor(this, R.color.guoqi));
         } else {
             tv.setTextColor(ContextCompat.getColor(this, R.color.txt_gray));
@@ -110,14 +116,14 @@ public class AllCertificationListActivity extends AbsBaseActivity implements Get
             return;
         }
         mBinding.llBasic.setOnClickListener(v -> {
-            if (!TextUtils.equals("1", mCertData.getInfoPersonalFlag())) {
+            if (TextUtils.equals("0", mCertData.getInfoPersonalFlag())) {
                 BasisInfoCertificationActivity.open(this);
             }
         });
 
         mBinding.llIdCard.setOnClickListener(v -> {
             //身份认证  IdCardActivity.open(this);
-            if (!TextUtils.equals("1", mCertData.getInfoZqznFlag())) {
+            if (TextUtils.equals("0", mCertData.getInfoZqznFlag())) {
                 try {
                     if (detectEngine.id_ocr(AllCertificationListActivity.this, app_key, secret_key, AllCertificationListActivity.this) != ErrorCode.SUCCESS.getCode())
                         Toast.makeText(getApplicationContext(), "接口调用失败", Toast.LENGTH_LONG).show();
@@ -132,20 +138,92 @@ public class AllCertificationListActivity extends AbsBaseActivity implements Get
         });
         //支付宝
         mBinding.llZfb.setOnClickListener(v -> {
-            if (!TextUtils.equals("1", mCertData.getInfoZfbFlag())) {
-                AliActivity.open(this);
+//            AliActivity.open(this);
+            if (TextUtils.equals("0", mCertData.getInfoZfbFlag())) {
+                MxParam mxParam = new MxParam();
+                mxParam.setUserId(SPUtilHelpr.getUserId());
+                mxParam.setApiKey(moxieApiKey);
+                mxParam.setThemeColor("#0cb8ae");
+                mxParam.setBannerBgColor("#0cb8ae");
+                mxParam.setBannerTxtColor("#ffffff");
+                mxParam.setTaskType(MxParam.PARAM_TASK_ALIPAY);
+                MoxieSDK.getInstance().start(this, mxParam, null);
             }
         });
         //通讯录
         mBinding.llTxl.setOnClickListener(v -> {
-            if (!TextUtils.equals("1", mCertData.getInfoAddressBookFlag())) {
+            if (TextUtils.equals("0", mCertData.getInfoAddressBookFlag())) {
                 AddressBookCertActivity.open(this, TextUtils.equals("1", mCertData.getInfoAddressBookFlag()));
             }
         });
         //运营商
         mBinding.llOperator.setOnClickListener(v -> {
-            showToast("暂未实现");
+            if (TextUtils.equals("0", mCertData.getInfoCarrierFlag())) {
+                //判断是否已经实名认证过了
+                if (TextUtils.equals("1", mCertData.getInfoZqznFlag())) {
+                    //已经实名认证//携带数据自动填充信息
+                    startOperatorRZ(true);
+                } else {
+                    //直接去认证
+                    startOperatorRZ(false);
+                }
+            }
+//            OperatorActivity.open(this);
         });
+    }
+
+    private void startOperatorRZ(boolean isRZ) {
+        MxParam mxParam = new MxParam();
+        mxParam.setUserId(SPUtilHelpr.getUserId());
+        mxParam.setApiKey(moxieApiKey);
+        mxParam.setThemeColor("#0cb8ae");//设置SDK 主色调
+        mxParam.setBannerBgColor("#0cb8ae");
+        mxParam.setBannerTxtColor("#ffffff");
+        mxParam.setTaskType(MxParam.PARAM_TASK_CARRIER);
+//没有实名认证就直接去认证
+        if (!isRZ) {
+            MoxieSDK.getInstance().start(this, mxParam, null);
+            return;
+        }
+        //已经实名认证过了 弹窗提醒需不需要将信息携带过去
+        CerttificationInfoModel.InfoZqznBean infoZqzn = mCertData.getInfoZqzn();
+        CerttificationInfoModel.InfoZqznBean.ZqznInfoFrontBean zqznInfoFront = infoZqzn.getZqznInfoFront();
+        //如果返回信息为空的话也直接去 去认证不携带信息
+        if (infoZqzn == null || zqznInfoFront == null) {
+            MoxieSDK.getInstance().start(this, mxParam, null);
+            return;
+
+        }
+        MxLoginCustom loginCustom = new MxLoginCustom();
+        Map<String, Object> loginParam = new HashMap<>();
+        loginParam.put("phone", SPUtilHelpr.getUserPhoneNum());          // 手机号
+        loginParam.put("name", zqznInfoFront.getName());               // 姓名
+        loginParam.put("idcard", zqznInfoFront.getIdNo());  // 身份证
+        loginCustom.setLoginParams(loginParam);
+        mxParam.setLoginCustom(loginCustom);
+        MoxieSDK.getInstance().start(this, mxParam, null);
+
+//        CommonDialog commonDialog = new CommonDialog(this).builder()
+//                .setTitle("请确认个人信息")
+//                .setCancelable(true)//返回键可取消
+//                .setCanceledOnTouchOutside(true)//点击空白可取消
+//                .setContentMsg("姓名: " + zqznInfoFront.getName() + "\n\n" +
+//                        "手机号: " + SPUtilHelpr.getUserPhoneNum() + "\n\n" +
+//                        "身份证号码: " + zqznInfoFront.getIdNo())
+//                .setPositiveBtn("是", view -> {
+//                    MxLoginCustom loginCustom = new MxLoginCustom();
+//                    Map<String, Object> loginParam = new HashMap<>();
+//                    loginParam.put("phone", SPUtilHelpr.getUserPhoneNum());          // 手机号
+//                    loginParam.put("name", zqznInfoFront.getName());               // 姓名
+//                    loginParam.put("idcard", zqznInfoFront.getIdNo());  // 身份证
+//                    loginCustom.setLoginParams(loginParam);
+//                    mxParam.setLoginCustom(loginCustom);
+//                    MoxieSDK.getInstance().start(this, mxParam, null);
+//                }).setNegativeBtn("不是", view -> {
+//                    MoxieSDK.getInstance().start(this, mxParam, null);
+//                }, false);
+//
+//        commonDialog.show();
     }
 
     //认证结果的四个回调
@@ -161,9 +239,10 @@ public class AllCertificationListActivity extends AbsBaseActivity implements Get
 
         if (TextUtils.equals("1", mCertData.getInfoZqznFlag())) { //身份认证
             setViewData("1", "已认证", mBinding.tvIdCardType);
-
         } else if (TextUtils.equals("2", mCertData.getInfoZqznFlag())) {
             setViewData("2", "已过期", mBinding.tvIdCardType);
+        } else if (TextUtils.equals("3", mCertData.getInfoZqznFlag())) {
+            setViewData("3", "认证中", mBinding.tvIdCardType);
         } else {
             setViewData("", "未认证", mBinding.tvIdCardType);
         }
@@ -173,6 +252,8 @@ public class AllCertificationListActivity extends AbsBaseActivity implements Get
 
         } else if (TextUtils.equals("2", mCertData.getInfoPersonalFlag())) {
             setViewData("2", "已过期", mBinding.tvBasicType);
+        } else if (TextUtils.equals("3", mCertData.getInfoPersonalFlag())) {
+            setViewData("3", "认证中", mBinding.tvBasicType);
         } else {
             setViewData("", "未认证", mBinding.tvBasicType);
         }
@@ -182,14 +263,19 @@ public class AllCertificationListActivity extends AbsBaseActivity implements Get
 
         } else if (TextUtils.equals("2", mCertData.getInfoIdentifyFlag())) {
             setViewData("2", "已过期", mBinding.tvOperatorType);
+        } else if (TextUtils.equals("3", mCertData.getInfoIdentifyFlag())) {
+            setViewData("3", "认证中", mBinding.tvOperatorType);
         } else {
             setViewData("", "未认证", mBinding.tvOperatorType);
         }
+
         if (TextUtils.equals("1", mCertData.getInfoZfbFlag())) { //支付宝
             setViewData("1", "已认证", mBinding.tvZfbType);
 
         } else if (TextUtils.equals("2", mCertData.getInfoIdentifyFlag())) {
             setViewData("2", "已过期", mBinding.tvZfbType);
+        } else if (TextUtils.equals("3", mCertData.getInfoIdentifyFlag())) {
+            setViewData("3", "认证中", mBinding.tvZfbType);
         } else {
             setViewData("", "未认证", mBinding.tvZfbType);
         }
@@ -199,8 +285,21 @@ public class AllCertificationListActivity extends AbsBaseActivity implements Get
 
         } else if (TextUtils.equals("2", mCertData.getInfoAddressBookFlag())) {
             setViewData("2", "已过期", mBinding.tvTxlType);
+        } else if (TextUtils.equals("3", mCertData.getInfoAddressBookFlag())) {
+            setViewData("3", "认证中", mBinding.tvTxlType);
         } else {
             setViewData("", "未认证", mBinding.tvTxlType);
+        }
+
+        if (TextUtils.equals("1", mCertData.getInfoCarrierFlag())) { //运营商
+            setViewData("1", "已认证", mBinding.tvOperatorType);
+
+        } else if (TextUtils.equals("2", mCertData.getInfoCarrierFlag())) {
+            setViewData("2", "已过期", mBinding.tvOperatorType);
+        } else if (TextUtils.equals("3", mCertData.getInfoCarrierFlag())) {
+            setViewData("3", "认证中", mBinding.tvOperatorType);
+        } else {
+            setViewData("", "未认证", mBinding.tvOperatorType);
         }
 
     }

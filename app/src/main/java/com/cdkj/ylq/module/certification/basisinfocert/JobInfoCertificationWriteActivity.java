@@ -14,7 +14,6 @@ import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.model.IsSuccessModes;
-import com.cdkj.baselibrary.nets.BaseResponseListCallBack;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
@@ -179,12 +178,12 @@ public class JobInfoCertificationWriteActivity extends AbsBaseActivity {
             showToast("请选择月收入");
             return;
         }
-        if (TextUtils.isEmpty(mBinding.tvCity.getText().toString())) {
-            showToast("请选择城市");
-            return;
-        }
         if (TextUtils.isEmpty(mBinding.editCompanyName.getText().toString())) {
             showToast("请输入单位名称");
+            return;
+        }
+        if (TextUtils.isEmpty(mBinding.tvCity.getText().toString())) {
+            showToast("请选择城市");
             return;
         }
         if (TextUtils.isEmpty(mBinding.editAddressJob.getText().toString())) {

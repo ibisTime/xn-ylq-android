@@ -18,8 +18,6 @@ import com.cdkj.ylq.databinding.ActivityUseingMoneyBinding;
 import com.cdkj.ylq.model.UseMoneyRecordModel;
 import com.cdkj.ylq.module.api.MyApiServer;
 import com.cdkj.ylq.module.pay.AlsoMoneyTabActivity;
-import com.cdkj.ylq.module.pay.RenewalMoneyTabActivity;
-import com.cdkj.ylq.module.renewal.RenewalListActivity;
 import com.cdkj.ylq.module.stages.StagesActivity;
 
 import java.util.ArrayList;
@@ -103,11 +101,14 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
             mBinding.fraStateNote.setVisibility(View.GONE);
             mBinding.imgState.setImageResource(R.drawable.record_3);
             mBinding.layoutStateBtn.setVisibility(View.VISIBLE);
+            mBinding.tvDaoqi.setText(MoneyUtils.showPrice(mData.getTotalAmount()) + "元");
 
         } else {
             mBinding.fraStateNote.setVisibility(View.VISIBLE);
             mBinding.imgState.setImageResource(R.drawable.record_4);
             mBinding.layoutStateBtn.setVisibility(View.GONE);
+            mBinding.tvDaoqi.setText(MoneyUtils.showPrice(mData.getRealHkAmount()) + "元");
+
             setTopTitle("已还款详情");
         }
 
@@ -123,9 +124,9 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
         mBinding.tvGuanli.setText(MoneyUtils.showPrice(mData.getGlAmount()) + "元");
         mBinding.tvLixi.setText(MoneyUtils.showPrice(mData.getLxAmount()) + "元");
         mBinding.tvJianmian.setText(MoneyUtils.showPrice(mData.getYhAmount()) + "元");
-        mBinding.tvDaoqi.setText(MoneyUtils.showPrice(mData.getTotalAmount()) + "元");
         mBinding.tvService.setText(MoneyUtils.showPrice(mData.getFwAmount()) + "元");
-        mBinding.tvXuqiNum.setText(mData.getRenewalCount() + "");
+//        mBinding.tvXuqiNum.setText(mData.getRenewalCount() + "");
+        mBinding.tvXuqiNum.setText(mData.getStageBatch() + "");
 
         if (TextUtils.equals("0", mData.getIsStage())) {
             //不是分期
@@ -164,16 +165,16 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
                 AlsoMoneyTabActivity.open(this, mData.getCode(), MoneyUtils.showPrice(mData.getTotalAmount()));
             }
         });
-        //续期
-        mBinding.btnRenewal.setOnClickListener(v -> {
-            if (mData == null) return;
-            RenewalMoneyTabActivity.open(this, mData);
-        });
+////        续期
+////        mBinding.btnRenewal.setOnClickListener(v -> {
+////            if (mData == null) return;
+////            RenewalMoneyTabActivity.open(this, mData);
+////        });
 
-        mBinding.fraXuqi.setOnClickListener(v -> {
-            if (mData == null) return;
-            RenewalListActivity.open(this, mData.getCode());
-        });
+//        mBinding.fraXuqi.setOnClickListener(v -> {
+//            if (mData == null) return;
+//            RenewalListActivity.open(this, mData.getCode());
+//        });
 
         //借款编号  不需要借款合同了去掉点击事件
 //        mBinding.layoutCode.setOnClickListener(v -> {

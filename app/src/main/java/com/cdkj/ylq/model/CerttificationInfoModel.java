@@ -56,6 +56,15 @@ public class CerttificationInfoModel  {
     private String infoZfbFlag;
     private String infoZqznFlag;
     private String infoPersonalFlag;
+    private InfoZqznBean infoZqzn;
+
+    public InfoZqznBean getInfoZqzn() {
+        return infoZqzn;
+    }
+
+    public void setInfoZqzn(InfoZqznBean infoZqzn) {
+        this.infoZqzn = infoZqzn;
+    }
 
     public String getInfoPersonalFlag() {
         return infoPersonalFlag;
@@ -293,7 +302,7 @@ public class CerttificationInfoModel  {
         private String provinceCity;
         private String address;
         private String liveTime;
-        private String qq;
+        private String wechat;
         private String email;
 
         public String getEducation() {
@@ -344,12 +353,12 @@ public class CerttificationInfoModel  {
             this.liveTime = liveTime;
         }
 
-        public String getQq() {
-            return qq;
+        public String getWechat() {
+            return wechat;
         }
 
-        public void setQq(String qq) {
-            this.qq = qq;
+        public void setWechat(String wechat) {
+            this.wechat = wechat;
         }
 
         public String getEmail() {
@@ -373,7 +382,7 @@ public class CerttificationInfoModel  {
             dest.writeString(this.provinceCity);
             dest.writeString(this.address);
             dest.writeString(this.liveTime);
-            dest.writeString(this.qq);
+            dest.writeString(this.wechat);
             dest.writeString(this.email);
         }
 
@@ -387,7 +396,7 @@ public class CerttificationInfoModel  {
             this.provinceCity = in.readString();
             this.address = in.readString();
             this.liveTime = in.readString();
-            this.qq = in.readString();
+            this.wechat = in.readString();
             this.email = in.readString();
         }
 
@@ -693,6 +702,160 @@ public class CerttificationInfoModel  {
         };
     }
 
+    public static class InfoZqznBean {
+        /**
+         * zqznInfoFront : {"idNo":"412723199001014298","address":"河南省商水县舒庄乡汾河村七组","gender":"男","race":"汉","name":"邵建飞","birth":"1990.01.01"}
+         * zqznInfoBack : {"issuedBy":"商水县公安局","validDate":"2014.08.04-2024.08.04"}
+         * zqznInfoRealAuth : {"verifyStatus":1,"reason":""}
+         */
+
+        private ZqznInfoFrontBean zqznInfoFront;
+        private ZqznInfoBackBean zqznInfoBack;
+        private ZqznInfoRealAuthBean zqznInfoRealAuth;
+
+        public ZqznInfoFrontBean getZqznInfoFront() {
+            return zqznInfoFront;
+        }
+
+        public void setZqznInfoFront(ZqznInfoFrontBean zqznInfoFront) {
+            this.zqznInfoFront = zqznInfoFront;
+        }
+
+        public ZqznInfoBackBean getZqznInfoBack() {
+            return zqznInfoBack;
+        }
+
+        public void setZqznInfoBack(ZqznInfoBackBean zqznInfoBack) {
+            this.zqznInfoBack = zqznInfoBack;
+        }
+
+        public ZqznInfoRealAuthBean getZqznInfoRealAuth() {
+            return zqznInfoRealAuth;
+        }
+
+        public void setZqznInfoRealAuth(ZqznInfoRealAuthBean zqznInfoRealAuth) {
+            this.zqznInfoRealAuth = zqznInfoRealAuth;
+        }
+
+        public static class ZqznInfoFrontBean {
+            /**
+             * idNo : 412723199001014298
+             * address : 河南省商水县舒庄乡汾河村七组
+             * gender : 男
+             * race : 汉
+             * name : 邵建飞
+             * birth : 1990.01.01
+             */
+
+            private String idNo;
+            private String address;
+            private String gender;
+            private String race;
+            private String name;
+            private String birth;
+
+            public String getIdNo() {
+                return idNo;
+            }
+
+            public void setIdNo(String idNo) {
+                this.idNo = idNo;
+            }
+
+            public String getAddress() {
+                return address;
+            }
+
+            public void setAddress(String address) {
+                this.address = address;
+            }
+
+            public String getGender() {
+                return gender;
+            }
+
+            public void setGender(String gender) {
+                this.gender = gender;
+            }
+
+            public String getRace() {
+                return race;
+            }
+
+            public void setRace(String race) {
+                this.race = race;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getBirth() {
+                return birth;
+            }
+
+            public void setBirth(String birth) {
+                this.birth = birth;
+            }
+        }
+
+        public static class ZqznInfoBackBean {
+            /**
+             * issuedBy : 商水县公安局
+             * validDate : 2014.08.04-2024.08.04
+             */
+
+            private String issuedBy;
+            private String validDate;
+
+            public String getIssuedBy() {
+                return issuedBy;
+            }
+
+            public void setIssuedBy(String issuedBy) {
+                this.issuedBy = issuedBy;
+            }
+
+            public String getValidDate() {
+                return validDate;
+            }
+
+            public void setValidDate(String validDate) {
+                this.validDate = validDate;
+            }
+        }
+
+        public static class ZqznInfoRealAuthBean {
+            /**
+             * verifyStatus : 1
+             * reason :
+             */
+
+            private int verifyStatus;
+            private String reason;
+
+            public int getVerifyStatus() {
+                return verifyStatus;
+            }
+
+            public void setVerifyStatus(int verifyStatus) {
+                this.verifyStatus = verifyStatus;
+            }
+
+            public String getReason() {
+                return reason;
+            }
+
+            public void setReason(String reason) {
+                this.reason = reason;
+            }
+        }
+    }
+
     public static class InfoIdentifyPicBean implements Parcelable {
         /**
          * identifyPic : ANDROID_1502618832189_470_470.jpg
@@ -747,6 +910,8 @@ public class CerttificationInfoModel  {
             this.identifyPicHand = in.readString();
         }
 
+
+
         public static final Creator<InfoIdentifyPicBean> CREATOR = new Creator<InfoIdentifyPicBean>() {
             @Override
             public InfoIdentifyPicBean createFromParcel(Parcel source) {
@@ -759,4 +924,6 @@ public class CerttificationInfoModel  {
             }
         };
     }
+
+
 }

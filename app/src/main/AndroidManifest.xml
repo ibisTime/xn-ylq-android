@@ -341,12 +341,42 @@
         <activity android:name=".module.certification.all.AliActivity" />
         <activity android:name=".module.stages.StagesActivity" />
         <activity android:name=".module.stages.StagesDetailsActivity" />
+
+        <!-- ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓魔蝎认证↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ -->
+        <activity android:name="com.moxie.client.MainActivity" />
+        <activity
+            android:name="com.moxie.client.accessible.AccessibleCrawlerActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <service
+            android:name="com.moxie.client.accessible.AccessibleCrawlerService"
+            android:accessibilityFlags="flagReportViewIds"
+            android:enabled="true"
+            android:exported="true"
+            android:label="@string/accessibility_name"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessible_crawler_config" />
+        </service>
+        <!-- ↑↑↑↑↑↑↑↑↑↑↑↑↑↑魔蝎认证↑↑↑↑↑↑↑↑↑↑↑↑↑↑ -->
         <!-- 人脸识别 -->
         <meta-data
             android:name="BMOB_CHANNEL"
             android:value="Channel ID" />
 
-        <activity android:name=".module.user.userinfo.ShellActivity"></activity>
+        <activity android:name=".module.user.userinfo.ShellActivity" />
+        <activity
+            android:name=".module.user.userinfo.CopyActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:theme="@style/ActivityDialogStyleBottom" />
+        <activity android:name=".module.certification.all.OperatorActivity"></activity>
     </application>
 
 </manifest>

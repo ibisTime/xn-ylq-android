@@ -1,14 +1,17 @@
 package com.cdkj.ylq.module.user.login;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.ImageView;
 
+import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.BaseActivity;
+import com.cdkj.baselibrary.dialog.UITipDialog;
 import com.cdkj.baselibrary.model.IntroductionInfoModel;
+import com.cdkj.baselibrary.model.RootMenuCodeBean;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.StringUtils;
@@ -47,37 +50,17 @@ public class WelcomeAcitivity extends BaseActivity {
         setContentView(R.layout.activity_welcom);
         ImageView img = (ImageView) findViewById(R.id.img_start);
         img.setImageResource(R.drawable.start);
-
+        //获取权限
+        getCompanyCode();
         //判断有没有七牛地址
-//        if (TextUtils.isEmpty(SPUtilHelpr.getQiNiuUrl())) {
-//            getQiNiuUrl();
-//        }
-        mSubscription.add(Observable.timer(2, TimeUnit.SECONDS)
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {//延迟两秒进行跳转
-                    MainActivity.open(this);
-                    finish();
-                }, Throwable::printStackTrace));
+        if (TextUtils.isEmpty(SPUtilHelpr.getQiNiuUrl())) {
+            getQiNiuUrl();
+        }
+
 
     }
 
-    //    //获取七牛地址
-//    private void getQiNiuUrl() {
-//        NetUtils.getSystemParameter(this, "qiniu_domain", false, new NetUtils.OnSuccessSystemInterface() {
-//            @Override
-//            public void onSuccessSystem(IntroductionInfoModel data) {
-//                SPUtilHelpr.saveQiNiuUrl(WelcomeAcitivity.this, data.getCvalue());
-//            }
-//
-//
-//            @Override
-//            public void onError(String errorMessage) {
-//                showToast("图片地址获取失败");
-//            }
-//        });
-//    }
-    public void getQiNiuUrl() {
+    private void getQiNiuUrl() {
         Map<String, String> map = new HashMap<>();
         map.put("key", "qiniu_domain");
         map.put("systemCode", "CD-YLQ000014");
@@ -88,9 +71,8 @@ public class WelcomeAcitivity extends BaseActivity {
         call.enqueue(new BaseResponseModelCallBack<IntroductionInfoModel>(WelcomeAcitivity.this) {
             @Override
             protected void onSuccess(IntroductionInfoModel data, String SucMessage) {
-                Log.e("pppppp", "onSuccess: 图片地址" + data.getCvalue());
                 if (!TextUtils.isEmpty(data.getCvalue())) {
-                    SPUtilHelpr.saveQiNiuUrl("http://" + data.getCvalue());
+                    SPUtilHelpr.saveQiNiuUrl("http://" + data.getCvalue()+"/");
                 }
             }
 
@@ -106,6 +88,50 @@ public class WelcomeAcitivity extends BaseActivity {
             }
         });
 
+    }
+
+
+    /**
+     * 获取 权限,就是mainActivity能展示哪些功能
+     */
+    private void getCompanyCode() {
+
+        Map<String, String> map = new HashMap<>();
+        map.put("companyCode", MyConfig.COMPANYCODE);
+
+        Call call = RetrofitUtils.getBaseAPiService().getRootMenu("630118", StringUtils.getJsonToString(map));
+        call.enqueue(new BaseResponseModelCallBack<RootMenuCodeBean>(this) {
+            @Override
+            protected void onSuccess(RootMenuCodeBean data, String SucMessage) {
+                SPUtilHelpr.saveIsFK(data.getIsFk());
+                SPUtilHelpr.saveIsJT(data.getIsJt());
+
+                mSubscription.add(Observable.timer(2, TimeUnit.SECONDS)
+                        .subscribeOn(AndroidSchedulers.mainThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(aLong -> {//延迟两秒进行跳转
+                            MainActivity.open(WelcomeAcitivity.this);
+                            finish();
+                        }, Throwable::printStackTrace));
+
+            }
+
+            @Override
+            protected void onReqFailure(int errorCode, String errorMessage) {
+                super.onReqFailure(errorCode, errorMessage);
+                UITipDialog.showSuccess(WelcomeAcitivity.this, "获取配置失败,请重启", new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        finish();
+                    }
+                });
+            }
+
+            @Override
+            protected void onFinish() {
+
+            }
+        });
     }
 
 }

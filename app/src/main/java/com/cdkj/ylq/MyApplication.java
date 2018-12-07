@@ -2,11 +2,8 @@ package com.cdkj.ylq;
 
 import android.app.Application;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.cdkj.baselibrary.BaseApplication;
-import com.cdkj.baselibrary.utils.LogUtil;
-
-import org.greenrobot.eventbus.EventBus;
+import com.moxie.client.manager.MoxieSDK;
 
 
 /**
@@ -24,6 +21,8 @@ public class MyApplication extends Application {
         super.onCreate();
         application = this;
         BaseApplication.initialize(this, BuildConfig.LOG_DEBUG);
+        //魔蝎认证初始化
+        MoxieSDK.init(this);
     }
 
     public static MyApplication getInstance() {

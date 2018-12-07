@@ -13,6 +13,7 @@ import com.cdkj.baselibrary.adapters.ViewPagerAdapter;
 import com.cdkj.baselibrary.appmanager.EventTags;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
+import com.cdkj.baselibrary.dialog.UITipDialog;
 import com.cdkj.baselibrary.model.EventBusModel;
 import com.cdkj.baselibrary.model.IntroductionInfoModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
@@ -37,7 +38,7 @@ import retrofit2.Call;
 import static com.cdkj.baselibrary.appmanager.EventTags.MAINCHANGESHOWINDEX;
 import static com.cdkj.baselibrary.appmanager.EventTags.MAINFINISH;
 
-public class MainActivity extends AbsBaseActivity{
+public class MainActivity extends AbsBaseActivity {
 
     private ActivityMainBinding mBinding;
 
@@ -48,6 +49,8 @@ public class MainActivity extends AbsBaseActivity{
     public static final int SHOWMY = 2;//显示我的界面
     private List<Fragment> fragments;
     private UpdateManager updateManager;
+    private String isJT;
+    private String isFK;
 
     /**
      * 打开当前页面
@@ -74,16 +77,17 @@ public class MainActivity extends AbsBaseActivity{
 
     @Override
     public void afterCreate(Bundle savedInstanceState) {
+        isJT = SPUtilHelpr.getIsJT();
+        isFK = SPUtilHelpr.getIsFK();
 
-        initViewPager();
 
         initListener();
-
+        initViewPager();
         updateManager = new UpdateManager(getString(R.string.app_name));
 //        updateManager.checkNewApp(this);//这个检查更新的接口还会报错
-        if (TextUtils.isEmpty(SPUtilHelpr.getQiNiuUrl())) {
-            getQiNiuUrl();
-        }
+//        if (TextUtils.isEmpty(SPUtilHelpr.getQiNiuUrl())) {
+//            getQiNiuUrl();
+//        }
     }
 
     /**
@@ -112,6 +116,62 @@ public class MainActivity extends AbsBaseActivity{
         });
     }
 
+    /**
+     * 初始化ViewPager
+     */
+    private void initViewPager() {
+        mBinding.pagerMain.setPagingEnabled(false);//禁止左右切换
+        //设置fragment数据
+        fragments = new ArrayList<>();
+
+        //下面添加的空的 fragment  是避免了  加载正常的  fragment会调用接口  可能会报错
+        if (TextUtils.equals("0", isJT) && TextUtils.equals("0", isFK)) {
+            mShowIndex = 2;
+            //两个都不要了
+            fragments.add(new Fragment());
+            fragments.add(new Fragment());
+            mBinding.layoutMainButtom.radioMainTabMoney.setVisibility(View.GONE);
+            mBinding.layoutMainButtom.radioMainTabCertification.setVisibility(View.GONE);
+
+        } else if (TextUtils.equals("1", isJT) && TextUtils.equals("1", isFK)) {
+            mShowIndex = 0;
+            fragments.add(BorrowMoneyFragment.getInstanse());
+            fragments.add(CreditFragment.getInstanse());
+
+        } else if (TextUtils.equals("0", isJT) && TextUtils.equals("1", isFK)) {
+            mShowIndex = 1;
+            fragments.add(new Fragment());
+            fragments.add(CreditFragment.getInstanse());
+            mBinding.layoutMainButtom.radioMainTabMoney.setVisibility(View.GONE);
+
+        } else if (TextUtils.equals("1", isJT) && TextUtils.equals("0", isFK)) {
+            mShowIndex = 0;
+            fragments.add(BorrowMoneyFragment.getInstanse());
+            fragments.add(new Fragment());
+            mBinding.layoutMainButtom.radioMainTabCertification.setVisibility(View.GONE);
+        }
+
+        fragments.add(MyFragment.getInstanse());
+
+        mBinding.pagerMain.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), fragments));
+        mBinding.pagerMain.setOffscreenPageLimit(fragments.size());
+        setShowIndex(mShowIndex);
+
+    }
+
+    /**
+     * 设置要显示的界面
+     *
+     * @param index
+     */
+    private void setShowIndex(int index) {
+        if (index < 0 && index >= fragments.size()) {
+            return;
+        }
+        mBinding.pagerMain.setCurrentItem(index, false);
+        mShowIndex = index;
+        setTabIndex();
+    }
 
     public void setTabIndex() {
 
@@ -126,39 +186,6 @@ public class MainActivity extends AbsBaseActivity{
                 mBinding.layoutMainButtom.radioMainTabMy.setChecked(true);
                 break;
         }
-
-    }
-
-    /**
-     * 初始化ViewPager
-     */
-    private void initViewPager() {
-        mBinding.pagerMain.setPagingEnabled(false);//禁止左右切换
-
-        //设置fragment数据
-        fragments = new ArrayList<>();
-
-        fragments.add(BorrowMoneyFragment.getInstanse());
-//        fragments.add(CertificationFragment.getInstanse());
-        fragments.add(CreditFragment.getInstanse());
-        fragments.add(MyFragment.getInstanse());
-        mBinding.pagerMain.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), fragments));
-        mBinding.pagerMain.setOffscreenPageLimit(fragments.size());
-    }
-
-
-    /**
-     * 设置要显示的界面
-     *
-     * @param index
-     */
-    private void setShowIndex(int index) {
-        if (index < 0 && index >= fragments.size()) {
-            return;
-        }
-        mBinding.pagerMain.setCurrentItem(index, false);
-        mShowIndex = index;
-        setTabIndex();
     }
 
     @Subscribe
@@ -193,16 +220,20 @@ public class MainActivity extends AbsBaseActivity{
         }
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        if (TextUtils.isEmpty(SPUtilHelpr.getUserId())) {
-//            UITipDialog.showSuccess(this, "请先登陆", dialog -> {
-//                setTabIndex();
-//                SPUtilHelpr.isLogin(this, false);
-//            });
-//        }
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //如果这个是  没有借条功能的话  就判断  有没有登陆 没有登陆直接就让去登陆
+        if (!TextUtils.equals("1", isJT)) {
+            if (!SPUtilHelpr.isLogin(this, false)) {
+                setTabIndex();
+                UITipDialog.showSuccess(this, "请先登陆", dialog -> {
+                    SPUtilHelpr.isLogin(this, false);
+                });
+                return;
+            }
+        }
+    }
 
 
     //获取七牛地址
@@ -244,6 +275,5 @@ public class MainActivity extends AbsBaseActivity{
             finish();
         });
     }
-
 
 }

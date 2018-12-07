@@ -7,13 +7,14 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.cdkj.baselibrary.activitys.AddBackCardActivity;
+import com.cdkj.baselibrary.activitys.BackCardListActivity;
 import com.cdkj.baselibrary.activitys.UpdateBackCardActivity;
 import com.cdkj.baselibrary.appmanager.EventTags;
 import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.dialog.CommonDialog;
+import com.cdkj.baselibrary.dialog.UITipDialog;
 import com.cdkj.baselibrary.model.BankCardModel;
 import com.cdkj.baselibrary.model.CodeModel;
 import com.cdkj.baselibrary.model.MyBankCardListMode;
@@ -27,6 +28,7 @@ import com.cdkj.ylq.databinding.ActivitySigningBinding;
 import com.cdkj.ylq.model.PorductListModel;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -90,34 +92,38 @@ public class SigningSureActivity extends AbsBaseActivity {
         initListener();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (!SPUtilHelpr.getUserIsBindCard()) {  //如果没有添加过银行卡 直接提示添加银行卡
-            showBindCardSureDialog(view -> {
-                AddBackCardActivity.open(SigningSureActivity.this);
-            });
-            return;
-        }
-        getBankCardDataRequest(true);
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        if (!SPUtilHelpr.getUserIsBindCard()) {  //如果没有添加过银行卡 直接提示添加银行卡
+//            showBindCardSureDialog(view -> {
+//                AddBackCardActivity.open(SigningSureActivity.this);
+//            });
+//            return;
+//        }
+//        getBankCardDataRequest(true);
+//    }
 
     //
     private void initListener() {
         mBinding.btnSure.setOnClickListener(v -> {
-            if (!mBinding.checkbox.isChecked()) {
-                showToast("请阅读并同意借款协议");
-                return;
+//            if (!mBinding.checkbox.isChecked()) {
+//                showToast("请阅读并同意借款协议");
+//                return;
+//            }
+//            if (!SPUtilHelpr.getUserIsBindCard() || mBankCardModel == null) {
+//                showBindCardSureDialog(view -> {
+////                    AddBackCardActivity.open(this);
+//                    BackCardListActivity.open(this, true);
+//                });
+//                return;
+//            }
+
+            if (mBankCardModel == null) {
+                getBankCardDataRequest(true);
+            } else {
+                showSureCardInfoDialog();
             }
-//            signingRequest();
-//删除  打开打开
-            if (!SPUtilHelpr.getUserIsBindCard() || mBankCardModel == null) {
-                showBindCardSureDialog(view -> {
-                    AddBackCardActivity.open(this);
-                });
-                return;
-            }
-            showSureCardInfoDialog();
         });
 
         mBinding.tvRead.setOnClickListener(v -> {
@@ -134,12 +140,16 @@ public class SigningSureActivity extends AbsBaseActivity {
                 .setTitle("请确认银行卡信息是否正确").setContentMsg("户名: " + mBankCardModel.getRealName() + "\n\n" +
                         "开户行: " + mBankCardModel.getBankName() + "\n\n" +
                         "银行卡号: " + mBankCardModel.getBankcardNumber())
+                .setCancelable(true)
+                .setCanceledOnTouchOutside(true)
                 .setPositiveBtn("确认", view -> {
                     signingRequest();
                 }).setNegativeBtn("修改", view -> {
                     UpdateBackCardActivity.open(this, mBankCardModel);
                 }, false);
         commonDialog.show();
+
+
     }
 
 
@@ -150,7 +160,7 @@ public class SigningSureActivity extends AbsBaseActivity {
 
         Map<String, String> object = new HashMap<>();
 
-        object.put("systemCode", MyConfig.SYSTEMCODE);
+        object.put("companyCode", MyConfig.COMPANYCODE);
         object.put("token", SPUtilHelpr.getUserToken());
         object.put("userId", SPUtilHelpr.getUserId());
         object.put("start", "1");
@@ -170,12 +180,13 @@ public class SigningSureActivity extends AbsBaseActivity {
 
                 if (data != null && data.getList() != null && data.getList().size() > 0) {
                     mBankCardModel = data.getList().get(0);
+                    showSureCardInfoDialog();
                     return;
                 }
 
                 if (mBankCardModel == null) {
                     showBindCardSureDialog(view -> {
-                        AddBackCardActivity.open(SigningSureActivity.this);
+                        BackCardListActivity.open(SigningSureActivity.this, true);
                     });
                 }
 
@@ -203,7 +214,9 @@ public class SigningSureActivity extends AbsBaseActivity {
         if (mCommonDialog == null) {
             mCommonDialog = new CommonDialog(this).builder()
                     .setTitle("提示").setContentMsg("您还没有添加银行卡，请先添加银行卡。")
-                    .setPositiveBtn("确定", onPositiveListener).setCancelable(true);
+                    .setPositiveBtn("确定", onPositiveListener)
+                    .setCancelable(true)
+                    .setCanceledOnTouchOutside(true);
         }
         mCommonDialog.show();
     }
@@ -247,8 +260,13 @@ public class SigningSureActivity extends AbsBaseActivity {
 
     public void setShowData() {
         if (mProductData == null) return;
+        //没有风控就没有实名认证  就不会显示借款人
+        if (!TextUtils.equals("1", SPUtilHelpr.getIsFK())) {
+            mBinding.llUserName.setVisibility(View.GONE);
 
-        mBinding.tvUserName.setText(SPUtilHelpr.getUserName());
+        } else {
+            mBinding.tvUserName.setText(SPUtilHelpr.getUserName());
+        }
         mBinding.tvMoney.setText(MoneyUtils.showPrice(mProductData.getAmount()) + "元");
         mBinding.tvDay.setText(mProductData.getDuration() + "天");
         mBinding.tvAllRate.setText(getAllRateMoney(mProductData) + "元");
@@ -293,4 +311,13 @@ public class SigningSureActivity extends AbsBaseActivity {
 
     }
 
+    @Subscribe
+    public void selectBankCard(BankCardModel bankCardModel) {
+        if (bankCardModel == null) {
+            UITipDialog.showFall(this, "银行卡信息获取失败");
+        } else {
+            mBankCardModel = bankCardModel;
+        }
+
+    }
 }

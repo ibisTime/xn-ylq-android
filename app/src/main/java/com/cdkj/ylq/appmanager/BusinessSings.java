@@ -28,6 +28,7 @@ public class BusinessSings {
     public static final String USEMONEYRECORD_7 = "7";
 
     public static final String USEMONEYRECORD_8 = "8";
+    public static final String USEMONEYRECORD_all = "all";
 
     //借款记录状态
     public static String getStateRecordString(Context context, String status) {
@@ -149,7 +150,7 @@ public class BusinessSings {
             UseingMoneyDetailsActivity.open(activity, state, false, state.getCode());//
 
         } else if (TextUtils.equals(state.getStatus(), USEMONEYRECORD_5)) {//已逾期
-            UsedMoneyDetailsActivity.open(activity, state, ""); //
+            UsedMoneyDetailsActivity.open(activity, state, state.getCode()); //
         } else if (TextUtils.equals(state.getStatus(), USEMONEYRECORD_5)) {//已逾期
             UsedMoneyDetailsActivity.open(activity, state, ""); //
         }

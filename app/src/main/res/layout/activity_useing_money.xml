@@ -114,7 +114,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="8dp"
                                         android:layout_marginTop="18dp"
-                                        android:text="合同编号"
+                                        android:text="借款单号"
                                         android:textColor="@color/text_hint_color"
                                         android:textSize="16sp" />
 
@@ -126,9 +126,10 @@
                                         android:layout_marginLeft="8dp"
                                         android:layout_marginTop="18dp"
                                         android:gravity="right"
-                                        android:textColor="@color/activity_title_bg"
+                                      android:textColor="@color/text_color"
                                         android:textSize="16sp"
                                         tools:text="2017-09-09" />
+                                    <!--android:textColor="@color/activity_title_bg"-->
 
                                 </FrameLayout>
 
@@ -517,14 +518,14 @@
                                 android:layout_marginRight="15dp"
                                 android:orientation="horizontal"
                                 android:paddingBottom="10dp"
-                                android:visibility="gone">
+                               >
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="8dp"
                                     android:layout_marginTop="18dp"
-                                    android:text="续期次数"
+                                    android:text="分期次数"
                                     android:textColor="@color/text_hint_color"
                                     android:textSize="16sp" />
 
@@ -547,10 +548,10 @@
                                         android:textSize="16sp" />
 
                                     <ImageView
+                                        android:visibility="gone"
                                         android:layout_width="15dp"
                                         android:layout_height="15dp"
                                         android:src="@drawable/more_right" />
-
 
                                 </LinearLayout>
 

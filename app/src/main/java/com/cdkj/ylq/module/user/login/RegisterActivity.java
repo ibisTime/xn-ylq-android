@@ -95,6 +95,7 @@ public class RegisterActivity extends AbsBaseActivity implements SendCodeInterfa
             public void locationSuccessful(LocationModel locationModel) {
                 disMissLoading();
                 mLocationModel = locationModel;
+                mBinding.tvLocation.setText(mLocationModel.getProvince() + mLocationModel.getCity() + mLocationModel.getDistrict());
             }
 
             @Override
