@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.widget.ImageView;
 
 import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
@@ -48,23 +47,21 @@ public class WelcomeAcitivity extends BaseActivity {
         } catch (Exception e) {
         }
         setContentView(R.layout.activity_welcom);
-        ImageView img = (ImageView) findViewById(R.id.img_start);
-        img.setImageResource(R.drawable.start);
+//        ImageView img = (ImageView) findViewById(R.id.img_start);
+//        img.setImageResource(R.drawable.start);
         //获取权限
         getCompanyCode();
         //判断有没有七牛地址
         if (TextUtils.isEmpty(SPUtilHelpr.getQiNiuUrl())) {
             getQiNiuUrl();
         }
-
-
     }
 
     private void getQiNiuUrl() {
         Map<String, String> map = new HashMap<>();
         map.put("key", "qiniu_domain");
-        map.put("systemCode", "CD-YLQ000014");
-        map.put("companyCode", "CD-YLQ000014");
+        map.put("systemCode", MyConfig.SYSTEMCODE);
+        map.put("companyCode", MyConfig.SYSTEMCODE);//获取七牛的地址,参数这样传,不用公司编号
 
         Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("623917", StringUtils.getJsonToString(map));
 
@@ -72,7 +69,7 @@ public class WelcomeAcitivity extends BaseActivity {
             @Override
             protected void onSuccess(IntroductionInfoModel data, String SucMessage) {
                 if (!TextUtils.isEmpty(data.getCvalue())) {
-                    SPUtilHelpr.saveQiNiuUrl("http://" + data.getCvalue()+"/");
+                    SPUtilHelpr.saveQiNiuUrl("http://" + data.getCvalue() + "/");
                 }
             }
 
@@ -87,7 +84,6 @@ public class WelcomeAcitivity extends BaseActivity {
 
             }
         });
-
     }
 
 
@@ -118,7 +114,18 @@ public class WelcomeAcitivity extends BaseActivity {
 
             @Override
             protected void onReqFailure(int errorCode, String errorMessage) {
-                super.onReqFailure(errorCode, errorMessage);
+//                super.onReqFailure(errorCode, errorMessage);
+                UITipDialog.showSuccess(WelcomeAcitivity.this, "获取配置失败,请重启", new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        finish();
+                    }
+                });
+            }
+
+            @Override
+            protected void onBuinessFailure(String code, String error) {
+//                super.onBuinessFailure(code, error);
                 UITipDialog.showSuccess(WelcomeAcitivity.this, "获取配置失败,请重启", new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
@@ -133,5 +140,4 @@ public class WelcomeAcitivity extends BaseActivity {
             }
         });
     }
-
 }

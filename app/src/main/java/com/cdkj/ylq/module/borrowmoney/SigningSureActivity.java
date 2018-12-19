@@ -146,6 +146,7 @@ public class SigningSureActivity extends AbsBaseActivity {
                     signingRequest();
                 }).setNegativeBtn("修改", view -> {
                     UpdateBackCardActivity.open(this, mBankCardModel);
+                    mBankCardModel = null;
                 }, false);
         commonDialog.show();
 

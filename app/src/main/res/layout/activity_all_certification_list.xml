@@ -286,61 +286,6 @@
             <View style="@style/style_split_line" />
 
             <LinearLayout
-                android:visibility="gone"
-                android:id="@+id/ll_mailList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="horizontal"
-                android:paddingLeft="25dp"
-                android:paddingRight="25dp">
-
-                <ImageView
-                    android:id="@+id/iv_mailList"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginRight="15dp"
-                    android:src="@drawable/addressbook_cert"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="通讯录认证"
-                    android:textColor="@color/black_2"
-                    android:textSize="16sp" />
-
-                <ImageView
-                    android:id="@+id/img_mailList_type"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/cert_ok_2"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/tv_mailList_type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:text="已认证"
-                    android:textColor="@color/btn_blue" />
-
-                <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/more_right" />
-
-            </LinearLayout>
-
-            <View style="@style/style_split_line" />
-
-            <LinearLayout
                 android:id="@+id/ll_operator"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -7,12 +7,12 @@ import com.cdkj.baselibrary.model.IntroductionInfoModel;
 import com.cdkj.baselibrary.model.IsSuccessModes;
 import com.cdkj.baselibrary.model.MyBankCardListMode;
 import com.cdkj.baselibrary.model.QiniuGetTokenModel;
+import com.cdkj.baselibrary.model.RootMenuCodeBean;
 import com.cdkj.baselibrary.model.TypeInfoModel;
 import com.cdkj.baselibrary.model.UserLoginModel;
 import com.cdkj.baselibrary.model.pay.AliPayRequestMode;
 import com.cdkj.baselibrary.model.pay.WxPayRequestModel;
 
-import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -101,6 +101,14 @@ public interface BaseApiServer {
     @FormUrlEncoded
     @POST("api")
     Call<BaseResponseModel<IntroductionInfoModel>> getKeySystemInfo(@Field("code") String code, @Field("json") String  json);
+
+    /**
+     * 根据ckey查询系统参数
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api")
+    Call<BaseResponseModel<RootMenuCodeBean>> getRootMenu(@Field("code") String code, @Field("json") String  json);
 
     /**
      * 根据type查询系统参数

@@ -31,6 +31,10 @@ import java.util.Map;
 import retrofit2.Call;
 
 import static com.cdkj.baselibrary.utils.DateUtil.DATE_YMD;
+import static com.cdkj.ylq.appmanager.BusinessSings.USEMONEYRECORD_0;
+import static com.cdkj.ylq.appmanager.BusinessSings.USEMONEYRECORD_1;
+import static com.cdkj.ylq.appmanager.BusinessSings.USEMONEYRECORD_2;
+import static com.cdkj.ylq.appmanager.BusinessSings.USEMONEYRECORD_7;
 
 /**
  * 借款待放款详情
@@ -176,7 +180,7 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
     private void refreshState1() {
         EventBusModel eventBusModel = new EventBusModel();
         eventBusModel.setTag(EventTags.USEMONEYRECORDFRAGMENTREFRESH);
-        eventBusModel.setEvInfo(BusinessSings.USEMONEYRECORD_1);
+        eventBusModel.setEvInfo(USEMONEYRECORD_1);
         EventBus.getDefault().post(eventBusModel);
     }
 
@@ -186,7 +190,7 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
     private void refreshState7() {
         EventBusModel eventBusModel = new EventBusModel();
         eventBusModel.setTag(EventTags.USEMONEYRECORDFRAGMENTREFRESH);
-        eventBusModel.setEvInfo(BusinessSings.USEMONEYRECORD_7);
+        eventBusModel.setEvInfo(USEMONEYRECORD_7);
         EventBus.getDefault().post(eventBusModel);
     }
 
@@ -195,8 +199,23 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
 
         if (mData == null) return;
 
-        mBinding.tvMoney.setText(MoneyUtils.showPrice(mData.getAmount()));
-        mBinding.tvMoney2.setText(MoneyUtils.showPrice(mData.getAmount()) + "元");
+        mBinding.tvMoney.setText(MoneyUtils.showPrice(mData.getTotalAmount()));
+        mBinding.tvMoney2.setText(MoneyUtils.showPrice(mData.getTotalAmount()) + "元");
+
+//        // 待还款不展示这 三个金额
+//        if (TextUtils.equals(mData.getStatus(), USEMONEYRECORD_0)//待审核
+//                || TextUtils.equals(mData.getStatus(), USEMONEYRECORD_2)//审核不通过
+//                || TextUtils.equals(mData.getStatus(), USEMONEYRECORD_1)//待放款
+//                || TextUtils.equals(mData.getStatus(), USEMONEYRECORD_7)) {
+//            mBinding.flActualMoney.setVisibility(View.GONE);
+//            mBinding.flLoanMoney.setVisibility(View.GONE);
+//            mBinding.flPaidMoney.setVisibility(View.GONE);
+//        } else {
+//            mBinding.tvLoanMoney.setText(MoneyUtils.showPrice(mData.getBorrowAmount()) + "元");
+//            mBinding.tvActualMoney.setText(MoneyUtils.showPrice(mData.getRealGetAmount()) + "元");
+//            mBinding.tvPaidMoney.setText(MoneyUtils.showPrice(mData.getRealHkAmount()) + "元");
+//        }
+
         mBinding.tvCode.setText(mData.getCode());
         mBinding.tvSignData.setText(DateUtil.formatStringData(mData.getSignDatetime(), DATE_YMD));
 
@@ -205,13 +224,15 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
         mBinding.imgState.setImageResource(getStateImg(mData.getStatus()));
 
 
-        if (TextUtils.equals(mData.getStatus(), BusinessSings.USEMONEYRECORD_2)) {
-            mBinding.tvState2.setText(mData.getApproveNote());
+        if (TextUtils.equals(mData.getStatus(), USEMONEYRECORD_2)) {
+//            mBinding.tvState2.setText(mData.getApproveNote());
+            //审核不通过  没有状态说明  通过短信通知的
+            mBinding.rlState2.setVisibility(View.GONE);
         } else {
             mBinding.tvState2.setText(mData.getRemark());
         }
 
-        if (TextUtils.equals(mData.getStatus(), BusinessSings.USEMONEYRECORD_7)) { //打款失败时显示按钮 显示弹框
+        if (TextUtils.equals(mData.getStatus(), USEMONEYRECORD_7)) { //打款失败时显示按钮 显示弹框
             mBinding.btnSure.setVisibility(View.VISIBLE);
 
             showDoubleWarnListen("打款失败,请核对银行卡信息", view -> {
@@ -223,8 +244,8 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
         }
 
 
-        if (TextUtils.equals(mData.getStatus(), BusinessSings.USEMONEYRECORD_0)          //待审核 //待放款
-                || TextUtils.equals(mData.getStatus(), BusinessSings.USEMONEYRECORD_1)
+        if (TextUtils.equals(mData.getStatus(), USEMONEYRECORD_0)          //待审核 //待放款
+                || TextUtils.equals(mData.getStatus(), USEMONEYRECORD_1)
                 ) {
             mBinding.layoutMoneyState.setVisibility(View.VISIBLE);
         } else {
@@ -242,13 +263,13 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
     private int getStateImg(String status) {
 
         switch (status) {
-            case BusinessSings.USEMONEYRECORD_0: //待审核
+            case USEMONEYRECORD_0: //待审核
                 return R.drawable.record_0;
-            case BusinessSings.USEMONEYRECORD_2://审核不通过
+            case USEMONEYRECORD_2://审核不通过
                 return R.drawable.record_2;
-            case BusinessSings.USEMONEYRECORD_1://待放款
+            case USEMONEYRECORD_1://待放款
                 return R.drawable.record_1;
-            case BusinessSings.USEMONEYRECORD_7://打款失败
+            case USEMONEYRECORD_7://打款失败
                 return R.drawable.record_7;
             case BusinessSings.USEMONEYRECORD_8://代扣中
                 return R.drawable.record_1;
@@ -267,13 +288,13 @@ public class WaiteMoneyDetailsActivity extends AbsBaseActivity {
     private String getStateTitie(String status) {
 
         switch (status) {
-            case BusinessSings.USEMONEYRECORD_0: //待审核
+            case USEMONEYRECORD_0: //待审核
                 return "待审核详情";
-            case BusinessSings.USEMONEYRECORD_2://审核不通过
+            case USEMONEYRECORD_2://审核不通过
                 return "审核失败";
-            case BusinessSings.USEMONEYRECORD_1://待放款
+            case USEMONEYRECORD_1://待放款
                 return "待放款详情";
-            case BusinessSings.USEMONEYRECORD_7://打款失败
+            case USEMONEYRECORD_7://打款失败
                 return "打款失败";
             default:
                 return "借款详情";

@@ -1,5 +1,6 @@
 package com.cdkj.baselibrary.base;
 
+import android.annotation.SuppressLint;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
@@ -17,7 +18,6 @@ import com.cdkj.baselibrary.R;
 import com.cdkj.baselibrary.databinding.EmptyViewBinding;
 import com.cdkj.baselibrary.databinding.FragmentRecyclerRefreshBinding;
 import com.cdkj.baselibrary.utils.ImgUtils;
-import com.cdkj.baselibrary.utils.LogUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
@@ -257,6 +257,41 @@ public abstract class BaseRefreshFragment<T> extends BaseLazyFragment {
         ImgUtils.loadFraImgId(this, rid, img);
         mTopTitleView.findViewById(R.id.fllayout_right).setOnClickListener(listener);
     }
+
+    /**
+     * 设置title 右边的文字 图片点击事件
+     *
+     * @param listener
+     */
+    @SuppressLint("ResourceAsColor")
+    public void setSubRightTitle(String ritTxt, View.OnClickListener listener) {
+
+        if (mTopTitleView == null) {
+            return;
+        }
+        TextView tvTopRight = (TextView) mTopTitleView.findViewById(R.id.tv_top_right);
+        tvTopRight.setVisibility(View.VISIBLE);
+        tvTopRight.setText(ritTxt);
+        mTopTitleView.findViewById(R.id.fllayout_right).setOnClickListener(listener);
+    }
+    /**
+     * 设置title 右边的文字 图片点击事件
+     *
+     * @param listener
+     */
+    @SuppressLint("ResourceAsColor")
+    public void setSubRightTitle(String ritTxt,Integer colorId, View.OnClickListener listener) {
+
+        if (mTopTitleView == null) {
+            return;
+        }
+        TextView tvTopRight = (TextView) mTopTitleView.findViewById(R.id.tv_top_right);
+        tvTopRight.setVisibility(View.VISIBLE);
+        tvTopRight.setText(ritTxt);
+        tvTopRight.setTextColor(colorId);
+        mTopTitleView.findViewById(R.id.fllayout_right).setOnClickListener(listener);
+    }
+
 
     public void setTopTitleViewBg(int color) {
         if (mTopTitleView != null) {

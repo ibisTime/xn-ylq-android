@@ -168,7 +168,7 @@
                 <TextView
                     android:layout_width="130dp"
                     android:layout_height="wrap_content"
-                    android:text="借款时间"
+                    android:text="还款时间"
                     android:textColor="@color/text_color_02"
                     android:textSize="16sp" />
 

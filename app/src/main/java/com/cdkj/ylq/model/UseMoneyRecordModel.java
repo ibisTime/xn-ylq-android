@@ -178,11 +178,29 @@ public class UseMoneyRecordModel implements Parcelable {
         private String signDatetime;
         private String status;
         private BigDecimal totalAmount;
+        private BigDecimal borrowAmount;
+        private BigDecimal realGetAmount;
         private String isStage;
         private int stageBatch;
         private int stageCount;
         private ArrayList<StageListBean> stageList;
         private Info info;
+
+        public BigDecimal getBorrowAmount() {
+            return borrowAmount;
+        }
+
+        public void setBorrowAmount(BigDecimal borrowAmount) {
+            this.borrowAmount = borrowAmount;
+        }
+
+        public BigDecimal getRealGetAmount() {
+            return realGetAmount;
+        }
+
+        public void setRealGetAmount(BigDecimal realGetAmount) {
+            this.realGetAmount = realGetAmount;
+        }
 
         public Info getInfo() {
             return info;

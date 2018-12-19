@@ -1,9 +1,12 @@
 package com.cdkj.ylq.module.user.userinfo;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,12 +18,15 @@ import com.cdkj.baselibrary.activitys.WebViewActivity;
 import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.BaseLazyFragment;
+import com.cdkj.baselibrary.dialog.CommonDialog;
+import com.cdkj.baselibrary.dialog.UITipDialog;
 import com.cdkj.baselibrary.model.IntroductionInfoModel;
 import com.cdkj.baselibrary.model.IsSuccessModes;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.ImgUtils;
 import com.cdkj.baselibrary.utils.MoneyUtils;
+import com.cdkj.baselibrary.utils.PermissionHelper;
 import com.cdkj.baselibrary.utils.QiNiuHelper;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.baselibrary.utils.ToastUtil;
@@ -50,6 +56,7 @@ public class MyFragment extends BaseLazyFragment {
     private UserInfoModel mUserInfoMode;
 
     public static final int PHOTOFLAG = 123;
+    private PermissionHelper mHelper;
 
     /**
      * 获得fragment实例
@@ -65,6 +72,7 @@ public class MyFragment extends BaseLazyFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mHelper = new PermissionHelper(this);
         mBinding = DataBindingUtil.inflate(getLayoutInflater(savedInstanceState), R.layout.fragment_my, null, false);
 
         initListtener();
@@ -109,6 +117,34 @@ public class MyFragment extends BaseLazyFragment {
             ImageSelectActivity.launchFragment(this, PHOTOFLAG);
         });
 
+        mBinding.tvServicePhone.setOnClickListener(v -> {
+            mHelper.requestPermissions(new PermissionHelper.PermissionListener() {
+                @Override
+                public void doAfterGrand(String... permission) {
+
+                    new CommonDialog(mActivity).builder()
+                            .setNegativeBtn("取消", view -> {
+                            }).setPositiveBtn("确定", v -> {
+                        Intent intent = new Intent(Intent.ACTION_CALL);
+                        Uri data = Uri.parse("tel:" + mBinding.tvServicePhone.getText().toString().trim());
+                        intent.setData(data);
+                        startActivity(intent);
+                    })
+                    .setTitle("拨打电话")
+                    .setContentMsg(mBinding.tvServicePhone.getText().toString().trim())
+                    .show();
+
+                }
+
+                @Override
+                public void doAfterDenied(String... permission) {
+                    UITipDialog.showFall(mActivity, "请再设置中打开电话权限");
+                }
+            }, Manifest.permission.CALL_PHONE);
+
+
+        });
+
     }
 
     private void setShowData(UserInfoModel data) {
@@ -123,7 +159,7 @@ public class MyFragment extends BaseLazyFragment {
 //        mBinding.tvUserName.setText(data.getNickname());
         mBinding.tvUserPhone.setText(data.getMobile());
         mBinding.tvCouponnsNum.setText(data.getCouponCount() + "");
-        mBinding.tvMoney.setText(data.getStageCount() + "");
+        mBinding.tvMoney.setText(data.getRefereeCount() + "");
 
     }
 
@@ -359,5 +395,11 @@ public class MyFragment extends BaseLazyFragment {
     @Override
     protected void onInvisible() {
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        mHelper.handleRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

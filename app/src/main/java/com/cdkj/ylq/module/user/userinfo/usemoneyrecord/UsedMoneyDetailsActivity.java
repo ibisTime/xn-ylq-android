@@ -75,17 +75,14 @@ public class UsedMoneyDetailsActivity extends AbsBaseActivity {
         if (getIntent() != null) {
 
             mCode = getIntent().getStringExtra("code");
-
+//判断传过来的事  编号  还是数据bean
             if (TextUtils.isEmpty(mCode)) {
                 mData = getIntent().getParcelableExtra("data");
-
                 setShowData();
 
             } else {
                 getDataRequest();
             }
-
-
         }
 
 
@@ -96,8 +93,11 @@ public class UsedMoneyDetailsActivity extends AbsBaseActivity {
 
         if (mData == null) return;
 
-        mBinding.tvMoney.setText(MoneyUtils.showPrice(mData.getAmount()));
-        mBinding.tvMoney2.setText(MoneyUtils.showPrice(mData.getAmount()) + "元");
+        mBinding.tvMoney.setText(MoneyUtils.showPrice(mData.getTotalAmount()));
+        mBinding.tvMoney2.setText(MoneyUtils.showPrice(mData.getTotalAmount()) + "元");
+        mBinding.tvLoanMoney.setText(MoneyUtils.showPrice(mData.getBorrowAmount()) + "元");
+        mBinding.tvActualMoney.setText(MoneyUtils.showPrice(mData.getRealGetAmount()) + "元");
+        mBinding.tvPaidMoney.setText(MoneyUtils.showPrice(mData.getRealHkAmount()) + "元");
         mBinding.tvCode.setText(mData.getCode());
         mBinding.tvSignData.setText(DateUtil.formatStringData(mData.getSignDatetime(), DATE_YMD));
         mBinding.tvDay.setText(mData.getDuration() + "天");
@@ -108,12 +108,12 @@ public class UsedMoneyDetailsActivity extends AbsBaseActivity {
         mBinding.tvGuanli.setText(MoneyUtils.showPrice(mData.getGlAmount()) + "元");
         mBinding.tvLixi.setText(MoneyUtils.showPrice(mData.getLxAmount()) + "元");
         mBinding.tvJianmian.setText(MoneyUtils.showPrice(mData.getYhAmount()) + "元");
-        mBinding.tvDaoqi.setText(MoneyUtils.showPrice(mData.getTotalAmount()) + "元");
         mBinding.tvYuqi.setText(mData.getYqDays() + "天");
         mBinding.tvFuwu.setText(MoneyUtils.showPrice(mData.getFwAmount()) + "元");
         mBinding.tvYqMoney.setText(MoneyUtils.showPrice(mData.getYqlxAmount()) + "元");
-
         mBinding.tvXuqiNum.setText(mData.getStageBatch() + "");
+        //逾期的隐藏到期还款额
+//        mBinding.tvDaoqi.setText(MoneyUtils.showPrice(mData.getTotalAmount()) + "元");
     }
 
 

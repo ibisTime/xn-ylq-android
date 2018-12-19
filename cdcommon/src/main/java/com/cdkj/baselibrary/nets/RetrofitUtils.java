@@ -4,7 +4,6 @@ package com.cdkj.baselibrary.nets;
 import com.cdkj.baselibrary.api.BaseApiServer;
 import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
-import com.cdkj.baselibrary.utils.LogUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +12,6 @@ import retrofit2.Retrofit;
 
 /**
  * 服务器api
- * Created by Administrator on 2016/9/1.
  */
 public class RetrofitUtils {
 
@@ -24,8 +22,7 @@ public class RetrofitUtils {
     public static final int DEBUG = 1;//研发环境
     public static final int TEST = 2;//测试环境
 
-    private RetrofitUtils() {
-    }
+    private RetrofitUtils() {}
 
     /**
      * 获取Retrofit实例
@@ -35,7 +32,7 @@ public class RetrofitUtils {
     private static Retrofit getInstance() {
         if (retrofitInstance == null) {
             retrofitInstance = new Retrofit.Builder()
-                    .baseUrl(getBaseURL(TEST))
+                    .baseUrl(getBaseURL(RELEASE))
                     .client(OkHttpUtils.getInstance())
                     .addConverterFactory(FastJsonConVerter.create())
                     .build();
@@ -65,11 +62,11 @@ public class RetrofitUtils {
     public static String getBaseURL(int urlType) {
         switch (urlType) {
             case TEST:
-                return "http://47.96.161.183:3701/forward-service/";//测试环境
+                return "http://47.99.163.139:3701/forward-service/";//测试环境
             case DEBUG:
-                return "http://121.43.101.148:3701/forward-service/";//研发环境
+                return "http://120.26.6.213:7901/forward-service/";//研发环境
         }
-        return "http://116.62.193.233:3701/forward-service/";//正式环境
+        return "http://47.110.55.234:3701/forward-service/";//正式环境
     }
 
 
@@ -85,6 +82,4 @@ public class RetrofitUtils {
         map.put("token", SPUtilHelpr.getUserToken());
         return map;
     }
-
-
 }

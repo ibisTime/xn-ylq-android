@@ -8,6 +8,7 @@ import android.support.annotation.IntDef;
 import android.support.annotation.LayoutRes;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -82,17 +83,19 @@ public class UITipDialog extends Dialog {
 
     private static void timerDismiss() {
         if (tipDialog == null) return;
-        Observable.timer(1000, TimeUnit.MILLISECONDS)
+        Observable.timer(2000, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long aLong) throws Exception {
+                        Log.i("pppppp", "accept: "+aLong);
                         tipDialog.dismiss();
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-
+                        tipDialog.dismiss();
+                        Log.i("pppppp", "accept: 哈哈");
                     }
                 });
     }

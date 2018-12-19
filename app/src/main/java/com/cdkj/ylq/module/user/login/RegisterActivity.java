@@ -14,6 +14,7 @@ import com.cdkj.baselibrary.appmanager.EventTags;
 import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
+import com.cdkj.baselibrary.dialog.UITipDialog;
 import com.cdkj.baselibrary.interfaces.LocationCallBackListener;
 import com.cdkj.baselibrary.interfaces.SendCodeInterface;
 import com.cdkj.baselibrary.interfaces.SendPhoneCoodePresenter;
@@ -100,6 +101,7 @@ public class RegisterActivity extends AbsBaseActivity implements SendCodeInterfa
 
             @Override
             public void locationFailure(String msg) {
+                UITipDialog.showFall(RegisterActivity.this, "定位失败,请授予权限,并检查定位模式是否已开启!");
                 disMissLoading();
             }
 
@@ -262,7 +264,7 @@ public class RegisterActivity extends AbsBaseActivity implements SendCodeInterfa
         hashMap.put("systemCode", MyConfig.SYSTEMCODE);
         hashMap.put("companyCode", MyConfig.COMPANYCODE);
 
-        Call call = RetrofitUtils.createApi(MyApiServer.class).userRegister("623800", StringUtils.getJsonToString(hashMap));
+        Call call = RetrofitUtils.createApi(MyApiServer.class).userRegister("805041", StringUtils.getJsonToString(hashMap));
 
         addCall(call);
 
@@ -309,6 +311,7 @@ public class RegisterActivity extends AbsBaseActivity implements SendCodeInterfa
         if (!TextUtils.isEmpty(mLocationModel.getStreetNum())) {
             sbaddress.append(mLocationModel.getStreetNum());
         }
+
         return sbaddress.toString();
     }
 

@@ -56,7 +56,16 @@ public class CerttificationInfoModel  {
     private String infoZfbFlag;
     private String infoZqznFlag;
     private String infoPersonalFlag;
+    private String locationFlag;
     private InfoZqznBean infoZqzn;
+
+    public String getLocationFlag() {
+        return locationFlag;
+    }
+
+    public void setLocationFlag(String locationFlag) {
+        this.locationFlag = locationFlag;
+    }
 
     public InfoZqznBean getInfoZqzn() {
         return infoZqzn;

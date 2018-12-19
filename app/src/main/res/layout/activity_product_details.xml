@@ -176,15 +176,14 @@
                         tools:text="快速信审费:18元" />
 
                     <TextView
-                        android:id="@+id/tv_interest_money"
+                        android:id="@+id/tv_account_manager_money"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="30dp"
-                        android:layout_marginRight="5dp"
                         android:layout_weight="1"
                         android:textColor="@color/txt_gray"
                         android:textSize="16sp"
-                        tools:text="利息：18元" />
+                        tools:text="账户管理费:18元" />
 
 
                 </LinearLayout>
@@ -197,16 +196,6 @@
                     android:weightSum="2">
 
                     <TextView
-                        android:id="@+id/tv_account_manager_money"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="30dp"
-                        android:layout_weight="1"
-                        android:textColor="@color/txt_gray"
-                        android:textSize="16sp"
-                        tools:text="账户管理费:18元" />
-
-                    <TextView
                         android:id="@+id/tv_service_money"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -216,6 +205,17 @@
                         android:textColor="@color/txt_gray"
                         android:textSize="16sp"
                         tools:text="服务费：18元" />
+
+                    <TextView
+                        android:id="@+id/tv_interest_money"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:textColor="@color/txt_gray"
+                        android:textSize="16sp"
+                        tools:text="利息：18元" />
 
 
                 </LinearLayout>

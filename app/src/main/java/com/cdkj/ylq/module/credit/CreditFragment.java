@@ -22,7 +22,6 @@ import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.FragmentCreditBinding;
 import com.cdkj.ylq.model.CreditTypeBean;
-import com.cdkj.ylq.model.SelectZxBean;
 import com.cdkj.ylq.model.SuccessModel;
 import com.cdkj.ylq.module.api.MyApiServer;
 import com.cdkj.ylq.module.certification.all.AllCertificationListActivity;
@@ -68,7 +67,7 @@ public class CreditFragment extends BaseLazyFragment {
     }
 
     /**
-     * 获取数据
+     * 获取数据,获取认证的状态
      */
     private void initData() {
         Map<String, String> map = new HashMap<>();
@@ -123,7 +122,7 @@ public class CreditFragment extends BaseLazyFragment {
                 mBinding.btnWaite.setOnClickListener(null);
                 mBinding.btnWaite.setText("请耐心等待");
                 mBinding.tvRemainingDays.setText("待审核");
-                mBinding.tvMoney.setText(MoneyUtils.showPrice(data.getCreditScore()));
+                mBinding.tvMoney.setText(MoneyUtils.showPriceInt(data.getCreditScore()));
                 mBinding.llStep1.setVisibility(View.GONE);
                 mBinding.llStep2.setVisibility(View.VISIBLE);
                 mBinding.llStep3.setVisibility(View.GONE);
@@ -156,7 +155,7 @@ public class CreditFragment extends BaseLazyFragment {
                     EventBus.getDefault().post(bean);
                 });
                 mBinding.btnWaite.setText("使用信用分");
-                mBinding.tvRemainingDays.setText("还有" + data.getValidDays() + "天,当前信用分失效");
+                mBinding.tvRemainingDays.setText("还有" + data.getValidDays() + "天当前信用分失效");
                 mBinding.tvMoney.setText(MoneyUtils.showPriceInt(data.getCreditScore()));
 //                mBinding.tvValidDays.setText("剩余x天到期");
                 mBinding.llStep1.setVisibility(View.GONE);
@@ -234,76 +233,4 @@ public class CreditFragment extends BaseLazyFragment {
             initData();
         }
     }
-
-    private void setShowView(SelectZxBean.ListBean listBean) {
-        String status = listBean.getStatus();
-        switch (status) {
-            case "1"://认证中
-                //显示当前界面
-                mBinding.btnWaite.setOnClickListener(v -> {
-                    AllCertificationListActivity.open(mActivity);
-                });
-                mBinding.btnWaite.setText("认证中");
-//                mBinding.tvType.setText("认证中");
-                mBinding.tvRemainingDays.setText("认证中");
-                mBinding.llStep1.setVisibility(View.GONE);
-                mBinding.llStep2.setVisibility(View.VISIBLE);
-                mBinding.llStep3.setVisibility(View.GONE);
-                mBinding.llStep4.setVisibility(View.GONE);
-                break;
-            case "2"://2","人工审核中
-                mBinding.btnWaite.setText("耐心等待");
-//                mBinding.tvType.setText("已认证待核准");
-                mBinding.tvRemainingDays.setText("已认证待核准");
-                mBinding.btnWaite.setOnClickListener(null);
-                mBinding.llStep1.setVisibility(View.GONE);
-                mBinding.llStep2.setVisibility(View.VISIBLE);
-                mBinding.llStep3.setVisibility(View.GONE);
-                mBinding.llStep4.setVisibility(View.GONE);
-                break;
-            case "3"://已驳回
-                mBinding.btnWaite.setText("重新测试");
-//                mBinding.tvType.setText("核准失败");
-                mBinding.tvRemainingDays.setText("核准失败");
-                mBinding.llStep2.setVisibility(View.GONE);
-                mBinding.llStep1.setVisibility(View.GONE);
-                mBinding.llStep3.setVisibility(View.GONE);
-                mBinding.llStep4.setVisibility(View.VISIBLE);
-
-                mBinding.btnWaite.setOnClickListener(v -> {
-                    requestXYF(false);
-                });
-                break;
-            case "4"://审核通过
-                mBinding.btnWaite.setText("使用信用分");
-//                mBinding.tvType.setText("已核准");
-                mBinding.tvRemainingDays.setText("已核准");
-                mBinding.btnWaite.setOnClickListener(v -> {
-                    //使用信用分就跳转到  首页
-                    EventBusModel bean = new EventBusModel();
-                    bean.setTag(MAINCHANGESHOWINDEX);
-                    bean.setEvInt(0);
-                    EventBus.getDefault().post(bean);
-                });
-                mBinding.llStep1.setVisibility(View.GONE);
-                mBinding.llStep2.setVisibility(View.GONE);
-                mBinding.llStep3.setVisibility(View.VISIBLE);
-                mBinding.llStep4.setVisibility(View.GONE);
-                //获取信用分,失效时间
-                break;
-            default:
-                mBinding.btnWaite.setText("去认证");
-//                mBinding.tvType.setText("待认证");
-                mBinding.tvRemainingDays.setText("待认证");
-                mBinding.llStep1.setVisibility(View.VISIBLE);
-                mBinding.llStep2.setVisibility(View.GONE);
-                mBinding.llStep3.setVisibility(View.GONE);
-                mBinding.llStep4.setVisibility(View.GONE);
-                mBinding.btnWaite.setOnClickListener(v -> {
-                    requestXYF(true);
-                });
-                break;
-        }
-    }
-
 }

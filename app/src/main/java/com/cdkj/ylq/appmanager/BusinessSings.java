@@ -151,8 +151,9 @@ public class BusinessSings {
 
         } else if (TextUtils.equals(state.getStatus(), USEMONEYRECORD_5)) {//已逾期
             UsedMoneyDetailsActivity.open(activity, state, state.getCode()); //
-        } else if (TextUtils.equals(state.getStatus(), USEMONEYRECORD_5)) {//已逾期
-            UsedMoneyDetailsActivity.open(activity, state, ""); //
         }
+//        else if (TextUtils.equals(state.getStatus(), USEMONEYRECORD_5)) {//已逾期
+//            UsedMoneyDetailsActivity.open(activity, state, ""); //
+//        }
     }
 }

@@ -84,7 +84,8 @@ public class MainActivity extends AbsBaseActivity {
         initListener();
         initViewPager();
         updateManager = new UpdateManager(getString(R.string.app_name));
-//        updateManager.checkNewApp(this);//这个检查更新的接口还会报错
+//        updateManager.checkNewApp(this);//这个检查更新接口还会报错
+
 //        if (TextUtils.isEmpty(SPUtilHelpr.getQiNiuUrl())) {
 //            getQiNiuUrl();
 //        }

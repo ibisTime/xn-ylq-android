@@ -56,6 +56,8 @@ public class LocationHelper {
         needLocationPermissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
         needLocationPermissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
         needLocationPermissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        needLocationPermissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        needLocationPermissions.add(Manifest.permission.READ_PHONE_STATE);
     }
 
     /**

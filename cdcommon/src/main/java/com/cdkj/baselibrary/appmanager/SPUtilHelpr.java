@@ -4,7 +4,6 @@ package com.cdkj.baselibrary.appmanager;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.cdkj.baselibrary.BaseApplication;
 import com.cdkj.baselibrary.utils.SPUtils;
 
@@ -16,6 +15,7 @@ public class SPUtilHelpr {
 
     private static final String USERTOKEN = "user_toke_ylq";
     private static final String USERID = "user_id_ylq";
+    private static final String QINIUURL = "qiniu_url";
 
     /**
      * 设置用户token
@@ -102,6 +102,60 @@ public class SPUtilHelpr {
     public static String getUserId() {
         return SPUtils.getString(BaseApplication.getContext(), USERID, "");
 
+    }
+
+    /**
+     * 设置用户七牛
+     *
+     * @param
+     */
+    public static void saveQiNiuUrl(String qiniuurl) {
+        SPUtils.put(BaseApplication.getContext(), QINIUURL, qiniuurl);
+    }
+
+    /**
+     * 设置用户七牛
+     *
+     * @param
+     */
+    public static String getQiNiuUrl() {
+        return SPUtils.getString(BaseApplication.getContext(), QINIUURL, "");
+    }
+
+    /**
+     * 设置用是否有风控权限
+     *
+     * @param
+     */
+    public static void saveIsFK(String isFK) {
+        SPUtils.put(BaseApplication.getContext(), "isFK", isFK);
+    }
+
+    /**
+     * 设置用是否有风控权限
+     *
+     * @param
+     */
+    public static String getIsFK() {
+        return SPUtils.getString(BaseApplication.getContext(), "isFK", "");
+    }
+
+    /**
+     * 设置用是否有借条权限(贷款权限)
+     *
+     * @param
+     */
+    public static void saveIsJT(String isFK) {
+        SPUtils.put(BaseApplication.getContext(), "isJT", isFK);
+    }
+
+    /**
+     * 设置用是否有借条权限(贷款权限)
+     *
+     * @param
+     */
+    public static String getIsJT() {
+        return SPUtils.getString(BaseApplication.getContext(), "isJT", "");
     }
 
 

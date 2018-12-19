@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">双龙</string>
+    <string name="app_name">橙小贷</string>
 
     <string name="main_tab_borrow_money">借款</string>
 
@@ -43,6 +43,4 @@
 
     <string name="record_state_8">代付转账中</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -67,6 +67,7 @@ public class AlsoMoneyOffLineFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(getLayoutInflater(savedInstanceState), R.layout.fragment_offline_alsomoney, null, false);
+
         getKeyData();
 
         if (getArguments() != null) {
@@ -102,7 +103,7 @@ public class AlsoMoneyOffLineFragment extends BaseFragment {
 
     /**
      * 线下还款   (意思就是  私底下转给放款人,这个app就是调用一下接口,申请一下)
-     *
+     * <p>
      * 分为  分期和不分期  调用接口不同  根据是否有分期的对象来判断是否该进行分期
      */
     private void payRequest() {
@@ -145,17 +146,28 @@ public class AlsoMoneyOffLineFragment extends BaseFragment {
         map.put("companyCode", MyConfig.COMPANYCODE);
 
         Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("623917", StringUtils.getJsonToString(map));
-        ;
-
         addCall(call);
 
         call.enqueue(new BaseResponseModelCallBack<IntroductionInfoModel>(mActivity) {
             @Override
             protected void onSuccess(IntroductionInfoModel data, String SucMessage) {
                 if (TextUtils.isEmpty(data.getCvalue())) {
+                    mBinding.webView.loadData("信息获取失败,请重新获取", "text/html;charset=UTF-8", "UTF-8");
                     return;
                 }
                 mBinding.webView.loadData(data.getCvalue(), "text/html;charset=UTF-8", "UTF-8");
+            }
+
+            @Override
+            protected void onReqFailure(int errorCode, String errorMessage) {
+                super.onReqFailure(errorCode, errorMessage);
+                mBinding.webView.loadData("信息获取失败,请重新获取", "text/html;charset=UTF-8", "UTF-8");
+            }
+
+            @Override
+            protected void onBuinessFailure(String code, String error) {
+                super.onBuinessFailure(code, error);
+                mBinding.webView.loadData("信息获取失败,请重新获取", "text/html;charset=UTF-8", "UTF-8");
             }
 
             @Override

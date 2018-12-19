@@ -43,8 +43,7 @@ public class ImgUtils {
             return;
         }
 
-        if(context==null || img==null)
-        {
+        if(context==null || img==null){
             return;
         }
 

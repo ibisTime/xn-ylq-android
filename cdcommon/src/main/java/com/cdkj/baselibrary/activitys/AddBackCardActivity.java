@@ -38,7 +38,6 @@ public class AddBackCardActivity extends AbsBaseActivity {
 
     private String[] mBankNames;
     private String[] mBankCodes;
-
     private String mSelectCardId;//选择的银行卡ID
 
 
@@ -62,12 +61,8 @@ public class AddBackCardActivity extends AbsBaseActivity {
 
     @Override
     public void afterCreate(Bundle savedInstanceState) {
-
-
         setTopTitle("绑定银行卡");
-
         setSubLeftImgState(true);
-
         //添加银行类型
         mBinding.txtBankName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +71,6 @@ public class AddBackCardActivity extends AbsBaseActivity {
             }
         });
 
-
         if (!TextUtils.isEmpty(SPUtilHelpr.getUserName())) {
             mBinding.editName.setText(SPUtilHelpr.getUserName());
             mBinding.editName.setEnabled(false);
@@ -84,22 +78,25 @@ public class AddBackCardActivity extends AbsBaseActivity {
             mBinding.editName.setEnabled(true);
         }
 
-
         //添加银行卡
         mBinding.txtConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (TextUtils.isEmpty(mBinding.editName.getText().toString())) {
-                    showToast("请输入姓名");
+                    showToast("请输入开户名");
                     return;
                 }
                 if (TextUtils.isEmpty(mSelectCardId)) {
-                    showToast("请选择银行");
+                    showToast("请选择开户行");
+                    return;
+                }
+                if (TextUtils.isEmpty(mBinding.edtCardZH.getText().toString().trim())) {
+                    showToast("请填写开户支行");
                     return;
                 }
                 if (TextUtils.isEmpty(mBinding.edtCardId.getText().toString())) {
-                    showToast("请输入卡号");
+                    showToast("请输入银行卡号");
                     return;
                 }
 
@@ -107,12 +104,9 @@ public class AddBackCardActivity extends AbsBaseActivity {
                     showToast("银行卡号最低为16位数字");
                     return;
                 }
-
-
                 bindCard();
             }
         });
-
     }
 
 
@@ -131,10 +125,15 @@ public class AddBackCardActivity extends AbsBaseActivity {
         object.put("userId", SPUtilHelpr.getUserId());
         object.put("systemCode", MyConfig.SYSTEMCODE);
 
-        Call call = RetrofitUtils.getBaseAPiService().bindBankCard("802010", StringUtils.getJsonToString(object));
+        //下面这几个参数 不确定是否需要 为了调试先随便添加
+        object.put("companyCode", MyConfig.COMPANYCODE);
+        object.put("bindMobile", "13333333333");
+        object.put("subbranch", mBinding.edtCardZH.getText().toString().trim());
+        object.put("smsCaptcha", "1234");//验证码
 
+//        Call call = RetrofitUtils.getBaseAPiService().bindBankCard("802010", StringUtils.getJsonToString(object));
+        Call call = RetrofitUtils.getBaseAPiService().bindBankCard("802020", StringUtils.getJsonToString(object));
         addCall(call);
-
         showLoadingDialog();
 
         call.enqueue(new BaseResponseModelCallBack(this) {
@@ -150,8 +149,6 @@ public class AddBackCardActivity extends AbsBaseActivity {
                 disMissLoading();
             }
         });
-
-
     }
 
 
@@ -163,11 +160,8 @@ public class AddBackCardActivity extends AbsBaseActivity {
         object.put("token", SPUtilHelpr.getUserToken());
         object.put("payType", "WAP");
         Call call = RetrofitUtils.getBaseAPiService().getBackModel("802116", StringUtils.getJsonToString(object));
-
         addCall(call);
-
         showLoadingDialog();
-
         call.enqueue(new BaseResponseListCallBack<BankModel>(this) {
             @Override
             protected void onSuccess(List<BankModel> r, String SucMessage) {
@@ -192,8 +186,6 @@ public class AddBackCardActivity extends AbsBaseActivity {
                 disMissLoading();
             }
         });
-
-
     }
 
 
@@ -209,5 +201,4 @@ public class AddBackCardActivity extends AbsBaseActivity {
                     }
                 }).setNegativeButton("取消", null).show();
     }
-
 }

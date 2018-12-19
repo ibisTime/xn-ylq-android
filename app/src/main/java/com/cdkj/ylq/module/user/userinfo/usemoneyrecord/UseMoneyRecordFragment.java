@@ -152,7 +152,7 @@ public class UseMoneyRecordFragment extends BaseRefreshFragment<UseMoneyRecordMo
             protected void convert(BaseViewHolder helper, UseMoneyRecordModel.ListBean item) {
                 if (item == null) return;
 
-                helper.setText(R.id.tv_money, MoneyUtils.showPrice(item.getAmount()));
+                helper.setText(R.id.tv_money, MoneyUtils.showPrice(item.getBorrowAmount()));
                 helper.setText(R.id.tv_days, item.getDuration() + "天");
                 helper.setText(R.id.tv_state, BusinessSings.getStateRecordString(mActivity, item.getStatus()));
                 helper.setText(R.id.tv_code, "订单编号 " + item.getCode());
@@ -169,7 +169,7 @@ public class UseMoneyRecordFragment extends BaseRefreshFragment<UseMoneyRecordMo
 
     @Override
     public int getEmptyImg() {
-        return R.drawable.no_coupnos;
+        return R.drawable.no_data;
     }
 
     @Override

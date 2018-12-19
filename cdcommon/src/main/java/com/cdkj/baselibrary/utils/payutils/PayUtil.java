@@ -15,9 +15,6 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
@@ -67,14 +64,14 @@ public class PayUtil {
 
         }
 
-        if (!api.isWXAppSupportAPI()) {
-            CommonDialog commonDialog = new CommonDialog(mContext).builder()
-                    .setTitle("提示").setContentMsg("亲，您的微信版本过低，请先更新微信！")
-                    .setNegativeBtn("确定", null);
-
-            commonDialog.show();
-            return;
-        }
+//        if (!api.isWXAppSupportAPI()) {
+//            CommonDialog commonDialog = new CommonDialog(mContext).builder()
+//                    .setTitle("提示").setContentMsg("亲，您的微信版本过低，请先更新微信！")
+//                    .setNegativeBtn("确定", null);
+//
+//            commonDialog.show();
+//            return;
+//        }
 
         // 将该app注册到微信
         api.registerApp(model.getAppId());

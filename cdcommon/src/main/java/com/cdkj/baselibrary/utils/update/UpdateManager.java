@@ -1,13 +1,11 @@
 package com.cdkj.baselibrary.utils.update;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.cdkj.baselibrary.appmanager.EventTags;
 import com.cdkj.baselibrary.appmanager.MyConfig;
-import com.cdkj.baselibrary.base.BaseActivity;
 import com.cdkj.baselibrary.dialog.CommonDialog;
 import com.cdkj.baselibrary.model.TypeInfoModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;

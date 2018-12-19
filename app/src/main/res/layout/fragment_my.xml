@@ -80,15 +80,15 @@
 
                     <TextView
                         android:id="@+id/tv_user_credit_score"
-                        android:layout_marginTop="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginTop="10dp"
                         android:gravity="center_vertical"
                         android:paddingLeft="15dp"
+                        android:text="信用分：0"
                         android:textColor="@color/white"
-                        android:textSize="14sp"
-                        android:text="信用分：0" />
+                        android:textSize="14sp" />
                 </LinearLayout>
 
 
@@ -462,6 +462,7 @@
             <View style="@style/style_split_line" />
 
             <LinearLayout
+                android:id="@+id/ll_call_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/bg_gray"

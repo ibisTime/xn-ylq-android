@@ -1,9 +1,12 @@
 package com.cdkj.baselibrary.utils;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
 
@@ -27,6 +30,9 @@ public class BitmapUtils {
 
     public static final int picWidth = 720;
     public static final int picHeight = 1280;
+
+    public void BitmapUtils() {
+    }
 
     /**
      * 图片质量压缩法
@@ -82,11 +88,11 @@ public class BitmapUtils {
 
 
     /*
-* 旋转图片
-* @param angle
-* @param bitmap
-* @return Bitmap
-*/
+     * 旋转图片
+     * @param angle
+     * @param bitmap
+     * @return Bitmap
+     */
     public static Bitmap rotaingImageView(int angle, Bitmap bitmap) {
         try {
             //旋转图片 动作
@@ -334,5 +340,14 @@ public class BitmapUtils {
         return size;
     }
 
-
+    //保存图片到内存卡,并且通知图库,加载到图库中
+    public static void saveImageToGallery(Context context, Bitmap bmp, String fileName) {
+        if (bmp == null || TextUtils.isEmpty(fileName)) {
+            return;
+        }
+        String filePath = saveBitmapFile(bmp, fileName);
+        File file = new File(filePath);
+        Uri uri = Uri.fromFile(file);
+        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
+    }
 }

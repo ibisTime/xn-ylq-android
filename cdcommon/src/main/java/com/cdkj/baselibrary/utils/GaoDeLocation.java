@@ -34,7 +34,8 @@ public class GaoDeLocation implements LocationInterface {
                     listener.locationSuccessful(transitionModel(aMapLocation));
                 } else {
                     if (aMapLocation != null) {
-                        LogUtil.E("高德定位失败" + aMapLocation.getErrorInfo());//定位失败
+                        LogUtil.E("高德定位失败" + aMapLocation.getErrorInfo()+
+                                "-----"+aMapLocation.getErrorCode());//定位失败
                         listener.locationFailure(aMapLocation.getErrorInfo());
                         return;
                     }

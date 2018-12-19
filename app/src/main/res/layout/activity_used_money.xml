@@ -43,8 +43,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:layout_marginBottom="15dp"
                             android:layout_marginTop="15dp"
+                            android:layout_marginBottom="15dp"
                             android:textColor="@color/money_yellow"
                             android:textSize="16sp"
                             tools:text="7000" />
@@ -132,16 +132,108 @@
                                 </FrameLayout>
 
                                 <ImageView
-                                    android:visibility="gone"
                                     android:layout_width="15dp"
                                     android:layout_height="15dp"
                                     android:layout_gravity="bottom"
-                                    android:layout_marginBottom="3dp"
                                     android:layout_marginRight="5dp"
-                                    android:src="@drawable/more_right" />
+                                    android:layout_marginBottom="3dp"
+                                    android:src="@drawable/more_right"
+                                    android:visibility="gone" />
 
 
                             </LinearLayout>
+
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginRight="15dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_loan_money"
+                                    android:layout_width="180dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="right"
+                                    android:layout_marginLeft="8dp"
+                                    android:layout_marginTop="18dp"
+                                    android:gravity="right"
+                                    android:textColor="@color/text_color"
+                                    android:textSize="16sp"
+                                    tools:text="2017-09-09" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="8dp"
+                                    android:layout_marginTop="18dp"
+                                    android:text="借款金额"
+                                    android:textColor="@color/text_hint_color"
+                                    android:textSize="16sp" />
+
+
+                            </FrameLayout>
+
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginRight="15dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_actual_money"
+                                    android:layout_width="180dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="right"
+                                    android:layout_marginLeft="8dp"
+                                    android:layout_marginTop="18dp"
+                                    android:gravity="right"
+                                    android:textColor="@color/text_color"
+                                    android:textSize="16sp"
+                                    tools:text="2017-09-09" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="8dp"
+                                    android:layout_marginTop="18dp"
+                                    android:text="实际打款金额"
+                                    android:textColor="@color/text_hint_color"
+                                    android:textSize="16sp" />
+
+                            </FrameLayout>
+
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginRight="15dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_paid_money"
+                                    android:layout_width="180dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="right"
+                                    android:layout_marginLeft="8dp"
+                                    android:layout_marginTop="18dp"
+                                    android:gravity="right"
+                                    android:textColor="@color/text_color"
+                                    android:textSize="16sp"
+                                    tools:text="2017-09-09" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="8dp"
+                                    android:layout_marginTop="18dp"
+                                    android:text="已还款金额"
+                                    android:textColor="@color/text_hint_color"
+                                    android:textSize="16sp" />
+
+
+                            </FrameLayout>
 
 
                             <FrameLayout
@@ -169,7 +261,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="8dp"
                                     android:layout_marginTop="18dp"
-                                    android:text="金额"
+                                    android:text="剩余还款金额"
                                     android:textColor="@color/text_hint_color"
                                     android:textSize="16sp" />
 
@@ -399,6 +491,37 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="8dp"
                                     android:layout_marginTop="18dp"
+                                    android:text="服务费"
+                                    android:textColor="@color/text_hint_color"
+                                    android:textSize="16sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_fuwu"
+                                    android:layout_width="180dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="right"
+                                    android:layout_marginLeft="8dp"
+                                    android:layout_marginTop="18dp"
+                                    android:gravity="right"
+                                    android:textColor="@color/text_color"
+                                    android:textSize="16sp"
+                                    tools:text="2017-09-09" />
+
+                            </FrameLayout>
+
+
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginRight="15dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="8dp"
+                                    android:layout_marginTop="18dp"
                                     android:text="利息"
                                     android:textColor="@color/text_hint_color"
                                     android:textSize="16sp" />
@@ -417,35 +540,6 @@
 
                             </FrameLayout>
 
-                            <FrameLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="15dp"
-                                android:layout_marginRight="15dp"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="8dp"
-                                    android:layout_marginTop="18dp"
-                                    android:text="服务费"
-                                    android:textColor="@color/text_hint_color"
-                                    android:textSize="16sp" />
-
-                                <TextView
-                                    android:id="@+id/tv_fuwu"
-                                    android:layout_width="180dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="right"
-                                    android:layout_marginLeft="8dp"
-                                    android:layout_marginTop="18dp"
-                                    android:gravity="right"
-                                    android:textColor="@color/text_color"
-                                    android:textSize="16sp"
-                                    tools:text="2017-09-09" />
-
-                            </FrameLayout>
 
                             <FrameLayout
                                 android:layout_width="match_parent"
@@ -471,9 +565,9 @@
                                     android:layout_marginLeft="8dp"
                                     android:layout_marginTop="18dp"
                                     android:gravity="right"
-                                    tools:text="0元"
                                     android:textColor="@color/text_color"
-                                    android:textSize="16sp" />
+                                    android:textSize="16sp"
+                                    tools:text="0元" />
 
                             </FrameLayout>
 
@@ -501,18 +595,20 @@
                                     android:layout_marginLeft="8dp"
                                     android:layout_marginTop="18dp"
                                     android:gravity="right"
-                                    tools:text="0元"
                                     android:textColor="@color/text_color"
-                                    android:textSize="16sp" />
+                                    android:textSize="16sp"
+                                    tools:text="0元" />
 
                             </FrameLayout>
 
                             <FrameLayout
+                                android:id="@+id/fl_daoqi"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginRight="15dp"
-                                android:orientation="horizontal">
+                                android:orientation="horizontal"
+                                android:visibility="gone">
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -570,15 +666,15 @@
                                         android:layout_gravity="right"
                                         android:layout_marginLeft="8dp"
                                         android:layout_marginRight="10dp"
-                                        tools:text="0"
                                         android:textColor="@color/text_color"
-                                        android:textSize="16sp" />
+                                        android:textSize="16sp"
+                                        tools:text="0" />
 
                                     <ImageView
-                                        android:visibility="gone"
                                         android:layout_width="15dp"
                                         android:layout_height="15dp"
-                                        android:src="@drawable/more_right" />
+                                        android:src="@drawable/more_right"
+                                        android:visibility="gone" />
 
 
                                 </LinearLayout>
@@ -595,8 +691,8 @@
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_gravity="right"
-                        android:layout_marginRight="-10dp"
                         android:layout_marginTop="-10dp"
+                        android:layout_marginRight="-10dp"
                         android:src="@drawable/record_5" />
 
 
@@ -613,8 +709,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <Button
                 android:id="@+id/btn_pay_money"
@@ -630,7 +726,6 @@
                 android:textSize="16sp" />
 
             <Button
-                android:visibility="gone"
                 android:id="@+id/btn_renewal"
                 android:layout_width="0dp"
                 android:layout_height="45dp"
@@ -640,7 +735,8 @@
                 android:background="@drawable/btn_renewal"
                 android:text="续期"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:visibility="gone" />
 
         </LinearLayout>
 

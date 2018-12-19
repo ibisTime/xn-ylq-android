@@ -2,7 +2,6 @@ package com.cdkj.baselibrary.activitys;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.view.View;
 

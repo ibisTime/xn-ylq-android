@@ -51,7 +51,7 @@ public class SendPhoneCoodePresenter {
         hashMap.put("bizType",bizType);
         hashMap.put("kind",kind);
 
-        call = RetrofitUtils.getBaseAPiService().successRequest("805950", StringUtils.getJsonToString(hashMap));
+        call = RetrofitUtils.getBaseAPiService().successRequest("630090", StringUtils.getJsonToString(hashMap));
 
         mListener.StartSend();
         call.enqueue(new BaseResponseModelCallBack<IsSuccessModes>(mContext) {
@@ -90,6 +90,4 @@ public class SendPhoneCoodePresenter {
         this.mListener = null;
         this.mContext = null;
     }
-
-
 }

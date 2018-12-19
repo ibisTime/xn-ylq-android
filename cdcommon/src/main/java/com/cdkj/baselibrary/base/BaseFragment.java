@@ -34,6 +34,7 @@ public abstract class BaseFragment extends Fragment {
         super.onAttach(context);
         mActivity = getActivity();
     }
+
     @Subscribe
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,11 +72,11 @@ public abstract class BaseFragment extends Fragment {
      * 显示dialog
      */
     public void showLoadingDialog() {
-        if(loadingDialog==null){
+        if(loadingDialog==null&&mActivity!=null){
             loadingDialog=new LoadingDialog(mActivity);
         }
 
-        if (loadingDialog != null && !loadingDialog.isShowing()) {
+        if (loadingDialog != null && !loadingDialog.isShowing()&&mActivity!=null) {
             loadingDialog.showDialog();
         }
     }

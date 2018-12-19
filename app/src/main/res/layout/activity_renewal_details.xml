@@ -191,12 +191,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:text="利息"
+                    android:text="服务费"
                     android:textColor="@color/text_hint_color"
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/tv_lixi"
+                    android:id="@+id/tv_fuwu"
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
@@ -219,12 +219,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:text="服务费"
+                    android:text="利息"
                     android:textColor="@color/text_hint_color"
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/tv_fuwu"
+                    android:id="@+id/tv_lixi"
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
@@ -236,6 +236,8 @@
 
 
             </FrameLayout>
+
+
 
             <FrameLayout
                 android:layout_width="match_parent"

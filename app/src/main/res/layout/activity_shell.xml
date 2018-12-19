@@ -61,7 +61,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="复制您的专属连接"
+                    android:text="复制您的专属链接"
                     android:textColor="@color/white"
                     android:textSize="12dp" />
 

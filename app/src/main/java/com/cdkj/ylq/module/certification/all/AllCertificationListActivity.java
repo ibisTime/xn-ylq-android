@@ -1,28 +1,39 @@
 package com.cdkj.ylq.module.certification.all;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cdkj.baselibrary.api.BaseResponseModel;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.dialog.UITipDialog;
+import com.cdkj.baselibrary.interfaces.LocationCallBackListener;
 import com.cdkj.baselibrary.model.IsSuccessModes;
+import com.cdkj.baselibrary.model.LocationModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
+import com.cdkj.baselibrary.utils.GaoDeLocation;
+import com.cdkj.baselibrary.utils.LocationHelper;
+import com.cdkj.baselibrary.utils.LogUtil;
+import com.cdkj.baselibrary.utils.PermissionHelper;
 import com.cdkj.baselibrary.utils.QiNiuHelper;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.baselibrary.utils.ToastUtil;
 import com.cdkj.ylq.R;
 import com.cdkj.ylq.databinding.ActivityAllCertificationListBinding;
 import com.cdkj.ylq.model.CerttificationInfoModel;
+import com.cdkj.ylq.model.SuccessModel;
+import com.cdkj.ylq.module.api.MyApiServer;
 import com.cdkj.ylq.module.certification.AddressBookCertActivity;
 import com.cdkj.ylq.module.certification.basisinfocert.BasisInfoCertificationActivity;
 import com.cdkj.ylq.mpresenter.GetUserCertificationInfoListener;
@@ -59,6 +70,8 @@ public class AllCertificationListActivity extends AbsBaseActivity implements Get
     private String faceImage;
     private String backImage;
     private String frontImage;
+    private LocationHelper mapLocation;
+    private PermissionHelper mHelper;
 
     /**
      * 打开当前页面
@@ -82,7 +95,7 @@ public class AllCertificationListActivity extends AbsBaseActivity implements Get
     @Override
     public void afterCreate(Bundle savedInstanceState) {
         detectEngine = new DetectEngine();
-
+        mHelper = new PermissionHelper(this);
         setSubLeftImgState(true);
         setTopTitle("认证");
         if (mCertInfoPresenter == null) {
@@ -93,20 +106,26 @@ public class AllCertificationListActivity extends AbsBaseActivity implements Get
 
     /**
      * 设置布局  显示的文字颜色状态
+     * 0 未认证
+     * 1 已认证
+     * 3 认证中
      *
      * @param type
-     * @param text
      * @param tv
      */
-    private void setViewData(String type, String text, TextView tv) {
-        tv.setText(text);
+    private void setViewData(String type, TextView tv) {
+
         if (TextUtils.equals("1", type)) {
+            tv.setText("已认证");
             tv.setTextColor(ContextCompat.getColor(this, R.color.cert_state_ok));
-        } else if (TextUtils.equals("2", type)) {
+        } else if (TextUtils.equals("4", type)) {
+            tv.setText("认证失败");
             tv.setTextColor(ContextCompat.getColor(this, R.color.guoqi));
         } else if (TextUtils.equals("3", type)) {
+            tv.setText("认证中");
             tv.setTextColor(ContextCompat.getColor(this, R.color.guoqi));
         } else {
+            tv.setText("未认证");
             tv.setTextColor(ContextCompat.getColor(this, R.color.txt_gray));
         }
     }
@@ -115,58 +134,80 @@ public class AllCertificationListActivity extends AbsBaseActivity implements Get
         if (mCertData == null) {
             return;
         }
+
+        /**
+         * 定位
+         */
+        mBinding.llLocation.setOnClickListener(v -> {
+            if (TextUtils.equals("0", mCertData.getLocationFlag()) || TextUtils.equals("4", mCertData.getLocationFlag())) {
+                sendLocation();
+            }
+        });
+
+        //基本信息
         mBinding.llBasic.setOnClickListener(v -> {
-            if (TextUtils.equals("0", mCertData.getInfoPersonalFlag())) {
+            if (TextUtils.equals("0", mCertData.getInfoPersonalFlag()) || TextUtils.equals("4", mCertData.getInfoPersonalFlag())) {
                 BasisInfoCertificationActivity.open(this);
             }
         });
 
         mBinding.llIdCard.setOnClickListener(v -> {
-            //身份认证  IdCardActivity.open(this);
-            if (TextUtils.equals("0", mCertData.getInfoZqznFlag())) {
-                try {
-                    if (detectEngine.id_ocr(AllCertificationListActivity.this, app_key, secret_key, AllCertificationListActivity.this) != ErrorCode.SUCCESS.getCode())
-                        Toast.makeText(getApplicationContext(), "接口调用失败", Toast.LENGTH_LONG).show();
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            }
+            //第一次启动,某些手机会出现黑屏,先进行权限申请再进入
+            permissionRequest();
         });
 
-        mBinding.llMailList.setOnClickListener(v -> {
-            AddressBookCertActivity.open(this, false);
-        });
         //支付宝
         mBinding.llZfb.setOnClickListener(v -> {
 //            AliActivity.open(this);
-            if (TextUtils.equals("0", mCertData.getInfoZfbFlag())) {
-                MxParam mxParam = new MxParam();
-                mxParam.setUserId(SPUtilHelpr.getUserId());
-                mxParam.setApiKey(moxieApiKey);
-                mxParam.setThemeColor("#0cb8ae");
-                mxParam.setBannerBgColor("#0cb8ae");
-                mxParam.setBannerTxtColor("#ffffff");
-                mxParam.setTaskType(MxParam.PARAM_TASK_ALIPAY);
-                MoxieSDK.getInstance().start(this, mxParam, null);
+            if (TextUtils.equals("0", mCertData.getInfoZfbFlag()) || TextUtils.equals("4", mCertData.getInfoZfbFlag())) {
+
+                checkMoXiew("INFO_ZHIFUBAO", new MoxieLisener() {
+                    @Override
+                    public void OnSuccer() {
+                        MxParam mxParam = new MxParam();
+                        mxParam.setUserId(SPUtilHelpr.getUserId());
+                        mxParam.setApiKey(moxieApiKey);
+                        mxParam.setThemeColor("#0cb8ae");
+                        mxParam.setBannerBgColor("#0cb8ae");
+                        mxParam.setBannerTxtColor("#ffffff");
+                        mxParam.setTaskType(MxParam.PARAM_TASK_ALIPAY);
+                        MoxieSDK.getInstance().start(AllCertificationListActivity.this, mxParam, null);
+                    }
+
+                    @Override
+                    public void OnError(String msg) {
+                        UITipDialog.showFall(AllCertificationListActivity.this, msg);
+                    }
+                });
             }
         });
         //通讯录
         mBinding.llTxl.setOnClickListener(v -> {
-            if (TextUtils.equals("0", mCertData.getInfoAddressBookFlag())) {
+            if (TextUtils.equals("0", mCertData.getInfoAddressBookFlag()) || TextUtils.equals("4", mCertData.getInfoAddressBookFlag())) {
                 AddressBookCertActivity.open(this, TextUtils.equals("1", mCertData.getInfoAddressBookFlag()));
             }
         });
         //运营商
         mBinding.llOperator.setOnClickListener(v -> {
-            if (TextUtils.equals("0", mCertData.getInfoCarrierFlag())) {
-                //判断是否已经实名认证过了
-                if (TextUtils.equals("1", mCertData.getInfoZqznFlag())) {
-                    //已经实名认证//携带数据自动填充信息
-                    startOperatorRZ(true);
-                } else {
-                    //直接去认证
-                    startOperatorRZ(false);
-                }
+            if (TextUtils.equals("0", mCertData.getInfoCarrierFlag()) || TextUtils.equals("4", mCertData.getInfoCarrierFlag())) {
+                checkMoXiew("INFO_CARRIER", new MoxieLisener() {
+                    @Override
+                    public void OnSuccer() {
+                        //判断是否已经实名认证过了
+                        if (TextUtils.equals("1", mCertData.getInfoZqznFlag())) {
+                            //已经实名认证//携带数据自动填充信息
+                            startOperatorRZ(true);
+                        } else {
+                            //直接去认证
+                            startOperatorRZ(false);
+                        }
+                    }
+
+                    @Override
+                    public void OnError(String msg) {
+                        UITipDialog.showFall(AllCertificationListActivity.this, msg);
+                    }
+                });
             }
 //            OperatorActivity.open(this);
         });
@@ -180,7 +221,7 @@ public class AllCertificationListActivity extends AbsBaseActivity implements Get
         mxParam.setBannerBgColor("#0cb8ae");
         mxParam.setBannerTxtColor("#ffffff");
         mxParam.setTaskType(MxParam.PARAM_TASK_CARRIER);
-//没有实名认证就直接去认证
+        //没有实名认证就直接去认证
         if (!isRZ) {
             MoxieSDK.getInstance().start(this, mxParam, null);
             return;
@@ -192,13 +233,12 @@ public class AllCertificationListActivity extends AbsBaseActivity implements Get
         if (infoZqzn == null || zqznInfoFront == null) {
             MoxieSDK.getInstance().start(this, mxParam, null);
             return;
-
         }
         MxLoginCustom loginCustom = new MxLoginCustom();
         Map<String, Object> loginParam = new HashMap<>();
         loginParam.put("phone", SPUtilHelpr.getUserPhoneNum());          // 手机号
         loginParam.put("name", zqznInfoFront.getName());               // 姓名
-        loginParam.put("idcard", zqznInfoFront.getIdNo());  // 身份证
+        loginParam.put("idcard", zqznInfoFront.getIdNo());              // 身份证
         loginCustom.setLoginParams(loginParam);
         mxParam.setLoginCustom(loginCustom);
         MoxieSDK.getInstance().start(this, mxParam, null);
@@ -234,74 +274,22 @@ public class AllCertificationListActivity extends AbsBaseActivity implements Get
             return;
         }
         initListener();
-        setViewData("1", "已认证", mBinding.tvPhoneType);
-        setViewData("1", "已认证", mBinding.tvLocationType);
 
-        if (TextUtils.equals("1", mCertData.getInfoZqznFlag())) { //身份认证
-            setViewData("1", "已认证", mBinding.tvIdCardType);
-        } else if (TextUtils.equals("2", mCertData.getInfoZqznFlag())) {
-            setViewData("2", "已过期", mBinding.tvIdCardType);
-        } else if (TextUtils.equals("3", mCertData.getInfoZqznFlag())) {
-            setViewData("3", "认证中", mBinding.tvIdCardType);
-        } else {
-            setViewData("", "未认证", mBinding.tvIdCardType);
-        }
+        setViewData("1", mBinding.tvPhoneType);
 
-        if (TextUtils.equals("1", mCertData.getInfoPersonalFlag())) { //基本信息
-            setViewData("1", "已认证", mBinding.tvBasicType);
+        setViewData(mCertData.getLocationFlag(), mBinding.tvLocationType);//定位认证
 
-        } else if (TextUtils.equals("2", mCertData.getInfoPersonalFlag())) {
-            setViewData("2", "已过期", mBinding.tvBasicType);
-        } else if (TextUtils.equals("3", mCertData.getInfoPersonalFlag())) {
-            setViewData("3", "认证中", mBinding.tvBasicType);
-        } else {
-            setViewData("", "未认证", mBinding.tvBasicType);
-        }
+        setViewData(mCertData.getInfoZqznFlag(), mBinding.tvIdCardType);//身份认证
 
-        if (TextUtils.equals("1", mCertData.getInfoCarrierFlag())) { //运营商
-            setViewData("1", "已认证", mBinding.tvOperatorType);
+        setViewData(mCertData.getInfoPersonalFlag(), mBinding.tvBasicType); //基本信息
 
-        } else if (TextUtils.equals("2", mCertData.getInfoIdentifyFlag())) {
-            setViewData("2", "已过期", mBinding.tvOperatorType);
-        } else if (TextUtils.equals("3", mCertData.getInfoIdentifyFlag())) {
-            setViewData("3", "认证中", mBinding.tvOperatorType);
-        } else {
-            setViewData("", "未认证", mBinding.tvOperatorType);
-        }
+        setViewData(mCertData.getInfoCarrierFlag(), mBinding.tvOperatorType);//运营商
 
-        if (TextUtils.equals("1", mCertData.getInfoZfbFlag())) { //支付宝
-            setViewData("1", "已认证", mBinding.tvZfbType);
+        setViewData(mCertData.getInfoZfbFlag(), mBinding.tvZfbType);//支付宝
 
-        } else if (TextUtils.equals("2", mCertData.getInfoIdentifyFlag())) {
-            setViewData("2", "已过期", mBinding.tvZfbType);
-        } else if (TextUtils.equals("3", mCertData.getInfoIdentifyFlag())) {
-            setViewData("3", "认证中", mBinding.tvZfbType);
-        } else {
-            setViewData("", "未认证", mBinding.tvZfbType);
-        }
+        setViewData(mCertData.getInfoAddressBookFlag(), mBinding.tvTxlType); //通讯录
 
-        if (TextUtils.equals("1", mCertData.getInfoAddressBookFlag())) { //通讯录
-            setViewData("1", "已认证", mBinding.tvTxlType);
-
-        } else if (TextUtils.equals("2", mCertData.getInfoAddressBookFlag())) {
-            setViewData("2", "已过期", mBinding.tvTxlType);
-        } else if (TextUtils.equals("3", mCertData.getInfoAddressBookFlag())) {
-            setViewData("3", "认证中", mBinding.tvTxlType);
-        } else {
-            setViewData("", "未认证", mBinding.tvTxlType);
-        }
-
-        if (TextUtils.equals("1", mCertData.getInfoCarrierFlag())) { //运营商
-            setViewData("1", "已认证", mBinding.tvOperatorType);
-
-        } else if (TextUtils.equals("2", mCertData.getInfoCarrierFlag())) {
-            setViewData("2", "已过期", mBinding.tvOperatorType);
-        } else if (TextUtils.equals("3", mCertData.getInfoCarrierFlag())) {
-            setViewData("3", "认证中", mBinding.tvOperatorType);
-        } else {
-            setViewData("", "未认证", mBinding.tvOperatorType);
-        }
-
+        setViewData(mCertData.getInfoCarrierFlag(), mBinding.tvOperatorType);//运营商
     }
 
     @Override
@@ -320,7 +308,7 @@ public class AllCertificationListActivity extends AbsBaseActivity implements Get
     }
 
     /**
-     * 脸部照片
+     * 脸部照片回调
      *
      * @param faceResult
      */
@@ -455,6 +443,158 @@ public class AllCertificationListActivity extends AbsBaseActivity implements Get
         });
     }
 
+
+    /**
+     * 检查魔蝎账户是否有钱,有钱就继续认证,没钱就不能取认证,当账号没钱的时候 可能调取sdk会失败
+     * <p>
+     * 认证标志（INFO_ZQZN 智取职能人脸识别， INFO_CARRIER 魔蝎运营商，INFO_ZHIFUBAO 魔蝎支付宝认证）
+     */
+    private void checkMoXiew(String key, MoxieLisener moxieLisener) {
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", SPUtilHelpr.getUserId());
+        map.put("key", key);
+
+        showLoadingDialog();
+        Call<BaseResponseModel<SuccessModel>> infoMoney = RetrofitUtils.createApi(MyApiServer.class).getInfoMoney("623061", StringUtils.getJsonToString(map));
+        infoMoney.enqueue(new BaseResponseModelCallBack<SuccessModel>(this) {
+            @Override
+            protected void onSuccess(SuccessModel data, String SucMessage) {
+                moxieLisener.OnSuccer();
+            }
+
+            @Override
+            protected void onReqFailure(int errorCode, String errorMessage) {
+//                super.onReqFailure(errorCode, errorMessage);
+                moxieLisener.OnError(errorMessage);
+            }
+
+            @Override
+            protected void onBuinessFailure(String code, String error) {
+//                super.onBuinessFailure(code, error);
+                moxieLisener.OnError(error);
+            }
+
+            @Override
+            protected void onFinish() {
+                disMissLoading();
+            }
+        });
+    }
+
+    /**
+     * 定位
+     */
+    private void sendLocation() {
+        showLoadingDialog();
+        //                mLocationModel = locationModel;
+//                mBinding.tvLocation.setText(mLocationModel.getProvince() + mLocationModel.getCity() + mLocationModel.getDistrict());
+        mapLocation = new LocationHelper(this, new GaoDeLocation(), new LocationCallBackListener() {
+            @Override
+            public void locationSuccessful(LocationModel locationModel) {
+                disMissLoading();
+                //定位成功  调取接口保存信息
+                submitLocationData(locationModel);
+            }
+
+            @Override
+            public void locationFailure(String msg) {
+                UITipDialog.showFall(AllCertificationListActivity.this, "定位失败,请授予权限,并检查定位模式是否已开启!");
+                disMissLoading();
+            }
+
+            @Override
+            public void noPermissions() {
+                disMissLoading();
+            }
+        });
+        mapLocation.startLocation();//开始定位
+    }
+
+    /**
+     * 提交定位信息
+     */
+    private void submitLocationData(LocationModel locationModel) {
+
+        Map map = new HashMap();
+        map.put("userId", SPUtilHelpr.getUserId());
+        map.put("province", locationModel.getProvince());
+        map.put("city", locationModel.getCity());
+        map.put("area", locationModel.getDistrict());
+        String address = null;
+        if (!TextUtils.isEmpty(locationModel.getStreet())) {
+            address = locationModel.getStreet();
+        }
+        if (!TextUtils.isEmpty(locationModel.getStreetNum())) {
+            address += locationModel.getStreetNum();
+        }
+        map.put("address", address);
+        showLoadingDialog();
+        Call<BaseResponseModel<SuccessModel>> baseResponseModelCall = RetrofitUtils.createApi(MyApiServer.class).submitLocationData("623062", StringUtils.getJsonToString(map));
+        baseResponseModelCall.enqueue(new BaseResponseModelCallBack<SuccessModel>(this) {
+            @Override
+            protected void onSuccess(SuccessModel data, String SucMessage) {
+                //提交成功刷新数据状态
+                mCertInfoPresenter.getCertInfo(true);
+
+            }
+
+            @Override
+            protected void onFinish() {
+                disMissLoading();
+            }
+        });
+    }
+
+
+    /**
+     * 通讯录权限申请
+     */
+    private void permissionRequest() {
+        LogUtil.E("权限申请");
+        mHelper.requestPermissions(new PermissionHelper.PermissionListener() {
+            @Override
+            public void doAfterGrand(String... permission) {
+
+                //身份认证  IdCardActivity.open(this);
+                if (TextUtils.equals("0", mCertData.getInfoZqznFlag()) || TextUtils.equals("4", mCertData.getInfoZqznFlag())) {
+                    checkMoXiew("INFO_ZQZN", new MoxieLisener() {
+                        @Override
+                        public void OnSuccer() {
+                            try {
+                                if (detectEngine.id_ocr(AllCertificationListActivity.this, app_key, secret_key, AllCertificationListActivity.this) != ErrorCode.SUCCESS.getCode())
+                                    Toast.makeText(getApplicationContext(), "接口调用失败", Toast.LENGTH_LONG).show();
+                            } catch (Exception e) {
+                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                        @Override
+                        public void OnError(String msg) {
+                            UITipDialog.showFall(AllCertificationListActivity.this, msg);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void doAfterDenied(String... permission) {
+                disMissLoading();
+                showToast("请授予相机权限");
+            }
+        }, Manifest.permission.CAMERA);
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (mapLocation != null) {
+            mapLocation.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+        if (mHelper != null) {
+            mHelper.handleRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -464,6 +604,16 @@ public class AllCertificationListActivity extends AbsBaseActivity implements Get
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        //刷新的是上个界面的数据,就是认证的状态
         EventBus.getDefault().post("刷新界面数据");
     }
+
+
+
+}
+
+interface MoxieLisener {
+    void OnSuccer();
+
+    void OnError(String msg);
 }

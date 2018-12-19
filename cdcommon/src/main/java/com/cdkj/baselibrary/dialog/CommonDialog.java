@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cdkj.baselibrary.R;
@@ -120,11 +119,21 @@ public class CommonDialog {
         return this;
     }
 
+    /**
+     * 点击返回键是否能取消
+     * @param cancel
+     * @return
+     */
     public CommonDialog setCancelable(boolean cancel) {
         mDialog.setCancelable(cancel);
         return this;
     }
 
+    /**
+     * 点击空白区域是否能取消
+     * @param cancel
+     * @return
+     */
     public CommonDialog setCanceledOnTouchOutside(boolean cancel) {
         mDialog.setCanceledOnTouchOutside(cancel);
         return this;

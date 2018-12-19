@@ -141,7 +141,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="58dp"
                     android:background="@null"
-                    android:hint="当前位置-请选择位置"
+                    android:hint="当前位置"
                     android:maxLines="1"
                     android:textColorHint="@color/text_hint_color"
                     android:textSize="16sp" />

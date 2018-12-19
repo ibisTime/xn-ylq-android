@@ -281,6 +281,24 @@ public interface MyApiServer {
     @POST("api")
     Call<BaseResponseModel<CreditTypeBean>> getCreditType(@Field("code") String code, @Field("json") String json);
 
+  /**
+     * 获取三方 账户余额,没有余额就不能进行三方认证
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api")
+    Call<BaseResponseModel<SuccessModel>> getInfoMoney(@Field("code") String code, @Field("json") String json);
+
+/**
+     * 获取信用分状态
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api")
+    Call<BaseResponseModel<SuccessModel>> submitLocationData(@Field("code") String code, @Field("json") String json);
+
 
 
 }

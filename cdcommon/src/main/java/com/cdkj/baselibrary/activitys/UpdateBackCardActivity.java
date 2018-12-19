@@ -14,7 +14,6 @@ import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.databinding.ActivityBindBankCardBinding;
-import com.cdkj.baselibrary.dialog.CommonDialog;
 import com.cdkj.baselibrary.model.BankCardModel;
 import com.cdkj.baselibrary.model.BankModel;
 import com.cdkj.baselibrary.model.IsSuccessModes;
@@ -67,11 +66,9 @@ public class UpdateBackCardActivity extends AbsBaseActivity {
 
     @Override
     public void afterCreate(Bundle savedInstanceState) {
-
         if (getIntent() != null) {
             mBankModel = getIntent().getParcelableExtra("data");
         }
-
         setTopTitle("修改银行卡");
 
         setShowData();
@@ -111,12 +108,16 @@ public class UpdateBackCardActivity extends AbsBaseActivity {
                     showToast("请选择银行");
                     return;
                 }
+//                if (TextUtils.isEmpty(mBinding.edtCardZH.getText().toString())) {
+//                    showToast("请填写支行信息");
+//                    return;
+//                }
                 if (TextUtils.isEmpty(mBinding.edtCardId.getText().toString())) {
                     showToast("请输入卡号");
                     return;
                 }
 
-                if(mBinding.edtCardId.getText().toString().length()<16){
+                if (mBinding.edtCardId.getText().toString().length() < 16) {
                     showToast("银行卡号最低为16位数字");
                     return;
                 }
@@ -168,13 +169,14 @@ public class UpdateBackCardActivity extends AbsBaseActivity {
         object.put("bankName", mBinding.txtBankName.getText().toString().trim());
         object.put("bankCode", mSelectCardId);
         object.put("code", mBankModel.getCode());
+        object.put("subbranch", mBinding.edtCardZH.getText().toString().trim());
         object.put("status", "1");
 //        object.put("tradePwd", pwd);
         object.put("token", SPUtilHelpr.getUserToken());
         object.put("userId", SPUtilHelpr.getUserId());
         object.put("systemCode", MyConfig.SYSTEMCODE);
 
-        Call call = RetrofitUtils.getBaseAPiService().successRequest("623850", StringUtils.getJsonToString(object));
+        Call call = RetrofitUtils.getBaseAPiService().successRequest("802022", StringUtils.getJsonToString(object));
 
         addCall(call);
 
@@ -196,8 +198,6 @@ public class UpdateBackCardActivity extends AbsBaseActivity {
                 disMissLoading();
             }
         });
-
-
     }
 
     /**
@@ -213,11 +213,12 @@ public class UpdateBackCardActivity extends AbsBaseActivity {
         mBinding.txtBankName.setText(mBankModel.getBankName());
         mBinding.editName.setText(mBankModel.getRealName());
         mBinding.edtCardId.setText(mBankModel.getBankcardNumber());
+        mBinding.edtCardZH.setText(mBankModel.getSubbranch());
         mSelectCardId = mBankModel.getBankCode();
 
-        if(!TextUtils.isEmpty(mBankModel.getRealName())){
+        if (!TextUtils.isEmpty(mBankModel.getRealName())) {
             mBinding.editName.setEnabled(false);
-        }else{
+        } else {
             mBinding.editName.setEnabled(true);
         }
 
@@ -248,7 +249,7 @@ public class UpdateBackCardActivity extends AbsBaseActivity {
                 for (BankModel b : r) {
                     mBankNames[i] = b.getBankName();
                     mBankCodes[i] = b.getBankCode();
-                    LogUtil.E("银行卡code"+b.getBankCode());
+                    LogUtil.E("银行卡code" + b.getBankCode());
                     i++;
                 }
                 if (mBankNames.length != 0 && mBankNames.length == mBankCodes.length) {
@@ -273,11 +274,9 @@ public class UpdateBackCardActivity extends AbsBaseActivity {
 //                        txtBankCard.setText(list.get(which).getBankName());
                         mBinding.txtBankName.setText(mBankNames[which]);
                         mSelectCardId = mBankCodes[which];
-                        LogUtil.E("选择银行卡code"+mSelectCardId);
+                        LogUtil.E("选择银行卡code" + mSelectCardId);
                         dialog.dismiss();
                     }
                 }).setNegativeButton("取消", null).show();
     }
-
-
 }

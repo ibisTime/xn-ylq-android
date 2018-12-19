@@ -62,7 +62,6 @@ public class BackCardListActivity extends BaseRefreshActivity {
         if (getIntent() != null) {
             mIsselect = getIntent().getBooleanExtra("isSelect", true);
         }
-
         setTopTitle("我的银行卡");
 
         setSubLeftImgState(true);
@@ -75,13 +74,13 @@ public class BackCardListActivity extends BaseRefreshActivity {
     protected void getListData(int pageIndex, int limit, boolean canShowDialog) {
         Map<String, String> object = new HashMap<>();
 
-        object.put("systemCode", MyConfig.SYSTEMCODE);
+        object.put("companyCode", MyConfig.COMPANYCODE);
         object.put("token", SPUtilHelpr.getUserToken());
         object.put("userId", SPUtilHelpr.getUserId());
         object.put("start", "1");
         object.put("limit", "10");
 
-        Call call = RetrofitUtils.getBaseAPiService().getCardListData("802015", StringUtils.getJsonToString(object));  //签约界面也使用了获取银行卡列表接口 SigningSureActivity
+        Call call = RetrofitUtils.getBaseAPiService().getCardListData("802025", StringUtils.getJsonToString(object));  //签约界面也使用了获取银行卡列表接口 SigningSureActivity
 
         addCall(call);
 
@@ -91,7 +90,6 @@ public class BackCardListActivity extends BaseRefreshActivity {
             @Override
             protected void onSuccess(MyBankCardListMode data, String SucMessage) {
                 setData(data.getList());
-
                 if (mAdapter.getData() != null && mAdapter.getData().size() > 0) {
                     setSubRightTitleAndClick("", null);
                 } else {

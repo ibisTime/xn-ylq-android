@@ -60,6 +60,7 @@ public class AddressBookCertActivity extends AbsBaseActivity {
     @Override
     public View addMainView() {
         mBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.activity_addressbook, null, false);
+        mBinding.tvMsg3.setText("3." + getString(R.string.app_name) + "将严格遵守协议，保护用户隐私。");
         return mBinding.getRoot();
     }
 
@@ -143,7 +144,7 @@ public class AddressBookCertActivity extends AbsBaseActivity {
                 disMissLoading();
                 showToast("请授予读取手机联系人权限");
             }
-        }, Manifest.permission.READ_CONTACTS, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.ACCESS_COARSE_LOCATION);
+        }, Manifest.permission.READ_CONTACTS, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_COARSE_LOCATION);
     }
 
 

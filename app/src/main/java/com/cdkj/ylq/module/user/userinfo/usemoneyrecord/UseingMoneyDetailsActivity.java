@@ -112,8 +112,11 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
             setTopTitle("已还款详情");
         }
 
-        mBinding.tvMoney.setText(MoneyUtils.showPrice(mData.getAmount()));
-        mBinding.tvMoney2.setText(MoneyUtils.showPrice(mData.getAmount()) + "元");
+        mBinding.tvMoney.setText(MoneyUtils.showPrice(mData.getTotalAmount()));
+        mBinding.tvMoney2.setText(MoneyUtils.showPrice(mData.getTotalAmount()) + "元");
+        mBinding.tvLoanMoney.setText(MoneyUtils.showPrice(mData.getBorrowAmount()) + "元");
+        mBinding.tvActualMoney.setText(MoneyUtils.showPrice(mData.getRealGetAmount()) + "元");
+        mBinding.tvPaidMoney.setText(MoneyUtils.showPrice(mData.getRealHkAmount()) + "元");
         mBinding.tvCode.setText(mData.getCode());
         mBinding.tvSignData.setText(DateUtil.formatStringData(mData.getSignDatetime(), DATE_YMD));
         mBinding.tvDay.setText(mData.getDuration() + "天");
@@ -132,6 +135,8 @@ public class UseingMoneyDetailsActivity extends AbsBaseActivity {
             //不是分期
             mBinding.llFenqi.setVisibility(View.GONE);
         } else {
+            //分期的不显示到期还款额
+            mBinding.flDaoqi.setVisibility(View.GONE);
             //分期
             mBinding.llFenqi.setVisibility(View.VISIBLE);
             UseMoneyRecordModel.ListBean.Info info = mData.getInfo();
