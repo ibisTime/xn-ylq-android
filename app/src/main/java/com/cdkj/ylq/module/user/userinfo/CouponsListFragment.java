@@ -45,7 +45,6 @@ public class CouponsListFragment extends BaseRefreshFragment<CoupoonsModel.ListB
     private ActivityCouponsBinding mTips;
 
 
-
     /**
      * 获得fragment实例
      *
@@ -65,11 +64,24 @@ public class CouponsListFragment extends BaseRefreshFragment<CoupoonsModel.ListB
         if (getArguments() != null) {
             requestState = getArguments().getInt("state");
         }
+
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     protected void afterCreate(int pageIndex, int limit) {
+
+        if (requestState == CANUSE) {
+            //可使用的  就增加提醒
+            if (mTips == null) {
+                mTips = DataBindingUtil.inflate(mActivity.getLayoutInflater(), R.layout.activity_coupons, null, false);
+                getKeyUrl();
+            }
+            mBinding.flHead.addView(mTips.getRoot());
+        } else if (requestState == CANUSET) {
+            //不可使用的  就不增加提醒
+        }
+
         getListData(pageIndex, limit, true);
     }
 
@@ -89,11 +101,11 @@ public class CouponsListFragment extends BaseRefreshFragment<CoupoonsModel.ListB
             @Override
             protected void onSuccess(IntroductionInfoModel data, String SucMessage) {
                 if (TextUtils.isEmpty(data.getCvalue())) {
-                    if(mTips!=null){
+                    if (mTips != null) {
                         mTips.layoutTips.setVisibility(View.GONE);
                     }
-                }else{
-                    if(mTips!=null){
+                } else {
+                    if (mTips != null) {
                         mTips.layoutTips.setVisibility(View.VISIBLE);
                         mTips.tvTips.setText(data.getCvalue());
                     }
@@ -105,28 +117,24 @@ public class CouponsListFragment extends BaseRefreshFragment<CoupoonsModel.ListB
             protected void onFinish() {
             }
         });
-
-
     }
 
 
-    @Override
-    protected boolean canLoadEmptyView() {
-        if (requestState == CANUSE) {
-            return false;
-        } else if (requestState == CANUSET) {
-            return true;
-        }
-        return true;
-    }
+//    @Override
+//    protected boolean canLoadEmptyView() {
+//        if (requestState == CANUSE) {
+//            return false;
+//        } else if (requestState == CANUSET) {
+//            return true;
+//        }
+//        return true;
+//    }
 
     @Override
     public View getEmptyView() {
-        if(mTips==null){
-            mTips = DataBindingUtil.inflate(mActivity.getLayoutInflater(), R.layout.activity_coupons, null, false);
-            getKeyUrl();
-        }
-        return mTips.getRoot();
+
+//        return mTips.getRoot();
+        return null;
     }
 
     @Override
@@ -199,9 +207,9 @@ public class CouponsListFragment extends BaseRefreshFragment<CoupoonsModel.ListB
                 if (CANUSE == requestState) {
                     helper.setTextColor(R.id.tv_use_can, ContextCompat.getColor(mActivity, R.color.fontColor_hint));
                     helper.setTextColor(R.id.tv_date, ContextCompat.getColor(mActivity, R.color.fontColor_hint));
-                    helper.setBackgroundRes(R.id.layout_coupons_bg,R.drawable.coupons);
-                }else{
-                    helper.setBackgroundRes(R.id.layout_coupons_bg,R.drawable.coupons_un);
+                    helper.setBackgroundRes(R.id.layout_coupons_bg, R.drawable.coupons);
+                } else {
+                    helper.setBackgroundRes(R.id.layout_coupons_bg, R.drawable.coupons_un);
                 }
             }
         };

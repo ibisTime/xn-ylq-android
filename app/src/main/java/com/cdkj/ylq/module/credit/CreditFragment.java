@@ -15,6 +15,7 @@ import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.BaseLazyFragment;
 import com.cdkj.baselibrary.model.EventBusModel;
+import com.cdkj.baselibrary.model.IntroductionInfoModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
 import com.cdkj.baselibrary.utils.MoneyUtils;
@@ -25,6 +26,7 @@ import com.cdkj.ylq.model.CreditTypeBean;
 import com.cdkj.ylq.model.SuccessModel;
 import com.cdkj.ylq.module.api.MyApiServer;
 import com.cdkj.ylq.module.certification.all.AllCertificationListActivity;
+import com.cdkj.ylq.utils.NetUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -104,6 +106,10 @@ public class CreditFragment extends BaseLazyFragment {
                 mBinding.llStep3.setVisibility(View.GONE);
                 mBinding.llStep4.setVisibility(View.GONE);
                 mBinding.llStep5.setVisibility(View.GONE);
+
+                //获取可配置的说明
+                getCreditScore();
+
                 break;
             case "1"://认证中  完善资料
                 mBinding.btnWaite.setOnClickListener(v -> {
@@ -193,6 +199,25 @@ public class CreditFragment extends BaseLazyFragment {
             default:
                 break;
         }
+    }
+
+    /**
+     * 获取信用分 用途说明
+     */
+    private void getCreditScore() {
+
+        NetUtils.getSystemParameter(mActivity, "creditScore", true, new NetUtils.OnSuccessSystemInterface() {
+            @Override
+            public void onSuccessSystem(IntroductionInfoModel data) {
+                mBinding.tvPurpose.setText(data.getCvalue());
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                mBinding.tvPurpose.setText(errorMessage);
+            }
+        });
+
     }
 
     /**

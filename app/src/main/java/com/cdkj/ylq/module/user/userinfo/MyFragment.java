@@ -100,6 +100,7 @@ public class MyFragment extends BaseLazyFragment {
         mBinding.fralayoutCoupons.setOnClickListener(v -> {
             MyCouponsActivity.open(mActivity);
         });
+        //邀请好友
         mBinding.linInvitaion.setOnClickListener(v -> {
             InvitaionFriendActivity.open(mActivity);
         });

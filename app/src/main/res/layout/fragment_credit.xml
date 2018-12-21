@@ -94,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                  >
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -106,24 +106,25 @@
 
 
                     <TextView
+                        android:id="@+id/tv_purpose"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginRight="20dp"
-                        android:text="1,  信用分即额度，可申请借款"
+                        tools:text="1,  信用分即额度，可申请借款"
                         android:textColor="@color/text_color"
                         android:textSize="16sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginRight="20dp"
-                        android:text="2,  信用分越多借款额越多"
-                        android:textColor="@color/text_color"
-                        android:textSize="16sp" />
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginLeft="20dp"-->
+                        <!--android:layout_marginTop="20dp"-->
+                        <!--android:layout_marginRight="20dp"-->
+                        <!--android:text="2,  信用分越多借款额越多"-->
+                        <!--android:textColor="@color/text_color"-->
+                        <!--android:textSize="16sp" />-->
                 </LinearLayout>
 
                 <LinearLayout
@@ -391,7 +392,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:layout_marginLeft="48dp"
-                android:layout_marginTop="65dp"
+                android:layout_marginTop="50dp"
                 android:layout_marginRight="48dp"
                 android:layout_marginBottom="50dp"
                 android:background="@drawable/selector_login_btn_mini_round"

@@ -235,7 +235,7 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
 
     @Override
     public int getEmptyImg() {
-        return R.drawable.no_coupnos;
+        return R.drawable.no_product_data;
     }
 
     @Override

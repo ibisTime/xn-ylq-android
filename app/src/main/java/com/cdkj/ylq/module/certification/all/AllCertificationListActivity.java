@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -181,6 +182,7 @@ public class AllCertificationListActivity extends AbsBaseActivity implements Get
                 });
             }
         });
+
         //通讯录
         mBinding.llTxl.setOnClickListener(v -> {
             if (TextUtils.equals("0", mCertData.getInfoAddressBookFlag()) || TextUtils.equals("4", mCertData.getInfoAddressBookFlag())) {
@@ -329,10 +331,18 @@ public class AllCertificationListActivity extends AbsBaseActivity implements Get
      */
     @Override
     public void notifyResult(IdResult idResult) {
+        if (idResult == null) {
+            return;
+        }
 
         if (idResult.result_code == ErrorCode.SUCCESS.getCode()) {
             Bitmap front_image = idResult.front_image;
             Bitmap back_image = idResult.back_image;
+            Log.e("pppppp", "notifyResult: 正面照片" + front_image + "反面照片" + back_image);
+            if (front_image == null || back_image == null) {
+                UITipDialog.showFall(this, "获取照片失败,请重新尝试");
+                return;
+            }
             ArrayList<Bitmap> listBitmap = new ArrayList<>();
             listBitmap.add(front_image);
             listBitmap.add(back_image);
@@ -579,9 +589,9 @@ public class AllCertificationListActivity extends AbsBaseActivity implements Get
             @Override
             public void doAfterDenied(String... permission) {
                 disMissLoading();
-                showToast("请授予相机权限");
+                showToast("请授予权限");
             }
-        }, Manifest.permission.CAMERA);
+        }, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
     }
 
 
@@ -607,7 +617,6 @@ public class AllCertificationListActivity extends AbsBaseActivity implements Get
         //刷新的是上个界面的数据,就是认证的状态
         EventBus.getDefault().post("刷新界面数据");
     }
-
 
 
 }

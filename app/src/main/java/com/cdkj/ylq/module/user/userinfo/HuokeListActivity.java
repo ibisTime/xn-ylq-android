@@ -111,7 +111,7 @@ public class HuokeListActivity extends BaseRefreshActivity<HuokeListModel.ListBe
 
     @Override
     public int getEmptyImg() {
-        return R.drawable.no_coupnos;
+        return R.drawable.no_recommend_data;
     }
 
 }

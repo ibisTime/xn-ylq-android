@@ -76,10 +76,10 @@ public class ShellActivity extends AbsBaseActivity {
     private void initData() {
         Map<String, String> map = new HashMap<>();
         map.put("key", "domainUrl");
-        map.put("systemCode", MyConfig.COMPANYCODE);
-        map.put("companyCode", MyConfig.SYSTEMCODE);
-//        map.put("systemCode", MyConfig.SYSTEMCODE);
-//        map.put("companyCode", MyConfig.COMPANYCODE);
+//        map.put("systemCode", MyConfig.COMPANYCODE);
+//        map.put("companyCode", MyConfig.SYSTEMCODE);
+        map.put("systemCode", MyConfig.SYSTEMCODE);
+        map.put("companyCode", MyConfig.COMPANYCODE);
 
         Call call = RetrofitUtils.getBaseAPiService().getKeySystemInfo("623917", StringUtils.getJsonToString(map));
         addCall(call);
