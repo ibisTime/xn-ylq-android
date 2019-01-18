@@ -73,7 +73,9 @@ public class AlsoMoneyTabActivity extends CommonTablayoutActivity {
             info = (UseMoneyRecordModel.ListBean.Info) getIntent().getSerializableExtra("info");
         }
 
-        setTopTitle("还款");
+//        setTopTitle("还款");
+        setTitleShow(false);
+
 
         setSubLeftImgState(true);
 
@@ -135,7 +137,7 @@ public class AlsoMoneyTabActivity extends CommonTablayoutActivity {
     @Subscribe
     public void PayState2(String mo) {
         if (TextUtils.equals(mo, EventTags.ALSOOFFLINE)) {
-            showToast("申请还款成功");
+//            showToast("申请还款成功");
             EventBus.getDefault().post(EventTags.AllFINISH);
             //不用跳转到  已还款界面
 //            UseMoneyRecordActivity.open(this, BusinessSings.USEMONEYRECORD_4);

@@ -143,5 +143,4 @@ public interface BaseApiServer {
     @POST("api")
     Call<BaseResponseModel<MyBankCardListMode>> getCardListData(@Field("code") String code, @Field("json") String  json);
 
-
 }

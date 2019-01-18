@@ -2,138 +2,306 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <ScrollView
+    <!--<ScrollView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@color/bg_gray">-->
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/bg_gray">
+        android:layout_height="match_parent"
+        android:background="@color/bg_gray"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="45dp"
+            android:background="#FEA509">
 
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:padding="5dp"
+                android:src="@mipmap/back_white" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="支付宝还款"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="#FEA509" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@color/white"
-                android:orientation="horizontal"
-                android:paddingTop="10dp"
-                android:paddingBottom="15dp">
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:background="@drawable/whit_fill_round_bg"
+                android:gravity="center"
+                android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center">
 
-                    android:text="还款金额"
-                    android:textColor="@color/text_color"
-                    android:textSize="16sp" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/icon_pay_loading" />
 
+                    <TextView
+                        android:id="@+id/tv_mesg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
 
-                <TextView
-                    android:id="@+id/tv_money"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:gravity="center"
-                    tools:text="1000"
-                    android:textSize="16sp" />
+                        android:text="待还款" />
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_qs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@color/white"
-                android:orientation="horizontal"
-                android:paddingTop="10dp"
-                android:paddingBottom="15dp"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:text="还款期数"
-                    android:textColor="@color/text_color"
-                    android:textSize="16sp" />
+                </LinearLayout>
 
 
                 <TextView
-                    android:id="@+id/tv_qs"
+                    android:id="@+id/tv_pay_money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:gravity="center"
-                    android:text="第一期第一天"
-                    android:textSize="16sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/lin_weixin"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginLeft="15dp"
-                    android:src="@drawable/weixin" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="微信"
-                    android:textColor="@color/text_color"
-                    android:textSize="15sp" />
+                    android:layout_marginTop="25dp"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:text="¥1000" />
 
                 <View
-                    android:layout_width="0dp"
+                    style="@style/style_split_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginRight="15dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="15dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:id="@+id/fl_pay_bg"
+                        android:layout_width="50dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:background="@mipmap/icon_pay_bg">
+
+                        <ImageView
+                            android:id="@+id/iv_pay_logo"
+                            android:layout_width="17dp"
+                            android:layout_height="13dp"
+                            android:layout_gravity="center"
+                            android:background="@mipmap/icon_pay_bg"
+                            android:src="@mipmap/icon_ali_pay_text" />
+                    </FrameLayout>
+
+
+                    <TextView
+                        android:id="@+id/tv_pay_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="支付宝"
+                        android:textColor="@color/bank_bg01"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="#4064E6" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="15dp"
+                    android:text="请按照以下方式付款,转账无需备注任何信息"
+                    android:textColor="#fc5e2a"
+                    android:textSize="12sp" />
 
                 <ImageView
-                    android:id="@+id/img_weixin"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginRight="15dp"
-                    android:src="@drawable/pay_select" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:src="@mipmap/icon_pay_course" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/icon_authentication" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="收款账号经过平台认证,请放心付款"
+                        android:textColor="#0EC55B"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+
+                <Button
+                    android:id="@+id/btn_sure"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="48dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="48dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/selector_yealow_login_btn"
+                    android:text="确定还款"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
+        </FrameLayout>
 
-            <WebView
-                android:id="@+id/webView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp" />
 
-            <Button
-                android:id="@+id/btn_sure"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:layout_marginLeft="48dp"
-                android:layout_marginTop="45dp"
-                android:layout_marginRight="48dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/selector_login_btn"
-                android:text="我已打款"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:background="@color/white"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:paddingTop="10dp"-->
+            <!--android:paddingBottom="15dp"-->
+            <!--android:visibility="gone">-->
 
-        </LinearLayout>
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="15dp"-->
+                <!--android:text="还款金额"-->
+                <!--android:textColor="@color/text_color"-->
+                <!--android:textSize="16sp" />-->
 
-    </ScrollView>
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_money"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="20dp"-->
+                <!--android:gravity="center"-->
+                <!--android:textSize="16sp"-->
+                <!--tools:text="1000" />-->
+
+        <!--</LinearLayout>-->
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/ll_qs"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:background="@color/white"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:paddingTop="10dp"-->
+            <!--android:paddingBottom="15dp"-->
+            <!--android:visibility="gone">-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="15dp"-->
+                <!--android:text="还款期数"-->
+                <!--android:textColor="@color/text_color"-->
+                <!--android:textSize="16sp" />-->
+
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_qs"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="20dp"-->
+                <!--android:gravity="center"-->
+                <!--android:text="第一期第一天"-->
+                <!--android:textSize="16sp" />-->
+
+        <!--</LinearLayout>-->
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/lin_weixin"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:background="@color/white"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:visibility="gone">-->
+
+            <!--<ImageView-->
+                <!--android:layout_width="25dp"-->
+                <!--android:layout_height="25dp"-->
+                <!--android:layout_marginLeft="15dp"-->
+                <!--android:src="@drawable/weixin" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:text="微信"-->
+                <!--android:textColor="@color/text_color"-->
+                <!--android:textSize="15sp" />-->
+
+            <!--<View-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1" />-->
+
+            <!--<ImageView-->
+                <!--android:id="@+id/img_weixin"-->
+                <!--android:layout_width="20dp"-->
+                <!--android:layout_height="20dp"-->
+                <!--android:layout_marginRight="15dp"-->
+                <!--android:src="@drawable/pay_select" />-->
+
+        <!--</LinearLayout>-->
+
+
+        <!--<WebView-->
+            <!--android:id="@+id/webView"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="15dp"-->
+            <!--android:visibility="gone" />-->
+    </LinearLayout>
+
+    <!--</ScrollView>-->
 
 </layout>

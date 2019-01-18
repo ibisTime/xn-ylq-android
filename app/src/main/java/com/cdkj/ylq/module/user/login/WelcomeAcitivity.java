@@ -13,6 +13,7 @@ import com.cdkj.baselibrary.model.IntroductionInfoModel;
 import com.cdkj.baselibrary.model.RootMenuCodeBean;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
+import com.cdkj.baselibrary.utils.LogUtil;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.ylq.MainActivity;
 import com.cdkj.ylq.R;
@@ -54,6 +55,8 @@ public class WelcomeAcitivity extends BaseActivity {
         //判断有没有七牛地址
         if (TextUtils.isEmpty(SPUtilHelpr.getQiNiuUrl())) {
             getQiNiuUrl();
+        } else {
+            LogUtil.E("七牛地址为:" + SPUtilHelpr.getQiNiuUrl());
         }
     }
 
@@ -71,6 +74,7 @@ public class WelcomeAcitivity extends BaseActivity {
                 if (!TextUtils.isEmpty(data.getCvalue())) {
                     SPUtilHelpr.saveQiNiuUrl("http://" + data.getCvalue() + "/");
                 }
+                LogUtil.E("七牛地址为:" + SPUtilHelpr.getQiNiuUrl());
             }
 
             @Override

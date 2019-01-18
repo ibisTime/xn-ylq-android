@@ -140,8 +140,7 @@ public abstract class BaseRefreshFragment<T> extends BaseLazyFragment {
 
     public abstract String getEmptyInfo();
 
-    public abstract @DrawableRes
-    int getEmptyImg();
+    public abstract @DrawableRes int getEmptyImg();
 
 
     public void loadError(String str) {

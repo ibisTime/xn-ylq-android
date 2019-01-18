@@ -84,14 +84,12 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
                 if (!SPUtilHelpr.isLogin(mActivity, false)) {
                     return;
                 }
-
-
                 PorductListModel.ListBean data = (PorductListModel.ListBean) adapter.getItem(position);
                 productItemClick(data);
             }
         });
-
     }
+
 
     /**
      * 点击 //("0", "可申请"),("1", "认证中"),("2", "人工审核中"),( "3", "已驳回"),("4", "已有额度"),("5", "等待放款中"),( "6", "生效中"),("7", "已逾期")
@@ -116,44 +114,6 @@ public class BorrowMoneyFragment extends BaseRefreshFragment<PorductListModel.Li
             ProductDetailsActivity.open(mActivity, data.getCode());
             return;
         }
-
-//        if (TextUtils.equals(BusinessSings.PRODUCTSTATE_0, data.getUserProductStatus())) {      //产品详情
-//            ProductDetailsActivity.open(mActivity, data.getCode());
-//            return;
-//        }
-//
-//
-//        if (TextUtils.equals(BusinessSings.PRODUCTSTATE_1, data.getUserProductStatus())) {//认证中显示认证界面
-//
-//            EventBusModel eventBusModel = new EventBusModel();
-//            eventBusModel.setTag(EventTags.MAINCHANGESHOWINDEX);
-//            eventBusModel.setEvInt(MainActivity.SHOWCERT);
-//            EventBus.getDefault().post(eventBusModel);
-//
-//        } else if (TextUtils.equals(BusinessSings.PRODUCTSTATE_2, data.getUserProductStatus())) {//人工审核中
-//            HumanReviewActivity.open(mActivity);
-//
-//        } else if (TextUtils.equals(BusinessSings.PRODUCTSTATE_3, data.getUserProductStatus())) {//已驳回
-//            ApplyFailureActivity.open(mActivity, data);
-//
-//        } else if (TextUtils.equals(BusinessSings.PRODUCTSTATE_4, data.getUserProductStatus())) {//已有额度
-//
-//            MyMaxMoneyActivity.open(mActivity);
-//        } else if (TextUtils.equals(BusinessSings.PRODUCTSTATE_5, data.getUserProductStatus())) { //等待放款中
-//
-//            PutMoneyingActivity.open(mActivity, data.getBorrowCode());
-//
-//        } else if (TextUtils.equals(BusinessSings.PRODUCTSTATE_6, data.getUserProductStatus())) { //生效中
-//
-//            UseingMoneyDetailsActivity.open(mActivity, null, true, data.getBorrowCode());
-//
-//        } else if (TextUtils.equals(BusinessSings.PRODUCTSTATE_7, data.getUserProductStatus())) { //逾期
-//
-//            UsedMoneyDetailsActivity.open(mActivity, null, data.getBorrowCode());
-//
-//        } else if (TextUtils.equals(BusinessSings.PRODUCTSTATE_11, data.getUserProductStatus())) {//打款失败
-//            WaiteMoneyDetailsActivity.open(mActivity, null, data.getBorrowCode());
-//        }
     }
 
     @Override

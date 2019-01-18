@@ -130,16 +130,10 @@ public class CouponsListFragment extends BaseRefreshFragment<CoupoonsModel.ListB
 //        return true;
 //    }
 
-    @Override
-    public View getEmptyView() {
-
-//        return mTips.getRoot();
-        return null;
-    }
 
     @Override
     protected void getListData(int pageIndex, int limit, boolean canShowDialog) {
-//0=可使用 1=已使用 2=已过期 12=已使用或已过期
+    //0=可使用 1=已使用 2=已过期 12=已使用或已过期
         Map<String, String> map = new HashMap<>();
         map.put("limit", limit + "");
         map.put("start", pageIndex + "");

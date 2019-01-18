@@ -3,6 +3,7 @@ package com.cdkj.ylq;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -10,7 +11,9 @@ import android.util.Log;
 import android.view.View;
 
 import com.cdkj.baselibrary.adapters.ViewPagerAdapter;
+import com.cdkj.baselibrary.api.BaseResponseModel;
 import com.cdkj.baselibrary.appmanager.EventTags;
+import com.cdkj.baselibrary.appmanager.MyConfig;
 import com.cdkj.baselibrary.appmanager.SPUtilHelpr;
 import com.cdkj.baselibrary.base.AbsBaseActivity;
 import com.cdkj.baselibrary.dialog.UITipDialog;
@@ -18,12 +21,19 @@ import com.cdkj.baselibrary.model.EventBusModel;
 import com.cdkj.baselibrary.model.IntroductionInfoModel;
 import com.cdkj.baselibrary.nets.BaseResponseModelCallBack;
 import com.cdkj.baselibrary.nets.RetrofitUtils;
+import com.cdkj.baselibrary.utils.BitmapUtils;
+import com.cdkj.baselibrary.utils.LogUtil;
 import com.cdkj.baselibrary.utils.StringUtils;
 import com.cdkj.baselibrary.utils.update.UpdateManager;
 import com.cdkj.ylq.databinding.ActivityMainBinding;
+import com.cdkj.ylq.model.RepaymentQRBean;
+import com.cdkj.ylq.module.api.MyApiServer;
 import com.cdkj.ylq.module.borrowmoney.BorrowMoneyFragment;
 import com.cdkj.ylq.module.credit.CreditFragment;
 import com.cdkj.ylq.module.user.userinfo.MyFragment;
+import com.cdkj.ylq.utils.IsInstallWeChatOrAliPay;
+import com.cdkj.ylq.utils.ZxingUtils;
+import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -85,10 +95,10 @@ public class MainActivity extends AbsBaseActivity {
         initViewPager();
         updateManager = new UpdateManager(getString(R.string.app_name));
 //        updateManager.checkNewApp(this);//这个检查更新接口还会报错
-
 //        if (TextUtils.isEmpty(SPUtilHelpr.getQiNiuUrl())) {
 //            getQiNiuUrl();
 //        }
+//        getQRImage();
     }
 
     /**
@@ -275,6 +285,75 @@ public class MainActivity extends AbsBaseActivity {
             EventBus.getDefault().post(EventTags.AllFINISH);
             finish();
         });
+    }
+
+
+    /**
+     * 获取支付宝的付款码信息
+     */
+    private void getQRImage() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("companyCode", MyConfig.COMPANYCODE);
+        Call<BaseResponseModel<RepaymentQRBean>> repaymentQR = RetrofitUtils.createApi(MyApiServer.class).getRepaymentQR("623218", StringUtils.getJsonToString(map));
+        addCall(repaymentQR);
+        showLoadingDialog();
+        repaymentQR.enqueue(new BaseResponseModelCallBack<RepaymentQRBean>(MainActivity.this) {
+            @Override
+            protected void onSuccess(RepaymentQRBean data, String SucMessage) {
+
+                BitmapUtils.getImage(MainActivity.this,SPUtilHelpr.getQiNiuUrl() + data.getPict(), new BitmapUtils.HttpCallBackListener() {
+                    @Override
+                    public void onFinish(Bitmap bitmap) {
+                        scannedQR(bitmap);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        UITipDialog.showFall(MainActivity.this, "获取还款信息失败");
+                    }
+                });
+            }
+
+            @Override
+            protected void onFinish() {
+                disMissLoading();
+            }
+        });
+
+    }
+
+    public void scannedQR(Bitmap bitmap) {
+//        Bitmap mBitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
+//        Bitmap bitmap = BitmapUtils.drawable2Bitmap(getResources().getDrawable(R.drawable.pay_qr));
+        ZxingUtils.analyzeBitmap(bitmap, new CodeUtils.AnalyzeCallback() {
+            @Override
+            public void onAnalyzeSuccess(Bitmap mBitmap, String result) {
+                LogUtil.E("扫描结果:" + result);
+                //扫描结果可能是如下的 两种  一个是收款码,一个是普通的个人信息二维码
+                //HTTPS://QR.ALIPAY.COM/FKX06440RVTBLYZNHGSHC3?t=1547606011183
+                //HTTPS://QR.ALIPAY.COM/FKX06440RVTBLYZNHGSHC3
+                if (TextUtils.isEmpty(result) || !result.contains("HTTPS://QR.ALIPAY.COM/")) {
+                    UITipDialog.showFall(MainActivity.this, "后台配置出错,请联系管理员");
+                    return;
+                }
+                //截取出来支付宝用户的id
+                String ailiID = result.substring("HTTPS://QR.ALIPAY.COM/".length() - 1, result.contains("?") ? result.indexOf("?") : result.length());
+                startZFB(ailiID);
+            }
+
+            @Override
+            public void onAnalyzeFailed() {
+                LogUtil.E("扫描失败:");
+            }
+        });
+    }
+
+    public void startZFB(String urlCode) {
+        String URL_FORMAT =
+                "intent://platformapi/startapp?saId=10000007&" +
+                        "clientVersion=3.7.0.0718&qrcode=https%3A%2F%2Fqr.alipay.com%2F{urlCode}%3F_s" +
+                        "%3Dweb-other&_t=1472443966571#Intent;" + "scheme=alipayqr;package=com.eg.android.AlipayGphone;end";
+        IsInstallWeChatOrAliPay.startZFBIntentUrl(this, URL_FORMAT.replace("{urlCode}", urlCode));
     }
 
 }

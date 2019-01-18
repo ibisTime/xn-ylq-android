@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.cdkj.baselibrary.BaseApplication;
 import com.moxie.client.manager.MoxieSDK;
+import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
 
 /**
@@ -23,6 +24,8 @@ public class MyApplication extends Application {
         BaseApplication.initialize(this, BuildConfig.LOG_DEBUG);
         //魔蝎认证初始化
         MoxieSDK.init(this);
+        //二维码扫描初始化
+        ZXingLibrary.initDisplayOpinion(this);
     }
 
     public static MyApplication getInstance() {

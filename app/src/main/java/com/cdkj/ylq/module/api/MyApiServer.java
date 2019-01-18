@@ -18,6 +18,7 @@ import com.cdkj.ylq.model.MsgListModel;
 import com.cdkj.ylq.model.PorductListModel;
 import com.cdkj.ylq.model.ProductSingModel;
 import com.cdkj.ylq.model.RenewalListModel;
+import com.cdkj.ylq.model.RepaymentQRBean;
 import com.cdkj.ylq.model.SelectZxBean;
 import com.cdkj.ylq.model.SuccessModel;
 import com.cdkj.ylq.model.UseMoneyRecordModel;
@@ -40,6 +41,7 @@ public interface MyApiServer {
 
     /**
      * //注册
+     *
      * @param code
      * @param json
      * @return
@@ -47,8 +49,10 @@ public interface MyApiServer {
     @FormUrlEncoded
     @POST("api")
     Call<BaseResponseModel<UserLoginModel>> userRegister(@Field("code") String code, @Field("json") String json);
+
     /**
-     *获取用户信息详情
+     * 获取用户信息详情
+     *
      * @param code
      * @param json
      * @return
@@ -56,8 +60,10 @@ public interface MyApiServer {
     @FormUrlEncoded
     @POST("api")
     Call<BaseResponseModel<UserInfoModel>> getUserInfoDetails(@Field("code") String code, @Field("json") String json);
+
     /**
-     *获取用户信息详情
+     * 获取用户信息详情
+     *
      * @param code
      * @param json
      * @return
@@ -67,7 +73,8 @@ public interface MyApiServer {
     Call<BaseResponseModel<PorductListModel>> getProductListData(@Field("code") String code, @Field("json") String json);
 
     /**
-     *获取认证信息
+     * 获取认证信息
+     *
      * @param code
      * @param json
      * @return
@@ -77,7 +84,8 @@ public interface MyApiServer {
     Call<BaseResponseModel<CerttificationInfoModel>> getCerttificationInfo(@Field("code") String code, @Field("json") String json);
 
     /**
-     *获取数据字典
+     * 获取数据字典
+     *
      * @param code
      * @param json
      * @return
@@ -87,7 +95,8 @@ public interface MyApiServer {
     Call<BaseResponseListModel<KeyDataModel>> getKeyData(@Field("code") String code, @Field("json") String json);
 
     /**
-     *获取优惠券数据
+     * 获取优惠券数据
+     *
      * @param code
      * @param json
      * @return
@@ -97,7 +106,8 @@ public interface MyApiServer {
     Call<BaseResponseModel<CoupoonsModel>> getCouponsListData(@Field("code") String code, @Field("json") String json);
 
     /**
-     *获取优惠券数据
+     * 获取优惠券数据
+     *
      * @param code
      * @param json
      * @return
@@ -107,7 +117,8 @@ public interface MyApiServer {
     Call<BaseResponseModel<HuokeListModel>> getHuokeListData(@Field("code") String code, @Field("json") String json);
 
     /**
-     *获取产品使用状态数据
+     * 获取产品使用状态数据
+     *
      * @param code
      * @param json
      * @return
@@ -117,7 +128,8 @@ public interface MyApiServer {
     Call<BaseResponseModel<UseMoneyRecordModel.ListBean>> getUseMoneyData(@Field("code") String code, @Field("json") String json);
 
     /**
-     *获取可用优惠券数据
+     * 获取可用优惠券数据
+     *
      * @param code
      * @param json
      * @return
@@ -127,7 +139,8 @@ public interface MyApiServer {
     Call<BaseResponseListModel<CanUseCouponsModel>> getCanUseCouponsListData(@Field("code") String code, @Field("json") String json);
 
     /**
-     *zm one
+     * zm one
+     *
      * @param code
      * @param json
      * @return
@@ -137,7 +150,8 @@ public interface MyApiServer {
     Call<BaseResponseModel<ZMCertFirstStepModel>> ZmCertFirstStep(@Field("code") String code, @Field("json") String json);
 
     /**
-     *zm two
+     * zm two
+     *
      * @param code
      * @param json
      * @return
@@ -147,7 +161,8 @@ public interface MyApiServer {
     Call<BaseResponseModel<ZMCertSecStepModel>> ZmCertSecStep(@Field("code") String code, @Field("json") String json);
 
     /**
-     *zm 分获取
+     * zm 分获取
+     *
      * @param code
      * @param json
      * @return
@@ -157,7 +172,8 @@ public interface MyApiServer {
     Call<BaseResponseModel<ZmScoreGetModel>> getZmScore(@Field("code") String code, @Field("json") String json);
 
     /**
-     *获取额度
+     * 获取额度
+     *
      * @param code
      * @param json
      * @return
@@ -167,7 +183,8 @@ public interface MyApiServer {
     Call<BaseResponseModel<CanUseMoneyModel>> getCanUseMoney(@Field("code") String code, @Field("json") String json);
 
     /**
-     *获取额度
+     * 获取额度
+     *
      * @param code
      * @param json
      * @return
@@ -175,8 +192,10 @@ public interface MyApiServer {
     @FormUrlEncoded
     @POST("api")
     Call<BaseResponseModel<PorductListModel.ListBean>> getCanUseProduct(@Field("code") String code, @Field("json") String json);
+
     /**
-     *记录列表
+     * 记录列表
+     *
      * @param code
      * @param json
      * @return
@@ -187,11 +206,12 @@ public interface MyApiServer {
 
     /**
      * 获取消息列表
+     *
      * @return
      */
     @FormUrlEncoded
     @POST("api")
-    Call<BaseResponseModel<MsgListModel>> getMsgList(@Field("code") String code, @Field("json") String  json);
+    Call<BaseResponseModel<MsgListModel>> getMsgList(@Field("code") String code, @Field("json") String json);
 
     /**
      * 获取产品详情
@@ -219,6 +239,7 @@ public interface MyApiServer {
     @FormUrlEncoded
     @POST("api")
     Call<BaseResponseModel<IsBorrowModel>> isBorrowRequest(@Field("code") String code, @Field("json") String json);
+
     /**
      * 续期记录列表
      *
@@ -227,6 +248,7 @@ public interface MyApiServer {
     @FormUrlEncoded
     @POST("api")
     Call<BaseResponseModel<RenewalListModel>> getRenewalListData(@Field("code") String code, @Field("json") String json);
+
     /**
      * 是否有产品审核
      *
@@ -235,7 +257,8 @@ public interface MyApiServer {
     @FormUrlEncoded
     @POST("api")
     Call<BaseResponseModel<IsBorrowFlagModel>> getIsBorrowFlag(@Field("code") String code, @Field("json") String json);
-   /**
+
+    /**
      * 签约协议
      *
      * @return
@@ -281,7 +304,7 @@ public interface MyApiServer {
     @POST("api")
     Call<BaseResponseModel<CreditTypeBean>> getCreditType(@Field("code") String code, @Field("json") String json);
 
-  /**
+    /**
      * 获取三方 账户余额,没有余额就不能进行三方认证
      *
      * @return
@@ -290,7 +313,7 @@ public interface MyApiServer {
     @POST("api")
     Call<BaseResponseModel<SuccessModel>> getInfoMoney(@Field("code") String code, @Field("json") String json);
 
-/**
+    /**
      * 获取信用分状态
      *
      * @return
@@ -299,6 +322,14 @@ public interface MyApiServer {
     @POST("api")
     Call<BaseResponseModel<SuccessModel>> submitLocationData(@Field("code") String code, @Field("json") String json);
 
+    /**
+     * 获取银行卡列表
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api")
+    Call<BaseResponseModel<RepaymentQRBean>> getRepaymentQR(@Field("code") String code, @Field("json") String json);
 
 
 }

@@ -1,10 +1,15 @@
 package com.cdkj.baselibrary.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
@@ -14,6 +19,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -350,4 +359,153 @@ public class BitmapUtils {
         Uri uri = Uri.fromFile(file);
         context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
     }
+    //下面是bitmap转换的操作
+
+    /**
+     * byte[] 转 bitmap
+     *
+     * @param b
+     * @return
+     */
+    public Bitmap Bytes2Bimap(byte[] b) {
+        if (b.length != 0) {
+            return BitmapFactory.decodeByteArray(b, 0, b.length);
+        } else {
+            return null;
+        }
+    }
+
+
+    /**
+     * bitmap转Drawabl
+     *
+     * @param bitmap
+     * @return
+     */
+    public static Drawable bitmap2Drawabl(Bitmap bitmap) {
+        BitmapDrawable bd = new BitmapDrawable(bitmap);
+        return bd;
+    }
+
+//    /**
+//     *
+//     * @param id
+//     * @return
+//     */
+//    public static Drawable drawable2Bitmap(int id) {
+//        BitmapDrawable bd = new BitmapDrawable(id, bitmap);
+//        return bd;
+//    }
+
+    /**
+     * drawable 转 bitmap
+     *
+     * @param drawable
+     * @return
+     */
+    public static Bitmap drawable2Bitmap(Drawable drawable) {
+        Bitmap bitmap = null;
+
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if (bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
+        }
+        // 取 drawable 的颜色格式,Bitmap.createBitmap 第三个参数
+        Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565;
+        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        }
+        //将drawable内容画到画布中
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
+
+
+    /**
+     * 网络图片转  bitmap
+     *
+     * @param imgurl
+     * @return
+     * @throws Exception
+     */
+    public static void getImage(final Activity activity, final String imgurl, final HttpCallBackListener listener) {
+//        URL murl = new URL(url);
+//        HttpURLConnection conn = (HttpURLConnection) murl.openConnection();
+//        InputStream is = conn.getInputStream();
+//        return BitmapFactory.decodeStream(is);
+
+
+//        try {
+//            URL url = new URL(imgurl);
+//            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//            connection.setDoInput(true);
+//            connection.connect();
+//            InputStream input = connection.getInputStream();
+//            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+//            return myBitmap;
+//        } catch (IOException e) {
+//            // Log exception
+//            return null;
+//        }
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                URL imageUrl = null;
+                try {
+                    imageUrl = new URL(imgurl);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    HttpURLConnection conn = (HttpURLConnection) imageUrl.openConnection();
+                    conn.setDoInput(true);
+                    conn.connect();
+                    InputStream is = conn.getInputStream();
+                    final Bitmap bitmap = BitmapFactory.decodeStream(is);
+//                    Bitmap bitmap1= createBitmapThumbnail(bitmap,false);
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (listener != null) {
+                                listener.onFinish(bitmap);
+                            }
+                        }
+                    });
+
+                    is.close();
+                } catch (final IOException e) {
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (listener != null) {
+                                listener.onError(e);
+                            }
+                        }
+                    });
+
+                    e.printStackTrace();
+                }
+            }
+
+        }).start();
+
+
+    }
+
+    //自定义一个接口
+    public interface HttpCallBackListener {
+        void onFinish(Bitmap bitmap);
+
+        void onError(Exception e);
+    }
+
+
 }
