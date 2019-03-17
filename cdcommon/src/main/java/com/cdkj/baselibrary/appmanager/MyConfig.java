@@ -8,7 +8,7 @@ public class MyConfig {
 
 //    public final static String COMPANYCODE = "GSModelCode";//双龙的模板公司code
 //    public final static String COMPANYCODE = "GS201901170949444352678";//双龙的code
-    public final static String COMPANYCODE = "GS2019011812012893291";//双龙的code
+    public final static String COMPANYCODE = "GS201901231306412778518";//双龙的code
 
     public final static String SYSTEMCODE = "CD-YLQ000014";
 

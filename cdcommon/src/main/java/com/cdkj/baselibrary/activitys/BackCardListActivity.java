@@ -99,6 +99,7 @@ public class BackCardListActivity extends BaseRefreshActivity {
                             AddBackCardActivity.open(BackCardListActivity.this);
                         }
                     });
+
                 }
             }
 

@@ -13,10 +13,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 public class IsInstallWeChatOrAliPay {
-
-    public IsInstallWeChatOrAliPay() {
-    }
-
+    //跳转支付宝的uri
     private static final String URL_FORMAT =
             "intent://platformapi/startapp?saId=10000007&" +
                     "clientVersion=3.7.0.0718&qrcode=https%3A%2F%2Fqr.alipay.com%2F{urlCode}%3F_s" +

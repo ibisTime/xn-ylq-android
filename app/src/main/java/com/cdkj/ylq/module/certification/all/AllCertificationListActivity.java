@@ -151,7 +151,7 @@ public class AllCertificationListActivity extends AbsBaseActivity implements Get
                 BasisInfoCertificationActivity.open(this);
             }
         });
-
+        //身份认证
         mBinding.llIdCard.setOnClickListener(v -> {
             //第一次启动,某些手机会出现黑屏,先进行权限申请再进入
             permissionRequest();
@@ -557,7 +557,7 @@ public class AllCertificationListActivity extends AbsBaseActivity implements Get
 
 
     /**
-     * 通讯录权限申请
+     * 权限申请
      */
     private void permissionRequest() {
         LogUtil.E("权限申请");

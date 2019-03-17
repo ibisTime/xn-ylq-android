@@ -222,7 +222,6 @@ public class AlsoMoneyOffLineFragment extends BaseFragment {
      */
     public void scannedQR(Bitmap bitmap) {
 
-//        Bitmap bitmap = BitmapUtils.drawable2Bitmap(getResources().getDrawable(R.drawable.pay_qr));
         ZxingUtils.analyzeBitmap(bitmap, new CodeUtils.AnalyzeCallback() {
             @Override
             public void onAnalyzeSuccess(Bitmap mBitmap, String result) {

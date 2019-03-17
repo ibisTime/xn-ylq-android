@@ -435,26 +435,6 @@ public class BitmapUtils {
      * @throws Exception
      */
     public static void getImage(final Activity activity, final String imgurl, final HttpCallBackListener listener) {
-//        URL murl = new URL(url);
-//        HttpURLConnection conn = (HttpURLConnection) murl.openConnection();
-//        InputStream is = conn.getInputStream();
-//        return BitmapFactory.decodeStream(is);
-
-
-//        try {
-//            URL url = new URL(imgurl);
-//            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//            connection.setDoInput(true);
-//            connection.connect();
-//            InputStream input = connection.getInputStream();
-//            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-//            return myBitmap;
-//        } catch (IOException e) {
-//            // Log exception
-//            return null;
-//        }
-
-
         new Thread(new Runnable() {
             @Override
             public void run() {
